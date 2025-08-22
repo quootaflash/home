@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eracoding - platfrom belajar coding</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .floating { animation: float 4s ease-in-out infinite; }
+        .course-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+        .course-card { transition: all 0.3s ease; }
+    </style>
+</head>
+<body class="font-sans bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj3NQZcwhEwbBj73hdSqyBHpIYTsMXtWVzg_oTivtIwQ0hokjVTOXWdVn4AmEbjoJOgCHB7tY6sSGPJ930YhcVYo5twbczZtaJXfkeKBfGpdQVPyhrxM9lOF8vuHz6r4f6LuCOLnsNXkbrQKCxQsTlqU3FaG4ujwKgnu5PvxoJUq2oV_YgaUpIUGaZ_26X6/s3264/20250821_091218.png" alt="Logo eracoding" class="h-8 w-auto">
+                        <span class="ml-2 text-xl font-bold text-gray-900"></span>
+                    </div>
+                </div>
+                <div class="hidden md:ml-6 md:flex md:items-center md:space-x-8">
+                    <a href="https://eracoding.my.id" class="px-3 py-2 rounded-md text-sm font-medium text-gray-900 hover:text-blue-600">Beranda</a>
+                    <a href="https://course.eracoding.my.id" class="px-3 py-2 rounded-md text-sm font-medium text-gray-900 hover:text-blue-600">Kelas</a>
+                    <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-900 hover:text-blue-600">Bootcamp</a>
+                    <a href="https://whatsapp.com/channel/0029Vb6GVqw0Qearxmwd151l" class="px-3 py-2 rounded-md text-sm font-medium text-gray-900 hover:text-blue-600">Informasi</a>
+                    <a href="https://wa.me/62085885850204" class="px-3 py-2 rounded-md text-sm font-medium bg-blue-600 text-white px-4 hover:bg-blue-700">Konsultasi Sekarang</a>
+                </div>
+                <div class="-mr-2 flex items-center md:hidden">
+                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-24">
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="space-y-6">
+                    <h1 class="text-4xl md:text-5xl font-bold leading-tight">Dari pemula menjadi profesional di dunia digital</h1>
+                    <p class="text-xl text-blue-100">Belajar pemrograman dengan kurikulum industri langsung dari praktisi teknologi terbaik di Indonesia.</p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-medium text-center hover:bg-gray-100 transition duration-300">Mulai Belajar Gratis</a>
+                        <a href="https://course.eracoding.my.id" class="border-2 border-white text-white px-6 py-3 rounded-lg font-medium text-center hover:bg-white hover:text-blue-600 transition duration-300">Lihat Kelas</a>
+                    </div>
+                    <div class="flex items-center space-x-2 mt-4">
+                        <div class="flex -space-x-2">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/082315b5-c3fe-4e37-852a-952d50d1e889.png" alt="Foto mentor coding profesional dengan latar studio profesional" class="w-10 h-10 rounded-full border-2 border-white">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/1e6a7719-5e81-4e73-b132-1cc5d32ffaa6.png" alt="Foto developer wanita tersenyum dengan headphone" class="w-10 h-10 rounded-full border-2 border-white">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/55aec51c-347a-4d41-8db2-0408dd83c6ad.png" alt="Foto instruktur coding asia dengan kacamata" class="w-10 h-10 rounded-full border-2 border-white">
+                        </div>
+                        <p class="text-sm text-blue-100">Bergabung dengan 100+ siswa lainnya</p>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/95a9feaf-85e1-4188-a0f5-1b973983829b.png" alt="Ilustrasi orang sedang coding dengan elemen UI modern seperti laptop, code editor, dan diagram alur" class="w-full floating rounded-lg shadow-2xl">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="bg-white py-12 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="space-y-2">
+                    <p class="text-4xl font-bold text-blue-600">5+</p>
+                    <p class="text-gray-600">Kelas Online</p>
+                </div>
+                <div class="space-y-2">
+                    <p class="text-4xl font-bold text-blue-600">100+</p>
+                    <p class="text-gray-600">Siswa</p>
+                </div>
+                <div class="space-y-2">
+                    <p class="text-4xl font-bold text-blue-600">85%</p>
+                    <p class="text-gray-600">Kepuasan Siswa</p>
+                </div>
+                <div class="space-y-2">
+                    <p class="text-4xl font-bold text-blue-600">3+</p>
+                    <p class="text-gray-600">Partner Perusahaan</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features -->
+    <div class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Kenapa Belajar di Eracoding</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Kami menghadirkan pengalaman belajar coding yang berbeda dengan pendekatan praktis dan berbasis proyek nyata.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition duration-300">
+                    <div class="text-blue-600 mb-4">
+                        <i class="fas fa-laptop-code text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Kurikulum Industri</h3>
+                    <p class="text-gray-600">Materi selalu update sesuai kebutuhan industri teknologi terkini yang diajarkan langsung oleh praktisi.</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition duration-300">
+                    <div class="text-blue-600 mb-4">
+                        <i class="fas fa-chalkboard-teacher text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Instruktur Berpengalaman</h3>
+                    <p class="text-gray-600">Belajar dari mentor yang telah berkecimpung di industri teknologi minimal 5 tahun.</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition duration-300">
+                    <div class="text-blue-600 mb-4">
+                        <i class="fas fa-briefcase text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Proyek Nyata</h3>
+                    <p class="text-gray-600">Bangun portofolio dengan mengerjakan studi kasus dan proyek nyata yang relevan dengan kebutuhan perusahaan.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popular Courses -->
+    <div class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Kelas Populer</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Mulai karir tech-mu dengan belajar teknologi yang paling banyak dicari industri.</p>
+            </div>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Course 1 -->
+                <div class="course-card bg-white rounded-xl overflow-hidden shadow-md">
+                    <div class="relative">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/f677a54b-850e-4ba9-94ce-418d8222b27f.png" alt="Ilustrasi pembelajaran Fullstack JavaScript dengan kode dan framework populer" class="w-full h-48 object-cover">
+                        <span class="absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded">Populer</span>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-2">
+                            <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">Intermediate</span>
+                            <span class="text-gray-500 text-sm ml-2"><i class="fas fa-star text-yellow-400"></i> 4.9 (1200)</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Fullstack JavaScript Mastery</h3>
+                        <p class="text-gray-600 mb-4">Pelajari React, Node.js, Express, dan MongoDB untuk membangun aplikasi web modern.</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="font-medium"><s class="text-gray-400">Rp1.200.000</s> <span class="text-blue-600">Rp799.000</span></p>
+                            </div>
+                            <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">Lihat Detail <i class="fas fa-arrow-right ml-1"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Course 2 -->
+                <div class="course-card bg-white rounded-xl overflow-hidden shadow-md">
+                    <div class="relative">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/625c2146-2a76-4272-9b84-beec163c8037.png" alt="Ilustrasi pembelajaran Data Science dengan grafik dan visualisasi data" class="w-full h-48 object-cover">
+                        <span class="absolute top-2 right-2 bg-purple-600 text-white text-xs px-2 py-1 rounded">Baru</span>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-2">
+                            <span class="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded">Advanced</span>
+                            <span class="text-gray-500 text-sm ml-2"><i class="fas fa-star text-yellow-400"></i> 4.8 (856)</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Data Science with Python</h3>
+                        <p class="text-gray-600 mb-4">Pengolahan data, visualisasi, dan machine learning dengan Python, Pandas, dan Scikit-learn.</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="font-medium"><s class="text-gray-400">Rp1.500.000</s> <span class="text-blue-600">Rp999.000</span></p>
+                            </div>
+                            <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">Lihat Detail <i class="fas fa-arrow-right ml-1"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Course 3 -->
+                <div class="course-card bg-white rounded-xl overflow-hidden shadow-md">
+                    <div class="relative">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/5bd51b5c-6294-46be-8b26-71e9047ee718.png" alt="Tampilan mobile UI/UX modern dengan palette warna kontemporer" class="w-full h-48 object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-2">
+                            <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Beginner</span>
+                            <span class="text-gray-500 text-sm ml-2"><i class="fas fa-star text-yellow-400"></i> 4.7 (650)</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Mobile UI/UX Design</h3>
+                        <p class="text-gray-600 mb-4">Kuasai prinsip desain modern untuk aplikasi mobile menggunakan Figma dan Adobe XD.</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="font-medium"><s class="text-gray-400">Rp900.000</s> <span class="text-blue-600">Rp599.000</span></p>
+                            </div>
+                            <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">Lihat Detail <i class="fas fa-arrow-right ml-1"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-12">
+                <a href="https://course.eracoding.my.id" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition duration-300">
+                    Lihat Semua Kelas
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Kisah Sukses Alumni</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Bagaimana Eracoding membantu karir mereka di dunia teknologi.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-white p-8 rounded-xl shadow-sm">
+                    <div class="flex items-center mb-4">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b098284b-e6fb-4123-8d85-99c150404427.png" alt="Foto profesional alumni pria dengan background kantor modern" class="w-12 h-12 rounded-full object-cover">
+                        <div class="ml-4">
+                            <h4 class="font-bold">Andi Pratama</h4>
+                            <p class="text-gray-600 text-sm">Frontend Developer @Tokopedia</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 italic">"Berawal dari ikut bootcamp Fullstack JavaScript di CodeMastery, dalam 6 bulan saya bisa dapat tawaran kerja pertama sebagai developer. Mentornya sangat berpengalaman dan metodologi pembelajarannya sangat aplikatif."</p>
+                    <div class="flex mt-4 text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="bg-white p-8 rounded-xl shadow-sm">
+                    <div class="flex items-center mb-4">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/4aa84b9f-3184-4429-8d22-0eb9bea4723b.png" alt="Foto profesional alumni wanita di startup teknologi" class="w-12 h-12 rounded-full object-cover">
+                        <div class="ml-4">
+                            <h4 class="font-bold">Dewi Lestari</h4>
+                            <p class="text-gray-600 text-sm">Data Scientist @Gojek</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 italic">"Portofolio hasil belajar di kelas Data Science CodeMastery membuat CV saya jadi lebih menonjol. Sekarang saya bekerja di salah satu unicorn Indonesia berkat skill yang saya dapatkan di sini."</p>
+                    <div class="flex mt-4 text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="bg-white p-8 rounded-xl shadow-sm">
+                    <div class="flex items-center mb-4">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/39f01f6e-d196-49f1-8e07-50dabe23dff4.png" alt="Foto alumni sedang mempresentasikan produk digital di meeting" class="w-12 h-12 rounded-full object-cover">
+                        <div class="ml-4">
+                            <h4 class="font-bold">Budi Santoso</h4>
+                            <p class="text-gray-600 text-sm">Product Designer @Traveloka</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 italic">"Saya kuliah non-technical tapi beralih karir ke UI/UX setelah ikut kelas intensif di CodeMastery. Sistem mentoring 1-on-1 benar-benar membantu mempercepat proses belajar."</p>
+                    <div class="flex mt-4 text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="bg-blue-600 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Siap Memulai Perjalanan Coding-mu?</h2>
+                    <p class="text-lg text-blue-100 mb-6">Bergabung dengan ribuan siswa lainnya dan jadilah bagian dari generasi digital masa depan.</p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-medium text-center hover:bg-gray-100 transition duration-300">Daftar Sekarang</a>
+                        <a href="https://wa.me/62085885850204" class="border-2 border-white text-white px-6 py-3 rounded-lg font-medium text-center hover:bg-white hover:text-blue-600 transition duration-300">Konsultasi Gratis</a>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e12c14b1-5d13-4e93-af49-9b70d73dc785.png" alt="Ilustrasi tim developer beragam sedang berkolaborasi dalam project coding" class="w-full rounded-lg shadow-xl">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="col-span-2">
+                    <div class="flex items-center mb-4">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjwt2kmtZSeK95r1o-qq79QvtCY7EHVaRT8bYN_VEzl82KicisqRzPXHFjbY1MX_ymN19XcnMUxpDlBVFBYx5V_WLuwOsyjfUYpiT1TMOYUjQvqEZBiwDnbUVrHQ2D9rPNYKNbCdcFnpDKN6-8Zz148WBJZtqNkJX48mSC-ItlvpIC_3UhggGgtpGMHsH_k/s3264/20250821_091245.png" alt="Logo eracoding footer" class="h-8 w-auto">
+                        <span class="ml-2 text-xl font-bold"></span>
+                    </div>
+                    <p class="text-gray-400 mb-4">Platform belajar coding terdepan di Indonesia dengan fokus pada keterampilan yang dibutuhkan industri.</p>
+                        <h3 class="text-lg font-bold mb-4">Ikuti kami</h3>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin text-xl"></i></a>
+                        <a href="https://youtube.com/@eracodingindonesia?si=ELQgzvnh77udyFIN" class="text-gray-400 hover:text-white"><i class="fab fa-youtube text-xl"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Kelas</h3>
+                    <ul class="space-y-2">
+                        <li><a href="https://course.eracoding.my.id" class="text-gray-400 hover:text-white">Web Development</a></li>
+                        <li><a href="https://course.eracoding.my.id" class="text-gray-400 hover:text-white">Mobile Development</a></li>
+                        <li><a href="https://course.eracoding.my.id" class="text-gray-400 hover:text-white">Data Science</a></li>
+                        <li><a href="https://course.eracoding.my.id" class="text-gray-400 hover:text-white">UI/UX Design</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Perusahaan</h3>
+                    <ul class="space-y-2">
+                        <li><a href="https://about.eracoding.my.id/" class="text-gray-400 hover:text-white">Tentang Kami</a></li>
+                        <li><a href="https://karir.eracoding.my.id" class="text-gray-400 hover:text-white">Karir</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Blog</a></li>
+                        <li><a href="https://kontak.eracoding.my.id" class="text-gray-400 hover:text-white">Kontak</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-12 pt-8">
+                <div class="md:flex md:items-center md:justify-between">
+                    <p class="text-gray-400 text-sm">© 2025 Eracoding. Seluruh hak cipta dilindungi.</p>
+                    <div class="mt-4 md:mt-0">
+                        <a href="https://kebijakan-privasi.eracoding.my.id" class="text-gray-400 text-sm hover:text-white mr-4">Kebijakan Privasi</a>
+                        <a href="https://syarat-ketentuan.eracoding.my.id" class="text-gray-400 text-sm hover:text-white mr-4">Syarat & Ketentuan</a>
+                        <a href="https://faq.eracoding.my.id" class="text-gray-400 text-sm hover:text-white">FAQ</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.querySelector('[aria-controls="mobile-menu"]').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            const expanded = this.getAttribute('aria-expanded') === 'true';
+            this.setAttribute('aria-expanded', !expanded);
+            menu.classList.toggle('hidden');
+        });
+
+        // Simple animation for counters
+        if (window.innerWidth > 768) {
+            const counters = document.querySelectorAll('.counter');
+            const speed = 200;
+            
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                const count = +counter.innerText;
+                const increment = target / speed;
+                
+                if (count < target) {
+                    counter.innerText = Math.ceil(count + increment);
+                    setTimeout(updateCount, 1);
+                } else {
+                    counter.innerText = target;
+                }
+            });
+            
+            function updateCount() {
+                counters.forEach(counter => {
+                    const target = +counter.getAttribute('data-target');
+                    const count = +counter.innerText;
+                    const increment = target / speed;
+                    
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count + increment);
+                        setTimeout(updateCount, 1);
+                    } else {
+                        counter.innerText = target;
+                    }
+                });
+            }
+            
+            setTimeout(updateCount, 2000);
+        }
+    </script>
+</body>
+</html>
