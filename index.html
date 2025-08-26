@@ -3,24 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Orilix - Platform belajar coding terdepan di Indonesia dengan kurikulum industri, mentor berpengalaman, dan proyek nyata.">
-    <meta name="keywords" content="belajar coding, kursus programming, web development, data science, UI/UX, Orilix, bootcamp teknologi">
-    <meta name="robots" content="index, follow">
-    <meta name="author" content="Orilix Team">
-    <title>ORILIX - Platform Belajar Coding Terbaik di Indonesia</title>
+    <meta name="description" content="Orilix - Platform belajar coding terdepan di Indonesia dengan kurikulum industri dan mentor berpengalaman.">
+    <meta name="keywords" content="belajar coding, kursus programming, web development, data science, UI/UX, Orilix">
+    <title>ORILIX - Platform Belajar Coding</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <style>
-        @keyframes parallax {
+        @keyframes float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
+            50% { transform: translateY(-10px); }
         }
-        .parallax { animation: parallax 6s ease-in-out infinite; }
-        .course-card:hover { transform: scale(1.05); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+        .floating { animation: float 4s ease-in-out infinite; }
+        .course-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
         .course-card { transition: all 0.3s ease; }
-        .btn-animated { transition: all 0.3s ease; }
-        .btn-animated:hover { transform: translateY(-2px); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
         #mobile-menu { 
             transition: all 0.3s ease-in-out;
             position: fixed;
@@ -32,37 +28,18 @@
             background-color: white;
             box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
         }
-        #mobile-menu .menu-content { padding: 1rem; }
-        .close-button { position: absolute; top: 1rem; right: 1rem; font-size: 1.5rem; color: #374151; cursor: pointer; }
-        .accordion-header { cursor: pointer; transition: background-color 0.3s ease; }
-        .accordion-header:hover { background-color: #f1f5f9; }
-        .accordion-content { display: none; }
-        .accordion-content.active { display: block; }
-        img, video { loading: lazy; }
-    </style>
-    <!-- Structured Data for SEO -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "EducationalOrganization",
-        "name": "Orilix",
-        "url": "https://orilix.net",
-        "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj3NQZcwhEwbBj73hdSqyBHpIYTsMXtWVzg_oTivtIwQ0hokjVTOXWdVn4AmEbjoJOgCHB7tY6sSGPJ930YhcVYo5twbczZtaJXfkeKBfGpdQVPyhrxM9lOF8vuHz6r4f6LuCOLnsNXkbrQKCxQsTlqU3FaG4ujwKgnu5PvxoJUq2oV_YgaUpIUGaZ_26X6/s3264/20250821_091218.png",
-        "description": "Platform belajar coding terdepan di Indonesia dengan fokus pada keterampilan industri.",
-        "sameAs": [
-            "https://youtube.com/@eracodingindonesia?si=ELQgzvnh77udyFIN",
-            "https://whatsapp.com/channel/0029Vb6GVqw0Qearxmwd151l"
-        ],
-        "contactPoint": {
-            "@type": "ContactPoint",
-            "telephone": "+6285885850204",
-            "contactType": "customer service",
-            "contactOption": "WhatsApp",
-            "areaServed": "ID",
-            "availableLanguage": ["Indonesian", "English"]
+        #mobile-menu .menu-content {
+            padding: 1rem;
         }
-    }
-    </script>
+        .close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            color: #374151;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body class="font-sans bg-gray-50">
     <!-- Navigation -->
@@ -72,16 +49,16 @@
                 <div class="flex items-center">
                     <div class="flex-shrink-0 flex items-center">
                         <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj3NQZcwhEwbBj73hdSqyBHpIYTsMXtWVzg_oTivtIwQ0hokjVTOXWdVn4AmEbjoJOgCHB7tY6sSGPJ930YhcVYo5twbczZtaJXfkeKBfGpdQVPyhrxM9lOF8vuHz6r4f6LuCOLnsNXkbrQKCxQsTlqU3FaG4ujwKgnu5PvxoJUq2oV_YgaUpIUGaZ_26X6/s3264/20250821_091218.png" alt="Logo Orilix" class="h-12 w-auto">
-                        <span class="ml-2 text-xl font-bold text-gray-900">Orilix</span>
+                        <span class="ml-2 text-xl font-bold text-gray-900"></span>
                     </div>
                 </div>
                 <div class="hidden md:ml-6 md:flex md:items-center md:space-x-8">
                     <a href="https://orilix.net" class="px-3 py-2 rounded-md text-sm font-medium text-gray-900 hover:text-blue-600">Beranda</a>
-                    <a href="https://product.orilix.net" class="px-3 py-2 rounded-md text-sm font-medium text-gray-900 hover:text-blue-600">Kelas</a>
+                    <a href="https://product.orilix.net" class="px-3 py-2 rounded-md text-sm font-medium text-gray-900 hover:text-blue-600">Product</a>
                     <a href="https://bootcamp.orilix.net" class="px-3 py-2 rounded-md text-sm font-medium text-gray-900 hover:text-blue-600">Bootcamp</a>
-                    <a href="https://kelas.orilix.net" class="px-3 py-2 rounded-md text-sm font-medium text-gray-900 hover:text-blue-600">Kelas Saya</a>
+                    <a href="https://kelas.orilix.net" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600">Kelas Saya</a>
                     <a href="https://whatsapp.com/channel/0029Vb6GVqw0Qearxmwd151l" class="px-3 py-2 rounded-md text-sm font-medium text-gray-900 hover:text-blue-600">Informasi</a>
-                    <a href="https://m.orilix.net" class="px-3 py-2 rounded-md text-sm font-medium bg-blue-600 text-white px-4 hover:bg-blue-700 btn-animated">Masuk</a>
+                    <a href="https://m.orilix.net" class="px-3 py-2 rounded-md text-sm font-medium bg-blue-600 text-white px-4 hover:bg-blue-700">Masuk</a>
                 </div>
                 <div class="-mr-2 flex items-center md:hidden">
                     <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none" aria-controls="mobile-menu" aria-expanded="false">
@@ -98,7 +75,7 @@
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="space-y-4">
                         <a href="https://orilix.net" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600">Beranda</a>
-                        <a href="https://product.orilix.net" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600">Kelas</a>
+                        <a href="https://product.orilix.net" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600">Product</a>
                         <a href="https://bootcamp.orilix.net" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600">Bootcamp</a>
                         <a href="https://kelas.orilix.net" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600">Kelas Saya</a>
                         <a href="https://whatsapp.com/channel/0029Vb6GVqw0Qearxmwd151l" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600">Informasi</a>
@@ -114,23 +91,23 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-24">
             <div class="grid md:grid-cols-2 gap-8 items-center" data-aos="fade-up">
                 <div class="space-y-6">
-                    <h1 class="text-4xl md:text-5xl font-bold leading-tight">Dari Pemula Menjadi Profesional di Dunia Digital</h1>
+                    <h1 class="text-4xl md:text-5xl font-bold leading-tight">Dari pemula menjadi profesional di dunia digital</h1>
                     <p class="text-xl text-blue-100">Belajar pemrograman dengan kurikulum industri langsung dari praktisi teknologi terbaik di Indonesia.</p>
                     <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="https://kelas.orilix.net" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-medium text-center hover:bg-gray-100 transition duration-300 btn-animated">Mulai Belajar</a>
-                        <a href="https://product.orilix.net" class="border-2 border-white text-white px-6 py-3 rounded-lg font-medium text-center hover:bg-white hover:text-blue-600 transition duration-300 btn-animated">Lihat Kelas</a>
+                        <a href="https://kelas.orilix.net" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-medium text-center hover:bg-gray-100 transition duration-300">Mulai Belajar</a>
+                        <a href="https://product.orilix.net" class="border-2 border-white text-white px-6 py-3 rounded-lg font-medium text-center hover:bg-white hover:text-blue-600 transition duration-300">Lihat Kelas</a>
                     </div>
                     <div class="flex items-center space-x-2 mt-4">
                         <div class="flex -space-x-2">
-                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/082315b5-c3fe-4e37-852a-952d50d1e889.png" alt="Foto mentor coding profesional di studio" class="w-10 h-10 rounded-full border-2 border-white" loading="lazy">
-                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/1e6a7719-5e81-4e73-b132-1cc5d32ffaa6.png" alt="Foto developer wanita dengan headphone" class="w-10 h-10 rounded-full border-2 border-white" loading="lazy">
-                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/55aec51c-347a-4d41-8db2-0408dd83c6ad.png" alt="Foto instruktur coding dengan kacamata" class="w-10 h-10 rounded-full border-2 border-white" loading="lazy">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/082315b5-c3fe-4e37-852a-952d50d1e889.png" alt="Foto mentor coding profesional dengan latar studio profesional" class="w-10 h-10 rounded-full border-2 border-white">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/1e6a7719-5e81-4e73-b132-1cc5d32ffaa6.png" alt="Foto developer wanita tersenyum dengan headphone" class="w-10 h-10 rounded-full border-2 border-white">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/55aec51c-347a-4d41-8db2-0408dd83c6ad.png" alt="Foto instruktur coding Asia dengan kacamata" class="w-10 h-10 rounded-full border-2 border-white">
                         </div>
                         <p class="text-sm text-blue-100">Bergabung dengan 100+ siswa lainnya</p>
                     </div>
                 </div>
                 <div class="hidden md:block">
-                    <video autoplay muted loop class="w-full rounded-lg shadow-2xl parallax" loading="lazy">
+                    <video autoplay muted loop class="w-full rounded-lg shadow-2xl">
                         <source src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/video/coding-animation.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
@@ -142,7 +119,7 @@
     <!-- Stats -->
     <div class="bg-white py-12 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center" data-aos="zoom-in">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center" data-aos="fade-up">
                 <div class="space-y-2">
                     <p class="text-4xl font-bold text-blue-600">5+</p>
                     <p class="text-gray-600">Kelas Online</p>
@@ -168,9 +145,9 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12" data-aos="fade-up">
                 <h2 class="text-3xl font-bold text-gray-900 mb-4">Mengapa Belajar Coding Penting?</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Di era digital, kemampuan coding adalah kunci untuk membuka peluang karir dan inovasi.</p>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Di era digital, kemampuan coding adalah kunci untuk membuka peluang karir dan inovasi. Pelajari mengapa coding menjadi keahlian wajib di masa depan.</p>
             </div>
-            <div class="grid md:grid-cols-3 gap-8" data-aos="fade-right">
+            <div class="grid md:grid-cols-3 gap-8" data-aos="fade-up">
                 <div class="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300">
                     <div class="text-blue-600 mb-4">
                         <i class="fas fa-rocket text-4xl"></i>
@@ -200,10 +177,10 @@
     <div class="py-16 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12" data-aos="fade-up">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Kenapa Belajar di Orilix?</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Pengalaman belajar coding yang berbeda dengan pendekatan praktis dan berbasis proyek nyata.</p>
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Kenapa Belajar di Orilix.net?</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Kami menghadirkan pengalaman belajar coding yang berbeda dengan pendekatan praktis dan berbasis proyek nyata.</p>
             </div>
-            <div class="grid md:grid-cols-3 gap-8" data-aos="fade-right">
+            <div class="grid md:grid-cols-3 gap-8" data-aos="fade-up">
                 <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition duration-300">
                     <div class="text-blue-600 mb-4">
                         <i class="fas fa-laptop-code text-4xl"></i>
@@ -236,7 +213,7 @@
                 <h2 class="text-3xl font-bold text-gray-900 mb-4">Jalur Pembelajaran Anda</h2>
                 <p class="text-lg text-gray-600 max-w-3xl mx-auto">Ikuti langkah-langkah terstruktur untuk menjadi profesional di bidang teknologi pilihan Anda.</p>
             </div>
-            <div class="grid md:grid-cols-4 gap-6" data-aos="zoom-in">
+            <div class="grid md:grid-cols-4 gap-6" data-aos="fade-up">
                 <div class="relative bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300">
                     <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center">1</div>
                     <h3 class="text-lg font-bold mb-2">Pilih Kelas</h3>
@@ -267,15 +244,12 @@
             <div class="text-center mb-12" data-aos="fade-up">
                 <h2 class="text-3xl font-bold text-gray-900 mb-4">Kelas Populer</h2>
                 <p class="text-lg text-gray-600 max-w-3xl mx-auto">Mulai karir tech-mu dengan belajar teknologi yang paling banyak dicari industri.</p>
-                <div class="mt-6">
-                    <input type="text" id="course-search" placeholder="Cari kelas..." class="px-4 py-2 rounded-md text-gray-900 focus:outline-none w-full max-w-md mx-auto">
-                </div>
             </div>
-            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8" id="course-list" data-aos="fade-right">
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8" data-aos="fade-up">
                 <!-- Course 1 -->
-                <div class="course-card bg-white rounded-xl overflow-hidden shadow-md" data-course="Fullstack JavaScript Mastery">
+                <div class="course-card bg-white rounded-xl overflow-hidden shadow-md">
                     <div class="relative">
-                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/f677a54b-850e-4ba9-94ce-418d8222b27f.png" alt="Ilustrasi pembelajaran Fullstack JavaScript dengan kode dan framework populer" class="w-full h-48 object-cover" loading="lazy">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/f677a54b-850e-4ba9-94ce-418d8222b27f.png" alt="Ilustrasi pembelajaran Fullstack JavaScript dengan kode dan framework populer" class="w-full h-48 object-cover">
                         <span class="absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded">Populer</span>
                     </div>
                     <div class="p-6">
@@ -294,9 +268,9 @@
                     </div>
                 </div>
                 <!-- Course 2 -->
-                <div class="course-card bg-white rounded-xl overflow-hidden shadow-md" data-course="Data Science with Python">
+                <div class="course-card bg-white rounded-xl overflow-hidden shadow-md">
                     <div class="relative">
-                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/625c2146-2a76-4272-9b84-beec163c8037.png" alt="Ilustrasi pembelajaran Data Science dengan grafik dan visualisasi data" class="w-full h-48 object-cover" loading="lazy">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/625c2146-2a76-4272-9b84-beec163c8037.png" alt="Ilustrasi pembelajaran Data Science dengan grafik dan visualisasi data" class="w-full h-48 object-cover">
                         <span class="absolute top-2 right-2 bg-purple-600 text-white text-xs px-2 py-1 rounded">Baru</span>
                     </div>
                     <div class="p-6">
@@ -310,14 +284,14 @@
                             <div>
                                 <p class="font-medium"><s class="text-gray-400">Rp1.500.000</s> <span class="text-blue-600">Rp999.000</span></p>
                             </div>
-                            <a href="https://product.orilix.net" class="text-blue-600 hover:text-blue-800 font-medium">Lihat Detail <i class="fas fa-arrow-right ml-1"></i></a>
+                            <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">Lihat Detail <i class="fas fa-arrow-right ml-1"></i></a>
                         </div>
                     </div>
                 </div>
                 <!-- Course 3 -->
-                <div class="course-card bg-white rounded-xl overflow-hidden shadow-md" data-course="Mobile UI/UX Design">
+                <div class="course-card bg-white rounded-xl overflow-hidden shadow-md">
                     <div class="relative">
-                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/5bd51b5c-6294-46be-8b26-71e9047ee718.png" alt="Tampilan mobile UI/UX modern dengan palette warna kontemporer" class="w-full h-48 object-cover" loading="lazy">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/5bd51b5c-6294-46be-8b26-71e9047ee718.png" alt="Tampilan mobile UI/UX modern dengan palette warna kontemporer" class="w-full h-48 object-cover">
                     </div>
                     <div class="p-6">
                         <div class="flex items-center mb-2">
@@ -330,72 +304,18 @@
                             <div>
                                 <p class="font-medium"><s class="text-gray-400">Rp900.000</s> <span class="text-blue-600">Rp599.000</span></p>
                             </div>
-                            <a href="https://product.orilix.net" class="text-blue-600 hover:text-blue-800 font-medium">Lihat Detail <i class="fas fa-arrow-right ml-1"></i></a>
+                            <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">Lihat Detail <i class="fas fa-arrow-right ml-1"></i></a>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="text-center mt-12">
-                <a href="https://product.orilix.net" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition duration-300 btn-animated">
+                <a href="https://course.eracoding.my.id" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition duration-300">
                     Lihat Semua Kelas
                     <i class="fas fa-arrow-right ml-2"></i>
                 </a>
             </div>
         </div>
-        <!-- Structured Data for Courses -->
-        <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "ItemList",
-            "itemListElement": [
-                {
-                    "@type": "Course",
-                    "name": "Fullstack JavaScript Mastery",
-                    "description": "Pelajari React, Node.js, Express, dan MongoDB untuk membangun aplikasi web modern.",
-                    "provider": {
-                        "@type": "Organization",
-                        "name": "Orilix",
-                        "sameAs": "https://orilix.net"
-                    },
-                    "offers": {
-                        "@type": "Offer",
-                        "price": "799000",
-                        "priceCurrency": "IDR"
-                    }
-                },
-                {
-                    "@type": "Course",
-                    "name": "Data Science with Python",
-                    "description": "Pengolahan data, visualisasi, dan machine learning dengan Python, Pandas, dan Scikit-learn.",
-                    "provider": {
-                        "@type": "Organization",
-                        "name": "Orilix",
-                        "sameAs": "https://orilix.net"
-                    },
-                    "offers": {
-                        "@type": "Offer",
-                        "price": "999000",
-                        "priceCurrency": "IDR"
-                    }
-                },
-                {
-                    "@type": "Course",
-                    "name": "Mobile UI/UX Design",
-                    "description": "Kuasai prinsip desain modern untuk aplikasi mobile menggunakan Figma dan Adobe XD.",
-                    "provider": {
-                        "@type": "Organization",
-                        "name": "Orilix",
-                        "sameAs": "https://orilix.net"
-                    },
-                    "offers": {
-                        "@type": "Offer",
-                        "price": "599000",
-                        "priceCurrency": "IDR"
-                    }
-                }
-            ]
-        }
-        </script>
     </div>
 
     <!-- Partner Companies -->
@@ -405,11 +325,11 @@
                 <h2 class="text-3xl font-bold text-gray-900 mb-4">Mitra Kami</h2>
                 <p class="text-lg text-gray-600 max-w-3xl mx-auto">Kami bekerja sama dengan perusahaan teknologi terkemuka untuk memastikan kurikulum relevan dengan industri.</p>
             </div>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 items-center" data-aos="zoom-in">
-                <img src="https://via.placeholder.com/150x50?text=Tokopedia" alt="Logo Tokopedia" class="h-12 mx-auto" loading="lazy">
-                <img src="https://via.placeholder.com/150x50?text=Gojek" alt="Logo Gojek" class="h-12 mx-auto" loading="lazy">
-                <img src="https://via.placeholder.com/150x50?text=Traveloka" alt="Logo Traveloka" class="h-12 mx-auto" loading="lazy">
-                <img src="https://via.placeholder.com/150x50?text=Bukalapak" alt="Logo Bukalapak" class="h-12 mx-auto" loading="lazy">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 items-center" data-aos="fade-up">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/partner-logo1.png" alt="Logo Tokopedia" class="h-12 mx-auto">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/partner-logo2.png" alt="Logo Gojek" class="h-12 mx-auto">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/partner-logo3.png" alt="Logo Traveloka" class="h-12 mx-auto">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/partner-logo4.png" alt="Logo Bukalapak" class="h-12 mx-auto">
             </div>
         </div>
     </div>
@@ -421,11 +341,11 @@
                 <h2 class="text-3xl font-bold text-gray-900 mb-4">Kisah Sukses Alumni</h2>
                 <p class="text-lg text-gray-600 max-w-3xl mx-auto">Bagaimana Orilix membantu karir mereka di dunia teknologi.</p>
             </div>
-            <div class="grid md:grid-cols-3 gap-8" data-aos="fade-right">
+            <div class="grid md:grid-cols-3 gap-8" data-aos="fade-up">
                 <!-- Testimonial 1 -->
                 <div class="bg-white p-8 rounded-xl shadow-sm">
                     <div class="flex items-center mb-4">
-                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b098284b-e6fb-4123-8d85-99c150404427.png" alt="Foto Andi Pratama, alumni Orilix sebagai Frontend Developer" class="w-12 h-12 rounded-full object-cover" loading="lazy">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b098284b-e6fb-4123-8d85-99c150404427.png" alt="Foto profesional alumni pria dengan background kantor modern" class="w-12 h-12 rounded-full object-cover">
                         <div class="ml-4">
                             <h4 class="font-bold">Andi Pratama</h4>
                             <p class="text-gray-600 text-sm">Frontend Developer @Tokopedia</p>
@@ -443,7 +363,7 @@
                 <!-- Testimonial 2 -->
                 <div class="bg-white p-8 rounded-xl shadow-sm">
                     <div class="flex items-center mb-4">
-                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/4aa84b9f-3184-4429-8d22-0eb9bea4723b.png" alt="Foto Dewi Lestari, alumni Orilix sebagai Data Scientist" class="w-12 h-12 rounded-full object-cover" loading="lazy">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/4aa84b9f-3184-4429-8d22-0eb9bea4723b.png" alt="Foto profesional alumni wanita di startup teknologi" class="w-12 h-12 rounded-full object-cover">
                         <div class="ml-4">
                             <h4 class="font-bold">Dewi Lestari</h4>
                             <p class="text-gray-600 text-sm">Data Scientist @Gojek</p>
@@ -461,7 +381,7 @@
                 <!-- Testimonial 3 -->
                 <div class="bg-white p-8 rounded-xl shadow-sm">
                     <div class="flex items-center mb-4">
-                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/39f01f6e-d196-49f1-8e07-50dabe23dff4.png" alt="Foto Budi Santoso, alumni Orilix sebagai Product Designer" class="w-12 h-12 rounded-full object-cover" loading="lazy">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/39f01f6e-d196-49f1-8e07-50dabe23dff4.png" alt="Foto alumni sedang mempresentasikan produk digital di meeting" class="w-12 h-12 rounded-full object-cover">
                         <div class="ml-4">
                             <h4 class="font-bold">Budi Santoso</h4>
                             <p class="text-gray-600 text-sm">Product Designer @Traveloka</p>
@@ -477,55 +397,6 @@
                     </div>
                 </div>
             </div>
-            <!-- Structured Data for Testimonials -->
-            <script type="application/ld+json">
-            {
-                "@context": "https://schema.org",
-                "@type": "Review",
-                "itemReviewed": {
-                    "@type": "Organization",
-                    "name": "Orilix"
-                },
-                "review": [
-                    {
-                        "@type": "Review",
-                        "author": {
-                            "@type": "Person",
-                            "name": "Andi Pratama"
-                        },
-                        "reviewRating": {
-                            "@type": "Rating",
-                            "ratingValue": "5"
-                        },
-                        "reviewBody": "Berawal dari ikut bootcamp Fullstack JavaScript di Orilix, dalam 6 bulan saya bisa dapat tawaran kerja pertama sebagai developer."
-                    },
-                    {
-                        "@type": "Review",
-                        "author": {
-                            "@type": "Person",
-                            "name": "Dewi Lestari"
-                        },
-                        "reviewRating": {
-                            "@type": "Rating",
-                            "ratingValue": "5"
-                        },
-                        "reviewBody": "Portofolio hasil belajar di kelas Data Science Orilix membuat CV saya jadi lebih menonjol."
-                    },
-                    {
-                        "@type": "Review",
-                        "author": {
-                            "@type": "Person",
-                            "name": "Budi Santoso"
-                        },
-                        "reviewRating": {
-                            "@type": "Rating",
-                            "ratingValue": "4.5"
-                        },
-                        "reviewBody": "Sistem mentoring 1-on-1 benar-benar membantu mempercepat proses belajar."
-                    }
-                ]
-            }
-            </script>
         </div>
     </div>
 
@@ -536,9 +407,9 @@
                 <h2 class="text-3xl font-bold text-gray-900 mb-4">Bergabung dengan Komunitas Orilix</h2>
                 <p class="text-lg text-gray-600 max-w-3xl mx-auto">Jadilah bagian dari komunitas coder kami yang aktif, berbagi pengetahuan, dan berkolaborasi dalam proyek teknologi.</p>
             </div>
-            <div class="grid md:grid-cols-2 gap-8 items-center" data-aos="fade-right">
+            <div class="grid md:grid-cols-2 gap-8 items-center" data-aos="fade-up">
                 <div>
-                    <img src="https://via.placeholder.com/600x400?text=Komunitas+Orilix" alt="Ilustrasi komunitas coder Orilix berkolaborasi" class="w-full rounded-lg shadow-xl" loading="lazy">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/community-image.png" alt="Ilustrasi komunitas coder berkolaborasi" class="w-full rounded-lg shadow-xl">
                 </div>
                 <div class="space-y-6">
                     <div class="flex items-start">
@@ -562,7 +433,7 @@
                             <p class="text-gray-600">Ikuti webinar mingguan dan hackathon untuk terus mengasah keterampilan Anda.</p>
                         </div>
                     </div>
-                    <a href="https://whatsapp.com/channel/0029Vb6GVqw0Qearxmwd151l" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition duration-300 btn-animated">
+                    <a href="https://whatsapp.com/channel/0029Vb6GVqw0Qearxmwd151l" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition duration-300">
                         Gabung Komunitas
                         <i class="fas fa-arrow-right ml-2"></i>
                     </a>
@@ -579,12 +450,12 @@
                     <h2 class="text-3xl md:text-4xl font-bold mb-4">Siap Memulai Perjalanan Coding-mu?</h2>
                     <p class="text-lg text-blue-100 mb-6">Bergabung dengan ribuan siswa lainnya dan jadilah bagian dari generasi digital masa depan.</p>
                     <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="https://m.orilix.net" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-medium text-center hover:bg-gray-100 transition duration-300 btn-animated">Daftar Sekarang</a>
-                        <a href="https://wa.me/6285885850204" class="border-2 border-white text-white px-6 py-3 rounded-lg font-medium text-center hover:bg-white hover:text-blue-600 transition duration-300 btn-animated">Konsultasi Gratis</a>
+                        <a href="https://m.orilix.net" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-medium text-center hover:bg-gray-100 transition duration-300">Daftar Sekarang</a>
+                        <a href="https://wa.me/62085885850204" class="border-2 border-white text-white px-6 py-3 rounded-lg font-medium text-center hover:bg-white hover:text-blue-600 transition duration-300">Konsultasi Gratis</a>
                     </div>
                 </div>
                 <div class="hidden md:block">
-                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e12c14b1-5d13-4e93-af49-9b70d73dc785.png" alt="Ilustrasi tim developer Orilix berkolaborasi dalam proyek coding" class="w-full rounded-lg shadow-xl" loading="lazy">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e12c14b1-5d13-4e93-af49-9b70d73dc785.png" alt="Ilustrasi tim developer beragam sedang berkolaborasi dalam project coding" class="w-full rounded-lg shadow-xl">
                 </div>
             </div>
         </div>
@@ -597,46 +468,26 @@
                 <h2 class="text-3xl font-bold text-gray-900 mb-4">Pertanyaan yang Sering Diajukan</h2>
                 <p class="text-lg text-gray-600 max-w-3xl mx-auto">Temukan jawaban atas pertanyaan umum tentang belajar di Orilix.</p>
             </div>
-            <div class="space-y-4" data-aos="fade-right">
+            <div class="space-y-4" data-aos="fade-up">
                 <div class="bg-white p-6 rounded-xl shadow-sm">
-                    <div class="accordion-header p-4 flex justify-between items-center">
-                        <h3 class="text-lg font-bold">Apakah saya perlu pengalaman coding sebelumnya?</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="accordion-content px-4 pb-4">
-                        <p class="text-gray-600">Tidak! Kami memiliki kelas untuk semua level, mulai dari pemula hingga mahir.</p>
-                    </div>
+                    <h3 class="text-lg font-bold mb-2">Apakah saya perlu pengalaman coding sebelumnya?</h3>
+                    <p class="text-gray-600">Tidak! Kami memiliki kelas untuk semua level, mulai dari pemula hingga mahir.</p>
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-sm">
-                    <div class="accordion-header p-4 flex justify-between items-center">
-                        <h3 class="text-lg font-bold">Berapa lama waktu yang dibutuhkan untuk menyelesaikan kelas?</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="accordion-content px-4 pb-4">
-                        <p class="text-gray-600">Tergantung kelasnya, mulai dari 4 minggu untuk kelas dasar hingga 6 bulan untuk bootcamp intensif.</p>
-                    </div>
+                    <h3 class="text-lg font-bold mb-2">Berapa lama waktu yang dibutuhkan untuk menyelesaikan kelas?</h3>
+                    <p class="text-gray-600">Tergantung kelasnya, mulai dari 4 minggu untuk kelas dasar hingga 6 bulan untuk bootcamp intensif.</p>
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-sm">
-                    <div class="accordion-header p-4 flex justify-between items-center">
-                        <h3 class="text-lg font-bold">Apakah ada sertifikat setelah selesai?</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="accordion-content px-4 pb-4">
-                        <p class="text-gray-600">Ya, setiap kelas memberikan sertifikat penyelesaian yang diakui industri.</p>
-                    </div>
+                    <h3 class="text-lg font-bold mb-2">Apakah ada sertifikat setelah selesai?</h3>
+                    <p class="text-gray-600">Ya, setiap kelas memberikan sertifikat penyelesaian yang diakui industri.</p>
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-sm">
-                    <div class="accordion-header p-4 flex justify-between items-center">
-                        <h3 class="text-lg font-bold">Bagaimana cara bergabung dengan komunitas?</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="accordion-content px-4 pb-4">
-                        <p class="text-gray-600">Setelah mendaftar, Anda akan mendapatkan akses ke forum eksklusif dan grup WhatsApp kami.</p>
-                    </div>
+                    <h3 class="text-lg font-bold mb-2">Bagaimana cara bergabung dengan komunitas?</h3>
+                    <p class="text-gray-600">Setelah mendaftar, Anda akan mendapatkan akses ke forum eksklusif dan grup WhatsApp kami.</p>
                 </div>
             </div>
             <div class="text-center mt-8">
-                <a href="https://faq.orilix.net" class="text-blue-600 hover:text-blue-800 font-medium btn-animated">Lihat FAQ Lengkap <i class="fas fa-arrow-right ml-1"></i></a>
+                <a href="https://faq.orilix.net" class="text-blue-600 hover:text-blue-800 font-medium">Lihat FAQ Lengkap <i class="fas fa-arrow-right ml-1"></i></a>
             </div>
         </div>
     </div>
@@ -647,25 +498,25 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
                 <div class="col-span-2">
                     <div class="flex items-center mb-4">
-                        <img src="https://blogger.googleapis.com/img/b/R29vZ2xl/AVvXsEjwt2kmtZSeK95r1o-qq79QvtCY7EHVaRT8bYN_VEzl82KicisqRzPXHFjbY1MX_ymN19XcnMUxpDlBVFBYx5V_WLuwOsyjfUYpiT1TMOYUjQvqEZBiwDnbUVrHQ2D9rPNYKNbCdcFnpDKN6-8Zz148WBJZtqNkJX48mSC-ItlvpIC_3UhggGgtpGMHsH_k/s3264/20250821_091245.png" alt="Logo Orilix" class="h-12 w-auto" loading="lazy">
-                        <span class="ml-2 text-xl font-bold">Orilix</span>
+                        <img src="https://blogger.googleapis.com/img/b/R29vZ2xl/AVvXsEjwt2kmtZSeK95r1o-qq79QvtCY7EHVaRT8bYN_VEzl82KicisqRzPXHFjbY1MX_ymN19XcnMUxpDlBVFBYx5V_WLuwOsyjfUYpiT1TMOYUjQvqEZBiwDnbUVrHQ2D9rPNYKNbCdcFnpDKN6-8Zz148WBJZtqNkJX48mSC-ItlvpIC_3UhggGgtpGMHsH_k/s3264/20250821_091245.png" alt="Logo Orilix footer" class="h-12 w-auto">
+                        <span class="ml-2 text-xl font-bold"></span>
                     </div>
                     <p class="text-gray-400 mb-4">Platform belajar coding terdepan di Indonesia dengan fokus pada keterampilan yang dibutuhkan industri.</p>
                     <h3 class="text-lg font-bold mb-4">Ikuti kami</h3>
                     <div class="flex space-x-4">
-                        <a href="https://twitter.com/orilix_id" class="text-gray-400 hover:text-white"><i class="fab fa-twitter text-xl"></i></a>
-                        <a href="https://instagram.com/orilix_id" class="text-gray-400 hover:text-white"><i class="fab fa-instagram text-xl"></i></a>
-                        <a href="https://linkedin.com/company/orilix" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin text-xl"></i></a>
                         <a href="https://youtube.com/@eracodingindonesia?si=ELQgzvnh77udyFIN" class="text-gray-400 hover:text-white"><i class="fab fa-youtube text-xl"></i></a>
                     </div>
                 </div>
                 <div>
                     <h3 class="text-lg font-bold mb-4">Kelas</h3>
                     <ul class="space-y-2">
-                        <li><a href="https://product.orilix.net/web-development" class="text-gray-400 hover:text-white">Web Development</a></li>
-                        <li><a href="https://product.orilix.net/mobile-development" class="text-gray-400 hover:text-white">Mobile Development</a></li>
-                        <li><a href="https://product.orilix.net/data-science" class="text-gray-400 hover:text-white">Data Science</a></li>
-                        <li><a href="https://product.orilix.net/ui-ux-design" class="text-gray-400 hover:text-white">UI/UX Design</a></li>
+                        <li><a href="https://product.orilix.net" class="text-gray-400 hover:text-white">Web Development</a></li>
+                        <li><a href="https://product.orilix.net" class="text-gray-400 hover:text-white">Mobile Development</a></li>
+                        <li><a href="https://product.orilix.net" class="text-gray-400 hover:text-white">Data Science</a></li>
+                        <li><a href="https://product.orilix.net" class="text-gray-400 hover:text-white">UI/UX Design</a></li>
                     </ul>
                 </div>
                 <div>
@@ -673,23 +524,22 @@
                     <ul class="space-y-2">
                         <li><a href="https://about.orilix.net" class="text-gray-400 hover:text-white">Tentang Kami</a></li>
                         <li><a href="https://tap.orilix.net" class="text-gray-400 hover:text-white">Karir</a></li>
-                        <li><a href="https://blog.orilix.net" class="text-gray-400 hover:text-white">Blog</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Blog</a></li>
                         <li><a href="https://kontak.orilix.net" class="text-gray-400 hover:text-white">Kontak</a></li>
                     </ul>
                 </div>
                 <div class="col-span-2 md:col-span-1">
                     <h3 class="text-lg font-bold mb-4">Daftar Newsletter</h3>
                     <p class="text-gray-400 mb-4">Dapatkan update terbaru tentang kelas, tips coding, dan tren teknologi.</p>
-                    <form id="newsletter-form" class="flex flex-col sm:flex-row gap-2">
-                        <input type="email" id="newsletter-email" placeholder="Masukkan email Anda" class="px-4 py-2 rounded-md text-gray-900 focus:outline-none" required>
-                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300 btn-animated">Daftar</button>
+                    <form class="flex flex-col sm:flex-row gap-2">
+                        <input type="email" placeholder="Masukkan email Anda" class="px-4 py-2 rounded-md text-gray-900 focus:outline-none">
+                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300">Daftar</button>
                     </form>
-                    <p id="newsletter-message" class="text-gray-400 text-sm mt-2 hidden"></p>
                 </div>
             </div>
             <div class="border-t border-gray-800 mt-12 pt-8">
                 <div class="md:flex md:items-center md:justify-between">
-                    <p class="text-gray-400 text-sm">© 2025 Orilix. Seluruh hak cipta dilindungi.</p>
+                    <p class="text-gray-400 text-sm">© 2025 ORILIX. Seluruh hak cipta dilindungi.</p>
                     <div class="mt-4 md:mt-0">
                         <a href="https://kebijakan-privasi.orilix.net" class="text-gray-400 text-sm hover:text-white mr-4">Kebijakan Privasi</a>
                         <a href="https://syarat-ketentuan.orilix.net" class="text-gray-400 text-sm hover:text-white mr-4">Syarat & Ketentuan</a>
@@ -701,71 +551,19 @@
     </footer>
 
     <!-- Back to Top Button -->
-    <button id="back-to-top" class="fixed bottom-8 right-8 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition duration-300 btn-animated hidden">
+    <button id="back-to-top" class="fixed bottom-8 right-8 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition duration-300 hidden">
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <!-- Tawk.to Live Chat -->
-    <script type="text/javascript">
-        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-        (function(){
-            var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-            s1.async=true;
-            s1.src='https://embed.tawk.to/YOUR_PROPERTY_ID/default';
-            s1.charset='UTF-8';
-            s1.setAttribute('crossorigin','*');
-            s0.parentNode.insertBefore(s1,s0);
-        })();
-    </script>
-
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
-
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
-        // Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-
-        // Newsletter Form Submission
-        document.getElementById('newsletter-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('newsletter-email').value;
-            const messageEl = document.getElementById('newsletter-message');
-            try {
-                await db.collection('subscribers').add({
-                    email: email,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                messageEl.textContent = 'Terima kasih telah berlangganan!';
-                messageEl.classList.remove('hidden', 'text-red-400');
-                messageEl.classList.add('text-green-400');
-                document.getElementById('newsletter-form').reset();
-                setTimeout(() => messageEl.classList.add('hidden'), 3000);
-            } catch (error) {
-                messageEl.textContent = 'Terjadi kesalahan, coba lagi nanti.';
-                messageEl.classList.remove('hidden', 'text-green-400');
-                messageEl.classList.add('text-red-400');
-            }
-        });
-
-        // AOS Initialization
+        // Inisialisasi AOS
         AOS.init({
             duration: 800,
-            easing: 'ease-in-out',
-            once: true
+            once: true,
         });
 
-        // Mobile Menu Toggle
+        // Mobile menu toggle
         document.querySelector('[aria-controls="mobile-menu"]').addEventListener('click', function () {
             const menu = document.getElementById('mobile-menu');
             const expanded = this.getAttribute('aria-expanded') === 'true';
@@ -776,7 +574,7 @@
             icon.classList.toggle('fa-times');
         });
 
-        // Close Mobile Menu on Link Click
+        // Tutup menu saat salah satu tautan diklik
         document.querySelectorAll('#mobile-menu a').forEach(link => {
             link.addEventListener('click', () => {
                 const menu = document.getElementById('mobile-menu');
@@ -789,7 +587,7 @@
             });
         });
 
-        // Close Mobile Menu on Close Button Click
+        // Tutup menu saat tombol close diklik
         document.getElementById('close-menu').addEventListener('click', () => {
             const menu = document.getElementById('mobile-menu');
             const button = document.querySelector('[aria-controls="mobile-menu"]');
@@ -800,19 +598,25 @@
             icon.classList.remove('fa-times');
         });
 
-        // Anti-Inspect
-        document.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('keydown', e => {
+        // Anti-inspeksi
+        document.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+        });
+
+        document.addEventListener('keydown', function (e) {
             if (
-                (e.ctrlKey && e.shiftKey && e.key === 'I') ||
-                (e.ctrlKey && e.key === 'u') ||
+                e.ctrlKey && e.shiftKey && e.key === 'I' ||
+                e.ctrlKey && e.key === 'u' ||
                 e.key === 'F12'
             ) {
                 e.preventDefault();
             }
         });
-        document.addEventListener('wheel', e => {
-            if (e.ctrlKey) e.preventDefault();
+
+        document.addEventListener('wheel', function (e) {
+            if (e.ctrlKey) {
+                e.preventDefault();
+            }
         }, { passive: false });
 
         // Back to Top Button
@@ -824,29 +628,9 @@
                 backToTopButton.classList.add('hidden');
             }
         });
+
         backToTopButton.addEventListener('click', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        // Course Search Functionality
-        document.getElementById('course-search').addEventListener('input', function () {
-            const query = this.value.toLowerCase();
-            const courses = document.querySelectorAll('#course-list .course-card');
-            courses.forEach(course => {
-                const courseName = course.getAttribute('data-course').toLowerCase();
-                course.style.display = courseName.includes(query) ? 'block' : 'none';
-            });
-        });
-
-        // FAQ Accordion
-        document.querySelectorAll('.accordion-header').forEach(header => {
-            header.addEventListener('click', () => {
-                const content = header.nextElementSibling;
-                const icon = header.querySelector('i');
-                content.classList.toggle('active');
-                icon.classList.toggle('fa-chevron-down');
-                icon.classList.toggle('fa-chevron-up');
-            });
         });
     </script>
 </body>
