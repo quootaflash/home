@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ORILIX - platfrom belajar coding</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -14,7 +14,20 @@
         .floating { animation: float 4s ease-in-out infinite; }
         .course-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
         .course-card { transition: all 0.3s ease; }
-        #mobile-menu { transition: all 0.3s ease-in-out; }
+        #mobile-menu { 
+            transition: all 0.3s ease-in-out;
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100%;
+            width: 75%;
+            max-width: 300px;
+            background-color: white;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+        }
+        #mobile-menu .menu-content {
+            padding: 1rem;
+        }
     </style>
 </head>
 <body class="font-sans bg-gray-50">
@@ -24,7 +37,7 @@
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
                     <div class="flex-shrink-0 flex items-center">
-                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj3NQZcwhEwbBj73hdSqyBHpIYTsMXtWVzg_oTivtIwQ0hokjVTOXWdVn4AmEbjoJOgCHB7tY6sSGPJ930YhcVYo5twbczZtaJXfkeKBfGpdQVPyhrxM9lOF8vuHz6r4f6LuCOLnsNXkbrQKCxQsTlqU3FaG4ujwKgnu5PvxoJUq2oV_YgaUpIUGaZ_26X6/s3264/20250821_091218.png" alt="Logo eracoding" class="h-8 w-auto">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj3NQZcwhEwbBj73hdSqyBHpIYTsMXtWVzg_oTivtIwQ0hokjVTOXWdVn4AmEbjoJOgCHB7tY6sSGPJ930YhcVYo5twbczZtaJXfkeKBfGpdQVPyhrxM9lOF8vuHz6r4f6LuCOLnsNXkbrQKCxQsTlqU3FaG4ujwKgnu5PvxoJUq2oV_YgaUpIUGaZ_26X6/s3264/20250821_091218.png" alt="Logo eracoding" class="h-12 w-auto">
                         <span class="ml-2 text-xl font-bold text-gray-900"></span>
                     </div>
                 </div>
@@ -45,16 +58,14 @@
         </div>
         <!-- Mobile Menu -->
         <div class="md:hidden hidden" id="mobile-menu">
-            <div class="pt-4 pb-3 border-t border-gray-200">
-                <div class="bg-white shadow-sm">
-                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div class="space-y-4">
-                            <a href="https://.orilix.net" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600">Beranda</a>
-                            <a href="https://product.orilix.net" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600">Kelas</a>
-                            <a href="https://bootcamp.orilix.net" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600">Bootcamp</a>
-                            <a href="https://whatsapp.com/channel/0029Vb6GVqw0Qearxmwd151l" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600">Informasi</a>
-                            <a href="https://m.orilix.net" class="block px-3 py-2 rounded-md text-base font-medium bg-blue-600 text-white hover:bg-blue-700">Login/Daftar</a>
-                        </div>
+            <div class="menu-content pt-4 pb-3">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="space-y-4">
+                        <a href="https://.orilix.net" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600">Beranda</a>
+                        <a href="https://product.orilix.net" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600">Kelas</a>
+                        <a href="https://bootcamp.orilix.net" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600">Bootcamp</a>
+                        <a href="https://whatsapp.com/channel/0029Vb6GVqw0Qearxmwd151l" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600">Informasi</a>
+                        <a href="https://m.orilix.net" class="block px-3 py-2 rounded-md text-base font-medium bg-blue-600 text-white hover:bg-blue-700">Login/Daftar</a>
                     </div>
                 </div>
             </div>
@@ -320,7 +331,7 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
                 <div class="col-span-2">
                     <div class="flex items-center mb-4">
-                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjwt2kmtZSeK95r1o-qq79QvtCY7EHVaRT8bYN_VEzl82KicisqRzPXHFjbY1MX_ymN19XcnMUxpDlBVFBYx5V_WLuwOsyjfUYpiT1TMOYUjQvqEZBiwDnbUVrHQ2D9rPNYKNbCdcFnpDKN6-8Zz148WBJZtqNkJX48mSC-ItlvpIC_3UhggGgtpGMHsH_k/s3264/20250821_091245.png" alt="Logo eracoding footer" class="h-8 w-auto">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjwt2kmtZSeK95r1o-qq79QvtCY7EHVaRT8bYN_VEzl82KicisqRzPXHFjbY1MX_ymN19XcnMUxpDlBVFBYx5V_WLuwOsyjfUYpiT1TMOYUjQvqEZBiwDnbUVrHQ2D9rPNYKNbCdcFnpDKN6-8Zz148WBJZtqNkJX48mSC-ItlvpIC_3UhggGgtpGMHsH_k/s3264/20250821_091245.png" alt="Logo eracoding footer" class="h-12 w-auto">
                         <span class="ml-2 text-xl font-bold"></span>
                     </div>
                     <p class="text-gray-400 mb-4">Platform belajar coding terdepan di Indonesia dengan fokus pada keterampilan yang dibutuhkan industri.</p>
@@ -390,6 +401,29 @@
                 icon.classList.remove('fa-times');
             });
         });
+
+        // Anti-inspeksi (disable inspect element)
+        document.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+        });
+
+        document.addEventListener('keydown', function (e) {
+            // Mencegah Ctrl+Shift+I (Inspect), Ctrl+U (View Source), F12
+            if (
+                e.ctrlKey && e.shiftKey && e.key === 'I' ||
+                e.ctrlKey && e.key === 'u' ||
+                e.key === 'F12'
+            ) {
+                e.preventDefault();
+            }
+        });
+
+        // Mencegah zoom melalui wheel mouse + Ctrl
+        document.addEventListener('wheel', function (e) {
+            if (e.ctrlKey) {
+                e.preventDefault();
+            }
+        }, { passive: false });
     </script>
 </body>
 </html>
