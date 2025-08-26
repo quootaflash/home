@@ -9,31 +9,17 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-    <!-- Vanilla Tilt for 3D tilt effect -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.2/vanilla-tilt.min.js"></script>
-    <!-- Typed.js for typing effect -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
-    <!-- Tawk.to Live Chat -->
-    <script type="text/javascript">
-        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-        (function(){
-            var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-            s1.async=true;
-            s1.src='https://embed.tawk.to/YOUR_PROPERTY_ID/default'; // Replace with your Tawk.to property ID
-            s1.charset='UTF-8';
-            s1.setAttribute('crossorigin','*');
-            s0.parentNode.insertBefore(s1,s0);
-        })();
-    </script>
     <style>
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
         }
         .floating { animation: float 4s ease-in-out infinite; }
-        .course-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+        .course-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
         .course-card { transition: all 0.3s ease; }
-        #mobile-menu { 
+        #mobile-menu {
             transition: all 0.3s ease-in-out;
             position: fixed;
             top: 0;
@@ -44,9 +30,7 @@
             background-color: white;
             box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
         }
-        #mobile-menu .menu-content {
-            padding: 1rem;
-        }
+        #mobile-menu .menu-content { padding: 1rem; }
         .close-button {
             position: absolute;
             top: 1rem;
@@ -55,14 +39,12 @@
             color: #374151;
             cursor: pointer;
         }
-        /* Hero Section Gradient (Blue) */
         .hero-bg {
             background: linear-gradient(rgba(59, 130, 246, 0.8), rgba(37, 99, 235, 0.8)), url('https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/hero-bg.jpg');
             background-attachment: fixed;
             background-size: cover;
             background-position: center;
         }
-        /* Button Hover Animation */
         .btn-animated {
             transition: all 0.3s ease;
             position: relative;
@@ -78,27 +60,18 @@
             background: white;
             transition: all 0.3s ease;
         }
-        .btn-animated:hover::after {
-            left: 0;
-        }
-        /* Scroll Progress for Back to Top */
-        #scroll-progress {
+        .btn-animated:hover::after { left: 0; }
+        #back-to-top {
             position: fixed;
-            bottom: 8px;
-            right: 8px;
-            width: 48px;
-            height: 48px;
-            transform: rotate(-90deg);
+            bottom: 16px;
+            right: 16px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        #scroll-progress circle {
-            fill: none;
-            stroke: #ffffff;
-            stroke-width: 4;
-            stroke-dasharray: 113;
-            stroke-dashoffset: 113;
-        }
-        /* Quiz Popup */
-        #quiz-popup {
+        #quiz-popup, #trend-modal {
             display: none;
             position: fixed;
             top: 0;
@@ -110,7 +83,7 @@
             justify-content: center;
             align-items: center;
         }
-        #quiz-content {
+        #quiz-content, #trend-modal-content {
             background: white;
             padding: 2rem;
             border-radius: 1rem;
@@ -123,7 +96,6 @@
             from { transform: translateY(-50px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
-        /* Course Preview Modal */
         #course-modal {
             display: none;
             position: fixed;
@@ -145,7 +117,6 @@
             position: relative;
             animation: slideIn 0.5s ease;
         }
-        /* Slider Animation */
         .testimonial-slider {
             overflow: hidden;
             position: relative;
@@ -154,16 +125,10 @@
             display: none;
             animation: fadeIn 1s ease;
         }
-        .testimonial-slide.active {
-            display: block;
-        }
+        .testimonial-slide.active { display: block; }
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
-        }
-        /* Accordion Animation */
-        .faq-item {
-            transition: all 0.3s ease;
         }
         .faq-item.active .faq-answer {
             max-height: 200px;
@@ -174,18 +139,15 @@
             overflow: hidden;
             transition: all 0.3s ease;
         }
-        /* Skill Progress Hover */
         .skill-card:hover .progress-bar {
             transform: scale(1.05);
             transition: transform 0.3s ease;
         }
-        /* Tech Trend Card */
         .trend-card:hover {
             transform: scale(1.05);
             box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
             transition: all 0.3s ease;
         }
-        /* Footer Newsletter Form Fix */
         .newsletter-form {
             display: flex;
             flex-wrap: nowrap;
@@ -196,13 +158,26 @@
             flex: 1;
             min-width: 0;
         }
-        .newsletter-form button {
-            flex-shrink: 0;
-        }
+        .newsletter-form button { flex-shrink: 0; }
         @media (min-width: 768px) {
-            .newsletter-form {
-                flex-direction: row;
-            }
+            .newsletter-form { flex-direction: row; }
+        }
+        .badge-unlock {
+            animation: badgePop 0.5s ease;
+        }
+        @keyframes badgePop {
+            0% { transform: scale(0); opacity: 0; }
+            80% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+        #code-editor {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            resize: none;
+        }
+        .leaderboard-item:hover {
+            background-color: #f1f5f9;
+            transition: all 0.3s ease;
         }
     </style>
 </head>
@@ -214,7 +189,6 @@
                 <div class="flex items-center">
                     <div class="flex-shrink-0 flex items-center">
                         <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj3NQZcwhEwbBj73hdSqyBHpIYTsMXtWVzg_oTivtIwQ0hokjVTOXWdVn4AmEbjoJOgCHB7tY6sSGPJ930YhcVYo5twbczZtaJXfkeKBfGpdQVPyhrxM9lOF8vuHz6r4f6LuCOLnsNXkbrQKCxQsTlqU3FaG4ujwKgnu5PvxoJUq2oV_YgaUpIUGaZ_26X6/s3264/20250821_091218.png" alt="Logo Orilix" class="h-12 w-auto">
-                        <span class="ml-2 text-xl font-bold text-gray-900"></span>
                     </div>
                 </div>
                 <div class="hidden md:ml-6 md:flex md:items-center md:space-x-8">
@@ -233,7 +207,6 @@
                 </div>
             </div>
         </div>
-        <!-- Mobile Menu -->
         <div class="md:hidden hidden" id="mobile-menu" data-aos="slide-left">
             <div class="menu-content pt-4 pb-3 relative">
                 <i class="fas fa-times close-button" id="close-menu"></i>
@@ -270,7 +243,7 @@
                         </div>
                         <p class="text-sm text-blue-100">Bergabung dengan 100+ siswa lainnya</p>
                     </div>
-                    <button id="quiz-button" class="mt-4 text-blue-100 underline hover:text-white transition duration-300">Ambil Kuis untuk Temukan Kelasmu!</button>
+                    <button id="quiz-button" class="mt-4 text-blue-100 underline hover:text-white transition duration-300">Temukan Jalur Belajarmu!</button>
                 </div>
                 <div class="hidden md:block tilt-element" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-perspective="1000">
                     <video autoplay muted loop class="w-full rounded-lg shadow-2xl">
@@ -282,15 +255,15 @@
         </div>
     </div>
 
-    <!-- Quiz Popup -->
+    <!-- Personalized Learning Path Quiz -->
     <div id="quiz-popup">
         <div id="quiz-content" class="text-gray-900">
             <button id="close-quiz" class="absolute top-2 right-2 text-gray-600 hover:text-gray-900"><i class="fas fa-times"></i></button>
-            <h2 class="text-2xl font-bold mb-4">Temukan Kelas yang Cocok untuk Anda!</h2>
-            <p class="text-gray-600 mb-4">Jawab pertanyaan singkat ini untuk mendapatkan rekomendasi kelas.</p>
+            <h2 class="text-2xl font-bold mb-4">Temukan Jalur Belajar yang Cocok</h2>
+            <p class="text-gray-600 mb-4">Jawab pertanyaan berikut untuk mendapatkan rekomendasi kursus dan roadmap belajar.</p>
             <form id="quiz-form">
                 <div class="mb-4">
-                    <label class="block text-sm font-medium mb-2">Apa minat Anda?</label>
+                    <label class="block text-sm font-medium mb-2">Minat Utama Anda?</label>
                     <select class="w-full p-2 border rounded-md" id="quiz-interest">
                         <option value="web">Web Development</option>
                         <option value="data">Data Science</option>
@@ -298,17 +271,26 @@
                     </select>
                 </div>
                 <div class="mb-4">
-                    <label class="block text-sm font-medium mb-2">Level pengalaman Anda?</label>
+                    <label class="block text-sm font-medium mb-2">Level Pengalaman?</label>
                     <select class="w-full p-2 border rounded-md" id="quiz-level">
                         <option value="beginner">Pemula</option>
                         <option value="intermediate">Menengah</option>
                         <option value="advanced">Lanjutan</option>
                     </select>
                 </div>
-                <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Lihat Rekomendasi</button>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-2">Tujuan Karir Anda?</label>
+                    <select class="w-full p-2 border rounded-md" id="quiz-goal">
+                        <option value="freelance">Freelancer</option>
+                        <option value="startup">Bekerja di Startup</option>
+                        <option value="enterprise">Perusahaan Besar</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Lihat Jalur Belajar</button>
             </form>
             <div id="quiz-result" class="mt-4 hidden">
-                <p class="text-green-600 font-medium">Kelas yang direkomendasikan: <span id="recommended-course"></span></p>
+                <p class="text-green-600 font-medium mb-2">Rekomendasi: <span id="recommended-course"></span></p>
+                <div class="text-gray-600 text-sm" id="learning-path"></div>
             </div>
         </div>
     </div>
@@ -353,6 +335,38 @@
         </div>
     </div>
 
+    <!-- Interactive Coding Challenge -->
+    <div class="py-16 bg-blue-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12" data-aos="fade-up">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Tantangan Coding Langsung</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Coba keterampilan coding Anda dengan tantangan JavaScript ini dan lihat peringkat Anda!</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8" data-aos="fade-up" data-aos-delay="100">
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <h3 class="text-lg font-bold mb-4">Tulis Kode untuk Membalik String</h3>
+                    <textarea id="code-editor" class="w-full h-40 p-2 border rounded-md mb-4" placeholder="Ketik kode JavaScript Anda di sini..."></textarea>
+                    <button id="run-code" class="btn-animated bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Jalankan Kode</button>
+                    <p id="code-output" class="mt-4 text-gray-600"></p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <h3 class="text-lg font-bold mb-4">Papan Peringkat</h3>
+                    <div class="space-y-2">
+                        <div class="leaderboard-item p-2 rounded-md flex justify-between">
+                            <span>1. Adi Pratama</span><span class="text-blue-600">92 poin</span>
+                        </div>
+                        <div class="leaderboard-item p-2 rounded-md flex justify-between">
+                            <span>2. Siti Rahayu</span><span class="text-blue-600">88 poin</span>
+                        </div>
+                        <div class="leaderboard-item p-2 rounded-md flex justify-between">
+                            <span>3. Budi Santoso</span><span class="text-blue-600">85 poin</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Why Coding Matters -->
     <div class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -386,34 +400,33 @@
         </div>
     </div>
 
-    <!-- Gamified Skill Progress Tracker -->
+    <!-- Gamified Achievement Badges -->
     <div class="py-16 bg-blue-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12" data-aos="fade-up">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Lacak Kemajuan Belajarmu</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Hover untuk melihat detail keterampilan dan milestone yang telah dicapai.</p>
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Raih Pencapaianmu</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Selesaikan tantangan dan kelas untuk membuka lencana eksklusif!</p>
             </div>
-            <div class="grid md:grid-cols-3 gap-8" data-aos="fade-up" data-aos-delay="100">
-                <div class="skill-card bg-white p-6 rounded-xl shadow-sm cursor-pointer" data-aos="zoom-in">
-                    <h3 class="text-lg font-bold mb-2">Web Development</h3>
-                    <div class="w-full bg-gray-200 rounded-full h-4 mb-2 progress-bar">
-                        <div class="bg-blue-600 h-4 rounded-full" style="width: 75%;"></div>
-                    </div>
-                    <p class="text-gray-600 text-sm skill-detail hidden">Kuasai HTML, CSS, JavaScript, dan framework modern seperti React.</p>
+            <div class="grid md:grid-cols-4 gap-8" data-aos="fade-up" data-aos-delay="100">
+                <div class="bg-white p-6 rounded-xl shadow-sm text-center badge-unlock" data-aos="zoom-in">
+                    <i class="fas fa-code text-4xl text-blue-600 mb-4"></i>
+                    <h3 class="text-lg font-bold">Code Master</h3>
+                    <p class="text-gray-600 text-sm">Selesaikan 3 proyek coding.</p>
                 </div>
-                <div class="skill-card bg-white p-6 rounded-xl shadow-sm cursor-pointer" data-aos="zoom-in" data-aos-delay="100">
-                    <h3 class="text-lg font-bold mb-2">Data Science</h3>
-                    <div class="w-full bg-gray-200 rounded-full h-4 mb-2 progress-bar">
-                        <div class="bg-purple-600 h-4 rounded-full" style="width: 60%;"></div>
-                    </div>
-                    <p class="text-gray-600 text-sm skill-detail hidden">Pelajari analisis data, visualisasi, dan machine learning dengan Python.</p>
+                <div class="bg-white p-6 rounded-xl shadow-sm text-center badge-unlock" data-aos="zoom-in" data-aos-delay="100">
+                    <i class="fas fa-trophy text-4xl text-yellow-600 mb-4"></i>
+                    <h3 class="text-lg font-bold">Project Pro</h3>
+                    <p class="text-gray-600 text-sm">Bangun 5 proyek portofolio.</p>
                 </div>
-                <div class="skill-card bg-white p-6 rounded-xl shadow-sm cursor-pointer" data-aos="zoom-in" data-aos-delay="200">
-                    <h3 class="text-lg font-bold mb-2">UI/UX Design</h3>
-                    <div class="w-full bg-gray-200 rounded-full h-4 mb-2 progress-bar">
-                        <div class="bg-green-600 h-4 rounded-full" style="width: 80%;"></div>
-                    </div>
-                    <p class="text-gray-600 text-sm skill-detail hidden">Desain antarmuka intuitif menggunakan Figma dan Adobe XD.</p>
+                <div class="bg-white p-6 rounded-xl shadow-sm text-center badge-unlock" data-aos="zoom-in" data-aos-delay="200">
+                    <i class="fas fa-users text-4xl text-green-600 mb-4"></i>
+                    <h3 class="text-lg font-bold">Community Star</h3>
+                    <p class="text-gray-600 text-sm">Bantu 10 siswa di forum.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm text-center badge-unlock" data-aos="zoom-in" data-aos-delay="300">
+                    <i class="fas fa-graduation-cap text-4xl text-purple-600 mb-4"></i>
+                    <h3 class="text-lg font-bold">Certified Expert</h3>
+                    <p class="text-gray-600 text-sm">Selesaikan bootcamp intensif.</p>
                 </div>
             </div>
         </div>
@@ -447,183 +460,134 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12" data-aos="fade-up">
                 <h2 class="text-3xl font-bold text-gray-900 mb-4">Temui Pengajar Kami</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Belajar dari para profesional berpengalaman yang siap membimbing Anda menuju kesuksesan di dunia teknologi.</p>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Belajar dari profesional berpengalaman di bidang teknologi.</p>
             </div>
             <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8" data-aos="fade-up" data-aos-delay="100">
                 <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300" data-aos="zoom-in">
-                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/082315b5-c3fe-4e37-852a-952d50d1e889.png" alt="Foto pengajar" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover floating">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/082315b5-c3fe-4e37-852a-952d50d1e889.png" alt="Ahmad Santoso" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover floating">
                     <h3 class="text-xl font-bold text-center mb-2">Ahmad Santoso</h3>
                     <p class="text-gray-600 text-center mb-2">Senior Fullstack Developer</p>
-                    <p class="text-gray-600 text-sm text-center">Dengan pengalaman 8 tahun di industri teknologi, Ahmad telah bekerja di startup unicorn dan mengajar lebih dari 500 siswa.</p>
+                    <p class="text-gray-600 text-sm text-center">Berpengalaman 8 tahun di startup unicorn seperti Tokopedia, mengajar JavaScript dan React.</p>
                     <div class="flex justify-center space-x-4 mt-4">
-                        <a href="#" class="text-blue-600 hover:text-blue-800"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="text-blue-600 hover:text-blue-800"><i class="fab fa-github"></i></a>
+                        <a href="https://linkedin.com/in/ahmadsantoso" class="text-blue-600 hover:text-blue-800"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://github.com/ahmadsantoso" class="text-blue-600 hover:text-blue-800"><i class="fab fa-github"></i></a>
                     </div>
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300" data-aos="zoom-in" data-aos-delay="100">
-                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/1e6a7719-5e81-4e73-b132-1cc5d32ffaa6.png" alt="Foto pengajar" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover floating">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/1e6a7719-5e81-4e73-b132-1cc5d32ffaa6.png" alt="Siti Aisyah" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover floating">
                     <h3 class="text-xl font-bold text-center mb-2">Siti Aisyah</h3>
                     <p class="text-gray-600 text-center mb-2">Data Scientist</p>
-                    <p class="text-gray-600 text-sm text-center">Siti memiliki pengalaman 6 tahun di bidang data science dan machine learning, dengan proyek di perusahaan e-commerce ternama.</p>
+                    <p class="text-gray-600 text-sm text-center">Spesialis machine learning dengan proyek di Shopee dan Bukalapak.</p>
                     <div class="flex justify-center space-x-4 mt-4">
-                        <a href="#" class="text-blue-600 hover:text-blue-800"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="text-blue-600 hover:text-blue-800"><i class="fab fa-github"></i></a>
+                        <a href="https://linkedin.com/in/sitiaisyah" class="text-blue-600 hover:text-blue-800"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://github.com/sitiaisyah" class="text-blue-600 hover:text-blue-800"><i class="fab fa-github"></i></a>
                     </div>
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300" data-aos="zoom-in" data-aos-delay="200">
-                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/55aec51c-347a-4d41-8db2-0408dd83c6ad.png" alt="Foto pengajar" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover floating">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/55aec51c-347a-4d41-8db2-0408dd83c6ad.png" alt="Rina Wijaya" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover floating">
                     <h3 class="text-xl font-bold text-center mb-2">Rina Wijaya</h3>
                     <p class="text-gray-600 text-center mb-2">UI/UX Designer</p>
-                    <p class="text-gray-600 text-sm text-center">Rina adalah desainer berpengalaman dengan fokus pada pengalaman pengguna, telah merancang aplikasi untuk berbagai startup teknologi.</p>
+                    <p class="text-gray-600 text-sm text-center">Merancang antarmuka untuk Gojek dan Traveloka menggunakan Figma.</p>
                     <div class="flex justify-center space-x-4 mt-4">
-                        <a href="#" class="text-blue-600 hover:text-blue-800"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="text-blue-600 hover:text-blue-800"><i class="fab fa-dribbble"></i></a>
+                        <a href="https://linkedin.com/in/rinawijaya" class="text-blue-600 hover:text-blue-800"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://dribbble.com/rinawijaya" class="text-blue-600 hover:text-blue-800"><i class="fab fa-dribbble"></i></a>
                     </div>
                 </div>
             </div>
-            <div class="text-center mt-12">
-                <a href="https://team.orilix.net" class="btn-animated inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition duration-300">
-                    Lihat Semua Pengajar
-                    <i class="fas fa-arrow-right ml-2"></i>
-                </a>
-            </div>
         </div>
     </div>
 
-    <!-- Tech Trend Spotlight -->
+    <!-- Interactive Tech Trend Explorer -->
     <div class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12" data-aos="fade-up">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Sorotan Tren Teknologi</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Jelajahi teknologi masa depan yang sedang membentuk dunia.</p>
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Jelajahi Tren Teknologi</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Klik untuk melihat aplikasi dunia nyata dan kursus terkait.</p>
             </div>
             <div class="grid md:grid-cols-3 gap-8" data-aos="fade-up" data-aos-delay="100">
-                <div class="trend-card bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300" data-aos="zoom-in">
+                <div class="trend-card bg-gray-50 p-6 rounded-xl shadow-sm cursor-pointer" data-trend="ai" data-aos="zoom-in">
                     <i class="fas fa-robot text-4xl text-blue-600 mb-4 floating"></i>
                     <h3 class="text-xl font-bold mb-2">Kecerdasan Buatan</h3>
-                    <p class="text-gray-600">Pelajari AI dan machine learning untuk membangun solusi cerdas.</p>
-                    <a href="#" class="text-blue-600 hover:text-blue-800 mt-4 inline-block">Pelajari Lebih Lanjut</a>
+                    <p class="text-gray-600">Bangun chatbot cerdas dan sistem prediktif.</p>
                 </div>
-                <div class="trend-card bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300" data-aos="zoom-in" data-aos-delay="100">
+                <div class="trend-card bg-gray-50 p-6 rounded-xl shadow-sm cursor-pointer" data-trend="blockchain" data-aos="zoom-in" data-aos-delay="100">
                     <i class="fas fa-cube text-4xl text-purple-600 mb-4 floating"></i>
                     <h3 class="text-xl font-bold mb-2">Web3 & Blockchain</h3>
-                    <p class="text-gray-600">Kuasai teknologi blockchain untuk aplikasi terdesentralisasi.</p>
-                    <a href="#" class="text-blue-600 hover:text-blue-800 mt-4 inline-block">Pelajari Lebih Lanjut</a>
+                    <p class="text-gray-600">Ciptakan aplikasi terdesentralisasi seperti NFT.</p>
                 </div>
-                <div class="trend-card bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300" data-aos="zoom-in" data-aos-delay="200">
+                <div class="trend-card bg-gray-50 p-6 rounded-xl shadow-sm cursor-pointer" data-trend="cloud" data-aos="zoom-in" data-aos-delay="200">
                     <i class="fas fa-cloud text-4xl text-green-600 mb-4 floating"></i>
                     <h3 class="text-xl font-bold mb-2">Cloud Computing</h3>
-                    <p class="text-gray-600">Bangun aplikasi yang skalabel dengan teknologi cloud modern.</p>
-                    <a href="#" class="text-blue-600 hover:text-blue-800 mt-4 inline-block">Pelajari Lebih Lanjut</a>
+                    <p class="text-gray-600">Skalakan aplikasi dengan AWS dan Azure.</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Success Stories Slider -->
+    <!-- Tech Trend Modal -->
+    <div id="trend-modal">
+        <div id="trend-modal-content" class="text-gray-900">
+            <button id="close-trend-modal" class="absolute top-2 right-2 text-gray-600 hover:text-gray-900"><i class="fas fa-times"></i></button>
+            <h2 class="text-2xl font-bold mb-4" id="trend-title"></h2>
+            <p class="text-gray-600 mb-4" id="trend-description"></p>
+            <p class="text-gray-600 mb-4"><strong>Aplikasi Dunia Nyata:</strong> <span id="trend-application"></span></p>
+            <a href="#" id="trend-course-link" class="btn-animated bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Ikuti Kursus Terkait</a>
+        </div>
+    </div>
+
+    <!-- Video Success Stories -->
     <div class="py-16 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12" data-aos="fade-up">
                 <h2 class="text-3xl font-bold text-gray-900 mb-4">Kisah Sukses Alumni</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Lihat bagaimana Orilix mengubah karir para alumni kami.</p>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Dengarkan cerita alumni Orilix yang berhasil mengubah karir mereka.</p>
             </div>
             <div class="testimonial-slider" data-aos="fade-up" data-aos-delay="100">
                 <div class="testimonial-slide active">
                     <div class="bg-white p-8 rounded-xl shadow-sm mx-auto max-w-lg">
-                        <div class="flex items-center mb-4">
-                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b098284b-e6fb-4123-8d85-99c150404427.png" alt="Foto alumni" class="w-12 h-12 rounded-full object-cover">
-                            <div class="ml-4">
-                                <h4 class="font-bold">Faisal</h4>
-                                <p class="text-gray-600 text-sm">Freelance Developer</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 italic">"Orilix membantu saya beralih dari nol ke freelance developer dalam 6 bulan!"</p>
-                        <div class="flex mt-4 text-yellow-400">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
+                        <video controls class="w-full rounded-lg mb-4">
+                            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <h4 class="font-bold">Faisal Pratama</h4>
+                        <p class="text-gray-600 text-sm">Freelance Developer</p>
+                        <p class="text-gray-600 italic mt-2">"Orilix membantu saya membangun portofolio dan mendapatkan klien internasional."</p>
                     </div>
                 </div>
                 <div class="testimonial-slide">
                     <div class="bg-white p-8 rounded-xl shadow-sm mx-auto max-w-lg">
-                        <div class="flex items-center mb-4">
-                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/4aa84b9f-3184-4429-8d22-0eb9bea4723b.png" alt="Foto alumni" class="w-12 h-12 rounded-full object-cover">
-                            <div class="ml-4">
-                                <h4 class="font-bold">Bang Yoga</h4>
-                                <p class="text-gray-600 text-sm">Pelajar</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 italic">"Penjelasan simpel dan proyek nyata bikin saya paham coding dengan cepat."</p>
-                        <div class="flex mt-4 text-yellow-400">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
+                        <video controls class="w-full rounded-lg mb-4">
+                            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <h4 class="font-bold">Siti Rahayu</h4>
+                        <p class="text-gray-600 text-sm">Data Analyst</p>
+                        <p class="text-gray-600 italic mt-2">"Kursus Data Science Orilix membawa saya ke posisi di startup ternama."</p>
                     </div>
                 </div>
                 <div class="testimonial-slide">
                     <div class="bg-white p-8 rounded-xl shadow-sm mx-auto max-w-lg">
-                        <div class="flex items-center mb-4">
-                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/39f01f6e-d196-49f1-8e07-50dabe23dff4.png" alt="Foto alumni" class="w-12 h-12 rounded-full object-cover">
-                            <div class="ml-4">
-                                <h4 class="font-bold">Irwan Project</h4>
-                                <p class="text-gray-600 text-sm">Fresh Graduate</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 italic">"Saya berhasil membangun portofolio dan diterima di startup teknologi!"</p>
-                        <div class="flex mt-4 text-yellow-400">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star-half-alt"></i>
-                        </div>
+                        <video controls class="w-full rounded-lg mb-4">
+                            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <h4 class="font-bold">Budi Santoso</h4>
+                        <p class="text-gray-600 text-sm">UI/UX Designer</p>
+                        <p class="text-gray-600 italic mt-2">"Desain saya kini digunakan di aplikasi mobile terkenal."</p>
                     </div>
                 </div>
             </div>
             <div class="flex justify-center mt-6 space-x-4">
-                <button id="prev-slide" class="bg-gray-200 text-gray-900 px-4 py-2 rounded-md hover:bg-gray-300"><i class="fas fa-chevron-left"></i></button>
-                <button id="next-slide" class="bg-gray-200 text-gray-900 px-4 py-2 rounded-md hover:bg-gray-300"><i class="fas fa-chevron-right"></i></button>
+                <div class="flex space-x-2">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b098284b-e6fb-4123-8d85-99c150404427.png" alt="Faisal" class="w-12 h-12 rounded-full object-cover cursor-pointer testimonial-thumb active" data-slide="0">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/4aa84b9f-3184-4429-8d22-0eb9bea4723b.png" alt="Siti" class="w-12 h-12 rounded-full object-cover cursor-pointer testimonial-thumb" data-slide="1">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/39f01f6e-d196-49f1-8e07-50dabe23dff4.png" alt="Budi" class="w-12 h-12 rounded-full object-cover cursor-pointer testimonial-thumb" data-slide="2">
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Live Community Feed -->
-    <div class="py-16 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12" data-aos="fade-up">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Aktivitas Komunitas Terkini</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Lihat apa yang terjadi di komunitas Orilix secara real-time.</p>
-            </div>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" data-aos="fade-up" data-aos-delay="100">
-                <div class="bg-blue-50 p-6 rounded-xl shadow-sm">
-                    <p class="text-gray-600"><strong>Adi</strong> baru saja menyelesaikan kelas <em>Fullstack JavaScript Mastery</em>! 🎉</p>
-                    <p class="text-sm text-gray-400 mt-2">5 menit yang lalu</p>
-                </div>
-                <div class="bg-blue-50 p-6 rounded-xl shadow-sm">
-                    <p class="text-gray-600"><strong>Rina</strong> membagikan proyek UI/UX terbarunya di forum komunitas.</p>
-                    <p class="text-sm text-gray-400 mt-2">15 menit yang lalu</p>
-                </div>
-                <div class="bg-blue-50 p-6 rounded-xl shadow-sm">
-                    <p class="text-gray-600"><strong>Webinar:</strong> "Membangun Karir di Data Science" dimulai malam ini!</p>
-                    <p class="text-sm text-gray-400 mt-2">1 jam yang lalu</p>
-                </div>
-            </div>
-            <div class="text-center mt-12">
-                <a href="https://whatsapp.com/channel/0029Vb6GVqw0Qearxmwd151l" class="btn-animated inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition duration-300">
-                    Gabung Komunitas Sekarang
-                    <i class="fas fa-arrow-right ml-2"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <!-- FAQ Section (Accordion) -->
+    <!-- FAQ Section -->
     <div class="py-16 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12" data-aos="fade-up">
@@ -658,18 +622,6 @@
                         Ya, setiap kelas memberikan sertifikat penyelesaian yang diakui industri.
                     </div>
                 </div>
-                <div class="faq-item bg-white p-6 rounded-xl shadow-sm">
-                    <button class="faq-question w-full text-left text-lg font-bold flex justify-between items-center">
-                        Bagaimana cara bergabung dengan komunitas?
-                        <i class="fas fa-chevron-down transition-transform"></i>
-                    </button>
-                    <div class="faq-answer text-gray-600">
-                        Setelah mendaftar, Anda akan mendapatkan akses ke forum eksklusif dan grup WhatsApp kami.
-                    </div>
-                </div>
-            </div>
-            <div class="text-center mt-8">
-                <a href="https://faq.orilix.net" class="btn-animated text-blue-600 hover:text-blue-800 font-medium">Lihat FAQ Lengkap <i class="fas fa-arrow-right ml-1"></i></a>
             </div>
         </div>
     </div>
@@ -681,22 +633,20 @@
                 <div class="col-span-1 md:col-span-2">
                     <div class="flex items-center mb-4">
                         <img src="https://blogger.googleapis.com/img/b/R29vZ2xl/AVvXsEjwt2kmtZSeK95r1o-qq79QvtCY7EHVaRT8bYN_VEzl82KicisqRzPXHFjbY1MX_ymN19XcnMUxpDlBVFBYx5V_WLuwOsyjfUYpiT1TMOYUjQvqEZBiwDnbUVrHQ2D9rPNYKNbCdcFnpDKN6-8Zz148WBJZtqNkJX48mSC-ItlvpIC_3UhggGgtpGMHsH_k/s3264/20250821_091245.png" alt="Logo Orilix footer" class="h-12 w-auto">
-                        <span class="ml-2 text-xl font-bold"></span>
                     </div>
                     <p class="text-gray-400 mb-4">Platform belajar coding terdepan di Indonesia dengan fokus pada keterampilan yang dibutuhkan industri.</p>
                     <h3 class="text-lg font-bold mb-4">Ikuti kami</h3>
                     <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter text-xl"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram text-xl"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin text-xl"></i></a>
-                        <a href="https://youtube.com/@eracodingindonesia?si=ELQgzvnh77udyFIN" class="text-gray-400 hover:text-white"><i class="fab fa-youtube text-xl"></i></a>
+                        <a href="https://twitter.com/orilix" class="text-gray-400 hover:text-white"><i class="fab fa-twitter text-xl"></i></a>
+                        <a href="https://instagram.com/orilix" class="text-gray-400 hover:text-white"><i class="fab fa-instagram text-xl"></i></a>
+                        <a href="https://linkedin.com/company/orilix" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin text-xl"></i></a>
+                        <a href="https://youtube.com/@eracodingindonesia" class="text-gray-400 hover:text-white"><i class="fab fa-youtube text-xl"></i></a>
                     </div>
                 </div>
                 <div>
                     <h3 class="text-lg font-bold mb-4">Kelas</h3>
                     <ul class="space-y-2">
                         <li><a href="https://product.orilix.net" class="text-gray-400 hover:text-white">Web Development</a></li>
-                        <li><a href="https://product.orilix.net" class="text-gray-400 hover:text-white">Mobile Development</a></li>
                         <li><a href="https://product.orilix.net" class="text-gray-400 hover:text-white">Data Science</a></li>
                         <li><a href="https://product.orilix.net" class="text-gray-400 hover:text-white">UI/UX Design</a></li>
                     </ul>
@@ -706,7 +656,7 @@
                     <ul class="space-y-2">
                         <li><a href="https://about.orilix.net" class="text-gray-400 hover:text-white">Tentang Kami</a></li>
                         <li><a href="https://tap.orilix.net" class="text-gray-400 hover:text-white">Karir</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Blog</a></li>
+                        <li><a href="https://blog.orilix.net" class="text-gray-400 hover:text-white">Blog</a></li>
                         <li><a href="https://kontak.orilix.net" class="text-gray-400 hover:text-white">Kontak</a></li>
                     </ul>
                 </div>
@@ -732,29 +682,20 @@
         </div>
     </footer>
 
-    <!-- Back to Top Button with Scroll Progress -->
-    <button id="back-to-top" class="fixed bottom-8 right-8 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition duration-300 hidden">
-        <svg id="scroll-progress" viewBox="0 0 36 36">
-            <circle cx="18" cy="18" r="16" stroke-opacity="0.3"></circle>
-            <circle cx="18" cy="18" r="16"></circle>
-        </svg>
-        <i class="fas fa-arrow-up absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></i>
+    <!-- Minimal Back to Top Button -->
+    <button id="back-to-top" class="fixed bottom-16 right-16 bg-blue-600 text-white p-2 rounded-full shadow-md hover:bg-blue-700 transition duration-300 hidden">
+        <i class="fas fa-arrow-up"></i>
     </button>
 
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
-        // Inisialisasi AOS
-        AOS.init({
-            duration: 800,
-            once: true,
-        });
+        AOS.init({ duration: 800, once: true });
 
-        // Typed.js for Hero Section
         const typed = new Typed('#typed-hero', {
             strings: [
-                'Platform Belajar Coding untuk Generasi Digital',
-                'Kuasai Teknologi Masa Depan',
-                'Belajar Coding dengan Cara Praktis'
+                'Belajar Coding untuk Karir Teknologi',
+                'Kuasai Keterampilan Industri',
+                'Bangun Masa Depan Digitalmu'
             ],
             typeSpeed: 50,
             backSpeed: 30,
@@ -773,7 +714,6 @@
             icon.classList.toggle('fa-times');
         });
 
-        // Tutup menu saat tautan diklik
         document.querySelectorAll('#mobile-menu a').forEach(link => {
             link.addEventListener('click', () => {
                 const menu = document.getElementById('mobile-menu');
@@ -786,7 +726,6 @@
             });
         });
 
-        // Tutup menu saat tombol close diklik
         document.getElementById('close-menu').addEventListener('click', () => {
             const menu = document.getElementById('mobile-menu');
             const button = document.querySelector('[aria-controls="mobile-menu"]');
@@ -798,47 +737,26 @@
         });
 
         // Anti-inspeksi
-        document.addEventListener('contextmenu', function (e) {
-            e.preventDefault();
-        });
-
-        document.addEventListener('keydown', function (e) {
-            if (
-                e.ctrlKey && e.shiftKey && e.key === 'I' ||
-                e.ctrlKey && e.key === 'u' ||
-                e.key === 'F12'
-            ) {
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
+            if (e.ctrlKey && e.shiftKey && e.key === 'I' || e.ctrlKey && e.key === 'u' || e.key === 'F12') {
                 e.preventDefault();
             }
         });
-
-        document.addEventListener('wheel', function (e) {
-            if (e.ctrlKey) {
-                e.preventDefault();
-            }
+        document.addEventListener('wheel', e => {
+            if (e.ctrlKey) e.preventDefault();
         }, { passive: false });
 
-        // Back to Top Button with Scroll Progress
+        // Back to Top Button
         const backToTopButton = document.getElementById('back-to-top');
-        const scrollProgress = document.querySelector('#scroll-progress circle:nth-child(2)');
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                backToTopButton.classList.remove('hidden');
-            } else {
-                backToTopButton.classList.add('hidden');
-            }
-            const scrollTop = window.scrollY;
-            const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrollPercent = (scrollTop / docHeight) * 100;
-            const dashOffset = 113 - (scrollPercent * 1.13);
-            scrollProgress.style.strokeDashoffset = dashOffset;
+            backToTopButton.classList.toggle('hidden', window.scrollY <= 300);
         });
-
         backToTopButton.addEventListener('click', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // Dynamic course data
+        // Course data
         const courses = [
             {
                 title: "Fullstack JavaScript Mastery",
@@ -848,7 +766,7 @@
                 originalPrice: 1200000,
                 discountedPrice: 799000,
                 image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/f677a54b-850e-4ba9-94ce-418d8222b27f.png",
-                description: "Pelajari React, Node.js, Express, dan MongoDB untuk membangun aplikasi web modern.",
+                description: "Bangun aplikasi web modern dengan React, Node.js, dan MongoDB.",
                 badge: "Populer",
                 badgeColor: "bg-blue-600",
                 link: "https://product.orilix.net",
@@ -863,10 +781,10 @@
                 originalPrice: 1500000,
                 discountedPrice: 999000,
                 image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/625c2146-2a76-4272-9b84-beec163c8037.png",
-                description: "Pengolahan data, visualisasi, dan machine learning dengan Python, Pandas, dan Scikit-learn.",
+                description: "Kuasai analisis data dan machine learning dengan Python dan Pandas.",
                 badge: "Baru",
                 badgeColor: "bg-purple-600",
-                link: "#",
+                link: "https://product.orilix.net",
                 category: "data",
                 previewVideo: "https://www.w3schools.com/html/mov_bbb.mp4"
             },
@@ -878,16 +796,16 @@
                 originalPrice: 900000,
                 discountedPrice: 599000,
                 image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/5bd51b5c-6294-46be-8b26-71e9047ee718.png",
-                description: "Kuasai prinsip desain modern untuk aplikasi mobile menggunakan Figma dan Adobe XD.",
+                description: "Desain antarmuka mobile dengan Figma dan prinsip UX modern.",
                 badge: "",
                 badgeColor: "",
-                link: "#",
+                link: "https://product.orilix.net",
                 category: "uiux",
                 previewVideo: "https://www.w3schools.com/html/mov_bbb.mp4"
             }
         ];
 
-        // Render courses dynamically
+        // Render courses
         const courseContainer = document.querySelector('.course-container');
         function renderCourses(category = 'all') {
             courseContainer.innerHTML = courses
@@ -895,7 +813,7 @@
                 .map((course, index) => `
                     <div class="course-card bg-white rounded-xl overflow-hidden shadow-md cursor-pointer" data-course-index="${index}" data-aos="zoom-in">
                         <div class="relative">
-                            <img src="${course.image}" alt="Ilustrasi ${course.title}" class="w-full h-48 object-cover">
+                            <img src="${course.image}" alt="${course.title}" class="w-full h-48 object-cover">
                             ${course.badge ? `<span class="absolute top-2 right-2 ${course.badgeColor} text-white text-xs px-2 py-1 rounded">${course.badge}</span>` : ''}
                         </div>
                         <div class="p-6">
@@ -963,13 +881,14 @@
             modalVideo.parentElement.pause();
         });
 
-        // Quiz Popup
+        // Personalized Learning Path Quiz
         const quizPopup = document.getElementById('quiz-popup');
         const quizButton = document.getElementById('quiz-button');
         const closeQuiz = document.getElementById('close-quiz');
         const quizForm = document.getElementById('quiz-form');
         const quizResult = document.getElementById('quiz-result');
         const recommendedCourse = document.getElementById('recommended-course');
+        const learningPath = document.getElementById('learning-path');
 
         quizButton.addEventListener('click', () => {
             quizPopup.style.display = 'flex';
@@ -984,40 +903,124 @@
             e.preventDefault();
             const interest = document.getElementById('quiz-interest').value;
             const level = document.getElementById('quiz-level').value;
+            const goal = document.getElementById('quiz-goal').value;
             let course = 'Fullstack JavaScript Mastery';
-            if (interest === 'data') course = 'Data Science with Python';
-            if (interest === 'uiux') course = 'Mobile UI/UX Design';
+            let path = '';
+            if (interest === 'data') {
+                course = 'Data Science with Python';
+                path = level === 'beginner' ? 'Mulai dengan Python Dasar, lanjut ke Pandas dan Visualisasi Data, kemudian Machine Learning.' :
+                       level === 'intermediate' ? 'Fokus pada Pandas dan Scikit-learn, lalu proyek machine learning.' :
+                       'Pelajari deep learning dengan TensorFlow dan proyek prediktif.';
+            } else if (interest === 'uiux') {
+                course = 'Mobile UI/UX Design';
+                path = level === 'beginner' ? 'Pelajari dasar desain, prototyping di Figma, dan prinsip UX.' :
+                       level === 'intermediate' ? 'Fokus pada desain interaktif dan user testing.' :
+                       'Bangun portofolio desain aplikasi mobile dan web.';
+            } else {
+                path = level === 'beginner' ? 'Mulai dengan HTML, CSS, JavaScript, lalu React.' :
+                       level === 'intermediate' ? 'Pelajari React dan Node.js, bangun aplikasi fullstack.' :
+                       'Kuasai arsitektur aplikasi dan deployment dengan Docker.';
+            }
+            path += ` Tujuan ${goal}: ${goal === 'freelance' ? 'Bangun portofolio dan cari klien di platform seperti Upwork.' : 
+                                     goal === 'startup' ? 'Fokus pada proyek startup dan kolaborasi tim.' : 
+                                     'Siapkan resume teknis untuk perusahaan besar.'}`;
             recommendedCourse.textContent = course;
+            learningPath.textContent = path;
             quizResult.classList.remove('hidden');
         });
 
-        // Testimonial Slider
+        // Video Testimonial Slider
         const slides = document.querySelectorAll('.testimonial-slide');
-        const prevSlide = document.getElementById('prev-slide');
-        const nextSlide = document.getElementById('next-slide');
+        const thumbs = document.querySelectorAll('.testimonial-thumb');
         let currentSlide = 0;
 
         function showSlide(index) {
             slides.forEach((slide, i) => {
                 slide.classList.toggle('active', i === index);
+                slide.querySelector('video').pause();
+                if (i === index) slide.querySelector('video').play();
+            });
+            thumbs.forEach((thumb, i) => {
+                thumb.classList.toggle('active', i === index);
+                thumb.classList.toggle('border-2', i === index);
+                thumb.classList.toggle('border-blue-600', i === index);
             });
         }
 
-        nextSlide.addEventListener('click', () => {
-            currentSlide = (currentSlide + 1) % slides.length;
-            showSlide(currentSlide);
+        thumbs.forEach(thumb => {
+            thumb.addEventListener('click', () => {
+                currentSlide = parseInt(thumb.dataset.slide);
+                showSlide(currentSlide);
+            });
         });
 
-        prevSlide.addEventListener('click', () => {
-            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-            showSlide(currentSlide);
-        });
-
-        // Auto-slide every 5 seconds
         setInterval(() => {
             currentSlide = (currentSlide + 1) % slides.length;
             showSlide(currentSlide);
-        }, 5000);
+        }, 7000);
+
+        // Tech Trend Explorer
+        const trendModal = document.getElementById('trend-modal');
+        const trendTitle = document.getElementById('trend-title');
+        const trendDescription = document.getElementById('trend-description');
+        const trendApplication = document.getElementById('trend-application');
+        const trendCourseLink = document.getElementById('trend-course-link');
+        const closeTrendModal = document.getElementById('close-trend-modal');
+
+        const trends = {
+            ai: {
+                title: 'Kecerdasan Buatan',
+                description: 'Pelajari AI untuk membangun sistem cerdas seperti chatbot dan analitik prediktif.',
+                application: 'Asisten virtual (contoh: Siri), rekomendasi produk di e-commerce.',
+                courseLink: 'https://product.orilix.net'
+            },
+            blockchain: {
+                title: 'Web3 & Blockchain',
+                description: 'Kuasai teknologi blockchain untuk aplikasi terdesentralisasi.',
+                application: 'NFT marketplace, smart contract untuk keuangan terdesentralisasi.',
+                courseLink: 'https://product.orilix.net'
+            },
+            cloud: {
+                title: 'Cloud Computing',
+                description: 'Bangun aplikasi skalabel dengan layanan cloud seperti AWS.',
+                application: 'Hosting aplikasi web, penyimpanan data skala besar.',
+                courseLink: 'https://product.orilix.net'
+            }
+        };
+
+        document.querySelectorAll('.trend-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const trend = trends[card.dataset.trend];
+                trendTitle.textContent = trend.title;
+                trendDescription.textContent = trend.description;
+                trendApplication.textContent = trend.application;
+                trendCourseLink.href = trend.courseLink;
+                trendModal.style.display = 'flex';
+            });
+        });
+
+        closeTrendModal.addEventListener('click', () => {
+            trendModal.style.display = 'none';
+        });
+
+        // Coding Challenge
+        const codeEditor = document.getElementById('code-editor');
+        const runCodeButton = document.getElementById('run-code');
+        const codeOutput = document.getElementById('code-output');
+
+        runCodeButton.addEventListener('click', () => {
+            const code = codeEditor.value;
+            try {
+                const result = eval(code); // Note: Use with caution, replace with sandbox for production
+                codeOutput.textContent = `Hasil: ${result}`;
+                codeOutput.classList.remove('text-red-600');
+                codeOutput.classList.add('text-green-600');
+            } catch (error) {
+                codeOutput.textContent = `Error: ${error.message}`;
+                codeOutput.classList.remove('text-green-600');
+                codeOutput.classList.add('text-red-600');
+            }
+        });
 
         // FAQ Accordion
         document.querySelectorAll('.faq-question').forEach(button => {
@@ -1034,16 +1037,6 @@
                     faqItem.querySelector('.faq-answer').style.maxHeight = '200px';
                     button.querySelector('.fa-chevron-down').style.transform = 'rotate(180deg)';
                 }
-            });
-        });
-
-        // Skill Progress Tracker Interactivity
-        document.querySelectorAll('.skill-card').forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                card.querySelector('.skill-detail').classList.remove('hidden');
-            });
-            card.addEventListener('mouseleave', () => {
-                card.querySelector('.skill-detail').classList.add('hidden');
             });
         });
     </script>
