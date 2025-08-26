@@ -28,6 +28,14 @@
         #mobile-menu .menu-content {
             padding: 1rem;
         }
+        .close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            color: #374151;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body class="font-sans bg-gray-50">
@@ -58,7 +66,8 @@
         </div>
         <!-- Mobile Menu -->
         <div class="md:hidden hidden" id="mobile-menu">
-            <div class="menu-content pt-4 pb-3">
+            <div class="menu-content pt-4 pb-3 relative">
+                <i class="fas fa-times close-button" id="close-menu"></i>
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="space-y-4">
                         <a href="https://.orilix.net" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600">Beranda</a>
@@ -331,7 +340,7 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
                 <div class="col-span-2">
                     <div class="flex items-center mb-4">
-                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjwt2kmtZSeK95r1o-qq79QvtCY7EHVaRT8bYN_VEzl82KicisqRzPXHFjbY1MX_ymN19XcnMUxpDlBVFBYx5V_WLuwOsyjfUYpiT1TMOYUjQvqEZBiwDnbUVrHQ2D9rPNYKNbCdcFnpDKN6-8Zz148WBJZtqNkJX48mSC-ItlvpIC_3UhggGgtpGMHsH_k/s3264/20250821_091245.png" alt="Logo eracoding footer" class="h-12 w-auto">
+                        <img src="https://blogger.googleapis.com/img/b/R29vZ2xl/AVvXsEjwt2kmtZSeK95r1o-qq79QvtCY7EHVaRT8bYN_VEzl82KicisqRzPXHFjbY1MX_ymN19XcnMUxpDlBVFBYx5V_WLuwOsyjfUYpiT1TMOYUjQvqEZBiwDnbUVrHQ2D9rPNYKNbCdcFnpDKN6-8Zz148WBJZtqNkJX48mSC-ItlvpIC_3UhggGgtpGMHsH_k/s3264/20250821_091245.png" alt="Logo eracoding footer" class="h-12 w-auto">
                         <span class="ml-2 text-xl font-bold"></span>
                     </div>
                     <p class="text-gray-400 mb-4">Platform belajar coding terdepan di Indonesia dengan fokus pada keterampilan yang dibutuhkan industri.</p>
@@ -400,6 +409,17 @@
                 icon.classList.add('fa-bars');
                 icon.classList.remove('fa-times');
             });
+        });
+
+        // Tutup menu saat tombol close diklik
+        document.getElementById('close-menu').addEventListener('click', () => {
+            const menu = document.getElementById('mobile-menu');
+            const button = document.querySelector('[aria-controls="mobile-menu"]');
+            menu.classList.add('hidden');
+            button.setAttribute('aria-expanded', 'false');
+            const icon = button.querySelector('i');
+            icon.classList.add('fa-bars');
+            icon.classList.remove('fa-times');
         });
 
         // Anti-inspeksi (disable inspect element)
