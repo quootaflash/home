@@ -14,6 +14,7 @@
         .floating { animation: float 4s ease-in-out infinite; }
         .course-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
         .course-card { transition: all 0.3s ease; }
+        #mobile-menu { transition: all 0.3s ease-in-out; }
     </style>
 </head>
 <body class="font-sans bg-gray-50">
@@ -39,6 +40,22 @@
                         <span class="sr-only">Open main menu</span>
                         <i class="fas fa-bars"></i>
                     </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="pt-4 pb-3 border-t border-gray-200">
+                <div class="bg-white shadow-sm">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div class="space-y-4">
+                            <a href="https://.orilix.net" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600">Beranda</a>
+                            <a href="https://product.orilix.net" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600">Kelas</a>
+                            <a href="https://bootcamp.orilix.net" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600">Bootcamp</a>
+                            <a href="https://whatsapp.com/channel/0029Vb6GVqw0Qearxmwd151l" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600">Informasi</a>
+                            <a href="https://m.orilix.net" class="block px-3 py-2 rounded-md text-base font-medium bg-blue-600 text-white hover:bg-blue-700">Login/Daftar</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -307,7 +324,8 @@
                         <span class="ml-2 text-xl font-bold"></span>
                     </div>
                     <p class="text-gray-400 mb-4">Platform belajar coding terdepan di Indonesia dengan fokus pada keterampilan yang dibutuhkan industri.</p>
-                        <h3 class="text-lg font-bold mb-4">Ikuti kami</h3>
+                    <h3 class="text-lg font-bold mb-4">Ikuti kami</h3>
+                    <div class="flex space-x-4">
                         <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter text-xl"></i></a>
                         <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram text-xl"></i></a>
                         <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin text-xl"></i></a>
@@ -348,48 +366,30 @@
 
     <script>
         // Mobile menu toggle
-        document.querySelector('[aria-controls="mobile-menu"]').addEventListener('click', function() {
+        document.querySelector('[aria-controls="mobile-menu"]').addEventListener('click', function () {
             const menu = document.getElementById('mobile-menu');
             const expanded = this.getAttribute('aria-expanded') === 'true';
             this.setAttribute('aria-expanded', !expanded);
             menu.classList.toggle('hidden');
+            
+            // Toggle ikon hamburger menjadi X saat menu terbuka
+            const icon = this.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
         });
 
-        // Simple animation for counters
-        if (window.innerWidth > 768) {
-            const counters = document.querySelectorAll('.counter');
-            const speed = 200;
-            
-            counters.forEach(counter => {
-                const target = +counter.getAttribute('data-target');
-                const count = +counter.innerText;
-                const increment = target / speed;
-                
-                if (count < target) {
-                    counter.innerText = Math.ceil(count + increment);
-                    setTimeout(updateCount, 1);
-                } else {
-                    counter.innerText = target;
-                }
+        // Tutup menu saat salah satu tautan diklik
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                const menu = document.getElementById('mobile-menu');
+                const button = document.querySelector('[aria-controls="mobile-menu"]');
+                menu.classList.add('hidden');
+                button.setAttribute('aria-expanded', 'false');
+                const icon = button.querySelector('i');
+                icon.classList.add('fa-bars');
+                icon.classList.remove('fa-times');
             });
-            
-            function updateCount() {
-                counters.forEach(counter => {
-                    const target = +counter.getAttribute('data-target');
-                    const count = +counter.innerText;
-                    const increment = target / speed;
-                    
-                    if (count < target) {
-                        counter.innerText = Math.ceil(count + increment);
-                        setTimeout(updateCount, 1);
-                    } else {
-                        counter.innerText = target;
-                    }
-                });
-            }
-            
-            setTimeout(updateCount, 2000);
-        }
+        });
     </script>
 </body>
 </html>
