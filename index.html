@@ -957,3 +957,177 @@
             } else if (interest === 'uiux') {
                 course = 'Mobile UI/UX Design';
                 path = level === 'beginner' ? 'Pelajari dasar desain, prototyping di Figma, dan prins
+<!-- Personalized Learning Path Quiz (Lanjutan) -->
+                quizForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const interest = document.getElementById('quiz-interest').value;
+                    const level = document.getElementById('quiz-level').value;
+                    const goal = document.getElementById('quiz-goal').value;
+                    let course = 'Fullstack JavaScript Mastery';
+                    let path = '';
+                    if (interest === 'data') {
+                        course = 'Data Science with Python';
+                        path = level === 'beginner' ? 'Mulai dengan Python Dasar, lanjut ke Pandas dan Visualisasi Data, kemudian Machine Learning.' :
+                               level === 'intermediate' ? 'Fokus pada Pandas dan Scikit-learn, lalu proyek machine learning.' :
+                               'Pelajari deep learning dengan TensorFlow dan proyek prediktif.';
+                    } else if (interest === 'uiux') {
+                        course = 'Mobile UI/UX Design';
+                        path = level === 'beginner' ? 'Pelajari dasar desain, prototyping di Figma, dan prinsip UX.' :
+                               level === 'intermediate' ? 'Fokus pada desain responsif dan animasi UI.' :
+                               'Kembangkan portofolio desain aplikasi mobile dan web.';
+                    } else {
+                        path = level === 'beginner' ? 'Mulai dengan HTML, CSS, dan JavaScript Dasar, lalu ke React.' :
+                               level === 'intermediate' ? 'Pelajari Node.js, Express, dan MongoDB untuk fullstack.' :
+                               'Bangun aplikasi kompleks dengan Next.js dan TypeScript.';
+                    }
+                    recommendedCourse.textContent = course;
+                    learningPath.textContent = `Jalur Belajar: ${path}`;
+                    quizResult.classList.remove('hidden');
+                });
+
+                // Tech Trend Explorer
+                const trendModal = document.getElementById('trend-modal');
+                const trendTitle = document.getElementById('trend-title');
+                const trendDescription = document.getElementById('trend-description');
+                const trendApplication = document.getElementById('trend-application');
+                const trendCourseLink = document.getElementById('trend-course-link');
+                const closeTrendModal = document.getElementById('close-trend-modal');
+
+                const trends = {
+                    ai: {
+                        title: 'Kecerdasan Buatan',
+                        description: 'Pelajari bagaimana AI mengubah dunia dengan chatbot, pengenalan gambar, dan analisis prediktif.',
+                        application: 'Chatbot pelanggan, asisten virtual, analisis data.',
+                        courseLink: 'https://product.orilix.net'
+                    },
+                    blockchain: {
+                        title: 'Web3 & Blockchain',
+                        description: 'Kembangkan aplikasi terdesentralisasi seperti NFT dan smart contract.',
+                        application: 'Pasar NFT, sistem pembayaran kripto, DeFi.',
+                        courseLink: 'https://product.orilix.net'
+                    },
+                    cloud: {
+                        title: 'Cloud Computing',
+                        description: 'Skalakan aplikasi dengan layanan cloud seperti AWS dan Azure.',
+                        application: 'Hosting aplikasi, penyimpanan data, DevOps.',
+                        courseLink: 'https://product.orilix.net'
+                    }
+                };
+
+                document.querySelectorAll('.trend-card').forEach(card => {
+                    card.addEventListener('click', () => {
+                        const trend = trends[card.dataset.trend];
+                        trendTitle.textContent = trend.title;
+                        trendDescription.textContent = trend.description;
+                        trendApplication.textContent = trend.application;
+                        trendCourseLink.href = trend.courseLink;
+                        trendModal.style.display = 'flex';
+                    });
+                });
+
+                closeTrendModal.addEventListener('click', () => {
+                    trendModal.style.display = 'none';
+                });
+
+                // Skill Progress Tracker
+                document.querySelectorAll('.skill-card').forEach(card => {
+                    card.addEventListener('mouseenter', () => {
+                        card.querySelector('.skill-detail').classList.remove('hidden');
+                    });
+                    card.addEventListener('mouseleave', () => {
+                        card.querySelector('.skill-detail').classList.add('hidden');
+                    });
+                });
+
+                // FAQ Toggle
+                document.querySelectorAll('.faq-question').forEach(button => {
+                    button.addEventListener('click', () => {
+                        const faqItem = button.parentElement;
+                        const answer = faqItem.querySelector('.faq-answer');
+                        const expanded = button.getAttribute('aria-expanded') === 'true';
+                        button.setAttribute('aria-expanded', !expanded);
+                        faqItem.classList.toggle('active');
+                        answer.style.maxHeight = expanded ? '0' : `${answer.scrollHeight}px`;
+                        button.querySelector('i').classList.toggle('fa-chevron-down');
+                        button.querySelector('i').classList.toggle('fa-chevron-up');
+                    });
+                });
+
+                // Service Worker untuk caching
+                if ('serviceWorker' in navigator) {
+                    window.addEventListener('load', () => {
+                        navigator.serviceWorker.register('/sw.js').then(reg => {
+                            console.log('Service Worker registered:', reg);
+                        }).catch(err => {
+                            console.error('Service Worker registration failed:', err);
+                        });
+                    });
+                }
+            </script>
+            <!-- Service Worker -->
+            <script>
+                // sw.js
+                self.addEventListener('install', event => {
+                    event.waitUntil(
+                        caches.open('orilix-cache-v1').then(cache => {
+                            return cache.addAll([
+                                '/',
+                                '/index.html',
+                                '/styles.css',
+                                '/scripts.js',
+                                'https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/hero-bg.webp',
+                                'https://blogger.googleapis.com/img/b/R29vZ2xl/AVvXsEjwt2kmtZSeK95r1o-qq79QvtCY7EHVaRT8bYN_VEzl82KicisqRzPXHFjbY1MX_ymN19XcnMUxpDlBVFBYx5V_WLuwOsyjfUYpiT1TMOYUjQvqEZBiwDnbUVrHQ2D9rPNYKNbCdcFnpDKN6-8Zz148WBJZtqNkJX48mSC-ItlvpIC_3UhggGgtpGMHsH_k/s3264/20250821_091245.webp'
+                            ]);
+                        })
+                    );
+                });
+                self.addEventListener('fetch', event => {
+                    event.respondWith(
+                        caches.match(event.request).then(response => {
+                            return response || fetch(event.request);
+                        })
+                    );
+                });
+            </script>
+            <!-- JSON-LD untuk SEO -->
+            <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "EducationalOrganization",
+                "name": "Orilix",
+                "url": "https://orilix.net",
+                "logo": "https://blogger.googleapis.com/img/b/R29vZ2xl/AVvXsEjwt2kmtZSeK95r1o-qq79QvtCY7EHVaRT8bYN_VEzl82KicisqRzPXHFjbY1MX_ymN19XcnMUxpDlBVFBYx5V_WLuwOsyjfUYpiT1TMOYUjQvqEZBiwDnbUVrHQ2D9rPNYKNbCdcFnpDKN6-8Zz148WBJZtqNkJX48mSC-ItlvpIC_3UhggGgtpGMHsH_k/s3264/20250821_091245.png",
+                "description": "Platform belajar coding terdepan di Indonesia.",
+                "course": [
+                    {
+                        "@type": "Course",
+                        "name": "Fullstack JavaScript Mastery",
+                        "description": "Bangun aplikasi web modern dengan React, Node.js, dan MongoDB.",
+                        "provider": {
+                            "@type": "Organization",
+                            "name": "Orilix"
+                        }
+                    },
+                    {
+                        "@type": "Course",
+                        "name": "Data Science with Python",
+                        "description": "Kuasai analisis data dan machine learning dengan Python dan Pandas.",
+                        "provider": {
+                            "@type": "Organization",
+                            "name": "Orilix"
+                        }
+                    },
+                    {
+                        "@type": "Course",
+                        "name": "Mobile UI/UX Design",
+                        "description": "Desain antarmuka mobile dengan Figma dan prinsip UX modern.",
+                        "provider": {
+                            "@type": "Organization",
+                            "name": "Orilix"
+                        }
+                    }
+                ]
+            }
+            </script>
+        </body>
+</html>
