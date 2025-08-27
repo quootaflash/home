@@ -5,68 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="description" content="Orilix - Platform belajar coding terdepan di Indonesia dengan kurikulum industri dan mentor berpengalaman.">
     <meta name="keywords" content="belajar coding, kursus programming, web development, data science, UI/UX, Orilix">
-    <meta name="robots" content="index, follow">
-    <!-- Open Graph untuk SEO -->
-    <meta property="og:title" content="ORILIX - Platform Belajar Coding">
-    <meta property="og:description" content="Orilix - Platform belajar coding terdepan di Indonesia dengan kurikulum industri dan mentor berpengalaman.">
-    <meta property="og:image" content="https://blogger.googleapis.com/img/b/R29vZ2xl/AVvXsEjwt2kmtZSeK95r1o-qq79QvtCY7EHVaRT8bYN_VEzl82KicisqRzPXHFjbY1MX_ymN19XcnMUxpDlBVFBYx5V_WLuwOsyjfUYpiT1TMOYUjQvqEZBiwDnbUVrHQ2D9rPNYKNbCdcFnpDKN6-8Zz148WBJZtqNkJX48mSC-ItlvpIC_3UhggGgtpGMHsH_k/s3264/20250821_091245.png">
-    <meta property="og:url" content="https://orilix.net">
-    <meta name="twitter:card" content="summary_large_image">
-    <!-- Preload font untuk performa -->
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
     <title>ORILIX - Platform Belajar Coding</title>
-    <!-- Inline Critical CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.2/vanilla-tilt.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
     <style>
-        /* Critical CSS untuk hero section */
-        .hero-bg {
-            background: linear-gradient(rgba(59, 130, 246, 0.8), rgba(37, 99, 235, 0.8)), url('https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/hero-bg.webp');
-            background-attachment: fixed;
-            background-size: cover;
-            background-position: center;
-        }
-        .hero-bg h1 { color: #ffffff; font-size: 2.25rem; font-weight: bold; }
-        .btn-animated { transition: all 0.3s ease; position: relative; overflow: hidden; }
-        .btn-animated::after { content: ''; position: absolute; bottom: 0; left: -100%; width: 100%; height: 2px; background: #ffffff; transition: all 0.3s ease; }
-        .btn-animated:hover::after { left: 0; }
-        /* Animasi sederhana dengan CSS alih-alih Typed.js */
-        @keyframes typing {
-            0% { content: 'Belajar Coding untuk Karir Teknologi'; }
-            33% { content: 'Kuasai Keterampilan Industri'; }
-            66% { content: 'Bangun Masa Depan Digitalmu'; }
-        }
-        #typed-hero::before {
-            content: 'Belajar Coding untuk Karir Teknologi';
-            display: inline-block;
-            animation: typing 9s steps(30) infinite;
-        }
-        /* Fokus untuk aksesibilitas */
-        button:focus, a:focus { outline: 2px solid #2563eb; outline-offset: 2px; }
-        /* Placeholder untuk elemen dinamis */
-        .course-container:empty {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-        .course-container:empty::before {
-            content: '';
-            background: #f0f0f0;
-            height: 400px;
-            border-radius: 1rem;
-        }
-        /* Font display untuk mencegah FOIT */
-        @font-face {
-            font-family: 'FontAwesome';
-            src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-solid-900.woff2') format('woff2');
-            font-display: swap;
-        }
-        /* Optimasi animasi untuk CLS */
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
         }
-        .floating { animation: float 4s ease-in-out infinite; width: 100%; height: auto; }
+        .floating { animation: float 4s ease-in-out infinite; }
         .course-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
-        .course-card { transition: all 0.3s ease; width: 100%; height: 400px; }
+        .course-card { transition: all 0.3s ease; }
         #mobile-menu {
             transition: all 0.3s ease-in-out;
             position: fixed;
@@ -87,6 +39,28 @@
             color: #374151;
             cursor: pointer;
         }
+        .hero-bg {
+            background: linear-gradient(rgba(59, 130, 246, 0.8), rgba(37, 99, 235, 0.8)), url('https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/hero-bg.jpg');
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+        }
+        .btn-animated {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-animated::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: white;
+            transition: all 0.3s ease;
+        }
+        .btn-animated:hover::after { left: 0; }
         #back-to-top {
             position: fixed;
             bottom: 16px;
@@ -97,7 +71,7 @@
             align-items: center;
             justify-content: center;
         }
-        #quiz-popup, #trend-modal, #course-modal {
+        #quiz-popup, #trend-modal {
             display: none;
             position: fixed;
             top: 0;
@@ -109,7 +83,7 @@
             justify-content: center;
             align-items: center;
         }
-        #quiz-content, #trend-modal-content, #course-modal-content {
+        #quiz-content, #trend-modal-content {
             background: white;
             padding: 2rem;
             border-radius: 1rem;
@@ -122,36 +96,90 @@
             from { transform: translateY(-50px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
-        .testimonial-slider { overflow: hidden; position: relative; }
-        .testimonial-slide { display: none; animation: fadeIn 1s ease; }
+        #course-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        #course-modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            animation: slideIn 0.5s ease;
+        }
+        .testimonial-slider {
+            overflow: hidden;
+            position: relative;
+        }
+        .testimonial-slide {
+            display: none;
+            animation: fadeIn 1s ease;
+        }
         .testimonial-slide.active { display: block; }
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
-        .faq-item.active .faq-answer { max-height: 200px; padding: 1rem 0; }
-        .faq-answer { max-height: 0; overflow: hidden; transition: all 0.3s ease; }
-        .skill-card:hover .progress-bar { transform: scale(1.05); transition: transform 0.3s ease; }
-        .trend-card:hover { transform: scale(1.05); box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2); transition: all 0.3s ease; }
-        .newsletter-form { display: flex; flex-wrap: nowrap; gap: 0.5rem; align-items: center; }
-        .newsletter-form input { flex: 1; min-width: 0; }
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+            padding: 1rem 0;
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .skill-card:hover .progress-bar {
+            transform: scale(1.05);
+            transition: transform 0.3s ease;
+        }
+        .trend-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        .newsletter-form {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        .newsletter-form input {
+            flex: 1;
+            min-width: 0;
+        }
         .newsletter-form button { flex-shrink: 0; }
-        @media (min-width: 768px) { .newsletter-form { flex-direction: row; } }
-        .badge-unlock { animation: badgePop 0.5s ease; }
+        @media (min-width: 768px) {
+            .newsletter-form { flex-direction: row; }
+        }
+        .badge-unlock {
+            animation: badgePop 0.5s ease;
+        }
         @keyframes badgePop {
             0% { transform: scale(0); opacity: 0; }
             80% { transform: scale(1.2); opacity: 1; }
             100% { transform: scale(1); }
         }
-        #code-editor { font-family: 'Courier New', Courier, monospace; font-size: 14px; resize: none; }
-        .leaderboard-item:hover { background-color: #f1f5f9; transition: all 0.3s ease; }
+        #code-editor {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            resize: none;
+        }
+        .leaderboard-item:hover {
+            background-color: #f1f5f9;
+            transition: all 0.3s ease;
+        }
     </style>
-    <!-- Tailwind CSS dan AOS dimuat secara async -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" integrity="sha384-..." crossorigin="anonymous">
-    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" media="print" onload="this.media='all'">
-    <!-- Font Awesome hanya ikon yang diperlukan -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/fontawesome.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/solid.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer">
 </head>
 <body class="font-sans bg-gray-50">
     <!-- Navigation -->
@@ -160,7 +188,7 @@
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
                     <div class="flex-shrink-0 flex items-center">
-                        <img src="https://blogger.googleapis.com/img/b/R29vZ2xl/AVvXsEj3NQZcwhEwbBj73hdSqyBHpIYTsMXtWVzg_oTivtIwQ0hokjVTOXWdVn4AmEbjoJOgCHB7tY6sSGPJ930YhcVYo5twbczZtaJXfkeKBfGpdQVPyhrxM9lOF8vuHz6r4f6LuCOLnsNXkbrQKCxQsTlqU3FaG4ujwKgnu5PvxoJUq2oV_YgaUpIUGaZ_26X6/s3264/20250821_091218.webp" alt="Logo Orilix" width="120" height="48" loading="eager">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj3NQZcwhEwbBj73hdSqyBHpIYTsMXtWVzg_oTivtIwQ0hokjVTOXWdVn4AmEbjoJOgCHB7tY6sSGPJ930YhcVYo5twbczZtaJXfkeKBfGpdQVPyhrxM9lOF8vuHz6r4f6LuCOLnsNXkbrQKCxQsTlqU3FaG4ujwKgnu5PvxoJUq2oV_YgaUpIUGaZ_26X6/s3264/20250821_091218.png" alt="Logo Orilix" class="h-12 w-auto">
                     </div>
                 </div>
                 <div class="hidden md:ml-6 md:flex md:items-center md:space-x-8">
@@ -172,7 +200,8 @@
                     <a href="https://m.orilix.net" class="btn-animated px-4 py-2 rounded-md text-sm font-medium bg-blue-600 text-white hover:bg-blue-700">Masuk</a>
                 </div>
                 <div class="-mr-2 flex items-center md:hidden">
-                    <button type="button" aria-label="Buka menu navigasi" aria-controls="mobile-menu" aria-expanded="false" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none">
+                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
                         <i class="fas fa-bars"></i>
                     </button>
                 </div>
@@ -208,17 +237,17 @@
                     </div>
                     <div class="flex items-center space-x-2 mt-4">
                         <div class="flex -space-x-2">
-                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/082315b5-c3fe-4e37-852a-952d50d1e889.webp" alt="Foto mentor" width="40" height="40" loading="lazy" class="w-10 h-10 rounded-full border-2 border-white floating">
-                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/1e6a7719-5e81-4e73-b132-1cc5d32ffaa6.webp" alt="Foto developer" width="40" height="40" loading="lazy" class="w-10 h-10 rounded-full border-2 border-white floating" style="animation-delay: 0.5s;">
-                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/55aec51c-347a-4d41-8db2-0408dd83c6ad.webp" alt="Foto instruktur" width="40" height="40" loading="lazy" class="w-10 h-10 rounded-full border-2 border-white floating" style="animation-delay: 1s;">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/082315b5-c3fe-4e37-852a-952d50d1e889.png" alt="Foto mentor" class="w-10 h-10 rounded-full border-2 border-white floating">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/1e6a7719-5e81-4e73-b132-1cc5d32ffaa6.png" alt="Foto developer" class="w-10 h-10 rounded-full border-2 border-white floating" style="animation-delay: 0.5s;">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/55aec51c-347a-4d41-8db2-0408dd83c6ad.png" alt="Foto instruktur" class="w-10 h-10 rounded-full border-2 border-white floating" style="animation-delay: 1s;">
                         </div>
                         <p class="text-sm text-blue-100">Bergabung dengan 100+ siswa lainnya</p>
                     </div>
-                    <button id="quiz-button" class="mt-4 text-blue-100 underline hover:text-white transition duration-300" aria-label="Buka kuis jalur belajar">Temukan Jalur Belajarmu!</button>
+                    <button id="quiz-button" class="mt-4 text-blue-100 underline hover:text-white transition duration-300">Temukan Jalur Belajarmu!</button>
                 </div>
                 <div class="hidden md:block tilt-element" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-perspective="1000">
-                    <video autoplay muted loop poster="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/video-poster.webp" width="600" height="400" loading="lazy">
-                        <source src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/video/hero-video.mp4" type="video/mp4">
+                    <video autoplay muted loop class="w-full rounded-lg shadow-2xl">
+                        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                 </div>
@@ -229,12 +258,12 @@
     <!-- Personalized Learning Path Quiz -->
     <div id="quiz-popup">
         <div id="quiz-content" class="text-gray-900">
-            <button id="close-quiz" class="absolute top-2 right-2 text-gray-600 hover:text-gray-900" aria-label="Tutup kuis"><i class="fas fa-times"></i></button>
+            <button id="close-quiz" class="absolute top-2 right-2 text-gray-600 hover:text-gray-900"><i class="fas fa-times"></i></button>
             <h2 class="text-2xl font-bold mb-4">Temukan Jalur Belajar yang Cocok</h2>
             <p class="text-gray-600 mb-4">Jawab pertanyaan berikut untuk mendapatkan rekomendasi kursus dan roadmap belajar.</p>
             <form id="quiz-form">
                 <div class="mb-4">
-                    <label class="block text-sm font-medium mb-2" for="quiz-interest">Minat Utama Anda?</label>
+                    <label class="block text-sm font-medium mb-2">Minat Utama Anda?</label>
                     <select class="w-full p-2 border rounded-md" id="quiz-interest">
                         <option value="web">Web Development</option>
                         <option value="data">Data Science</option>
@@ -242,7 +271,7 @@
                     </select>
                 </div>
                 <div class="mb-4">
-                    <label class="block text-sm font-medium mb-2" for="quiz-level">Level Pengalaman?</label>
+                    <label class="block text-sm font-medium mb-2">Level Pengalaman?</label>
                     <select class="w-full p-2 border rounded-md" id="quiz-level">
                         <option value="beginner">Pemula</option>
                         <option value="intermediate">Menengah</option>
@@ -250,7 +279,7 @@
                     </select>
                 </div>
                 <div class="mb-4">
-                    <label class="block text-sm font-medium mb-2" for="quiz-goal">Tujuan Karir Anda?</label>
+                    <label class="block text-sm font-medium mb-2">Tujuan Karir Anda?</label>
                     <select class="w-full p-2 border rounded-md" id="quiz-goal">
                         <option value="freelance">Freelancer</option>
                         <option value="startup">Bekerja di Startup</option>
@@ -269,9 +298,9 @@
     <!-- Course Preview Modal -->
     <div id="course-modal">
         <div id="course-modal-content" class="text-gray-900">
-            <button id="close-modal" class="absolute top-2 right-2 text-gray-600 hover:text-gray-900" aria-label="Tutup modal"><i class="fas fa-times"></i></button>
+            <button id="close-modal" class="absolute top-2 right-2 text-gray-600 hover:text-gray-900"><i class="fas fa-times"></i></button>
             <h2 class="text-2xl font-bold mb-4" id="modal-title"></h2>
-            <video controls class="w-full rounded-lg mb-4" id="modal-video" poster="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/course-poster.webp" width="600" height="400">
+            <video controls class="w-full rounded-lg mb-4" id="modal-video">
                 <source src="" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
@@ -306,6 +335,38 @@
         </div>
     </div>
 
+    <!-- Interactive Coding Challenge -->
+    <div class="py-16 bg-blue-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12" data-aos="fade-up">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Tantangan Coding Langsung</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Coba keterampilan coding Anda dengan tantangan JavaScript ini dan lihat peringkat Anda!</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8" data-aos="fade-up" data-aos-delay="100">
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <h3 class="text-lg font-bold mb-4">Tulis Kode untuk Membalik String</h3>
+                    <textarea id="code-editor" class="w-full h-40 p-2 border rounded-md mb-4" placeholder="Ketik kode JavaScript Anda di sini..."></textarea>
+                    <button id="run-code" class="btn-animated bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Jalankan Kode</button>
+                    <p id="code-output" class="mt-4 text-gray-600"></p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <h3 class="text-lg font-bold mb-4">Papan Peringkat</h3>
+                    <div class="space-y-2">
+                        <div class="leaderboard-item p-2 rounded-md flex justify-between">
+                            <span>1. Adi Pratama</span><span class="text-blue-600">92 poin</span>
+                        </div>
+                        <div class="leaderboard-item p-2 rounded-md flex justify-between">
+                            <span>2. Siti Rahayu</span><span class="text-blue-600">88 poin</span>
+                        </div>
+                        <div class="leaderboard-item p-2 rounded-md flex justify-between">
+                            <span>3. Budi Santoso</span><span class="text-blue-600">85 poin</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Why Coding Matters -->
     <div class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -334,39 +395,6 @@
                     </div>
                     <h3 class="text-xl font-bold mb-3">Membangun Masa Depan</h3>
                     <p class="text-gray-600">Jadilah bagian dari revolusi digital dengan menciptakan aplikasi, website, atau solusi teknologi inovatif.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Gamified Skill Progress Tracker -->
-    <div class="py-16 bg-blue-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12" data-aos="fade-up">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Lacak Kemajuan Belajarmu</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Hover untuk melihat detail keterampilan dan milestone yang telah dicapai.</p>
-            </div>
-            <div class="grid md:grid-cols-3 gap-8" data-aos="fade-up" data-aos-delay="100">
-                <div class="skill-card bg-white p-6 rounded-xl shadow-sm cursor-pointer" data-aos="zoom-in">
-                    <h3 class="text-lg font-bold mb-2">Web Development</h3>
-                    <div class="w-full bg-gray-200 rounded-full h-4 mb-2 progress-bar">
-                        <div class="bg-blue-600 h-4 rounded-full" style="width: 75%;"></div>
-                    </div>
-                    <p class="text-gray-600 text-sm skill-detail hidden">Kuasai HTML, CSS, JavaScript, dan framework modern seperti React.</p>
-                </div>
-                <div class="skill-card bg-white p-6 rounded-xl shadow-sm cursor-pointer" data-aos="zoom-in" data-aos-delay="100">
-                    <h3 class="text-lg font-bold mb-2">Data Science</h3>
-                    <div class="w-full bg-gray-200 rounded-full h-4 mb-2 progress-bar">
-                        <div class="bg-purple-600 h-4 rounded-full" style="width: 60%;"></div>
-                    </div>
-                    <p class="text-gray-600 text-sm skill-detail hidden">Pelajari analisis data, visualisasi, dan machine learning dengan Python.</p>
-                </div>
-                <div class="skill-card bg-white p-6 rounded-xl shadow-sm cursor-pointer" data-aos="zoom-in" data-aos-delay="200">
-                    <h3 class="text-lg font-bold mb-2">UI/UX Design</h3>
-                    <div class="w-full bg-gray-200 rounded-full h-4 mb-2 progress-bar">
-                        <div class="bg-green-600 h-4 rounded-full" style="width: 80%;"></div>
-                    </div>
-                    <p class="text-gray-600 text-sm skill-detail hidden">Desain antarmuka intuitif menggunakan Figma dan Adobe XD.</p>
                 </div>
             </div>
         </div>
@@ -432,45 +460,39 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12" data-aos="fade-up">
                 <h2 class="text-3xl font-bold text-gray-900 mb-4">Temui Pengajar Kami</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Belajar dari para profesional berpengalaman yang siap membimbing Anda menuju kesuksesan di dunia teknologi.</p>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Belajar dari profesional berpengalaman di bidang teknologi.</p>
             </div>
             <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8" data-aos="fade-up" data-aos-delay="100">
                 <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300" data-aos="zoom-in">
-                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/082315b5-c3fe-4e37-852a-952d50d1e889.webp" alt="Foto pengajar" width="96" height="96" loading="lazy" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover floating">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/082315b5-c3fe-4e37-852a-952d50d1e889.png" alt="Ahmad Santoso" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover floating">
                     <h3 class="text-xl font-bold text-center mb-2">Ahmad Santoso</h3>
                     <p class="text-gray-600 text-center mb-2">Senior Fullstack Developer</p>
-                    <p class="text-gray-600 text-sm text-center">Dengan pengalaman 8 tahun di industri teknologi, Ahmad telah bekerja di startup unicorn dan mengajar lebih dari 500 siswa.</p>
+                    <p class="text-gray-600 text-sm text-center">Berpengalaman 8 tahun di startup unicorn seperti Tokopedia, mengajar JavaScript dan React.</p>
                     <div class="flex justify-center space-x-4 mt-4">
-                        <a href="#" class="text-blue-600 hover:text-blue-800" aria-label="LinkedIn Ahmad Santoso"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="text-blue-600 hover:text-blue-800" aria-label="GitHub Ahmad Santoso"><i class="fab fa-github"></i></a>
+                        <a href="https://linkedin.com/in/ahmadsantoso" class="text-blue-600 hover:text-blue-800"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://github.com/ahmadsantoso" class="text-blue-600 hover:text-blue-800"><i class="fab fa-github"></i></a>
                     </div>
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300" data-aos="zoom-in" data-aos-delay="100">
-                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/1e6a7719-5e81-4e73-b132-1cc5d32ffaa6.webp" alt="Foto pengajar" width="96" height="96" loading="lazy" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover floating">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/1e6a7719-5e81-4e73-b132-1cc5d32ffaa6.png" alt="Siti Aisyah" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover floating">
                     <h3 class="text-xl font-bold text-center mb-2">Siti Aisyah</h3>
                     <p class="text-gray-600 text-center mb-2">Data Scientist</p>
-                    <p class="text-gray-600 text-sm text-center">Siti memiliki pengalaman 6 tahun di bidang data science dan machine learning, dengan proyek di perusahaan e-commerce ternama.</p>
+                    <p class="text-gray-600 text-sm text-center">Spesialis machine learning dengan proyek di Shopee dan Bukalapak.</p>
                     <div class="flex justify-center space-x-4 mt-4">
-                        <a href="#" class="text-blue-600 hover:text-blue-800" aria-label="LinkedIn Siti Aisyah"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="text-blue-600 hover:text-blue-800" aria-label="GitHub Siti Aisyah"><i class="fab fa-github"></i></a>
+                        <a href="https://linkedin.com/in/sitiaisyah" class="text-blue-600 hover:text-blue-800"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://github.com/sitiaisyah" class="text-blue-600 hover:text-blue-800"><i class="fab fa-github"></i></a>
                     </div>
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300" data-aos="zoom-in" data-aos-delay="200">
-                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/55aec51c-347a-4d41-8db2-0408dd83c6ad.webp" alt="Foto pengajar" width="96" height="96" loading="lazy" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover floating">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/55aec51c-347a-4d41-8db2-0408dd83c6ad.png" alt="Rina Wijaya" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover floating">
                     <h3 class="text-xl font-bold text-center mb-2">Rina Wijaya</h3>
                     <p class="text-gray-600 text-center mb-2">UI/UX Designer</p>
-                    <p class="text-gray-600 text-sm text-center">Rina adalah desainer berpengalaman dengan fokus pada pengalaman pengguna, telah merancang aplikasi untuk berbagai startup teknologi.</p>
+                    <p class="text-gray-600 text-sm text-center">Merancang antarmuka untuk Gojek dan Traveloka menggunakan Figma.</p>
                     <div class="flex justify-center space-x-4 mt-4">
-                        <a href="#" class="text-blue-600 hover:text-blue-800" aria-label="LinkedIn Rina Wijaya"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="text-blue-600 hover:text-blue-800" aria-label="Dribbble Rina Wijaya"><i class="fab fa-dribbble"></i></a>
+                        <a href="https://linkedin.com/in/rinawijaya" class="text-blue-600 hover:text-blue-800"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://dribbble.com/rinawijaya" class="text-blue-600 hover:text-blue-800"><i class="fab fa-dribbble"></i></a>
                     </div>
                 </div>
-            </div>
-            <div class="text-center mt-12">
-                <a href="https://team.orilix.net" class="btn-animated inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition duration-300">
-                    Lihat Semua Pengajar
-                    <i class="fas fa-arrow-right ml-2"></i>
-                </a>
             </div>
         </div>
     </div>
@@ -505,7 +527,7 @@
     <!-- Tech Trend Modal -->
     <div id="trend-modal">
         <div id="trend-modal-content" class="text-gray-900">
-            <button id="close-trend-modal" class="absolute top-2 right-2 text-gray-600 hover:text-gray-900" aria-label="Tutup modal tren"><i class="fas fa-times"></i></button>
+            <button id="close-trend-modal" class="absolute top-2 right-2 text-gray-600 hover:text-gray-900"><i class="fas fa-times"></i></button>
             <h2 class="text-2xl font-bold mb-4" id="trend-title"></h2>
             <p class="text-gray-600 mb-4" id="trend-description"></p>
             <p class="text-gray-600 mb-4"><strong>Aplikasi Dunia Nyata:</strong> <span id="trend-application"></span></p>
@@ -513,109 +535,53 @@
         </div>
     </div>
 
-    <!-- Testimonials -->
+    <!-- Video Success Stories -->
     <div class="py-16 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12" data-aos="fade-up">
                 <h2 class="text-3xl font-bold text-gray-900 mb-4">Kisah Sukses Alumni</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Bagaimana Orilix membantu karir mereka di dunia teknologi.</p>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Dengarkan cerita alumni Orilix yang berhasil mengubah karir mereka.</p>
             </div>
-            <div class="grid md:grid-cols-3 gap-8" data-aos="fade-up">
-                <!-- Testimonial 1 -->
-                <div class="bg-white p-8 rounded-xl shadow-sm">
-                    <div class="flex items-center mb-4">
-                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b098284b-e6fb-4123-8d85-99c150404427.webp" alt="Foto profesional alumni pria dengan background kantor modern" width="48" height="48" loading="lazy" class="w-12 h-12 rounded-full object-cover">
-                        <div class="ml-4">
-                            <h4 class="font-bold">Faisal</h4>
-                            <p class="text-gray-600 text-sm">Freelance</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 italic">"Yang saya suka dari Orilix itu materinya langsung nyambung ke praktek. Rasanya tiap course selalu ada hal baru yang bisa langsung saya coba."</p>
-                    <div class="flex mt-4 text-yellow-400">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
+            <div class="testimonial-slider" data-aos="fade-up" data-aos-delay="100">
+                <div class="testimonial-slide active">
+                    <div class="bg-white p-8 rounded-xl shadow-sm mx-auto max-w-lg">
+                        <video controls class="w-full rounded-lg mb-4">
+                            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <h4 class="font-bold">Faisal Pratama</h4>
+                        <p class="text-gray-600 text-sm">Freelance Developer</p>
+                        <p class="text-gray-600 italic mt-2">"Orilix membantu saya membangun portofolio dan mendapatkan klien internasional."</p>
                     </div>
                 </div>
-                <!-- Testimonial 2 -->
-                <div class="bg-white p-8 rounded-xl shadow-sm">
-                    <div class="flex items-center mb-4">
-                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/4aa84b9f-3184-4429-8d22-0eb9bea4723b.webp" alt="Foto profesional alumni wanita di startup teknologi" width="48" height="48" loading="lazy" class="w-12 h-12 rounded-full object-cover">
-                        <div class="ml-4">
-                            <h4 class="font-bold">Bang Yoga</h4>
-                            <p class="text-gray-600 text-sm">Pelajar</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 italic">"Jujur, saya nggak pernah nyangka bisa ngerti coding. Di Orilix, penjelasannya simpel banget, jadi saya bisa ikutin pelan-pelan tanpa stres."</p>
-                    <div class="flex mt-4 text-yellow-400">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
+                <div class="testimonial-slide">
+                    <div class="bg-white p-8 rounded-xl shadow-sm mx-auto max-w-lg">
+                        <video controls class="w-full rounded-lg mb-4">
+                            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <h4 class="font-bold">Siti Rahayu</h4>
+                        <p class="text-gray-600 text-sm">Data Analyst</p>
+                        <p class="text-gray-600 italic mt-2">"Kursus Data Science Orilix membawa saya ke posisi di startup ternama."</p>
                     </div>
                 </div>
-                <!-- Testimonial 3 -->
-                <div class="bg-white p-8 rounded-xl shadow-sm">
-                    <div class="flex items-center mb-4">
-                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/39f01f6e-d196-49f1-8e07-50dabe23dff4.webp" alt="Foto alumni sedang mempresentasikan produk digital di meeting" width="48" height="48" loading="lazy" class="w-12 h-12 rounded-full object-cover">
-                        <div class="ml-4">
-                            <h4 class="font-bold">Irwan Project</h4>
-                            <p class="text-gray-600 text-sm">Fresh Graduate</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 italic">"Belajar di sini bikin saya sadar kalau coding itu sebenarnya bisa dipelajari siapa saja. Setelah ikut course, saya jadi lebih percaya diri ngerjain project sendiri."</p>
-                    <div class="flex mt-4 text-yellow-400">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star-half-alt"></i>
+                <div class="testimonial-slide">
+                    <div class="bg-white p-8 rounded-xl shadow-sm mx-auto max-w-lg">
+                        <video controls class="w-full rounded-lg mb-4">
+                            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <h4 class="font-bold">Budi Santoso</h4>
+                        <p class="text-gray-600 text-sm">UI/UX Designer</p>
+                        <p class="text-gray-600 italic mt-2">"Desain saya kini digunakan di aplikasi mobile terkenal."</p>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Community Section -->
-    <div class="py-16 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12" data-aos="fade-up">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Bergabung dengan Komunitas Orilix</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Jadilah bagian dari komunitas coder kami yang aktif, berbagi pengetahuan, dan berkolaborasi dalam proyek teknologi.</p>
-            </div>
-            <div class="grid md:grid-cols-2 gap-8 items-center" data-aos="fade-up">
-                <div>
-                    <img src="https://blogger.googleapis.com/img/b/R29vZ2xl/AVvXsEht__UVNCn6mF5ARRSLcGV8H32kUxPRhRU2-9e6egoAvrvKWNzrny7MXQde-fSkMq5fMHbQ_vLQ_58r7G3KrLBjJoMp2nFbkLPPDqktfLvIFA78btxPCCsz-_55EGuLM9fwwwlKRquYTPEdtMlNB6vnOmNKpfUYU73l7JEncBP5Hcu4kvEu3f0MXmyPUkQ/s3264/20250826_172837.webp" alt="Ilustrasi komunitas coder berkolaborasi" width="600" height="400" loading="lazy" class="w-full rounded-lg shadow-xl">
-                </div>
-                <div class="space-y-6">
-                    <div class="flex items-start">
-                        <i class="fas fa-users text-3xl text-blue-600 mr-4"></i>
-                        <div>
-                            <h3 class="text-xl font-bold mb-2">Forum Diskusi Aktif</h3>
-                            <p class="text-gray-600">Tanyakan pertanyaan, bagikan solusi, dan belajar dari coder lain di forum eksklusif kami.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start">
-                        <i class="fas fa-code-branch text-3xl text-blue-600 mr-4"></i>
-                        <div>
-                            <h3 class="text-xl font-bold mb-2">Proyek Kolaboratif</h3>
-                            <p class="text-gray-600">Kerjakan proyek open-source bersama siswa lain untuk memperluas jaringan dan pengalaman.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start">
-                        <i class="fas fa-calendar-check text-3xl text-blue-600 mr-4"></i>
-                        <div>
-                            <h3 class="text-xl font-bold mb-2">Event dan Webinar</h3>
-                            <p class="text-gray-600">Ikuti webinar mingguan dan hackathon untuk terus mengasah keterampilan Anda.</p>
-                        </div>
-                    </div>
-                    <a href="https://whatsapp.com/channel/0029Vb6GVqw0Qearxmwd151l" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition duration-300">
-                        Gabung Komunitas
-                        <i class="fas fa-arrow-right ml-2"></i>
-                    </a>
+            <div class="flex justify-center mt-6 space-x-4">
+                <div class="flex space-x-2">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b098284b-e6fb-4123-8d85-99c150404427.png" alt="Faisal" class="w-12 h-12 rounded-full object-cover cursor-pointer testimonial-thumb active" data-slide="0">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/4aa84b9f-3184-4429-8d22-0eb9bea4723b.png" alt="Siti" class="w-12 h-12 rounded-full object-cover cursor-pointer testimonial-thumb" data-slide="1">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/39f01f6e-d196-49f1-8e07-50dabe23dff4.png" alt="Budi" class="w-12 h-12 rounded-full object-cover cursor-pointer testimonial-thumb" data-slide="2">
                 </div>
             </div>
         </div>
@@ -630,7 +596,7 @@
             </div>
             <div class="space-y-4" data-aos="fade-up" data-aos-delay="100">
                 <div class="faq-item bg-white p-6 rounded-xl shadow-sm">
-                    <button class="faq-question w-full text-left text-lg font-bold flex justify-between items-center" aria-expanded="false">
+                    <button class="faq-question w-full text-left text-lg font-bold flex justify-between items-center">
                         Apakah saya perlu pengalaman coding sebelumnya?
                         <i class="fas fa-chevron-down transition-transform"></i>
                     </button>
@@ -639,7 +605,7 @@
                     </div>
                 </div>
                 <div class="faq-item bg-white p-6 rounded-xl shadow-sm">
-                    <button class="faq-question w-full text-left text-lg font-bold flex justify-between items-center" aria-expanded="false">
+                    <button class="faq-question w-full text-left text-lg font-bold flex justify-between items-center">
                         Berapa lama waktu yang dibutuhkan untuk menyelesaikan kelas?
                         <i class="fas fa-chevron-down transition-transform"></i>
                     </button>
@@ -648,7 +614,7 @@
                     </div>
                 </div>
                 <div class="faq-item bg-white p-6 rounded-xl shadow-sm">
-                    <button class="faq-question w-full text-left text-lg font-bold flex justify-between items-center" aria-expanded="false">
+                    <button class="faq-question w-full text-left text-lg font-bold flex justify-between items-center">
                         Apakah ada sertifikat setelah selesai?
                         <i class="fas fa-chevron-down transition-transform"></i>
                     </button>
@@ -660,40 +626,21 @@
         </div>
     </div>
 
-    <!-- CTA Section -->
-    <div class="bg-blue-600 text-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
-            <div class="grid md:grid-cols-2 gap-8 items-center" data-aos="fade-up">
-                <div>
-                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Siap Memulai Perjalanan Coding-mu?</h2>
-                    <p class="text-lg text-blue-100 mb-6">Bergabung dengan ribuan siswa lainnya dan jadilah bagian dari generasi digital masa depan.</p>
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="https://m.orilix.net" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-medium text-center hover:bg-gray-100 transition duration-300">Daftar Sekarang</a>
-                        <a href="https://wa.me/62085885850204" class="border-2 border-white text-white px-6 py-3 rounded-lg font-medium text-center hover:bg-white hover:text-blue-600 transition duration-300">Konsultasi Gratis</a>
-                    </div>
-                </div>
-                <div class="hidden md:block">
-                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e12c14b1-5d13-4e93-af49-9b70d73dc785.webp" alt="Ilustrasi tim developer beragam sedang berkolaborasi dalam project coding" width="600" height="400" loading="lazy" class="w-full rounded-lg shadow-xl">
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Footer -->
     <footer class="bg-gray-900 text-white pt-16 pb-8" data-aos="fade-up">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div class="col-span-1 md:col-span-2">
                     <div class="flex items-center mb-4">
-                        <img src="https://blogger.googleapis.com/img/b/R29vZ2xl/AVvXsEjwt2kmtZSeK95r1o-qq79QvtCY7EHVaRT8bYN_VEzl82KicisqRzPXHFjbY1MX_ymN19XcnMUxpDlBVFBYx5V_WLuwOsyjfUYpiT1TMOYUjQvqEZBiwDnbUVrHQ2D9rPNYKNbCdcFnpDKN6-8Zz148WBJZtqNkJX48mSC-ItlvpIC_3UhggGgtpGMHsH_k/s3264/20250821_091245.webp" alt="Logo Orilix footer" width="120" height="48" loading="lazy">
+                        <img src="https://blogger.googleapis.com/img/b/R29vZ2xl/AVvXsEjwt2kmtZSeK95r1o-qq79QvtCY7EHVaRT8bYN_VEzl82KicisqRzPXHFjbY1MX_ymN19XcnMUxpDlBVFBYx5V_WLuwOsyjfUYpiT1TMOYUjQvqEZBiwDnbUVrHQ2D9rPNYKNbCdcFnpDKN6-8Zz148WBJZtqNkJX48mSC-ItlvpIC_3UhggGgtpGMHsH_k/s3264/20250821_091245.png" alt="Logo Orilix footer" class="h-12 w-auto">
                     </div>
                     <p class="text-gray-400 mb-4">Platform belajar coding terdepan di Indonesia dengan fokus pada keterampilan yang dibutuhkan industri.</p>
                     <h3 class="text-lg font-bold mb-4">Ikuti kami</h3>
                     <div class="flex space-x-4">
-                        <a href="https://twitter.com/orilix" class="text-gray-400 hover:text-white" aria-label="Twitter Orilix"><i class="fab fa-twitter text-xl"></i></a>
-                        <a href="https://instagram.com/orilix" class="text-gray-400 hover:text-white" aria-label="Instagram Orilix"><i class="fab fa-instagram text-xl"></i></a>
-                        <a href="https://linkedin.com/company/orilix" class="text-gray-400 hover:text-white" aria-label="LinkedIn Orilix"><i class="fab fa-linkedin text-xl"></i></a>
-                        <a href="https://youtube.com/@eracodingindonesia" class="text-gray-400 hover:text-white" aria-label="YouTube Orilix"><i class="fab fa-youtube text-xl"></i></a>
+                        <a href="https://twitter.com/orilix" class="text-gray-400 hover:text-white"><i class="fab fa-twitter text-xl"></i></a>
+                        <a href="https://instagram.com/orilix" class="text-gray-400 hover:text-white"><i class="fab fa-instagram text-xl"></i></a>
+                        <a href="https://linkedin.com/company/orilix" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin text-xl"></i></a>
+                        <a href="https://youtube.com/@eracodingindonesia" class="text-gray-400 hover:text-white"><i class="fab fa-youtube text-xl"></i></a>
                     </div>
                 </div>
                 <div>
@@ -717,7 +664,7 @@
                     <h3 class="text-lg font-bold mb-4">Daftar Newsletter</h3>
                     <p class="text-gray-400 mb-4">Dapatkan update terbaru tentang kelas, tips coding, dan tren teknologi.</p>
                     <form class="newsletter-form">
-                        <input type="email" placeholder="Masukkan email Anda" class="px-4 py-2 rounded-md text-gray-900 focus:outline-none" aria-label="Masukkan alamat email untuk newsletter">
+                        <input type="email" placeholder="Masukkan email Anda" class="px-4 py-2 rounded-md text-gray-900 focus:outline-none">
                         <button type="submit" class="btn-animated bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300">Daftar</button>
                     </form>
                 </div>
@@ -735,44 +682,56 @@
         </div>
     </footer>
 
-    <!-- Back to Top Button -->
-    <button id="back-to-top" class="fixed bottom-16 right-16 bg-blue-600 text-white p-2 rounded-full shadow-md hover:bg-blue-700 transition duration-300 hidden" aria-label="Kembali ke atas">
+    <!-- Minimal Back to Top Button -->
+    <button id="back-to-top" class="fixed bottom-16 right-16 bg-blue-600 text-white p-2 rounded-full shadow-md hover:bg-blue-700 transition duration-300 hidden">
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <!-- JavaScript -->
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.2/vanilla-tilt.min.js" integrity="sha512-..." crossorigin="anonymous"></script>
-    <script defer src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
-        // Inisialisasi AOS dengan pengaturan minimal
-        AOS.init({ duration: 600, once: true, disable: 'mobile' });
+        AOS.init({ duration: 800, once: true });
+
+        const typed = new Typed('#typed-hero', {
+            strings: [
+                'Belajar Coding untuk Karir Teknologi',
+                'Kuasai Keterampilan Industri',
+                'Bangun Masa Depan Digitalmu'
+            ],
+            typeSpeed: 50,
+            backSpeed: 30,
+            backDelay: 2000,
+            loop: true
+        });
 
         // Mobile menu toggle
-        const menuButton = document.querySelector('[aria-controls="mobile-menu"]');
-        const menu = document.getElementById('mobile-menu');
-        menuButton.addEventListener('click', () => {
-            const expanded = menuButton.getAttribute('aria-expanded') === 'true';
-            menuButton.setAttribute('aria-expanded', !expanded);
+        document.querySelector('[aria-controls="mobile-menu"]').addEventListener('click', function () {
+            const menu = document.getElementById('mobile-menu');
+            const expanded = this.getAttribute('aria-expanded') === 'true';
+            this.setAttribute('aria-expanded', !expanded);
             menu.classList.toggle('hidden');
-            const icon = menuButton.querySelector('i');
+            const icon = this.querySelector('i');
             icon.classList.toggle('fa-bars');
             icon.classList.toggle('fa-times');
         });
 
         document.querySelectorAll('#mobile-menu a').forEach(link => {
             link.addEventListener('click', () => {
+                const menu = document.getElementById('mobile-menu');
+                const button = document.querySelector('[aria-controls="mobile-menu"]');
                 menu.classList.add('hidden');
-                menuButton.setAttribute('aria-expanded', 'false');
-                const icon = menuButton.querySelector('i');
+                button.setAttribute('aria-expanded', 'false');
+                const icon = button.querySelector('i');
                 icon.classList.add('fa-bars');
                 icon.classList.remove('fa-times');
             });
         });
 
         document.getElementById('close-menu').addEventListener('click', () => {
+            const menu = document.getElementById('mobile-menu');
+            const button = document.querySelector('[aria-controls="mobile-menu"]');
             menu.classList.add('hidden');
-            menuButton.setAttribute('aria-expanded', 'false');
-            const icon = menuButton.querySelector('i');
+            button.setAttribute('aria-expanded', 'false');
+            const icon = button.querySelector('i');
             icon.classList.add('fa-bars');
             icon.classList.remove('fa-times');
         });
@@ -806,13 +765,13 @@
                 reviews: 1200,
                 originalPrice: 1200000,
                 discountedPrice: 799000,
-                image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/f677a54b-850e-4ba9-94ce-418d8222b27f.webp",
+                image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/f677a54b-850e-4ba9-94ce-418d8222b27f.png",
                 description: "Bangun aplikasi web modern dengan React, Node.js, dan MongoDB.",
                 badge: "Populer",
                 badgeColor: "bg-blue-600",
                 link: "https://product.orilix.net",
                 category: "web",
-                previewVideo: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/video/course-video.mp4"
+                previewVideo: "https://www.w3schools.com/html/mov_bbb.mp4"
             },
             {
                 title: "Data Science with Python",
@@ -821,13 +780,13 @@
                 reviews: 856,
                 originalPrice: 1500000,
                 discountedPrice: 999000,
-                image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/625c2146-2a76-4272-9b84-beec163c8037.webp",
+                image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/625c2146-2a76-4272-9b84-beec163c8037.png",
                 description: "Kuasai analisis data dan machine learning dengan Python dan Pandas.",
                 badge: "Baru",
                 badgeColor: "bg-purple-600",
                 link: "https://product.orilix.net",
                 category: "data",
-                previewVideo: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/video/course-video.mp4"
+                previewVideo: "https://www.w3schools.com/html/mov_bbb.mp4"
             },
             {
                 title: "Mobile UI/UX Design",
@@ -836,13 +795,13 @@
                 reviews: 650,
                 originalPrice: 900000,
                 discountedPrice: 599000,
-                image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/5bd51b5c-6294-46be-8b26-71e9047ee718.webp",
+                image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/5bd51b5c-6294-46be-8b26-71e9047ee718.png",
                 description: "Desain antarmuka mobile dengan Figma dan prinsip UX modern.",
                 badge: "",
                 badgeColor: "",
                 link: "https://product.orilix.net",
                 category: "uiux",
-                previewVideo: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/video/course-video.mp4"
+                previewVideo: "https://www.w3schools.com/html/mov_bbb.mp4"
             }
         ];
 
@@ -854,7 +813,7 @@
                 .map((course, index) => `
                     <div class="course-card bg-white rounded-xl overflow-hidden shadow-md cursor-pointer" data-course-index="${index}" data-aos="zoom-in">
                         <div class="relative">
-                            <img src="${course.image}" alt="${course.title}" width="300" height="192" loading="lazy" class="w-full h-48 object-cover">
+                            <img src="${course.image}" alt="${course.title}" class="w-full h-48 object-cover">
                             ${course.badge ? `<span class="absolute top-2 right-2 ${course.badgeColor} text-white text-xs px-2 py-1 rounded">${course.badge}</span>` : ''}
                         </div>
                         <div class="p-6">
@@ -874,9 +833,7 @@
                     </div>
                 `).join('');
         }
-        // Placeholder skeleton loading
-        courseContainer.innerHTML = '<div class="course-card:empty"></div>'.repeat(3);
-        setTimeout(() => renderCourses(), 100);
+        renderCourses();
 
         // Course Filter
         document.querySelectorAll('.course-filter').forEach(button => {
@@ -956,178 +913,132 @@
                        'Pelajari deep learning dengan TensorFlow dan proyek prediktif.';
             } else if (interest === 'uiux') {
                 course = 'Mobile UI/UX Design';
-                path = level === 'beginner' ? 'Pelajari dasar desain, prototyping di Figma, dan prins
-<!-- Personalized Learning Path Quiz (Lanjutan) -->
-                quizForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    const interest = document.getElementById('quiz-interest').value;
-                    const level = document.getElementById('quiz-level').value;
-                    const goal = document.getElementById('quiz-goal').value;
-                    let course = 'Fullstack JavaScript Mastery';
-                    let path = '';
-                    if (interest === 'data') {
-                        course = 'Data Science with Python';
-                        path = level === 'beginner' ? 'Mulai dengan Python Dasar, lanjut ke Pandas dan Visualisasi Data, kemudian Machine Learning.' :
-                               level === 'intermediate' ? 'Fokus pada Pandas dan Scikit-learn, lalu proyek machine learning.' :
-                               'Pelajari deep learning dengan TensorFlow dan proyek prediktif.';
-                    } else if (interest === 'uiux') {
-                        course = 'Mobile UI/UX Design';
-                        path = level === 'beginner' ? 'Pelajari dasar desain, prototyping di Figma, dan prinsip UX.' :
-                               level === 'intermediate' ? 'Fokus pada desain responsif dan animasi UI.' :
-                               'Kembangkan portofolio desain aplikasi mobile dan web.';
-                    } else {
-                        path = level === 'beginner' ? 'Mulai dengan HTML, CSS, dan JavaScript Dasar, lalu ke React.' :
-                               level === 'intermediate' ? 'Pelajari Node.js, Express, dan MongoDB untuk fullstack.' :
-                               'Bangun aplikasi kompleks dengan Next.js dan TypeScript.';
-                    }
-                    recommendedCourse.textContent = course;
-                    learningPath.textContent = `Jalur Belajar: ${path}`;
-                    quizResult.classList.remove('hidden');
-                });
-
-                // Tech Trend Explorer
-                const trendModal = document.getElementById('trend-modal');
-                const trendTitle = document.getElementById('trend-title');
-                const trendDescription = document.getElementById('trend-description');
-                const trendApplication = document.getElementById('trend-application');
-                const trendCourseLink = document.getElementById('trend-course-link');
-                const closeTrendModal = document.getElementById('close-trend-modal');
-
-                const trends = {
-                    ai: {
-                        title: 'Kecerdasan Buatan',
-                        description: 'Pelajari bagaimana AI mengubah dunia dengan chatbot, pengenalan gambar, dan analisis prediktif.',
-                        application: 'Chatbot pelanggan, asisten virtual, analisis data.',
-                        courseLink: 'https://product.orilix.net'
-                    },
-                    blockchain: {
-                        title: 'Web3 & Blockchain',
-                        description: 'Kembangkan aplikasi terdesentralisasi seperti NFT dan smart contract.',
-                        application: 'Pasar NFT, sistem pembayaran kripto, DeFi.',
-                        courseLink: 'https://product.orilix.net'
-                    },
-                    cloud: {
-                        title: 'Cloud Computing',
-                        description: 'Skalakan aplikasi dengan layanan cloud seperti AWS dan Azure.',
-                        application: 'Hosting aplikasi, penyimpanan data, DevOps.',
-                        courseLink: 'https://product.orilix.net'
-                    }
-                };
-
-                document.querySelectorAll('.trend-card').forEach(card => {
-                    card.addEventListener('click', () => {
-                        const trend = trends[card.dataset.trend];
-                        trendTitle.textContent = trend.title;
-                        trendDescription.textContent = trend.description;
-                        trendApplication.textContent = trend.application;
-                        trendCourseLink.href = trend.courseLink;
-                        trendModal.style.display = 'flex';
-                    });
-                });
-
-                closeTrendModal.addEventListener('click', () => {
-                    trendModal.style.display = 'none';
-                });
-
-                // Skill Progress Tracker
-                document.querySelectorAll('.skill-card').forEach(card => {
-                    card.addEventListener('mouseenter', () => {
-                        card.querySelector('.skill-detail').classList.remove('hidden');
-                    });
-                    card.addEventListener('mouseleave', () => {
-                        card.querySelector('.skill-detail').classList.add('hidden');
-                    });
-                });
-
-                // FAQ Toggle
-                document.querySelectorAll('.faq-question').forEach(button => {
-                    button.addEventListener('click', () => {
-                        const faqItem = button.parentElement;
-                        const answer = faqItem.querySelector('.faq-answer');
-                        const expanded = button.getAttribute('aria-expanded') === 'true';
-                        button.setAttribute('aria-expanded', !expanded);
-                        faqItem.classList.toggle('active');
-                        answer.style.maxHeight = expanded ? '0' : `${answer.scrollHeight}px`;
-                        button.querySelector('i').classList.toggle('fa-chevron-down');
-                        button.querySelector('i').classList.toggle('fa-chevron-up');
-                    });
-                });
-
-                // Service Worker untuk caching
-                if ('serviceWorker' in navigator) {
-                    window.addEventListener('load', () => {
-                        navigator.serviceWorker.register('/sw.js').then(reg => {
-                            console.log('Service Worker registered:', reg);
-                        }).catch(err => {
-                            console.error('Service Worker registration failed:', err);
-                        });
-                    });
-                }
-            </script>
-            <!-- Service Worker -->
-            <script>
-                // sw.js
-                self.addEventListener('install', event => {
-                    event.waitUntil(
-                        caches.open('orilix-cache-v1').then(cache => {
-                            return cache.addAll([
-                                '/',
-                                '/index.html',
-                                '/styles.css',
-                                '/scripts.js',
-                                'https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/hero-bg.webp',
-                                'https://blogger.googleapis.com/img/b/R29vZ2xl/AVvXsEjwt2kmtZSeK95r1o-qq79QvtCY7EHVaRT8bYN_VEzl82KicisqRzPXHFjbY1MX_ymN19XcnMUxpDlBVFBYx5V_WLuwOsyjfUYpiT1TMOYUjQvqEZBiwDnbUVrHQ2D9rPNYKNbCdcFnpDKN6-8Zz148WBJZtqNkJX48mSC-ItlvpIC_3UhggGgtpGMHsH_k/s3264/20250821_091245.webp'
-                            ]);
-                        })
-                    );
-                });
-                self.addEventListener('fetch', event => {
-                    event.respondWith(
-                        caches.match(event.request).then(response => {
-                            return response || fetch(event.request);
-                        })
-                    );
-                });
-            </script>
-            <!-- JSON-LD untuk SEO -->
-            <script type="application/ld+json">
-            {
-                "@context": "https://schema.org",
-                "@type": "EducationalOrganization",
-                "name": "Orilix",
-                "url": "https://orilix.net",
-                "logo": "https://blogger.googleapis.com/img/b/R29vZ2xl/AVvXsEjwt2kmtZSeK95r1o-qq79QvtCY7EHVaRT8bYN_VEzl82KicisqRzPXHFjbY1MX_ymN19XcnMUxpDlBVFBYx5V_WLuwOsyjfUYpiT1TMOYUjQvqEZBiwDnbUVrHQ2D9rPNYKNbCdcFnpDKN6-8Zz148WBJZtqNkJX48mSC-ItlvpIC_3UhggGgtpGMHsH_k/s3264/20250821_091245.png",
-                "description": "Platform belajar coding terdepan di Indonesia.",
-                "course": [
-                    {
-                        "@type": "Course",
-                        "name": "Fullstack JavaScript Mastery",
-                        "description": "Bangun aplikasi web modern dengan React, Node.js, dan MongoDB.",
-                        "provider": {
-                            "@type": "Organization",
-                            "name": "Orilix"
-                        }
-                    },
-                    {
-                        "@type": "Course",
-                        "name": "Data Science with Python",
-                        "description": "Kuasai analisis data dan machine learning dengan Python dan Pandas.",
-                        "provider": {
-                            "@type": "Organization",
-                            "name": "Orilix"
-                        }
-                    },
-                    {
-                        "@type": "Course",
-                        "name": "Mobile UI/UX Design",
-                        "description": "Desain antarmuka mobile dengan Figma dan prinsip UX modern.",
-                        "provider": {
-                            "@type": "Organization",
-                            "name": "Orilix"
-                        }
-                    }
-                ]
+                path = level === 'beginner' ? 'Pelajari dasar desain, prototyping di Figma, dan prinsip UX.' :
+                       level === 'intermediate' ? 'Fokus pada desain interaktif dan user testing.' :
+                       'Bangun portofolio desain aplikasi mobile dan web.';
+            } else {
+                path = level === 'beginner' ? 'Mulai dengan HTML, CSS, JavaScript, lalu React.' :
+                       level === 'intermediate' ? 'Pelajari React dan Node.js, bangun aplikasi fullstack.' :
+                       'Kuasai arsitektur aplikasi dan deployment dengan Docker.';
             }
-            </script>
-        </body>
+            path += ` Tujuan ${goal}: ${goal === 'freelance' ? 'Bangun portofolio dan cari klien di platform seperti Upwork.' : 
+                                     goal === 'startup' ? 'Fokus pada proyek startup dan kolaborasi tim.' : 
+                                     'Siapkan resume teknis untuk perusahaan besar.'}`;
+            recommendedCourse.textContent = course;
+            learningPath.textContent = path;
+            quizResult.classList.remove('hidden');
+        });
+
+        // Video Testimonial Slider
+        const slides = document.querySelectorAll('.testimonial-slide');
+        const thumbs = document.querySelectorAll('.testimonial-thumb');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+                slide.querySelector('video').pause();
+                if (i === index) slide.querySelector('video').play();
+            });
+            thumbs.forEach((thumb, i) => {
+                thumb.classList.toggle('active', i === index);
+                thumb.classList.toggle('border-2', i === index);
+                thumb.classList.toggle('border-blue-600', i === index);
+            });
+        }
+
+        thumbs.forEach(thumb => {
+            thumb.addEventListener('click', () => {
+                currentSlide = parseInt(thumb.dataset.slide);
+                showSlide(currentSlide);
+            });
+        });
+
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }, 7000);
+
+        // Tech Trend Explorer
+        const trendModal = document.getElementById('trend-modal');
+        const trendTitle = document.getElementById('trend-title');
+        const trendDescription = document.getElementById('trend-description');
+        const trendApplication = document.getElementById('trend-application');
+        const trendCourseLink = document.getElementById('trend-course-link');
+        const closeTrendModal = document.getElementById('close-trend-modal');
+
+        const trends = {
+            ai: {
+                title: 'Kecerdasan Buatan',
+                description: 'Pelajari AI untuk membangun sistem cerdas seperti chatbot dan analitik prediktif.',
+                application: 'Asisten virtual (contoh: Siri), rekomendasi produk di e-commerce.',
+                courseLink: 'https://product.orilix.net'
+            },
+            blockchain: {
+                title: 'Web3 & Blockchain',
+                description: 'Kuasai teknologi blockchain untuk aplikasi terdesentralisasi.',
+                application: 'NFT marketplace, smart contract untuk keuangan terdesentralisasi.',
+                courseLink: 'https://product.orilix.net'
+            },
+            cloud: {
+                title: 'Cloud Computing',
+                description: 'Bangun aplikasi skalabel dengan layanan cloud seperti AWS.',
+                application: 'Hosting aplikasi web, penyimpanan data skala besar.',
+                courseLink: 'https://product.orilix.net'
+            }
+        };
+
+        document.querySelectorAll('.trend-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const trend = trends[card.dataset.trend];
+                trendTitle.textContent = trend.title;
+                trendDescription.textContent = trend.description;
+                trendApplication.textContent = trend.application;
+                trendCourseLink.href = trend.courseLink;
+                trendModal.style.display = 'flex';
+            });
+        });
+
+        closeTrendModal.addEventListener('click', () => {
+            trendModal.style.display = 'none';
+        });
+
+        // Coding Challenge
+        const codeEditor = document.getElementById('code-editor');
+        const runCodeButton = document.getElementById('run-code');
+        const codeOutput = document.getElementById('code-output');
+
+        runCodeButton.addEventListener('click', () => {
+            const code = codeEditor.value;
+            try {
+                const result = eval(code); // Note: Use with caution, replace with sandbox for production
+                codeOutput.textContent = `Hasil: ${result}`;
+                codeOutput.classList.remove('text-red-600');
+                codeOutput.classList.add('text-green-600');
+            } catch (error) {
+                codeOutput.textContent = `Error: ${error.message}`;
+                codeOutput.classList.remove('text-green-600');
+                codeOutput.classList.add('text-red-600');
+            }
+        });
+
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const faqItem = button.parentElement;
+                const isActive = faqItem.classList.contains('active');
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('active');
+                    item.querySelector('.faq-answer').style.maxHeight = '0';
+                    item.querySelector('.fa-chevron-down').style.transform = 'rotate(0deg)';
+                });
+                if (!isActive) {
+                    faqItem.classList.add('active');
+                    faqItem.querySelector('.faq-answer').style.maxHeight = '200px';
+                    button.querySelector('.fa-chevron-down').style.transform = 'rotate(180deg)';
+                }
+            });
+        });
+    </script>
+</body>
 </html>
