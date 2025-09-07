@@ -2,202 +2,38 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="ERACODING - Platform belajar coding terdepan di Indonesia dengan kurikulum industri dan mentor berpengalaman.">
-    <meta name="keywords" content="belajar coding, kursus programming, web development, data science, UI/UX, ERACODING">
-    <title>ERACODING - Platform Belajar Coding</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORILIX - platfrom belajar coding</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.2/vanilla-tilt.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
     <style>
-    @keyframes float {
+        @keyframes float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }    
+            50% { transform: translateY(-10px); }
         }
         .floating { animation: float 4s ease-in-out infinite; }
-        .course-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+        .course-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
         .course-card { transition: all 0.3s ease; }
-        #mobile-menu {
-            transition: all 0.3s ease-in-out;
-            position: fixed;
-            top: 0;
-            right: 0;
-            height: 100%;
-            width: 75%;
-            max-width: 300px;
-            background-color: white;
-            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
-        }
-        #mobile-menu .menu-content { padding: 1rem; }
-        .close-button {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            font-size: 1.5rem;
-            color: #374151;
-            cursor: pointer;
-        }
-        .hero-bg {
-            background: linear-gradient(rgba(59, 130, 246, 0.8), rgba(37, 99, 235, 0.8)), url('data:image/jpeg;base64,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');
-            background-attachment: fixed;
-            background-size: cover;
-            background-position: center;
-        }
-        .btn-animated {
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-animated::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: -100%;
-            width: 100%;
-            height: 2px;
-            background: white;
-            transition: all 0.3s ease;
-        }
-        .btn-animated:hover::after { left: 0; }
-        #back-to-top {
-            position: fixed;
-            bottom: 16px;
-            right: 16px;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        #quiz-popup, #trend-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        #quiz-content, #trend-modal-content {
-            background: white;
-            padding: 2rem;
-            border-radius: 1rem;
-            max-width: 500px;
-            width: 90%;
-            position: relative;
-            animation: slideIn 0.5s ease;
-        }
-        @keyframes slideIn {
-            from { transform: translateY(-50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        #course-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        #course-modal-content {
-            background: white;
-            padding: 2rem;
-            border-radius: 1rem;
-            max-width: 600px;
-            width: 90%;
-            position: relative;
-            animation: slideIn 0.5s ease;
-        }
-        .testimonial-slider {
-            overflow: hidden;
-            position: relative;
-        }
-        .testimonial-slide {
-            display: none;
-            animation: fadeIn 1s ease;
-        }
-        .testimonial-slide.active { display: block; }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .faq-item.active .faq-answer {
-            max-height: 200px;
-            padding: 1rem 0;
-        }
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-        .skill-card:hover .progress-bar {
-            transform: scale(1.05);
-            transition: transform 0.3s ease;
-        }
-        .trend-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-        }
-        .newsletter-form {
-            display: flex;
-            flex-wrap: nowrap;
-            gap: 0.5rem;
-            align-items: center;
-        }
-        .newsletter-form input {
-            flex: 1;
-            min-width: 0;
-        }
-        .newsletter-form button { flex-shrink: 0; }
-        @media (min-width: 768px) {
-            .newsletter-form { flex-direction: row; }
-        }
-        .badge-unlock {
-            animation: badgePop 0.5s ease;
-        }
-        @keyframes badgePop {
-            0% { transform: scale(0); opacity: 0; }
-            80% { transform: scale(1.2); opacity: 1; }
-            100% { transform: scale(1); }
-        }
-        #code-editor {
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 14px;
-            resize: none;
-        }
-        .leaderboard-item:hover {
-            background-color: #f1f5f9;
-            transition: all 0.3s ease;
-        }
+        #mobile-menu { transition: all 0.3s ease-in-out; }
     </style>
 </head>
 <body class="font-sans bg-gray-50">
     <!-- Navigation -->
-    <nav class="bg-white shadow-lg sticky top-0 z-50" data-aos="fade-down">
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
                     <div class="flex-shrink-0 flex items-center">
-                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhK_7bBjQ9l-YrqkRhdqPP9A54SNtOO3XNN0HUvC2L8KeVtNmq-RLAz4jZCH7vsMExJRDVTE7Fr-iaybzOEWr9CZiexhTbPu-q7UM8z9JrXRA4IcX81dlUUIdAKRIgtgswrIKh5GoaGnt-p9UD8AtXqvCq20TuRGDJVlYmJPqwMkrtenNEoWFgjBlIU5m8/s3264/20250828_112556.png" alt="Logo Orilix" class="h-12 w-auto">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj3NQZcwhEwbBj73hdSqyBHpIYTsMXtWVzg_oTivtIwQ0hokjVTOXWdVn4AmEbjoJOgCHB7tY6sSGPJ930YhcVYo5twbczZtaJXfkeKBfGpdQVPyhrxM9lOF8vuHz6r4f6LuCOLnsNXkbrQKCxQsTlqU3FaG4ujwKgnu5PvxoJUq2oV_YgaUpIUGaZ_26X6/s3264/20250821_091218.png" alt="Logo eracoding" class="h-8 w-auto">
+                        <span class="ml-2 text-xl font-bold text-gray-900"></span>
                     </div>
                 </div>
                 <div class="hidden md:ml-6 md:flex md:items-center md:space-x-8">
-                    <a href="https://orilix.net" class="px-3 py-2 rounded-md text-sm font-medium text-gray-900 hover:text-blue-600">Beranda</a>
-                    <a href="https://product.orilix.net" class="px-3 py-2 rounded-md text-sm font-medium text-gray-900 hover:text-blue-600">Product</a>
+                    <a href="https://.orilix.net" class="px-3 py-2 rounded-md text-sm font-medium text-gray-900 hover:text-blue-600">Beranda</a>
+                    <a href="https://product.orilix.net" class="px-3 py-2 rounded-md text-sm font-medium text-gray-900 hover:text-blue-600">Kelas</a>
                     <a href="https://bootcamp.orilix.net" class="px-3 py-2 rounded-md text-sm font-medium text-gray-900 hover:text-blue-600">Bootcamp</a>
-                    <a href="https://kelas.orilix.net" class="px-3 py-2 rounded-md text-sm font-medium text-gray-900 hover:text-blue-600">Kelas Saya</a>
                     <a href="https://whatsapp.com/channel/0029Vb6GVqw0Qearxmwd151l" class="px-3 py-2 rounded-md text-sm font-medium text-gray-900 hover:text-blue-600">Informasi</a>
-                    <a href="https://m.orilix.net" class="btn-animated px-4 py-2 rounded-md text-sm font-medium bg-blue-600 text-white hover:bg-blue-700">Masuk</a>
+                    <a href="https://m.orilix.net" class="px-3 py-2 rounded-md text-sm font-medium bg-blue-600 text-white px-4 hover:bg-blue-700">Login/Daftar</a>
                 </div>
                 <div class="-mr-2 flex items-center md:hidden">
                     <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none" aria-controls="mobile-menu" aria-expanded="false">
@@ -207,17 +43,18 @@
                 </div>
             </div>
         </div>
-        <div class="md:hidden hidden" id="mobile-menu" data-aos="slide-left">
-            <div class="menu-content pt-4 pb-3 relative">
-                <i class="fas fa-times close-button" id="close-menu"></i>
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="space-y-4">
-                        <a href="https://orilix.net" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600">Beranda</a>
-                        <a href="https://product.orilix.net" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600">Product</a>
-                        <a href="https://bootcamp.orilix.net" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600">Bootcamp</a>
-                        <a href="https://kelas.orilix.net" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600">Kelas Saya</a>
-                        <a href="https://whatsapp.com/channel/0029Vb6GVqw0Qearxmwd151l" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600">Informasi</a>
-                        <a href="https://m.orilix.net" class="block px-3 py-2 rounded-md text-base font-medium bg-blue-600 text-white hover:bg-blue-700">Masuk</a>
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="pt-4 pb-3 border-t border-gray-200">
+                <div class="bg-white shadow-sm">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div class="space-y-4">
+                            <a href="https://.orilix.net" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600">Beranda</a>
+                            <a href="https://product.orilix.net" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600">Kelas</a>
+                            <a href="https://bootcamp.orilix.net" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600">Bootcamp</a>
+                            <a href="https://whatsapp.com/channel/0029Vb6GVqw0Qearxmwd151l" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600">Informasi</a>
+                            <a href="https://m.orilix.net" class="block px-3 py-2 rounded-md text-base font-medium bg-blue-600 text-white hover:bg-blue-700">Login/Daftar</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -225,321 +62,189 @@
     </nav>
 
     <!-- Hero Section -->
-    <div class="hero-bg text-white">
+    <div class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-24">
-            <div class="grid md:grid-cols-2 gap-8 items-center" data-aos="zoom-in">
+            <div class="grid md:grid-cols-2 gap-8 items-center">
                 <div class="space-y-6">
-                    <h1 class="text-4xl md:text-5xl font-bold leading-tight"><span id="typed-hero"></span></h1>
-                    <p class="text-xl text-blue-100">Kuasai teknologi masa depan dengan kursus praktis, mentor ahli, dan proyek berbasis industri.</p>
+                    <h1 class="text-4xl md:text-5xl font-bold leading-tight">Dari pemula menjadi profesional di dunia digital</h1>
+                    <p class="text-xl text-blue-100">Belajar pemrograman dengan kurikulum industri langsung dari praktisi teknologi terbaik di Indonesia.</p>
                     <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="https://kelas.orilix.net" class="btn-animated bg-white text-blue-600 px-6 py-3 rounded-lg font-medium text-center hover:bg-gray-100 transition duration-300">Mulai Belajar</a>
-                        <a href="https://product.orilix.net" class="btn-animated border-2 border-white text-white px-6 py-3 rounded-lg font-medium text-center hover:bg-white hover:text-blue-600 transition duration-300">Lihat Kelas</a>
+                        <a href="https://kelas.orilix.net" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-medium text-center hover:bg-gray-100 transition duration-300">Mulai Belajar</a>
+                        <a href="https://product.orilix.net" class="border-2 border-white text-white px-6 py-3 rounded-lg font-medium text-center hover:bg-white hover:text-blue-600 transition duration-300">Lihat Kelas</a>
                     </div>
                     <div class="flex items-center space-x-2 mt-4">
                         <div class="flex -space-x-2">
-                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/082315b5-c3fe-4e37-852a-952d50d1e889.png" alt="Foto mentor" class="w-10 h-10 rounded-full border-2 border-white floating">
-                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/1e6a7719-5e81-4e73-b132-1cc5d32ffaa6.png" alt="Foto developer" class="w-10 h-10 rounded-full border-2 border-white floating" style="animation-delay: 0.5s;">
-                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/55aec51c-347a-4d41-8db2-0408dd83c6ad.png" alt="Foto instruktur" class="w-10 h-10 rounded-full border-2 border-white floating" style="animation-delay: 1s;">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/082315b5-c3fe-4e37-852a-952d50d1e889.png" alt="Foto mentor coding profesional dengan latar studio profesional" class="w-10 h-10 rounded-full border-2 border-white">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/1e6a7719-5e81-4e73-b132-1cc5d32ffaa6.png" alt="Foto developer wanita tersenyum dengan headphone" class="w-10 h-10 rounded-full border-2 border-white">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/55aec51c-347a-4d41-8db2-0408dd83c6ad.png" alt="Foto instruktur coding asia dengan kacamata" class="w-10 h-10 rounded-full border-2 border-white">
                         </div>
                         <p class="text-sm text-blue-100">Bergabung dengan 100+ siswa lainnya</p>
                     </div>
-                    <button id="quiz-button" class="mt-4 text-blue-100 underline hover:text-white transition duration-300">Temukan Jalur Belajarmu!</button>
                 </div>
-                <div class="hidden md:block tilt-element" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-perspective="1000">
-                    <video autoplay muted loop class="w-full rounded-lg shadow-2xl">
-                        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
+                <div class="hidden md:block">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/95a9feaf-85e1-4188-a0f5-1b973983829b.png" alt="Ilustrasi orang sedang coding dengan elemen UI modern seperti laptop, code editor, dan diagram alur" class="w-full floating rounded-lg shadow-2xl">
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Personalized Learning Path Quiz -->
-    <div id="quiz-popup">
-        <div id="quiz-content" class="text-gray-900">
-            <button id="close-quiz" class="absolute top-2 right-2 text-gray-600 hover:text-gray-900"><i class="fas fa-times"></i></button>
-            <h2 class="text-2xl font-bold mb-4">Temukan Jalur Belajar yang Cocok</h2>
-            <p class="text-gray-600 mb-4">Jawab pertanyaan berikut untuk mendapatkan rekomendasi kursus dan roadmap belajar.</p>
-            <form id="quiz-form">
-                <div class="mb-4">
-                    <label class="block text-sm font-medium mb-2">Minat Utama Anda?</label>
-                    <select class="w-full p-2 border rounded-md" id="quiz-interest">
-                        <option value="web">Web Development</option>
-                        <option value="data">Data Science</option>
-                        <option value="uiux">UI/UX Design</option>
-                    </select>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-sm font-medium mb-2">Level Pengalaman?</label>
-                    <select class="w-full p-2 border rounded-md" id="quiz-level">
-                        <option value="beginner">Pemula</option>
-                        <option value="intermediate">Menengah</option>
-                        <option value="advanced">Lanjutan</option>
-                    </select>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-sm font-medium mb-2">Tujuan Karir Anda?</label>
-                    <select class="w-full p-2 border rounded-md" id="quiz-goal">
-                        <option value="freelance">Freelancer</option>
-                        <option value="startup">Bekerja di Startup</option>
-                        <option value="enterprise">Perusahaan Besar</option>
-                    </select>
-                </div>
-                <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Lihat Jalur Belajar</button>
-            </form>
-            <div id="quiz-result" class="mt-4 hidden">
-                <p class="text-green-600 font-medium mb-2">Rekomendasi: <span id="recommended-course"></span></p>
-                <div class="text-gray-600 text-sm" id="learning-path"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Course Preview Modal -->
-    <div id="course-modal">
-        <div id="course-modal-content" class="text-gray-900">
-            <button id="close-modal" class="absolute top-2 right-2 text-gray-600 hover:text-gray-900"><i class="fas fa-times"></i></button>
-            <h2 class="text-2xl font-bold mb-4" id="modal-title"></h2>
-            <video controls class="w-full rounded-lg mb-4" id="modal-video">
-                <source src="" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-            <p class="text-gray-600 mb-4" id="modal-description"></p>
-            <p class="text-gray-600 mb-4"><strong>Level:</strong> <span id="modal-level"></span></p>
-            <p class="text-gray-600 mb-4"><strong>Harga:</strong> <s id="modal-original-price"></s> <span id="modal-discounted-price" class="text-blue-600"></span></p>
-            <a href="#" id="modal-link" class="btn-animated bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Daftar Sekarang</a>
         </div>
     </div>
 
     <!-- Stats -->
     <div class="bg-white py-12 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center" data-aos="fade-up" data-aos-delay="100">
-                <div class="space-y-2" data-aos="zoom-in">
-                    <p class="text-4xl font-bold text-blue-600">5</p>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="space-y-2">
+                    <p class="text-4xl font-bold text-blue-600">5+</p>
                     <p class="text-gray-600">Kelas Online</p>
                 </div>
-                <div class="space-y-2" data-aos="zoom-in" data-aos-delay="200">
-                    <p class="text-4xl font-bold text-blue-600">100</p>
+                <div class="space-y-2">
+                    <p class="text-4xl font-bold text-blue-600">100+</p>
                     <p class="text-gray-600">Siswa</p>
                 </div>
-                <div class="space-y-2" data-aos="zoom-in" data-aos-delay="300">
+                <div class="space-y-2">
                     <p class="text-4xl font-bold text-blue-600">85%</p>
                     <p class="text-gray-600">Kepuasan Siswa</p>
                 </div>
-                <div class="space-y-2" data-aos="zoom-in" data-aos-delay="400">
-                    <p class="text-4xl font-bold text-blue-600">3</p>
+                <div class="space-y-2">
+                    <p class="text-4xl font-bold text-blue-600">3+</p>
                     <p class="text-gray-600">Partner Perusahaan</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Why Coding Matters -->
-    <div class="py-16 bg-white">
+    <!-- Features -->
+    <div class="py-16 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12" data-aos="fade-up">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Mengapa Belajar Coding Penting?</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Di era digital, coding adalah kunci untuk inovasi dan peluang karir tanpa batas.</p>
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Kenapa Belajar di Orilix.net?</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Kami menghadirkan pengalaman belajar coding yang berbeda dengan pendekatan praktis dan berbasis proyek nyata.</p>
             </div>
-            <div class="grid md:grid-cols-3 gap-8" data-aos="fade-up" data-aos-delay="100">
-                <div class="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300" data-aos="slide-up">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition duration-300">
                     <div class="text-blue-600 mb-4">
-                        <i class="fas fa-rocket text-4xl floating"></i>
+                        <i class="fas fa-laptop-code text-4xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3">Peluang Karir Tak Terbatas</h3>
-                    <p class="text-gray-600">Dari pengembang web hingga data scientist, coding membuka pintu ke berbagai profesi teknologi dengan gaji kompetitif.</p>
+                    <h3 class="text-xl font-bold mb-3">Kurikulum Industri</h3>
+                    <p class="text-gray-600">Materi selalu update sesuai kebutuhan industri teknologi terkini yang diajarkan langsung oleh praktisi.</p>
                 </div>
-                <div class="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300" data-aos="slide-up" data-aos-delay="100">
+                <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition duration-300">
                     <div class="text-blue-600 mb-4">
-                        <i class="fas fa-brain text-4xl floating"></i>
+                        <i class="fas fa-chalkboard-teacher text-4xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3">Melatih Pemikiran Kritis</h3>
-                    <p class="text-gray-600">Coding mengasah logika, pemecahan masalah, dan kreativitas, yang berguna di berbagai aspek kehidupan.</p>
+                    <h3 class="text-xl font-bold mb-3">Instruktur Berpengalaman</h3>
+                    <p class="text-gray-600">Belajar dari mentor yang telah berkecimpung di industri teknologi minimal 5 tahun.</p>
                 </div>
-                <div class="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300" data-aos="slide-up" data-aos-delay="200">
+                <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition duration-300">
                     <div class="text-blue-600 mb-4">
-                        <i class="fas fa-globe text-4xl floating"></i>
+                        <i class="fas fa-briefcase text-4xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3">Membangun Masa Depan</h3>
-                    <p class="text-gray-600">Jadilah bagian dari revolusi digital dengan menciptakan aplikasi, website, atau solusi teknologi inovatif.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    
- <!-- Learning Path -->
-    <div class="py-16 bg-blue-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12" data-aos="fade-up">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Jalur Pembelajaran Anda</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Ikuti langkah-langkah terstruktur untuk menjadi profesional di bidang teknologi pilihan Anda.</p>
-            </div>
-            <div class="grid md:grid-cols-4 gap-6" data-aos="fade-up">
-                <div class="relative bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300">
-                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center">1</div>
-                    <h3 class="text-lg font-bold mb-2">Pilih Kelas</h3>
-                    <p class="text-gray-600">Temukan kelas yang sesuai dengan minat Anda, seperti Web Development, Data Science, atau UI/UX.</p>
-                </div>
-                <div class="relative bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300">
-                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center">2</div>
-                    <h3 class="text-lg font-bold mb-2">Belajar Praktis</h3>
-                    <p class="text-gray-600">Ikuti kurikulum berbasis proyek dengan bimbingan mentor berpengalaman.</p>
-                </div>
-                <div class="relative bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300">
-                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center">3</div>
-                    <h3 class="text-lg font-bold mb-2">Bangun Portofolio</h3>
-                    <p class="text-gray-600">Selesaikan proyek nyata untuk memperkuat CV dan menarik perhatian perusahaan.</p>
-                </div>
-                <div class="relative bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300">
-                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center">4</div>
-                    <h3 class="text-lg font-bold mb-2">Dapatkan Karir</h3>
-                    <p class="text-gray-600">Manfaatkan jaringan kami untuk terhubung dengan perusahaan teknologi terkemuka.</p>
+                    <h3 class="text-xl font-bold mb-3">Proyek Nyata</h3>
+                    <p class="text-gray-600">Bangun portofolio dengan mengerjakan studi kasus dan proyek nyata yang relevan dengan kebutuhan perusahaan.</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Gamified Achievement Badges -->
-    <div class="py-16 bg-blue-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12" data-aos="fade-up">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Raih Pencapaianmu</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Selesaikan tantangan dan kelas untuk membuka lencana eksklusif!</p>
-            </div>
-            <div class="grid md:grid-cols-4 gap-8" data-aos="fade-up" data-aos-delay="100">
-                <div class="bg-white p-6 rounded-xl shadow-sm text-center badge-unlock" data-aos="zoom-in">
-                    <i class="fas fa-code text-4xl text-blue-600 mb-4"></i>
-                    <h3 class="text-lg font-bold">Code Master</h3>
-                    <p class="text-gray-600 text-sm">Selesaikan 3 proyek coding.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow-sm text-center badge-unlock" data-aos="zoom-in" data-aos-delay="100">
-                    <i class="fas fa-trophy text-4xl text-yellow-600 mb-4"></i>
-                    <h3 class="text-lg font-bold">Project Pro</h3>
-                    <p class="text-gray-600 text-sm">Bangun 5 proyek portofolio.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow-sm text-center badge-unlock" data-aos="zoom-in" data-aos-delay="200">
-                    <i Kuasai Keterampilan Industri|class="fas fa-users text-4xl text-green-600 mb-4"></i>
-                    <h3 class="text-lg font-bold">Community Star</h3>
-                    <p class="text-gray-600 text-sm">Bantu 10 siswa di forum.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow-sm text-center badge-unlock" data-aos="zoom-in" data-aos-delay="300">
-                    <i class="fas fa-graduation-cap text-4xl text-purple-600 mb-4"></i>
-                    <h3 class="text-lg font-bold">Certified Expert</h3>
-                    <p class="text-gray-600 text-sm">Selesaikan bootcamp intensif.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-   <!-- Partner Companies -->
-    <div class="py-16 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12" data-aos="fade-up">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Mitra Kami</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Kami bekerja sama dengan perusahaan teknologi terkemuka untuk memastikan kurikulum relevan dengan industri.</p>
-            </div>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 items-center" data-aos="fade-up">
-                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/partner-logo1.png" alt="Logo Tokopedia" class="h-12 mx-auto">
-                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/partner-logo2.png" alt="Logo Gojek" class="h-12 mx-auto">
-                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/partner-logo3.png" alt="Logo Traveloka" class="h-12 mx-auto">
-                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/partner-logo4.png" alt="Logo Bukalapak" class="h-12 mx-auto">
-            </div>
-        </div>
-    </div>
-    
     <!-- Popular Courses -->
     <div class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12" data-aos="fade-up">
+            <div class="text-center mb-12">
                 <h2 class="text-3xl font-bold text-gray-900 mb-4">Kelas Populer</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Temukan kelas yang sesuai dengan minat dan level keahlian Anda.</p>
-                <div class="mt-6 flex justify-center space-x-4">
-                    <button class="course-filter bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700" data-category="all">Semua</button>
-                    <button class="course-filter bg-gray-200 text-gray-900 px-4 py-2 rounded-md hover:bg-gray-300" data-category="web">Web Development</button>
-                    <button class="course-filter bg-gray-200 text-gray-900 px-4 py-2 rounded-md hover:bg-gray-300" data-category="data">Data Science</button>
-                    <button class="course-filter bg-gray-200 text-gray-900 px-4 py-2 rounded-md hover:bg-gray-300" data-category="uiux">UI/UX</button>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Mulai karir tech-mu dengan belajar teknologi yang paling banyak dicari industri.</p>
+            </div>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Course 1 -->
+                <div class="course-card bg-white rounded-xl overflow-hidden shadow-md">
+                    <div class="relative">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/f677a54b-850e-4ba9-94ce-418d8222b27f.png" alt="Ilustrasi pembelajaran Fullstack JavaScript dengan kode dan framework populer" class="w-full h-48 object-cover">
+                        <span class="absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded">Populer</span>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-2">
+                            <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">Intermediate</span>
+                            <span class="text-gray-500 text-sm ml-2"><i class="fas fa-star text-yellow-400"></i> 4.9 (1200)</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Fullstack JavaScript Mastery</h3>
+                        <p class="text-gray-600 mb-4">Pelajari React, Node.js, Express, dan MongoDB untuk membangun aplikasi web modern.</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="font-medium"><s class="text-gray-400">Rp1.200.000</s> <span class="text-blue-600">Rp799.000</span></p>
+                            </div>
+                            <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">Lihat Detail <i class="fas fa-arrow-right ml-1"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Course 2 -->
+                <div class="course-card bg-white rounded-xl overflow-hidden shadow-md">
+                    <div class="relative">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/625c2146-2a76-4272-9b84-beec163c8037.png" alt="Ilustrasi pembelajaran Data Science dengan grafik dan visualisasi data" class="w-full h-48 object-cover">
+                        <span class="absolute top-2 right-2 bg-purple-600 text-white text-xs px-2 py-1 rounded">Baru</span>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-2">
+                            <span class="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded">Advanced</span>
+                            <span class="text-gray-500 text-sm ml-2"><i class="fas fa-star text-yellow-400"></i> 4.8 (856)</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Data Science with Python</h3>
+                        <p class="text-gray-600 mb-4">Pengolahan data, visualisasi, dan machine learning dengan Python, Pandas, dan Scikit-learn.</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="font-medium"><s class="text-gray-400">Rp1.500.000</s> <span class="text-blue-600">Rp999.000</span></p>
+                            </div>
+                            <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">Lihat Detail <i class="fas fa-arrow-right ml-1"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Course 3 -->
+                <div class="course-card bg-white rounded-xl overflow-hidden shadow-md">
+                    <div class="relative">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/5bd51b5c-6294-46be-8b26-71e9047ee718.png" alt="Tampilan mobile UI/UX modern dengan palette warna kontemporer" class="w-full h-48 object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-2">
+                            <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Beginner</span>
+                            <span class="text-gray-500 text-sm ml-2"><i class="fas fa-star text-yellow-400"></i> 4.7 (650)</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Mobile UI/UX Design</h3>
+                        <p class="text-gray-600 mb-4">Kuasai prinsip desain modern untuk aplikasi mobile menggunakan Figma dan Adobe XD.</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="font-medium"><s class="text-gray-400">Rp900.000</s> <span class="text-blue-600">Rp599.000</span></p>
+                            </div>
+                            <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">Lihat Detail <i class="fas fa-arrow-right ml-1"></i></a>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 course-container" data-aos="fade-up" data-aos-delay="100"></div>
             <div class="text-center mt-12">
-                <a href="https://course.eracoding.my.id" class="btn-animated inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition duration-300">
+                <a href="https://course.eracoding.my.id" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition duration-300">
                     Lihat Semua Kelas
                     <i class="fas fa-arrow-right ml-2"></i>
                 </a>
             </div>
         </div>
     </div>
-    
-   <!-- Teacher Profiles -->
-    <div class="py-16 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12" data-aos="fade-up">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Temui Pengajar Kami</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Belajar dari para profesional berpengalaman yang siap membimbing Anda menuju kesuksesan di dunia teknologi.</p>
-            </div>
-            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8" data-aos="fade-up">
-                <!-- Teacher 1 -->
-                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300">
-                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/082315b5-c3fe-4e37-852a-952d50d1e889.png" alt="Foto pengajar" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
-                    <h3 class="text-xl font-bold text-center mb-2">Ahmad Santoso</h3>
-                    <p class="text-gray-600 text-center mb-2">Senior Fullstack Developer</p>
-                    <p class="text-gray-600 text-sm text-center">Dengan pengalaman 8 tahun di industri teknologi, Ahmad telah bekerja di startup unicorn dan mengajar lebih dari 500 siswa dalam pengembangan web.</p>
-                    <div class="flex justify-center space-x-4 mt-4">
-                        <a href="#" class="text-blue-600 hover:text-blue-800"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="text-blue-600 hover:text-blue-800"><i class="fab fa-github"></i></a>
-                    </div>
-                </div>
-                <!-- Teacher 2 -->
-                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300">
-                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/1e6a7719-5e81-4e73-b132-1cc5d32ffaa6.png" alt="Foto pengajar" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
-                    <h3 class="text-xl font-bold text-center mb-2">Siti Aisyah</h3>
-                    <p class="text-gray-600 text-center mb-2">Data Scientist</p>
-                    <p class="text-gray-600 text-sm text-center">Siti memiliki pengalaman 6 tahun di bidang data science dan machine learning, dengan proyek di perusahaan e-commerce ternama.</p>
-                    <div class="flex justify-center space-x-4 mt-4">
-                        <a href="#" class="text-blue-600 hover:text-blue-800"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="text-blue-600 hover:text-blue-800"><i class="fab fa-github"></i></a>
-                    </div>
-                </div>
-                <!-- Teacher 3 -->
-                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300">
-                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/55aec51c-347a-4d41-8db2-0408dd83c6ad.png" alt="Foto pengajar" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
-                    <h3 class="text-xl font-bold text-center mb-2">Rina Wijaya</h3>
-                    <p class="text-gray-600 text-center mb-2">UI/UX Designer</p>
-                    <p class="text-gray-600 text-sm text-center">Rina adalah desainer berpengalaman dengan fokus pada pengalaman pengguna, telah merancang aplikasi untuk berbagai startup teknologi.</p>
-                    <div class="flex justify-center space-x-4 mt-4">
-                        <a href="#" class="text-blue-600 hover:text-blue-800"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="text-blue-600 hover:text-blue-800"><i class="fab fa-dribbble"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="text-center mt-12">
-                <a href="https://team.orilix.net" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition duration-300">
-                    Lihat Semua Pengajar
-                    <i class="fas fa-arrow-right ml-2"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-    
+
     <!-- Testimonials -->
     <div class="py-16 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12" data-aos="fade-up">
+            <div class="text-center mb-12">
                 <h2 class="text-3xl font-bold text-gray-900 mb-4">Kisah Sukses Alumni</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Bagaimana Orilix membantu karir mereka di dunia teknologi.</p>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Bagaimana Eracoding membantu karir mereka di dunia teknologi.</p>
             </div>
-            <div class="grid md:grid-cols-3 gap-8" data-aos="fade-up">
+            <div class="grid md:grid-cols-3 gap-8">
                 <!-- Testimonial 1 -->
                 <div class="bg-white p-8 rounded-xl shadow-sm">
                     <div class="flex items-center mb-4">
                         <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b098284b-e6fb-4123-8d85-99c150404427.png" alt="Foto profesional alumni pria dengan background kantor modern" class="w-12 h-12 rounded-full object-cover">
                         <div class="ml-4">
-                            <h4 class="font-bold">Faisal</h4>
-                            <p class="text-gray-600 text-sm">Freelance</p>
+                            <h4 class="font-bold">Andi Pratama</h4>
+                            <p class="text-gray-600 text-sm">Frontend Developer @Tokopedia</p>
                         </div>
                     </div>
-                    <p class="text-gray-600 italic">"Yang saya suka dari Orilix itu materinya langsung nyambung ke praktek. Rasanya tiap course selalu ada hal baru yang bisa langsung saya coba."</p>
+                    <p class="text-gray-600 italic">"Berawal dari ikut bootcamp Fullstack JavaScript di CodeMastery, dalam 6 bulan saya bisa dapat tawaran kerja pertama sebagai developer. Mentornya sangat berpengalaman dan metodologi pembelajarannya sangat aplikatif."</p>
                     <div class="flex mt-4 text-yellow-400">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -548,16 +253,17 @@
                         <i class="fas fa-star"></i>
                     </div>
                 </div>
+                
                 <!-- Testimonial 2 -->
                 <div class="bg-white p-8 rounded-xl shadow-sm">
                     <div class="flex items-center mb-4">
                         <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/4aa84b9f-3184-4429-8d22-0eb9bea4723b.png" alt="Foto profesional alumni wanita di startup teknologi" class="w-12 h-12 rounded-full object-cover">
                         <div class="ml-4">
-                            <h4 class="font-bold">Bang Yoga</h4>
-                            <p class="text-gray-600 text-sm">Pelajar</p>
+                            <h4 class="font-bold">Dewi Lestari</h4>
+                            <p class="text-gray-600 text-sm">Data Scientist @Gojek</p>
                         </div>
                     </div>
-                    <p class="text-gray-600 italic">"Jujur, saya nggak pernah nyangka bisa ngerti coding. Di Orilix, penjelasannya simpel banget, jadi saya bisa ikutin pelan-pelan tanpa stres."</p>
+                    <p class="text-gray-600 italic">"Portofolio hasil belajar di kelas Data Science CodeMastery membuat CV saya jadi lebih menonjol. Sekarang saya bekerja di salah satu unicorn Indonesia berkat skill yang saya dapatkan di sini."</p>
                     <div class="flex mt-4 text-yellow-400">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -566,16 +272,17 @@
                         <i class="fas fa-star"></i>
                     </div>
                 </div>
+                
                 <!-- Testimonial 3 -->
                 <div class="bg-white p-8 rounded-xl shadow-sm">
                     <div class="flex items-center mb-4">
                         <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/39f01f6e-d196-49f1-8e07-50dabe23dff4.png" alt="Foto alumni sedang mempresentasikan produk digital di meeting" class="w-12 h-12 rounded-full object-cover">
                         <div class="ml-4">
-                            <h4 class="font-bold">Irwan Project</h4>
-                            <p class="text-gray-600 text-sm">Fresh Graduate</p>
+                            <h4 class="font-bold">Budi Santoso</h4>
+                            <p class="text-gray-600 text-sm">Product Designer @Traveloka</p>
                         </div>
                     </div>
-                    <p class="text-gray-600 italic">"Belajar di sini bikin saya sadar kalau coding itu sebenarnya bisa dipelajari siapa saja. Setelah ikut course, saya jadi lebih percaya diri ngerjain project sendiri."</p>
+                    <p class="text-gray-600 italic">"Saya kuliah non-technical tapi beralih karir ke UI/UX setelah ikut kelas intensif di CodeMastery. Sistem mentoring 1-on-1 benar-benar membantu mempercepat proses belajar."</p>
                     <div class="flex mt-4 text-yellow-400">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -588,121 +295,10 @@
         </div>
     </div>
 
-    <!-- Interactive Tech Trend Explorer -->
-    <div class="py-16 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12" data-aos="fade-up">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Jelajahi Tren Teknologi</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Klik untuk melihat aplikasi dunia nyata dan kursus terkait.</p>
-            </div>
-            <div class="grid md:grid-cols-3 gap-8" data-aos="fade-up" data-aos-delay="100">
-                <div class="trend-card bg-gray-50 p-6 rounded-xl shadow-sm cursor-pointer" data-trend="ai" data-aos="zoom-in">
-                    <i class="fas fa-robot text-4xl text-blue-600 mb-4 floating"></i>
-                    <h3 class="text-xl font-bold mb-2">Kecerdasan Buatan</h3>
-                    <p class="text-gray-600">Bangun chatbot cerdas dan sistem prediktif.</p>
-                </div>
-                <div class="trend-card bg-gray-50 p-6 rounded-xl shadow-sm cursor-pointer" data-trend="blockchain" data-aos="zoom-in" data-aos-delay="100">
-                    <i class="fas fa-cube text-4xl text-purple-600 mb-4 floating"></i>
-                    <h3 class="text-xl font-bold mb-2">Web3 & Blockchain</h3>
-                    <p class="text-gray-600">Ciptakan aplikasi terdesentralisasi seperti NFT.</p>
-                </div>
-                <div class="trend-card bg-gray-50 p-6 rounded-xl shadow-sm cursor-pointer" data-trend="cloud" data-aos="zoom-in" data-aos-delay="200">
-                    <i class="fas fa-cloud text-4xl text-green-600 mb-4 floating"></i>
-                    <h3 class="text-xl font-bold mb-2">Cloud Computing</h3>
-                    <p class="text-gray-600">Skalakan aplikasi dengan AWS dan Azure.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-  <!-- Community Section -->
-    <div class="py-16 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12" data-aos="fade-up">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Bergabung dengan Komunitas Orilix</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Jadilah bagian dari komunitas coder kami yang aktif, berbagi pengetahuan, dan berkolaborasi dalam proyek teknologi.</p>
-            </div>
-            <div class="grid md:grid-cols-2 gap-8 items-center" data-aos="fade-up">
-                <div>
-                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEht__UVNCn6mF5ARRSLcGV8H32kUxPRhRU2-9e6egoAvrvKWNzrny7MXQde-fSkMq5fMHbQ_vLQ_58r7G3KrLBjJoMp2nFbkLPPDqktfLvIFA78btxPCCsz-_55EGuLM9fwwwlKRquYTPEdtMlNB6vnOmNKpfUYU73l7JEncBP5Hcu4kvEu3f0MXmyPUkQ/s3264/20250826_172837.png" alt="Ilustrasi komunitas coder berkolaborasi" class="w-full rounded-lg shadow-xl">
-                </div>
-                <div class="space-y-6">
-                    <div class="flex items-start">
-                        <i class="fas fa-users text-3xl text-blue-600 mr-4"></i>
-                        <div>
-                            <h3 class="text-xl font-bold mb-2">Forum Diskusi Aktif</h3>
-                            <p class="text-gray-600">Tanyakan pertanyaan, bagikan solusi, dan belajar dari coder lain di forum eksklusif kami.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start">
-                        <i class="fas fa-code-branch text-3xl text-blue-600 mr-4"></i>
-                        <div>
-                            <h3 class="text-xl font-bold mb-2">Proyek Kolaboratif</h3>
-                            <p class="text-gray-600">Kerjakan proyek open-source bersama siswa lain untuk memperluas jaringan dan pengalaman.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start">
-                        <i class="fas fa-calendar-check text-3xl text-blue-600 mr-4"></i>
-                        <div>
-                            <h3 class="text-xl font-bold mb-2">Event dan Webinar</h3>
-                            <p class="text-gray-600">Ikuti webinar mingguan dan hackathon untuk terus mengasah keterampilan Anda.</p>
-                        </div>
-                    </div>
-                    <a href="https://whatsapp.com/channel/0029Vb6GVqw0Qearxmwd151l" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition duration-300">
-                        Gabung Komunitas
-                        <i class="fas fa-arrow-right ml-2"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Tech Trend Modal -->
-    <div id="trend-modal">
-        <div id="trend-modal-content" class="text-gray-900">
-            <button id="close-trend-modal" class="absolute top-2 right-2 text-gray-600 hover:text-gray-900"><i class="fas fa-times"></i></button>
-            <h2 class="text-2xl font-bold mb-4" id="trend-title"></h2>
-            <p class="text-gray-600 mb-4" id="trend-description"></p>
-            <p class="text-gray-600 mb-4"><strong>Aplikasi Dunia Nyata:</strong> <span id="trend-application"></span></p>
-            <a href="#" id="trend-course-link" class="btn-animated bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Ikuti Kursus Terkait</a>
-        </div>
-    </div>
-    
-        <!-- FAQ Section -->
-    <div class="py-16 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12" data-aos="fade-up">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Pertanyaan yang Sering Diajukan</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Temukan jawaban atas pertanyaan umum tentang belajar di Orilix.</p>
-            </div>
-            <div class="space-y-4" data-aos="fade-up">
-                <div class="bg-white p-6 rounded-xl shadow-sm">
-                    <h3 class="text-lg font-bold mb-2">Apakah saya perlu pengalaman coding sebelumnya?</h3>
-                    <p class="text-gray-600">Tidak! Kami memiliki kelas untuk semua level, mulai dari pemula hingga mahir.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow-sm">
-                    <h3 class="text-lg font-bold mb-2">Berapa lama waktu yang dibutuhkan untuk menyelesaikan kelas?</h3>
-                    <p class="text-gray-600">Tergantung kelasnya, mulai dari 4 minggu untuk kelas dasar hingga 6 bulan untuk bootcamp intensif.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow-sm">
-                    <h3 class="text-lg font-bold mb-2">Apakah ada sertifikat setelah selesai?</h3>
-                    <p class="text-gray-600">Ya, setiap kelas memberikan sertifikat penyelesaian yang diakui industri.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow-sm">
-                    <h3 class="text-lg font-bold mb-2">Bagaimana cara bergabung dengan komunitas?</h3>
-                    <p class="text-gray-600">Setelah mendaftar, Anda akan mendapatkan akses ke forum eksklusif dan grup WhatsApp kami.</p>
-                </div>
-            </div>
-            <div class="text-center mt-8">
-                <a href="https://faq.orilix.net" class="text-blue-600 hover:text-blue-800 font-medium">Lihat FAQ Lengkap <i class="fas fa-arrow-right ml-1"></i></a>
-            </div>
-        </div>
-    </div>
-   
- <!-- CTA Section -->
+    <!-- CTA Section -->
     <div class="bg-blue-600 text-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
-            <div class="grid md:grid-cols-2 gap-8 items-center" data-aos="fade-up">
+            <div class="grid md:grid-cols-2 gap-8 items-center">
                 <div>
                     <h2 class="text-3xl md:text-4xl font-bold mb-4">Siap Memulai Perjalanan Coding-mu?</h2>
                     <p class="text-lg text-blue-100 mb-6">Bergabung dengan ribuan siswa lainnya dan jadilah bagian dari generasi digital masa depan.</p>
@@ -719,26 +315,28 @@
     </div>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white pt-16 pb-8" data-aos="fade-up">
+    <footer class="bg-gray-900 text-white pt-16 pb-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div class="col-span-1 md:col-span-2">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="col-span-2">
                     <div class="flex items-center mb-4">
-                        <img src="https://blogger.googleapis.com/img/b/R29vZ2xl/AVvXsEjwt2kmtZSeK95r1o-qq79QvtCY7EHVaRT8bYN_VEzl82KicisqRzPXHFjbY1MX_ymN19XcnMUxpDlBVFBYx5V_WLuwOsyjfUYpiT1TMOYUjQvqEZBiwDnbUVrHQ2D9rPNYKNbCdcFnpDKN6-8Zz148WBJZtqNkJX48mSC-ItlvpIC_3UhggGgtpGMHsH_k/s3264/20250821_091245.png" alt="Logo Orilix footer" class="h-12 w-auto">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjwt2kmtZSeK95r1o-qq79QvtCY7EHVaRT8bYN_VEzl82KicisqRzPXHFjbY1MX_ymN19XcnMUxpDlBVFBYx5V_WLuwOsyjfUYpiT1TMOYUjQvqEZBiwDnbUVrHQ2D9rPNYKNbCdcFnpDKN6-8Zz148WBJZtqNkJX48mSC-ItlvpIC_3UhggGgtpGMHsH_k/s3264/20250821_091245.png" alt="Logo eracoding footer" class="h-8 w-auto">
+                        <span class="ml-2 text-xl font-bold"></span>
                     </div>
                     <p class="text-gray-400 mb-4">Platform belajar coding terdepan di Indonesia dengan fokus pada keterampilan yang dibutuhkan industri.</p>
                     <h3 class="text-lg font-bold mb-4">Ikuti kami</h3>
                     <div class="flex space-x-4">
-                        <a href="https://twitter.com/orilix" class="text-gray-400 hover:text-white"><i class="fab fa-twitter text-xl"></i></a>
-                        <a href="https://instagram.com/orilix" class="text-gray-400 hover:text-white"><i class="fab fa-instagram text-xl"></i></a>
-                        <a href="https://linkedin.com/company/orilix" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin text-xl"></i></a>
-                        <a href="https://youtube.com/@eracodingindonesia" class="text-gray-400 hover:text-white"><i class="fab fa-youtube text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin text-xl"></i></a>
+                        <a href="https://youtube.com/@eracodingindonesia?si=ELQgzvnh77udyFIN" class="text-gray-400 hover:text-white"><i class="fab fa-youtube text-xl"></i></a>
                     </div>
                 </div>
                 <div>
                     <h3 class="text-lg font-bold mb-4">Kelas</h3>
                     <ul class="space-y-2">
                         <li><a href="https://product.orilix.net" class="text-gray-400 hover:text-white">Web Development</a></li>
+                        <li><a href="https://product.orilix.net" class="text-gray-400 hover:text-white">Mobile Development</a></li>
                         <li><a href="https://product.orilix.net" class="text-gray-400 hover:text-white">Data Science</a></li>
                         <li><a href="https://product.orilix.net" class="text-gray-400 hover:text-white">UI/UX Design</a></li>
                     </ul>
@@ -748,22 +346,14 @@
                     <ul class="space-y-2">
                         <li><a href="https://about.orilix.net" class="text-gray-400 hover:text-white">Tentang Kami</a></li>
                         <li><a href="https://tap.orilix.net" class="text-gray-400 hover:text-white">Karir</a></li>
-                        <li><a href="https://blog.orilix.net" class="text-gray-400 hover:text-white">Blog</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Blog</a></li>
                         <li><a href="https://kontak.orilix.net" class="text-gray-400 hover:text-white">Kontak</a></li>
                     </ul>
-                </div>
-                <div class="col-span-1">
-                    <h3 class="text-lg font-bold mb-4">Daftar Newsletter</h3>
-                    <p class="text-gray-400 mb-4">Dapatkan update terbaru tentang kelas, tips coding, dan tren teknologi.</p>
-                    <form class="newsletter-form">
-                        <input type="email" placeholder="Masukkan email Anda" class="px-4 py-2 rounded-md text-gray-900 focus:outline-none">
-                        <button type="submit" class="btn-animated bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300">Daftar</button>
-                    </form>
                 </div>
             </div>
             <div class="border-t border-gray-800 mt-12 pt-8">
                 <div class="md:flex md:items-center md:justify-between">
-                    <p class="text-gray-400 text-sm">© 2025 ORILIX. Seluruh hak cipta dilindungi.</p>
+                    <p class="text-gray-400 text-sm">© 2025 ERACODING MEDIA LITERASI. Seluruh hak cipta dilindungi.</p>
                     <div class="mt-4 md:mt-0">
                         <a href="https://kebijakan-privasi.orilix.net" class="text-gray-400 text-sm hover:text-white mr-4">Kebijakan Privasi</a>
                         <a href="https://syarat-ketentuan.orilix.net" class="text-gray-400 text-sm hover:text-white mr-4">Syarat & Ketentuan</a>
@@ -774,38 +364,21 @@
         </div>
     </footer>
 
-    <!-- Minimal Back to Top Button -->
-    <button id="back-to-top" class="fixed bottom-16 right-16 bg-blue-600 text-white p-2 rounded-full shadow-md hover:bg-blue-700 transition duration-300 hidden">
-        <i class="fas fa-arrow-up"></i>
-    </button>
-
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 800, once: true });
-
-        const typed = new Typed('#typed-hero', {
-            strings: [
-                'Profesional diera digital',
-                'Belajar coding siap kerja',
-                'Karier digital mulai disini'
-            ],
-            typeSpeed: 50,
-            backSpeed: 30,
-            backDelay: 2000,
-            loop: true
-        });
-
         // Mobile menu toggle
         document.querySelector('[aria-controls="mobile-menu"]').addEventListener('click', function () {
             const menu = document.getElementById('mobile-menu');
             const expanded = this.getAttribute('aria-expanded') === 'true';
             this.setAttribute('aria-expanded', !expanded);
             menu.classList.toggle('hidden');
+            
+            // Toggle ikon hamburger menjadi X saat menu terbuka
             const icon = this.querySelector('i');
             icon.classList.toggle('fa-bars');
             icon.classList.toggle('fa-times');
         });
 
+        // Tutup menu saat salah satu tautan diklik
         document.querySelectorAll('#mobile-menu a').forEach(link => {
             link.addEventListener('click', () => {
                 const menu = document.getElementById('mobile-menu');
@@ -815,320 +388,6 @@
                 const icon = button.querySelector('i');
                 icon.classList.add('fa-bars');
                 icon.classList.remove('fa-times');
-            });
-        });
-
-        document.getElementById('close-menu').addEventListener('click', () => {
-            const menu = document.getElementById('mobile-menu');
-            const button = document.querySelector('[aria-controls="mobile-menu"]');
-            menu.classList.add('hidden');
-            button.setAttribute('aria-expanded', 'false');
-            const icon = button.querySelector('i');
-            icon.classList.add('fa-bars');
-            icon.classList.remove('fa-times');
-        });
-
-        // Anti-inspeksi
-        document.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('keydown', e => {
-            if (e.ctrlKey && e.shiftKey && e.key === 'I' || e.ctrlKey && e.key === 'u' || e.key === 'F12') {
-                e.preventDefault();
-            }
-        });
-        document.addEventListener('wheel', e => {
-            if (e.ctrlKey) e.preventDefault();
-        }, { passive: false });
-
-        // Back to Top Button
-        const backToTopButton = document.getElementById('back-to-top');
-        window.addEventListener('scroll', () => {
-            backToTopButton.classList.toggle('hidden', window.scrollY <= 300);
-        });
-        backToTopButton.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        // Course data
-        const courses = [
-            {
-                title: "Fullstack JavaScript Mastery",
-                level: "Intermediate",
-                rating: 4.9,
-                reviews: 1200,
-                originalPrice: 1200000,
-                discountedPrice: 799000,
-                image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/f677a54b-850e-4ba9-94ce-418d8222b27f.png",
-                description: "Bangun aplikasi web modern dengan React, Node.js, dan MongoDB.",
-                badge: "Populer",
-                badgeColor: "bg-blue-600",
-                link: "https://product.orilix.net",
-                category: "web",
-                previewVideo: "https://www.w3schools.com/html/mov_bbb.mp4"
-            },
-            {
-                title: "Data Science with Python",
-                level: "Advanced",
-                rating: 4.8,
-                reviews: 856,
-                originalPrice: 1500000,
-                discountedPrice: 999000,
-                image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/625c2146-2a76-4272-9b84-beec163c8037.png",
-                description: "Kuasai analisis data dan machine learning dengan Python dan Pandas.",
-                badge: "Baru",
-                badgeColor: "bg-purple-600",
-                link: "https://product.orilix.net",
-                category: "data",
-                previewVideo: "https://www.w3schools.com/html/mov_bbb.mp4"
-            },
-            {
-                title: "Mobile UI/UX Design",
-                level: "Beginner",
-                rating: 4.7,
-                reviews: 650,
-                originalPrice: 900000,
-                discountedPrice: 599000,
-                image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/5bd51b5c-6294-46be-8b26-71e9047ee718.png",
-                description: "Desain antarmuka mobile dengan Figma dan prinsip UX modern.",
-                badge: "",
-                badgeColor: "",
-                link: "https://product.orilix.net",
-                category: "uiux",
-                previewVideo: "https://www.w3schools.com/html/mov_bbb.mp4"
-            }
-        ];
-
-        // Render courses
-        const courseContainer = document.querySelector('.course-container');
-        function renderCourses(category = 'all') {
-            courseContainer.innerHTML = courses
-                .filter(course => category === 'all' || course.category === category)
-                .map((course, index) => `
-                    <div class="course-card bg-white rounded-xl overflow-hidden shadow-md cursor-pointer" data-course-index="${index}" data-aos="zoom-in">
-                        <div class="relative">
-                            <img src="${course.image}" alt="${course.title}" class="w-full h-48 object-cover">
-                            ${course.badge ? `<span class="absolute top-2 right-2 ${course.badgeColor} text-white text-xs px-2 py-1 rounded">${course.badge}</span>` : ''}
-                        </div>
-                        <div class="p-6">
-                            <div class="flex items-center mb-2">
-                                <span class="bg-${course.level.toLowerCase() === 'intermediate' ? 'blue' : course.level.toLowerCase() === 'advanced' ? 'purple' : 'green'}-100 text-${course.level.toLowerCase() === 'intermediate' ? 'blue' : course.level.toLowerCase() === 'advanced' ? 'purple' : 'green'}-800 text-xs font-medium px-2.5 py-0.5 rounded">${course.level}</span>
-                                <span class="text-gray-500 text-sm ml-2"><i class="fas fa-star text-yellow-400"></i> ${course.rating} (${course.reviews.toLocaleString()})</span>
-                            </div>
-                            <h3 class="text-xl font-bold mb-2">${course.title}</h3>
-                            <p class="text-gray-600 mb-4">${course.description}</p>
-                            <div class="flex justify-between items-center">
-                                <div>
-                                    <p class="font-medium"><s class="text-gray-400">Rp${course.originalPrice.toLocaleString()}</s> <span class="text-blue-600">Rp${course.discountedPrice.toLocaleString()}</span></p>
-                                </div>
-                                <a href="${course.link}" class="btn-animated text-blue-600 hover:text-blue-800 font-medium">Lihat Detail <i class="fas fa-arrow-right ml-1"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-        }
-        renderCourses();
-
-        // Course Filter
-        document.querySelectorAll('.course-filter').forEach(button => {
-            button.addEventListener('click', () => {
-                document.querySelectorAll('.course-filter').forEach(btn => {
-                    btn.classList.remove('bg-blue-600', 'text-white');
-                    btn.classList.add('bg-gray-200', 'text-gray-900');
-                });
-                button.classList.remove('bg-gray-200', 'text-gray-900');
-                button.classList.add('bg-blue-600', 'text-white');
-                renderCourses(button.dataset.category);
-            });
-        });
-
-        // Course Preview Modal
-        const courseModal = document.getElementById('course-modal');
-        const modalTitle = document.getElementById('modal-title');
-        const modalVideo = document.getElementById('modal-video').querySelector('source');
-        const modalDescription = document.getElementById('modal-description');
-        const modalLevel = document.getElementById('modal-level');
-        const modalOriginalPrice = document.getElementById('modal-original-price');
-        const modalDiscountedPrice = document.getElementById('modal-discounted-price');
-        const modalLink = document.getElementById('modal-link');
-        const closeModal = document.getElementById('close-modal');
-
-        courseContainer.addEventListener('click', (e) => {
-            const courseCard = e.target.closest('.course-card');
-            if (courseCard) {
-                const index = courseCard.dataset.courseIndex;
-                const course = courses[index];
-                modalTitle.textContent = course.title;
-                modalVideo.src = course.previewVideo;
-                modalVideo.parentElement.load();
-                modalDescription.textContent = course.description;
-                modalLevel.textContent = course.level;
-                modalOriginalPrice.textContent = `Rp${course.originalPrice.toLocaleString()}`;
-                modalDiscountedPrice.textContent = `Rp${course.discountedPrice.toLocaleString()}`;
-                modalLink.href = course.link;
-                courseModal.style.display = 'flex';
-            }
-        });
-
-        closeModal.addEventListener('click', () => {
-            courseModal.style.display = 'none';
-            modalVideo.parentElement.pause();
-        });
-
-        // Personalized Learning Path Quiz
-        const quizPopup = document.getElementById('quiz-popup');
-        const quizButton = document.getElementById('quiz-button');
-        const closeQuiz = document.getElementById('close-quiz');
-        const quizForm = document.getElementById('quiz-form');
-        const quizResult = document.getElementById('quiz-result');
-        const recommendedCourse = document.getElementById('recommended-course');
-        const learningPath = document.getElementById('learning-path');
-
-        quizButton.addEventListener('click', () => {
-            quizPopup.style.display = 'flex';
-        });
-
-        closeQuiz.addEventListener('click', () => {
-            quizPopup.style.display = 'none';
-            quizResult.classList.add('hidden');
-        });
-
-        quizForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const interest = document.getElementById('quiz-interest').value;
-            const level = document.getElementById('quiz-level').value;
-            const goal = document.getElementById('quiz-goal').value;
-            let course = 'Fullstack JavaScript Mastery';
-            let path = '';
-            if (interest === 'data') {
-                course = 'Data Science with Python';
-                path = level === 'beginner' ? 'Mulai dengan Python Dasar, lanjut ke Pandas dan Visualisasi Data, kemudian Machine Learning.' :
-                       level === 'intermediate' ? 'Fokus pada Pandas dan Scikit-learn, lalu proyek machine learning.' :
-                       'Pelajari deep learning dengan TensorFlow dan proyek prediktif.';
-            } else if (interest === 'uiux') {
-                course = 'Mobile UI/UX Design';
-                path = level === 'beginner' ? 'Pelajari dasar desain, prototyping di Figma, dan prinsip UX.' :
-                       level === 'intermediate' ? 'Fokus pada desain interaktif dan user testing.' :
-                       'Bangun portofolio desain aplikasi mobile dan web.';
-            } else {
-                path = level === 'beginner' ? 'Mulai dengan HTML, CSS, JavaScript, lalu React.' :
-                       level === 'intermediate' ? 'Pelajari React dan Node.js, bangun aplikasi fullstack.' :
-                       'Kuasai arsitektur aplikasi dan deployment dengan Docker.';
-            }
-            path += ` Tujuan ${goal}: ${goal === 'freelance' ? 'Bangun portofolio dan cari klien di platform seperti Upwork.' : 
-                                     goal === 'startup' ? 'Fokus pada proyek startup dan kolaborasi tim.' : 
-                                     'Siapkan resume teknis untuk perusahaan besar.'}`;
-            recommendedCourse.textContent = course;
-            learningPath.textContent = path;
-            quizResult.classList.remove('hidden');
-        });
-
-        // Video Testimonial Slider
-        const slides = document.querySelectorAll('.testimonial-slide');
-        const thumbs = document.querySelectorAll('.testimonial-thumb');
-        let currentSlide = 0;
-
-        function showSlide(index) {
-            slides.forEach((slide, i) => {
-                slide.classList.toggle('active', i === index);
-                slide.querySelector('video').pause();
-                if (i === index) slide.querySelector('video').play();
-            });
-            thumbs.forEach((thumb, i) => {
-                thumb.classList.toggle('active', i === index);
-                thumb.classList.toggle('border-2', i === index);
-                thumb.classList.toggle('border-blue-600', i === index);
-            });
-        }
-
-        thumbs.forEach(thumb => {
-            thumb.addEventListener('click', () => {
-                currentSlide = parseInt(thumb.dataset.slide);
-                showSlide(currentSlide);
-            });
-        });
-
-        setInterval(() => {
-            currentSlide = (currentSlide + 1) % slides.length;
-            showSlide(currentSlide);
-        }, 7000);
-
-        // Tech Trend Explorer
-        const trendModal = document.getElementById('trend-modal');
-        const trendTitle = document.getElementById('trend-title');
-        const trendDescription = document.getElementById('trend-description');
-        const trendApplication = document.getElementById('trend-application');
-        const trendCourseLink = document.getElementById('trend-course-link');
-        const closeTrendModal = document.getElementById('close-trend-modal');
-
-        const trends = {
-            ai: {
-                title: 'Kecerdasan Buatan',
-                description: 'Pelajari AI untuk membangun sistem cerdas seperti chatbot dan analitik prediktif.',
-                application: 'Asisten virtual (contoh: Siri), rekomendasi produk di e-commerce.',
-                courseLink: 'https://product.orilix.net'
-            },
-            blockchain: {
-                title: 'Web3 & Blockchain',
-                description: 'Kuasai teknologi blockchain untuk aplikasi terdesentralisasi.',
-                application: 'NFT marketplace, smart contract untuk keuangan terdesentralisasi.',
-                courseLink: 'https://product.orilix.net'
-            },
-            cloud: {
-                title: 'Cloud Computing',
-                description: 'Bangun aplikasi skalabel dengan layanan cloud seperti AWS.',
-                application: 'Hosting aplikasi web, penyimpanan data skala besar.',
-                courseLink: 'https://product.orilix.net'
-            }
-        };
-
-        document.querySelectorAll('.trend-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const trend = trends[card.dataset.trend];
-                trendTitle.textContent = trend.title;
-                trendDescription.textContent = trend.description;
-                trendApplication.textContent = trend.application;
-                trendCourseLink.href = trend.courseLink;
-                trendModal.style.display = 'flex';
-            });
-        });
-
-        closeTrendModal.addEventListener('click', () => {
-            trendModal.style.display = 'none';
-        });
-
-        // Coding Challenge
-        const codeEditor = document.getElementById('code-editor');
-        const runCodeButton = document.getElementById('run-code');
-        const codeOutput = document.getElementById('code-output');
-
-        runCodeButton.addEventListener('click', () => {
-            const code = codeEditor.value;
-            try {
-                const result = eval(code); // Note: Use with caution, replace with sandbox for production
-                codeOutput.textContent = `Hasil: ${result}`;
-                codeOutput.classList.remove('text-red-600');
-                codeOutput.classList.add('text-green-600');
-            } catch (error) {
-                codeOutput.textContent = `Error: ${error.message}`;
-                codeOutput.classList.remove('text-green-600');
-                codeOutput.classList.add('text-red-600');
-            }
-        });
-
-        // FAQ Accordion
-        document.querySelectorAll('.faq-question').forEach(button => {
-            button.addEventListener('click', () => {
-                const faqItem = button.parentElement;
-                const isActive = faqItem.classList.contains('active');
-                document.querySelectorAll('.faq-item').forEach(item => {
-                    item.classList.remove('active');
-                    item.querySelector('.faq-answer').style.maxHeight = '0';
-                    item.querySelector('.fa-chevron-down').style.transform = 'rotate(0deg)';
-                });
-                if (!isActive) {
-                    faqItem.classList.add('active');
-                    faqItem.querySelector('.faq-answer').style.maxHeight = '200px';
-                    button.querySelector('.fa-chevron-down').style.transform = 'rotate(180deg)';
-                }
             });
         });
     </script>
