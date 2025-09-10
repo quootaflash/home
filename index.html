@@ -539,6 +539,40 @@ window.addEventListener('load', showAlert);
         </div>
     </div>
 
+<!-- Partner Perusahaan Section -->
+<div class="py-12 bg-gray-50">
+    <h2 class="text-2xl font-bold text-center mb-6">Partner Perusahaan</h2>
+    <div class="overflow-hidden relative">
+        <div id="partnerSlider" class="flex gap-8 whitespace-nowrap">
+            <img src="logo-eracoding.png" class="h-16 w-auto object-contain">
+            <img src="logo-company1.png" class="h-16 w-auto object-contain">
+            <img src="logo-company2.png" class="h-16 w-auto object-contain">
+            <img src="logo-company3.png" class="h-16 w-auto object-contain">
+            <img src="logo-company4.png" class="h-16 w-auto object-contain">
+            <!-- Duplikat untuk loop seamless -->
+            <img src="logo-eracoding.png" class="h-16 w-auto object-contain">
+            <img src="logo-company1.png" class="h-16 w-auto object-contain">
+            <img src="logo-company2.png" class="h-16 w-auto object-contain">
+            <img src="logo-company3.png" class="h-16 w-auto object-contain">
+            <img src="logo-company4.png" class="h-16 w-auto object-contain">
+        </div>
+    </div>
+</div>
+
+<script>
+const partnerTrack = document.getElementById('partnerSlider');
+let partnerPos = 0;
+const partnerSpeed = 0.5;
+
+function animatePartnerSlider() {
+    partnerPos += partnerSpeed;
+    if(partnerPos >= partnerTrack.scrollWidth / 2) partnerPos = 0; // loop seamless
+    partnerTrack.style.transform = `translateX(-${partnerPos}px)`;
+    requestAnimationFrame(animatePartnerSlider);
+}
+
+window.addEventListener('load', animatePartnerSlider);
+</script>
   
 <!-- Teacher Profiles Slider -->
 <div class="py-16 bg-blue-900 overflow-hidden">
@@ -615,46 +649,6 @@ window.addEventListener('load', animateSlider);
         </div>
     </div>
   
-<!-- Partner Perusahaan Section -->
-<div class="py-12 bg-gray-50">
-    <!-- Judul -->
-    <h2 class="text-2xl font-bold text-center mb-6">Partner Perusahaan</h2>
-
-    <!-- Continuous Logo Slider -->
-    <div class="overflow-hidden relative">
-        <div id="logoTrack" class="flex gap-8 whitespace-nowrap">
-            <!-- Logo -->
-            <img src="logo-eracoding.png" alt="Eracoding" class="h-16 w-auto object-contain">
-            <img src="logo-company1.png" alt="Company 1" class="h-16 w-auto object-contain">
-            <img src="logo-company2.png" alt="Company 2" class="h-16 w-auto object-contain">
-            <img src="logo-company3.png" alt="Company 3" class="h-16 w-auto object-contain">
-            <img src="logo-company4.png" alt="Company 4" class="h-16 w-auto object-contain">
-            <!-- Duplikasi untuk loop seamless -->
-            <img src="logo-eracoding.png" alt="Eracoding" class="h-16 w-auto object-contain">
-            <img src="logo-company1.png" alt="Company 1" class="h-16 w-auto object-contain">
-            <img src="logo-company2.png" alt="Company 2" class="h-16 w-auto object-contain">
-            <img src="logo-company3.png" alt="Company 3" class="h-16 w-auto object-contain">
-            <img src="logo-company4.png" alt="Company 4" class="h-16 w-auto object-contain">
-        </div>
-    </div>
-</div>
-
-<script>
-const track = document.getElementById('logoTrack');
-let position = 0;
-const speed = 0.5; // sesuaikan kecepatan scroll
-
-function scrollLogos() {
-    position += speed;
-    if(position >= track.scrollWidth / 2) position = 0; // loop seamless
-    track.style.transform = `translateX(-${position}px)`;
-    requestAnimationFrame(scrollLogos);
-}
-
-window.addEventListener('load', scrollLogos);
-</script>
-
-
      <!-- Testimonials -->
     <div class="py-16 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
