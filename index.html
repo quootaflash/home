@@ -748,7 +748,7 @@
                         <button type="submit" class="btn-animated bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-500 transition duration-300">Daftar</button>
                     </form>
                 </div>
- <div class="eracoding-badges-images-right">
+<div class="eracoding-badges-fixed-right">
   <a href="https://eracoding.com" target="_blank">
     <img src="https://via.placeholder.com/60x60/3b82f6/ffffff?text=E1" alt="Eracoding Badge 1">
   </a>
@@ -761,41 +761,44 @@
 </div>
 
 <style>
-.eracoding-badges-images-right {
+.eracoding-badges-fixed-right {
+  position: fixed;         /* selalu nempel di viewport */
+  top: 150px;              /* jarak dari atas */
+  right: 10px;             /* jarak dari kanan */
   display: flex;
+  flex-direction: row;     /* horizontal */
   gap: 12px;
-  flex-wrap: wrap;
-  justify-content: flex-end; /* posisi di kanan */
-  align-items: center;
-  width: 100%;
+  z-index: 9999;
 }
 
-/* Gambar badge responsif */
-.eracoding-badges-images-right img {
+.eracoding-badges-fixed-right img {
   width: 60px;
   height: 60px;
   object-fit: cover;
-  border-radius: 8px; /* opsional, bisa lingkaran dengan 50% */
+  border-radius: 8px;
   transition: transform 0.2s;
 }
 
-/* Hover ringan */
-.eracoding-badges-images-right img:hover {
+.eracoding-badges-fixed-right img:hover {
   transform: scale(1.1);
 }
 
-/* Responsif untuk layar kecil */
-@media (max-width: 600px) {
-  .eracoding-badges-images-right {
-    justify-content: flex-end; /* tetap di kanan */
-    gap: 8px;
+/* Responsif untuk mobile / tablet */
+@media (max-width: 768px) {
+  .eracoding-badges-fixed-right {
+    position: relative;      /* ikut aliran layout */
+    flex-direction: row;     /* tetap horizontal */
+    justify-content: center; /* tengah halaman */
+    top: auto;
+    right: auto;
+    margin: 10px 0;
   }
-  .eracoding-badges-images-right img {
+  .eracoding-badges-fixed-right img {
     width: 45px;
     height: 45px;
   }
 }
-</style>            
+</style>
             </div>
             <div class="border-t border-gray-800 mt-12 pt-8">
                 <div class="md:flex md:items-center md:justify-between">
