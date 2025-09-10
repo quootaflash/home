@@ -517,7 +517,7 @@ window.addEventListener('load', showAlert);
     </div>
 
 <!-- Event Eracoding Top Professional Slider -->
-<div class="bg-gray-50 py-12">
+<div class="bg-gray-50 py-12 mb-16"> <!-- Tambahkan mb-16 agar bawah lebih lega -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Judul -->
         <div class="text-center mb-10">
@@ -575,31 +575,6 @@ window.addEventListener('load', showAlert);
         </div>
     </div>
 </div>
-
-<script>
-const topSlider = document.getElementById('eventTopSlider');
-const topContainer = document.getElementById('eventTopSliderContainer');
-let topPos = 0;
-const topSpeed = 0.6;
-let topPaused = false;
-
-// Pause on hover / touch
-topContainer.addEventListener('mouseenter', () => topPaused = true);
-topContainer.addEventListener('mouseleave', () => topPaused = false);
-topContainer.addEventListener('touchstart', () => topPaused = true);
-topContainer.addEventListener('touchend', () => topPaused = false);
-
-function animateTopSlider() {
-    if(!topPaused){
-        topPos += topSpeed;
-        if(topPos >= topSlider.scrollWidth / 2) topPos = 0; // loop seamless
-        topSlider.style.transform = `translateX(-${topPos}px)`;
-    }
-    requestAnimationFrame(animateTopSlider);
-}
-
-window.addEventListener('load', animateTopSlider);
-</script>
 
     <!-- Popular Courses -->
     <div class="py-16 bg-white">
