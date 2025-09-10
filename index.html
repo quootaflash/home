@@ -417,6 +417,30 @@ window.addEventListener('load', showAlert);
         </div>
     </div>
 
+<!-- Branding Hero Interaktif -->
+<div class="relative bg-gray-50 h-screen flex items-center justify-center overflow-hidden">
+    <!-- Foto Branding -->
+    <img id="brandingHero" src="https://via.placeholder.com/1200x800" alt="Branding Eracoding"
+         class="w-full h-full object-cover transition-transform duration-700 ease-in-out hover:scale-105">
+
+    <!-- Overlay Informasi / CTA -->
+    <div class="absolute text-center text-white px-6">
+        <h1 class="text-4xl md:text-6xl font-bold drop-shadow-lg mb-4">Selamat Datang di Eracoding</h1>
+        <p class="text-lg md:text-2xl drop-shadow-md mb-6">Belajar coding dari mentor profesional dan projek nyata</p>
+        <a href="#daftar" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full font-semibold transition">Mulai Sekarang</a>
+    </div>
+</div>
+
+<script>
+const hero = document.getElementById('brandingHero');
+
+// Simple interaktif effect: sedikit parallax scroll
+window.addEventListener('scroll', () => {
+    const scrollPos = window.scrollY;
+    hero.style.transform = `translateY(${scrollPos * 0.2}px)`; // efek ringan parallax
+});
+</script>
+
   
     <!-- Why Coding Matters -->
     <div class="py-16 bg-white">
