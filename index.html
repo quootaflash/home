@@ -272,67 +272,60 @@
         </div>
     </div>
 
-<!-- Fiberglass Modern Alert -->
-<div id="modernAlert" class="fixed top-6 left-1/2 transform -translate-x-1/2 -translate-y-full px-6 py-4 rounded-xl flex items-center gap-4 z-50 transition-all duration-500 backdrop-blur-md bg-white/30 border border-white/40 shadow-2xl hover:shadow-3xl animate-fade-in">
-    <!-- Icon SVG Information dengan animasi pulse -->
-    <svg id="alertIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 flex-shrink-0 text-white animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z" />
-    </svg>
+<!-- Modern Glass Alert -->
+<div id="modernGlassAlert" class="fixed top-6 left-1/2 transform -translate-x-1/2 -translate-y-full px-6 py-4 rounded-xl flex items-center gap-4 z-50 transition-all duration-500 backdrop-blur-sm bg-white/60 border border-white/30 shadow-2xl">
+    <!-- Icon SVG -->
+    <svg id="alertIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 flex-shrink-0 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"></svg>
     <div>
-        <p id="modernAlertText" class="font-semibold text-white text-lg animate-pulse-slow"></p>
+        <p id="alertText" class="font-semibold text-white text-lg"></p>
     </div>
-    <button id="closeModernAlert" class="text-white font-bold hover:text-gray-200">&times;</button>
+    <button id="closeAlert" class="text-white font-bold hover:text-gray-200">&times;</button>
 </div>
 
-<style>
-/* Animasi slide + fade-in */
-@keyframes fadeInSlide {
-    0% { transform: translate(-50%, -150%); opacity: 0; }
-    100% { transform: translate(-50%, 0); opacity: 1; }
-}
-.animate-fade-in { animation: fadeInSlide 0.7s forwards; }
-
-/* Animasi teks subtle highlight/pulse */
-@keyframes pulseSlow {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.7; }
-}
-.animate-pulse-slow { animation: pulseSlow 2s infinite; }
-</style>
-
 <script>
-    const modernAlert = document.getElementById('modernAlert');
-    const modernAlertText = document.getElementById('modernAlertText');
-    const closeBtn = document.getElementById('closeModernAlert');
+const alertBanner = document.getElementById('modernGlassAlert');
+const alertText = document.getElementById('alertText');
+const alertIcon = document.getElementById('alertIcon');
+const closeBtn = document.getElementById('closeAlert');
 
-    // Tentukan pesan sesuai waktu
-    function getGreeting() {
-        const hour = new Date().getHours();
-        if(hour >= 5 && hour < 12) return "Selamat Pagi! Semoga harimu menyenangkan.";
-        else if(hour >= 12 && hour < 15) return "Selamat Siang! Semoga harimu produktif.";
-        else if(hour >= 15 && hour < 18) return "Selamat Sore! Semoga harimu menyenangkan.";
-        else return "Selamat Malam! Semoga harimu tenang dan nyaman.";
+// Tentukan ikon & pesan sesuai waktu
+function getTimeGreeting() {
+    const hour = new Date().getHours();
+    if(hour >= 5 && hour < 12){
+        return { message: "Selamat Pagi! Semoga harimu menyenangkan.", icon: '<path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m8.66-12.66l-.71.71M4.05 19.66l-.71.71M21 12h-1M4 12H3m16.66 4.66l-.71-.71M6.34 6.34l-.71-.71M12 5a7 7 0 100 14 7 7 0 000-14z"/>' };
+    } else if(hour >= 12 && hour < 15){
+        return { message: "Selamat Siang! Semoga harimu produktif.", icon: '<path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m8-8h1M3 12h1m14.36-6.36l-.71.71M6.36 17.64l-.71.71M17.66 17.66l-.71-.71M6.34 6.34l-.71-.71M12 8v4l3 3"/>' };
+    } else if(hour >= 15 && hour < 18){
+        return { message: "Selamat Sore! Semoga harimu menyenangkan.", icon: '<path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m8-8h1M3 12h1m14.36-6.36l-.71.71M6.36 17.64l-.71.71M17.66 17.66l-.71-.71M6.34 6.34l-.71-.71M12 8v4l3 3"/>' };
+    } else {
+        return { message: "Selamat Malam! Semoga harimu tenang dan nyaman.", icon: '<path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z"/>' };
     }
+}
 
-    function showModernAlert() {
-        modernAlertText.textContent = getGreeting();
-        // Banner otomatis muncul
-        modernAlert.style.transform = 'translate(-50%, 0)';
-        modernAlert.style.opacity = '1';
-        // Auto close 5 detik
-        setTimeout(() => {
-            modernAlert.style.transform = 'translate(-50%, -150%)';
-            modernAlert.style.opacity = '0';
-        }, 5000);
-    }
+function showAlert() {
+    const greeting = getTimeGreeting();
+    alertText.textContent = greeting.message;
+    alertIcon.innerHTML = greeting.icon;
+
+    // Slide down
+    alertBanner.style.transform = 'translate(-50%, 0)';
+    alertBanner.style.opacity = '1';
+
+    // Auto close 5 detik
+    const autoClose = setTimeout(() => {
+        alertBanner.style.transform = 'translate(-50%, -150%)';
+        alertBanner.style.opacity = '0';
+    }, 5000);
 
     // Tombol close manual
     closeBtn.addEventListener('click', () => {
-        modernAlert.style.transform = 'translate(-50%, -150%)';
-        modernAlert.style.opacity = '0';
+        clearTimeout(autoClose);
+        alertBanner.style.transform = 'translate(-50%, -150%)';
+        alertBanner.style.opacity = '0';
     });
+}
 
-    window.addEventListener('load', showModernAlert);
+window.addEventListener('load', showAlert);
 </script>
 
     <!-- Personalized Learning Path Quiz -->
