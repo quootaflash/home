@@ -272,6 +272,57 @@
         </div>
     </div>
 
+<!-- Alert Banner Penyambutan -->
+<div id="greetingAlert" class="fixed bottom-6 left-6 bg-green-600 text-white px-5 py-4 rounded-lg shadow-lg flex items-center gap-3 transform translate-x-[-150%] transition-transform duration-500 z-50">
+    <!-- Icon SVG -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    <div class="flex-1">
+        <p id="greetingText" class="font-medium"></p>
+    </div>
+    <button id="closeGreeting" class="text-white font-bold hover:text-gray-200">&times;</button>
+</div>
+
+<script>
+    const greetingAlert = document.getElementById('greetingAlert');
+    const greetingText = document.getElementById('greetingText');
+    const closeBtn = document.getElementById('closeGreeting');
+
+    // Fungsi tentukan sapaan sesuai waktu
+    function getGreeting() {
+        const now = new Date();
+        const hour = now.getHours();
+        if (hour >= 5 && hour < 12) {
+            return "Selamat Pagi! Semoga harimu menyenangkan.";
+        } else if (hour >= 12 && hour < 15) {
+            return "Selamat Siang! Semoga harimu produktif.";
+        } else if (hour >= 15 && hour < 18) {
+            return "Selamat Sore! Semoga harimu menyenangkan.";
+        } else {
+            return "Selamat Malam! Semoga harimu tenang dan nyaman.";
+        }
+    }
+
+    // Fungsi tampilkan banner
+    function showGreeting() {
+        greetingText.textContent = getGreeting();
+        greetingAlert.style.transform = 'translateX(0)'; // slide-in
+        // Auto close 5 detik
+        setTimeout(() => {
+            greetingAlert.style.transform = 'translateX(-150%)';
+        }, 5000);
+    }
+
+    // Close manual
+    closeBtn.addEventListener('click', () => {
+        greetingAlert.style.transform = 'translateX(-150%)';
+    });
+
+    // Slide-in saat load
+    window.addEventListener('load', showGreeting);
+</script>
+
     <!-- Personalized Learning Path Quiz -->
     <div id="quiz-popup">
         <div id="quiz-content" class="text-gray-900">
