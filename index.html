@@ -748,7 +748,7 @@
                         <button type="submit" class="btn-animated bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-500 transition duration-300">Daftar</button>
                     </form>
                 </div>
-<div class="eracoding-badges-fixed-right">
+<div class="eracoding-badges-sitemap">
   <a href="https://eracoding.com" target="_blank">
     <img src="https://via.placeholder.com/60x60/3b82f6/ffffff?text=E1" alt="Eracoding Badge 1">
   </a>
@@ -761,17 +761,16 @@
 </div>
 
 <style>
-.eracoding-badges-fixed-right {
-  position: fixed;         /* selalu nempel di viewport */
-  top: 150px;              /* jarak dari atas */
-  right: 10px;             /* jarak dari kanan */
+.eracoding-badges-sitemap {
   display: flex;
-  flex-direction: row;     /* horizontal */
   gap: 12px;
-  z-index: 9999;
+  flex-wrap: wrap;
+  justify-content: flex-start; /* bisa flex-start / center / flex-end */
+  align-items: center;
+  margin: 10px 0;
 }
 
-.eracoding-badges-fixed-right img {
+.eracoding-badges-sitemap img {
   width: 60px;
   height: 60px;
   object-fit: cover;
@@ -779,21 +778,13 @@
   transition: transform 0.2s;
 }
 
-.eracoding-badges-fixed-right img:hover {
+.eracoding-badges-sitemap img:hover {
   transform: scale(1.1);
 }
 
-/* Responsif untuk mobile / tablet */
-@media (max-width: 768px) {
-  .eracoding-badges-fixed-right {
-    position: relative;      /* ikut aliran layout */
-    flex-direction: row;     /* tetap horizontal */
-    justify-content: center; /* tengah halaman */
-    top: auto;
-    right: auto;
-    margin: 10px 0;
-  }
-  .eracoding-badges-fixed-right img {
+/* Responsif untuk mobile */
+@media (max-width: 600px) {
+  .eracoding-badges-sitemap img {
     width: 45px;
     height: 45px;
   }
