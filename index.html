@@ -516,21 +516,21 @@ window.addEventListener('load', showAlert);
         </div>
     </div>
 
-<!-- Event Eracoding Slider -->
-<div class="py-16 bg-gray-100">
+<!-- Event Eracoding Top Slider -->
+<div class="bg-gray-100 py-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-gray-900 mb-4">Event Eracoding</h2>
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">Event Eracoding</h2>
             <p class="text-lg text-gray-600 max-w-3xl mx-auto">Ikuti event terbaru dari Eracoding untuk menambah wawasan dan pengalaman belajar.</p>
         </div>
 
         <!-- Slider Container -->
-        <div id="eventSliderContainer" class="overflow-hidden relative">
-            <div id="eventSlider" class="flex gap-6">
-                <!-- Event Card 1 -->
-                <div class="bg-white rounded-xl shadow-lg min-w-[300px] overflow-hidden hover:shadow-2xl transition duration-300">
+        <div id="topEventSliderContainer" class="overflow-hidden relative">
+            <div id="topEventSlider" class="flex gap-6">
+                <!-- Event Card Template -->
+                <div class="bg-white rounded-xl shadow-lg min-w-[280px] md:min-w-[300px] flex-shrink-0 overflow-hidden hover:shadow-2xl transition duration-300">
                     <img src="https://via.placeholder.com/400x200" alt="Workshop Golang" class="w-full h-48 object-cover">
-                    <div class="p-4">
+                    <div class="p-4 text-center">
                         <p class="text-sm text-gray-500 mb-1">10 September 2025</p>
                         <h3 class="text-lg font-bold mb-2">Workshop Golang Dasar</h3>
                         <p class="text-gray-600 mb-3">Pelajari dasar-dasar Golang dari mentor berpengalaman secara langsung.</p>
@@ -538,10 +538,9 @@ window.addEventListener('load', showAlert);
                     </div>
                 </div>
 
-                <!-- Event Card 2 -->
-                <div class="bg-white rounded-xl shadow-lg min-w-[300px] overflow-hidden hover:shadow-2xl transition duration-300">
+                <div class="bg-white rounded-xl shadow-lg min-w-[280px] md:min-w-[300px] flex-shrink-0 overflow-hidden hover:shadow-2xl transition duration-300">
                     <img src="https://via.placeholder.com/400x200" alt="Webinar UI/UX" class="w-full h-48 object-cover">
-                    <div class="p-4">
+                    <div class="p-4 text-center">
                         <p class="text-sm text-gray-500 mb-1">15 September 2025</p>
                         <h3 class="text-lg font-bold mb-2">Webinar UI/UX Design</h3>
                         <p class="text-gray-600 mb-3">Tingkatkan skill desain antarmuka melalui webinar interaktif.</p>
@@ -549,10 +548,9 @@ window.addEventListener('load', showAlert);
                     </div>
                 </div>
 
-                <!-- Event Card 3 -->
-                <div class="bg-white rounded-xl shadow-lg min-w-[300px] overflow-hidden hover:shadow-2xl transition duration-300">
+                <div class="bg-white rounded-xl shadow-lg min-w-[280px] md:min-w-[300px] flex-shrink-0 overflow-hidden hover:shadow-2xl transition duration-300">
                     <img src="https://via.placeholder.com/400x200" alt="Hackathon Eracoding" class="w-full h-48 object-cover">
-                    <div class="p-4">
+                    <div class="p-4 text-center">
                         <p class="text-sm text-gray-500 mb-1">20 September 2025</p>
                         <h3 class="text-lg font-bold mb-2">Hackathon Eracoding</h3>
                         <p class="text-gray-600 mb-3">Bersaing dengan developer lain untuk menyelesaikan tantangan coding seru.</p>
@@ -560,10 +558,10 @@ window.addEventListener('load', showAlert);
                     </div>
                 </div>
 
-                <!-- Duplikasi event untuk loop seamless -->
-                <div class="bg-white rounded-xl shadow-lg min-w-[300px] overflow-hidden hover:shadow-2xl transition duration-300">
+                <!-- Duplikasi untuk loop seamless -->
+                <div class="bg-white rounded-xl shadow-lg min-w-[280px] md:min-w-[300px] flex-shrink-0 overflow-hidden hover:shadow-2xl transition duration-300">
                     <img src="https://via.placeholder.com/400x200" alt="Workshop Golang" class="w-full h-48 object-cover">
-                    <div class="p-4">
+                    <div class="p-4 text-center">
                         <p class="text-sm text-gray-500 mb-1">10 September 2025</p>
                         <h3 class="text-lg font-bold mb-2">Workshop Golang Dasar</h3>
                         <p class="text-gray-600 mb-3">Pelajari dasar-dasar Golang dari mentor berpengalaman secara langsung.</p>
@@ -576,28 +574,28 @@ window.addEventListener('load', showAlert);
 </div>
 
 <script>
-const slider = document.getElementById('eventSlider');
-const container = document.getElementById('eventSliderContainer');
-let pos = 0;
-const speed = 0.5;
-let isPaused = false;
+const topSlider = document.getElementById('topEventSlider');
+const topContainer = document.getElementById('topEventSliderContainer');
+let topPos = 0;
+const topSpeed = 0.6;
+let topPaused = false;
 
 // Pause on hover / touch
-container.addEventListener('mouseenter', () => isPaused = true);
-container.addEventListener('mouseleave', () => isPaused = false);
-container.addEventListener('touchstart', () => isPaused = true);
-container.addEventListener('touchend', () => isPaused = false);
+topContainer.addEventListener('mouseenter', () => topPaused = true);
+topContainer.addEventListener('mouseleave', () => topPaused = false);
+topContainer.addEventListener('touchstart', () => topPaused = true);
+topContainer.addEventListener('touchend', () => topPaused = false);
 
-function animateEventSlider() {
-    if(!isPaused){
-        pos += speed;
-        if(pos >= slider.scrollWidth / 2) pos = 0; // loop seamless
-        slider.style.transform = `translateX(-${pos}px)`;
+function animateTopSlider() {
+    if(!topPaused){
+        topPos += topSpeed;
+        if(topPos >= topSlider.scrollWidth / 2) topPos = 0; // loop seamless
+        topSlider.style.transform = `translateX(-${topPos}px)`;
     }
-    requestAnimationFrame(animateEventSlider);
+    requestAnimationFrame(animateTopSlider);
 }
 
-window.addEventListener('load', animateEventSlider);
+window.addEventListener('load', animateTopSlider);
 </script>
 
     <!-- Popular Courses -->
