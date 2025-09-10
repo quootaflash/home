@@ -593,6 +593,39 @@ window.addEventListener('load', showAlert);
         </div>
     </div>
   
+<!-- Partner Logo Slider -->
+<div class="overflow-hidden py-8 bg-gray-50 relative">
+    <div id="logoSlider" class="flex gap-8 whitespace-nowrap">
+        <img src="logo-eracoding.png" alt="Eracoding" class="h-16 w-auto object-contain">
+        <img src="logo-company1.png" alt="Company 1" class="h-16 w-auto object-contain">
+        <img src="logo-company2.png" alt="Company 2" class="h-16 w-auto object-contain">
+        <img src="logo-company3.png" alt="Company 3" class="h-16 w-auto object-contain">
+        <img src="logo-company4.png" alt="Company 4" class="h-16 w-auto object-contain">
+    </div>
+</div>
+
+<script>
+const slider = document.getElementById('logoSlider');
+let position = 0;
+let direction = 1; // 1 = slide ke kiri, -1 = slide ke kanan
+const speed = 1; // kecepatan slide
+
+function animateSlider() {
+    const maxScroll = slider.scrollWidth - slider.parentElement.offsetWidth;
+
+    position += speed * direction;
+
+    if(position >= maxScroll) direction = -1; // balik arah ke kanan
+    if(position <= 0) direction = 1; // balik arah ke kiri
+
+    slider.style.transform = `translateX(-${position}px)`;
+    requestAnimationFrame(animateSlider);
+}
+
+window.addEventListener('load', animateSlider);
+</script>
+
+
      <!-- Testimonials -->
     <div class="py-16 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
