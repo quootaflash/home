@@ -272,55 +272,72 @@
         </div>
     </div>
 
-<!-- Alert Banner Penyambutan -->
-<div id="greetingAlert" class="fixed bottom-6 left-6 bg-green-600 text-white px-5 py-4 rounded-lg shadow-lg flex items-center gap-3 transform translate-x-[-150%] transition-transform duration-500 z-50">
+<!-- Alert Penyambutan Atas Hero -->
+<div id="timeGreeting" class="fixed top-6 left-1/2 transform -translate-x-1/2 -translate-y-full px-6 py-4 rounded-xl shadow-2xl flex items-center gap-4 z-50 transition-all duration-500">
     <!-- Icon SVG -->
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-    </svg>
-    <div class="flex-1">
-        <p id="greetingText" class="font-medium"></p>
+    <svg id="greetingIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"></svg>
+    <div>
+        <p id="greetingMessage" class="font-semibold text-white"></p>
     </div>
     <button id="closeGreeting" class="text-white font-bold hover:text-gray-200">&times;</button>
 </div>
 
 <script>
-    const greetingAlert = document.getElementById('greetingAlert');
-    const greetingText = document.getElementById('greetingText');
+    const alertBanner = document.getElementById('timeGreeting');
+    const greetingMessage = document.getElementById('greetingMessage');
+    const greetingIcon = document.getElementById('greetingIcon');
     const closeBtn = document.getElementById('closeGreeting');
 
-    // Fungsi tentukan sapaan sesuai waktu
-    function getGreeting() {
-        const now = new Date();
-        const hour = now.getHours();
-        if (hour >= 5 && hour < 12) {
-            return "Selamat Pagi! Semoga harimu menyenangkan.";
-        } else if (hour >= 12 && hour < 15) {
-            return "Selamat Siang! Semoga harimu produktif.";
-        } else if (hour >= 15 && hour < 18) {
-            return "Selamat Sore! Semoga harimu menyenangkan.";
+    function getTimeGreeting() {
+        const hour = new Date().getHours();
+        if(hour >= 5 && hour < 12){
+            return {
+                message: "Selamat Pagi! Semoga harimu menyenangkan.",
+                color: "bg-yellow-500",
+                icon: '<path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m8.66-12.66l-.71.71M4.05 19.66l-.71.71M21 12h-1M4 12H3m16.66 4.66l-.71-.71M4.05 4.34l-.71-.71M12 5a7 7 0 100 14 7 7 0 000-14z"/>'
+            };
+        } else if(hour >= 12 && hour < 15){
+            return {
+                message: "Selamat Siang! Semoga harimu produktif.",
+                color: "bg-blue-500",
+                icon: '<path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m8-8h1M3 12h1m14.36-6.36l-.71.71M6.36 17.64l-.71.71M17.66 17.66l-.71-.71M6.34 6.34l-.71-.71M12 8v4l3 3"/>'
+            };
+        } else if(hour >= 15 && hour < 18){
+            return {
+                message: "Selamat Sore! Semoga harimu menyenangkan.",
+                color: "bg-orange-500",
+                icon: '<path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m8-8h1M3 12h1m14.36-6.36l-.71.71M6.36 17.64l-.71.71M17.66 17.66l-.71-.71M6.34 6.34l-.71-.71M12 8v4l3 3"/>'
+            };
         } else {
-            return "Selamat Malam! Semoga harimu tenang dan nyaman.";
+            return {
+                message: "Selamat Malam! Semoga harimu tenang dan nyaman.",
+                color: "bg-purple-700",
+                icon: '<path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z"/>'
+            };
         }
     }
 
-    // Fungsi tampilkan banner
-    function showGreeting() {
-        greetingText.textContent = getGreeting();
-        greetingAlert.style.transform = 'translateX(0)'; // slide-in
+    function showAlert() {
+        const greeting = getTimeGreeting();
+        greetingMessage.textContent = greeting.message;
+        alertBanner.className = `fixed top-6 left-1/2 transform -translate-x-1/2 px-6 py-4 rounded-xl shadow-2xl flex items-center gap-4 z-50 transition-all duration-500 ${greeting.color}`;
+        greetingIcon.innerHTML = greeting.icon;
+        // Slide-down
+        setTimeout(() => {
+            alertBanner.style.transform = 'translate(-50%, 0)';
+        }, 50);
         // Auto close 5 detik
         setTimeout(() => {
-            greetingAlert.style.transform = 'translateX(-150%)';
+            alertBanner.style.transform = 'translate(-50%, -150%)';
         }, 5000);
     }
 
-    // Close manual
-    closeBtn.addEventListener('click', () => {
-        greetingAlert.style.transform = 'translateX(-150%)';
-    });
+    window.addEventListener('load', showAlert);
 
-    // Slide-in saat load
-    window.addEventListener('load', showGreeting);
+    // Tombol close
+    closeBtn.addEventListener('click', () => {
+        alertBanner.style.transform = 'translate(-50%, -150%)';
+    });
 </script>
 
     <!-- Personalized Learning Path Quiz -->
