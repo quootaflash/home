@@ -664,7 +664,7 @@
                         <a href="https://youtube.com/@eracodingindonesia" class="text-gray-400 hover:text-white"><i class="fab fa-youtube text-xl"></i></a>
                     </div>
                   
-                    <div class="payment-support">
+                  <div class="payment-support-left">
   <h3>Payment Support</h3>
   <div class="payment-icons">
     <!-- Bank Jago -->
@@ -679,30 +679,38 @@
 </div>
 
 <style>
-.payment-support {
-  margin: 30px 0;
+.payment-support-left {
+  position: fixed;
+  top: 120px; /* jarak dari atas, bisa disesuaikan */
+  left: 0;
+  width: 100px;
+  padding: 10px;
+  background: rgba(255,255,255,0.95);
+  border-radius: 0 8px 8px 0;
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.15);
+  z-index: 9999;
   text-align: center;
   font-family: sans-serif;
 }
-.payment-support h3 {
-  font-size: 18px;
+
+.payment-support-left h3 {
+  font-size: 14px;
   font-weight: bold;
-  margin-bottom: 15px;
-  color: #1f2937; /* dark gray */
+  margin-bottom: 10px;
+  color: #1f2937;
 }
 
 .payment-icons {
   display: flex;
-  gap: 20px;
-  justify-content: center;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 10px;
   align-items: center;
 }
 
 .payment-icons img {
-  max-width: 100%;
+  width: 70px;
   height: auto;
-  border-radius: 8px;
+  border-radius: 6px;
   transition: transform 0.2s;
 }
 
@@ -710,14 +718,24 @@
   transform: scale(1.05);
 }
 
-/* Responsif untuk mobile */
-@media (max-width: 600px) {
+/* Responsif untuk layar sempit / mobile */
+@media (max-width: 768px) {
+  .payment-support-left {
+    position: relative;
+    width: 100%;
+    top: auto;
+    left: auto;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+  }
   .payment-icons {
-    gap: 12px;
+    flex-direction: row;
+    gap: 15px;
   }
   .payment-icons img {
-    width: 60px;
-    height: auto;
+    width: 50px;
   }
 }
 </style>
