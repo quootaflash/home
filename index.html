@@ -417,29 +417,21 @@ window.addEventListener('load', showAlert);
         </div>
     </div>
 
-<!-- Branding Hero Interaktif -->
-<div class="relative bg-gray-50 h-screen flex items-center justify-center overflow-hidden">
-    <!-- Foto Branding -->
-    <img id="brandingHero" src="https://via.placeholder.com/1200x800" alt="Branding Eracoding"
-         class="w-full h-full object-cover transition-transform duration-700 ease-in-out hover:scale-105">
+<!-- Branding Eracoding - Foto Model Interaktif -->
+<div class="flex justify-center py-16 bg-gray-50">
+    <div class="relative group w-64 md:w-80">
+        <!-- Foto Model -->
+        <img src="https://via.placeholder.com/400x400" alt="Model Branding"
+             class="w-full h-full object-cover rounded-2xl shadow-lg transition-transform duration-500 ease-in-out group-hover:scale-105 group-hover:rotate-1">
 
-    <!-- Overlay Informasi / CTA -->
-    <div class="absolute text-center text-white px-6">
-        <h1 class="text-4xl md:text-6xl font-bold drop-shadow-lg mb-4">Selamat Datang di Eracoding</h1>
-        <p class="text-lg md:text-2xl drop-shadow-md mb-6">Belajar coding dari mentor profesional dan projek nyata</p>
-        <a href="#daftar" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full font-semibold transition">Mulai Sekarang</a>
+        <!-- Overlay Info (opsional) -->
+        <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 group-hover:bg-opacity-20 rounded-2xl transition duration-500">
+            <p class="text-white text-lg font-semibold opacity-0 group-hover:opacity-100 transition duration-500">
+                Eracoding Branding
+            </p>
+        </div>
     </div>
 </div>
-
-<script>
-const hero = document.getElementById('brandingHero');
-
-// Simple interaktif effect: sedikit parallax scroll
-window.addEventListener('scroll', () => {
-    const scrollPos = window.scrollY;
-    hero.style.transform = `translateY(${scrollPos * 0.2}px)`; // efek ringan parallax
-});
-</script>
 
   
     <!-- Why Coding Matters -->
