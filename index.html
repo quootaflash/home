@@ -690,47 +690,46 @@
                     </form>
                 </div>
               
-<!-- Simple Eracoding Badge -->
-<a href="https://eracoding.com" target="_blank" class="eracoding-badge-simple">
-  <img src="https://via.placeholder.com/40x40/3b82f6/ffffff?text=E" alt="Eracoding Logo">
-  <span>Eracoding Verified</span>
-</a>
+<div class="eracoding-badges-images">
+  <a href="https://eracoding.com" target="_blank">
+    <img src="https://via.placeholder.com/60x60/3b82f6/ffffff?text=E1" alt="Eracoding Badge 1">
+  </a>
+  <a href="https://eracoding.com" target="_blank">
+    <img src="https://via.placeholder.com/60x60/f97316/ffffff?text=E2" alt="Eracoding Badge 2">
+  </a>
+  <a href="https://eracoding.com" target="_blank">
+    <img src="https://via.placeholder.com/60x60/8b5cf6/ffffff?text=E3" alt="Eracoding Badge 3">
+  </a>
+</div>
 
 <style>
-.eracoding-badge-simple {
-  display: inline-flex;
+.eracoding-badges-images {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-start; /* bisa diganti center atau right sesuai kebutuhan */
   align-items: center;
-  gap: 6px;
-  text-decoration: none;
-  padding: 4px 8px;
-  border-radius: 6px;
-  background-color: #3b82f6;
-  color: white;
-  font-size: 12px;
-  font-weight: bold;
-  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.eracoding-badge-simple img {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
+/* Gambar badge responsif */
+.eracoding-badges-images img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px; /* opsional, bisa lingkaran dengan 50% */
+  transition: transform 0.2s;
 }
 
-.eracoding-badge-simple:hover {
-  transform: scale(1.05);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+/* Hover ringan */
+.eracoding-badges-images img:hover {
+  transform: scale(1.1);
 }
 
-/* Responsif untuk berbagai tipe layout */
+/* Responsif untuk layar kecil */
 @media (max-width: 600px) {
-  .eracoding-badge-simple {
-    font-size: 10px;
-    padding: 3px 6px;
-  }
-  .eracoding-badge-simple img {
-    width: 30px;
-    height: 30px;
+  .eracoding-badges-images img {
+    width: 45px;
+    height: 45px;
   }
 }
 </style>
