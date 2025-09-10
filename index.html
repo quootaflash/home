@@ -690,126 +690,50 @@
                     </form>
                 </div>
               
-<div class="eracoding-badges-sidebar">
-  <!-- Badge 1: Eracoding Verified -->
-  <a href="https://eracoding.com" target="_blank" class="badge badge-verified">
-    <div class="badge-circle">
-      <img src="https://via.placeholder.com/50x50/3b82f6/ffffff?text=E" alt="Eracoding Logo">
-      <span>Eracoding Verified</span>
-    </div>
-  </a>
-
-  <!-- Badge 2: Certified by Eracoding -->
-  <a href="https://eracoding.com" target="_blank" class="badge badge-certified">
-    <div class="badge-shield">
-      <img src="https://via.placeholder.com/50x50/f97316/ffffff?text=C" alt="Eracoding Logo">
-      <span>Certified by Eracoding</span>
-    </div>
-  </a>
-
-  <!-- Badge 3: Eracoding Trust Badge -->
-  <a href="https://eracoding.com" target="_blank" class="badge badge-trust">
-    <div class="badge-ribbon">
-      <img src="https://via.placeholder.com/50x50/8b5cf6/ffffff?text=T" alt="Eracoding Logo">
-      <span>Eracoding Trust Badge</span>
-    </div>
-  </a>
-</div>
+<!-- Simple Eracoding Badge -->
+<a href="https://eracoding.com" target="_blank" class="eracoding-badge-simple">
+  <img src="https://via.placeholder.com/40x40/3b82f6/ffffff?text=E" alt="Eracoding Logo">
+  <span>Eracoding Verified</span>
+</a>
 
 <style>
-/* Container untuk sidebar / left-fixed */
-.eracoding-badges-sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  position: fixed;
-  left: 0;
-  top: 100px; /* Bisa disesuaikan */
-  padding: 10px;
-  z-index: 9999;
-}
-
-/* Badge common styles */
-.badge {
+.eracoding-badge-simple {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   text-decoration: none;
-}
-.badge img {
-  width: 50px;
-  height: 50px;
-  margin-bottom: 6px;
-}
-.badge span {
+  padding: 4px 8px;
+  border-radius: 6px;
+  background-color: #3b82f6;
   color: white;
+  font-size: 12px;
   font-weight: bold;
-  font-size: 13px;
-  text-align: center;
-  display: block;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-/* Badge 1: Circle */
-.badge-verified .badge-circle {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100px;
-  height: 100px;
+.eracoding-badge-simple img {
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-  transition: transform 0.3s;
 }
-.badge-verified .badge-circle:hover { transform: scale(1.1); }
 
-/* Badge 2: Shield */
-.badge-certified .badge-shield {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100px;
-  height: 120px;
-  clip-path: polygon(50% 0%, 95% 25%, 80% 100%, 20% 100%, 5% 25%);
-  background: #f97316;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-  transition: transform 0.3s;
+.eracoding-badge-simple:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
-.badge-certified .badge-shield:hover { transform: scale(1.1); }
 
-/* Badge 3: Ribbon */
-.badge-trust .badge-ribbon {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 120px;
-  height: 50px;
-  border-radius: 12px;
-  background: #8b5cf6;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-  transition: transform 0.3s;
-}
-.badge-trust .badge-ribbon:hover { transform: scale(1.1); }
-
-/* Responsive untuk mobile / tablet */
-@media (max-width: 768px) {
-  .eracoding-badges-sidebar {
-    position: relative;
-    flex-direction: row;
-    justify-content: center;
-    top: auto;
-    left: auto;
-    padding: 0;
+/* Responsif untuk berbagai tipe layout */
+@media (max-width: 600px) {
+  .eracoding-badge-simple {
+    font-size: 10px;
+    padding: 3px 6px;
   }
-  .badge-verified .badge-circle,
-  .badge-certified .badge-shield,
-  .badge-trust .badge-ribbon {
-    width: 80px;
-    height: auto;
+  .eracoding-badge-simple img {
+    width: 30px;
+    height: 30px;
   }
 }
 </style>
-              
             </div>
             <div class="border-t border-gray-800 mt-12 pt-8">
                 <div class="md:flex md:items-center md:justify-between">
