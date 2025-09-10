@@ -448,8 +448,16 @@ window.addEventListener('load', showAlert);
         </div>
 
         <div class="grid md:grid-cols-3 gap-8" data-aos="fade-up" data-aos-delay="100">
-            <!-- Card 1 -->
-            <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition duration-300 group">
+            <!-- Card 1 - Trending -->
+            <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition duration-300 group relative">
+                <!-- Badge Trending -->
+                <div class="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center space-x-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-yellow-300" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M11.3 1.046a1 1 0 00-1.6 0C8.38 2.5 6.5 5.03 6.5 7.5c0 2.94 2.36 5.33 5.33 5.33s5.34-2.36 5.34-5.33c0-2.24-1.64-4.47-5.87-6.453z"/>
+                    </svg>
+                    <span>Trending</span>
+                </div>
+
                 <h3 class="text-lg font-bold mb-2 group-hover:text-blue-700 transition">Web Development</h3>
                 <div class="w-full bg-gray-200 rounded-full h-4 mb-2 overflow-hidden">
                     <div class="bg-red-500 h-4 rounded-full transition-all duration-1000 ease-out" style="width: 0%;" data-target="90"></div>
@@ -463,7 +471,7 @@ window.addEventListener('load', showAlert);
             </div>
 
             <!-- Card 2 -->
-            <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition duration-300 group">
+            <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition duration-300 group relative">
                 <h3 class="text-lg font-bold mb-2 group-hover:text-green-700 transition">Data Science</h3>
                 <div class="w-full bg-gray-200 rounded-full h-4 mb-2 overflow-hidden">
                     <div class="bg-green-500 h-4 rounded-full transition-all duration-1000 ease-out" style="width: 0%;" data-target="70"></div>
@@ -472,7 +480,7 @@ window.addEventListener('load', showAlert);
             </div>
 
             <!-- Card 3 -->
-            <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition duration-300 group">
+            <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition duration-300 group relative">
                 <h3 class="text-lg font-bold mb-2 group-hover:text-yellow-700 transition">UI/UX Design</h3>
                 <div class="w-full bg-gray-200 rounded-full h-4 mb-2 overflow-hidden">
                     <div class="bg-yellow-500 h-4 rounded-full transition-all duration-1000 ease-out" style="width: 0%;" data-target="40"></div>
