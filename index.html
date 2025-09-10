@@ -593,21 +593,27 @@ window.addEventListener('load', showAlert);
         </div>
     </div>
   
-<!-- Continuous Logo Slider -->
-<div class="overflow-hidden py-8 bg-gray-50 relative">
-    <div id="logoTrack" class="flex gap-8 whitespace-nowrap">
-        <!-- Logo -->
-        <img src="logo-eracoding.png" alt="Eracoding" class="h-16 w-auto object-contain">
-        <img src="logo-company1.png" alt="Company 1" class="h-16 w-auto object-contain">
-        <img src="logo-company2.png" alt="Company 2" class="h-16 w-auto object-contain">
-        <img src="logo-company3.png" alt="Company 3" class="h-16 w-auto object-contain">
-        <img src="logo-company4.png" alt="Company 4" class="h-16 w-auto object-contain">
-        <!-- Duplikat untuk loop seamless -->
-        <img src="logo-eracoding.png" alt="Eracoding" class="h-16 w-auto object-contain">
-        <img src="logo-company1.png" alt="Company 1" class="h-16 w-auto object-contain">
-        <img src="logo-company2.png" alt="Company 2" class="h-16 w-auto object-contain">
-        <img src="logo-company3.png" alt="Company 3" class="h-16 w-auto object-contain">
-        <img src="logo-company4.png" alt="Company 4" class="h-16 w-auto object-contain">
+<!-- Partner Perusahaan Section -->
+<div class="py-12 bg-gray-50">
+    <!-- Judul -->
+    <h2 class="text-2xl font-bold text-center mb-6">Partner Perusahaan</h2>
+
+    <!-- Continuous Logo Slider -->
+    <div class="overflow-hidden relative">
+        <div id="logoTrack" class="flex gap-8 whitespace-nowrap">
+            <!-- Logo -->
+            <img src="logo-eracoding.png" alt="Eracoding" class="h-16 w-auto object-contain">
+            <img src="logo-company1.png" alt="Company 1" class="h-16 w-auto object-contain">
+            <img src="logo-company2.png" alt="Company 2" class="h-16 w-auto object-contain">
+            <img src="logo-company3.png" alt="Company 3" class="h-16 w-auto object-contain">
+            <img src="logo-company4.png" alt="Company 4" class="h-16 w-auto object-contain">
+            <!-- Duplikasi untuk loop seamless -->
+            <img src="logo-eracoding.png" alt="Eracoding" class="h-16 w-auto object-contain">
+            <img src="logo-company1.png" alt="Company 1" class="h-16 w-auto object-contain">
+            <img src="logo-company2.png" alt="Company 2" class="h-16 w-auto object-contain">
+            <img src="logo-company3.png" alt="Company 3" class="h-16 w-auto object-contain">
+            <img src="logo-company4.png" alt="Company 4" class="h-16 w-auto object-contain">
+        </div>
     </div>
 </div>
 
@@ -618,8 +624,7 @@ const speed = 0.5; // sesuaikan kecepatan scroll
 
 function scrollLogos() {
     position += speed;
-    // Reset saat sudah scroll setengah track (karena duplikasi)
-    if(position >= track.scrollWidth / 2) position = 0;
+    if(position >= track.scrollWidth / 2) position = 0; // loop seamless
     track.style.transform = `translateX(-${position}px)`;
     requestAnimationFrame(scrollLogos);
 }
