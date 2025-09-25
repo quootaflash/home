@@ -1,1211 +1,838 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png" type="image/png">
     <title>FoodOrder - Pesan Makanan Online</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        primary: '#f59e0b',
-                        secondary: '#ef4444',
-                        accent: '#10b981'
+                        primary: '#FF6B35',
+                        secondary: '#F7931E',
+                        accent: '#FFD23F',
+                        dark: '#2D3748',
+                        light: '#F7FAFC'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
                     }
                 }
             }
         }
     </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .modal-backdrop {
+            backdrop-filter: blur(8px);
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #FF6B35 0%, #F7931E 50%, #FFD23F 100%);
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .animate-pulse-slow {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #FF6B35;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
-<body class="bg-gray-50">
+
+<body class="bg-gray-50 font-sans">
     <!-- Header -->
-    <header class="bg-white shadow-md sticky top-0 z-40">
+    <header class="gradient-bg shadow-lg sticky top-0 z-40">
         <div class="container mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-2">
-                    <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=50&h=50&fit=crop" alt="FoodOrder Logo" class="w-10 h-10">
-                    <h1 class="text-2xl font-bold text-gray-800">FoodOrder</h1>
+                <div class="flex items-center space-x-3">
+                    <div class="bg-white p-2 rounded-full shadow-md">
+                        <i class="fas fa-utensils text-primary text-xl"></i>
+                    </div>
+                    <h1 class="text-2xl font-bold text-white">FoodOrder</h1>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <div class="relative">
-                        <button id="cartBtn" class="flex items-center space-x-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-amber-600 transition-colors">
-                            <i class="fas fa-shopping-cart"></i>
-                            <span id="cartCount" class="bg-secondary text-white rounded-full px-2 py-1 text-xs">0</span>
-                        </button>
+                    <button id="locationBtn" class="glass-effect text-white px-4 py-2 rounded-full hover:bg-white hover:bg-opacity-20 transition-all duration-300">
+                        <i class="fas fa-map-marker-alt mr-2"></i>
+                        <span id="locationText">Deteksi Lokasi</span>
+                    </button>
+                    <div class="bg-white bg-opacity-20 text-white px-4 py-2 rounded-full">
+                        <i class="fas fa-shopping-cart mr-2"></i>
+                        <span id="cartCount">0</span>
                     </div>
                 </div>
             </div>
         </div>
     </header>
-    <!-- Hero Section with Slider -->
-    <section class="bg-gradient-to-r from-primary to-amber-600 text-white py-16 md:py-24 lg:py-32">
+
+    <!-- Hero Section -->
+    <section class="gradient-bg py-16">
+        <div class="container mx-auto px-4 text-center">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-5xl font-bold text-white mb-6 animate-float">
+                    Pesan Makanan Favorit Anda
+                </h2>
+                <p class="text-xl text-white text-opacity-90 mb-8">
+                    Nikmati berbagai pilihan makanan lezat dengan layanan antar yang cepat dan terpercaya
+                </p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <div class="glass-effect text-white px-6 py-3 rounded-full">
+                        <i class="fas fa-clock mr-2"></i>
+                        Pengiriman 30 Menit
+                    </div>
+                    <div class="glass-effect text-white px-6 py-3 rounded-full">
+                        <i class="fas fa-shield-alt mr-2"></i>
+                        Pembayaran COD
+                    </div>
+                    <div class="glass-effect text-white px-6 py-3 rounded-full">
+                        <i class="fas fa-star mr-2"></i>
+                        Rating 4.8/5
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="py-16">
         <div class="container mx-auto px-4">
-            <!-- Hero Text -->
-            <div class="text-center mb-8 md:mb-12">
-                <h2 class="text-3xl md:text-5xl lg:text-6xl font-bold mb-4">Pesan Makanan Favorit Anda</h2>
-                <p class="text-lg md:text-xl lg:text-2xl mb-8 max-w-xl md:max-w-2xl mx-auto">Nikmati kelezatan makanan Indonesia terbaik dengan layanan antar yang cepat dan mudah. Temukan menu favorit Anda hari ini!</p>
-                <button onclick="document.getElementById('products').scrollIntoView({behavior: 'smooth'})" class="bg-white text-primary px-6 py-2 md:px-8 md:py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-base md:text-lg">
-                    Mulai Pesan Sekarang
+            <div class="text-center mb-12">
+                <h3 class="text-4xl font-bold text-dark mb-4">Menu Pilihan</h3>
+                <p class="text-gray-600 text-lg">Pilih dari berbagai makanan lezat yang tersedia</p>
+            </div>
+            
+            <!-- Category Filter -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <button class="category-btn active bg-primary text-white px-6 py-3 rounded-full font-medium hover:bg-opacity-90 transition-all duration-300" data-category="all">
+                    Semua Menu
                 </button>
-            </div>
-            <!-- Slider -->
-            <div id="slider" class="relative w-full max-w-md md:max-w-3xl lg:max-w-4xl mx-auto overflow-hidden rounded-xl shadow-xl">
-                <div id="sliderTrack" class="flex transition-transform duration-500 ease-in-out">
-                    <!-- Slides will be rendered here -->
-                </div>
-                <button id="prevSlide" class="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 bg-white text-primary p-2 md:p-3 rounded-full shadow-md hover:bg-gray-100" aria-label="Slide sebelumnya">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <button id="nextSlide" class="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 bg-white text-primary p-2 md:p-3 rounded-full shadow-md hover:bg-gray-100" aria-label="Slide berikutnya">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-                <div class="absolute bottom-4 md:bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2 md:space-x-3">
-                    <div id="sliderDots" class="flex space-x-2 md:space-x-3"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Featured Section -->
-    <section class="container mx-auto px-4 py-12 md:py-16 lg:py-20 bg-white">
-        <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12 text-gray-800">Mengapa Memilih FoodOrder?</h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
-            <div class="text-center p-4 md:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                <i class="fas fa-truck text-primary text-4xl md:text-5xl mb-4"></i>
-                <h4 class="text-lg md:text-xl font-semibold mb-2">Pengiriman Cepat</h4>
-                <p class="text-gray-600 text-sm md:text-base">Dapatkan pesanan Anda dalam 30-45 menit dengan layanan antar kami yang handal.</p>
-            </div>
-            <div class="text-center p-4 md:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                <i class="fas fa-leaf text-primary text-4xl md:text-5xl mb-4"></i>
-                <h4 class="text-lg md:text-xl font-semibold mb-2">Bahan Segar</h4>
-                <p class="text-gray-600 text-sm md:text-base">Semua makanan dibuat dari bahan-bahan segar dan berkualitas tinggi.</p>
-            </div>
-            <div class="text-center p-4 md:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                <i class="fas fa-star text-primary text-4xl md:text-5xl mb-4"></i>
-                <h4 class="text-lg md:text-xl font-semibold mb-2">Rating Tinggi</h4>
-                <p class="text-gray-600 text-sm md:text-base">Ribuan pelanggan puas dengan layanan dan rasa makanan kami.</p>
-            </div>
-        </div>
-    </section>
-    <!-- Promo Section -->
-    <section class="container mx-auto px-4 py-12 md:py-16 lg:py-20 bg-gradient-to-r from-amber-600 to-primary text-white">
-        <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12">Promo Spesial Hari Ini</h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">
-            <div class="bg-white text-gray-800 p-4 md:p-6 rounded-lg shadow-md">
-                <h4 class="text-lg md:text-xl font-semibold mb-2">Diskon 20% untuk Pesanan Pertama</h4>
-                <p class="mb-4 text-sm md:text-base">Gunakan kode: FOOD20 saat checkout. Berlaku hingga akhir bulan.</p>
-                <button class="bg-primary text-white px-4 py-2 md:px-6 md:py-2 rounded-lg hover:bg-amber-600 text-sm md:text-base">Gunakan Promo</button>
-            </div>
-            <div class="bg-white text-gray-800 p-4 md:p-6 rounded-lg shadow-md">
-                <h4 class="text-lg md:text-xl font-semibold mb-2">Gratis Ongkir untuk Pesanan di Atas Rp50.000</h4>
-                <p class="mb-4 text-sm md:text-base">Nikmati pengiriman gratis untuk semua pesanan di atas Rp50.000.</p>
-                <button class="bg-primary text-white px-4 py-2 md:px-6 md:py-2 rounded-lg hover:bg-amber-600 text-sm md:text-base">Pesan Sekarang</button>
-            </div>
-        </div>
-    </section>
-    <!-- Testimonials Section -->
-    <section class="container mx-auto px-4 py-12 md:py-16 lg:py-20 bg-gray-50">
-        <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12 text-gray-800">Apa Kata Pelanggan Kami</h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
-            <div class="bg-white p-4 md:p-6 rounded-lg shadow-md">
-                <p class="text-gray-600 mb-4 text-sm md:text-base">"Makanannya enak dan pengirimannya cepat! Pasti pesan lagi."</p>
-                <div class="flex items-center">
-                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=40&h=40&fit=crop" alt="User 1" class="w-8 h-8 md:w-10 md:h-10 rounded-full mr-2">
-                    <span class="font-semibold text-sm md:text-base">Anna S.</span>
-                </div>
-            </div>
-            <div class="bg-white p-4 md:p-6 rounded-lg shadow-md">
-                <p class="text-gray-600 mb-4 text-sm md:text-base">"Variasi menu yang banyak dan harga terjangkau. Recommended!"</p>
-                <div class="flex items-center">
-                    <img src="https://images.unsplash.com/photo-1552058544-f2b84fbe85f5?w=40&h=40&fit=crop" alt="User 2" class="w-8 h-8 md:w-10 md:h-10 rounded-full mr-2">
-                    <span class="font-semibold text-sm md:text-base">Budi T.</span>
-                </div>
-            </div>
-            <div class="bg-white p-4 md:p-6 rounded-lg shadow-md">
-                <p class="text-gray-600 mb-4 text-sm md:text-base">"Layanan pelanggan ramah dan makanan selalu fresh."</p>
-                <div class="flex items-center">
-                    <svg class="w-8 h-8 md:w-10 md:h-10 rounded-full mr-2 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-                    </svg>
-                    <span class="font-semibold text-sm md:text-base">Citra L.</span>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Location-based Recommendation Section -->
-    <section id="recommendations" class="container mx-auto px-4 py-12 md:py-16 lg:py-20 bg-white">
-        <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12 text-gray-800">Rekomendasi Berdasarkan Lokasi Anda</h3>
-        <div id="locationInfo" class="text-center mb-6 text-gray-600"></div>
-        <div id="recommendationGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
-            <!-- Recommendations will be rendered here by JavaScript -->
-        </div>
-    </section>
-    <!-- Filter and Search Section -->
-    <section class="container mx-auto px-4 py-8 bg-white">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8">
-            <!-- Search Bar -->
-            <div class="relative w-full md:w-96">
-                <input type="text" id="searchBar" placeholder="Cari makanan..." class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-lg" aria-label="Cari produk makanan">
-                <i class="fas fa-search absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg"></i>
-            </div>
-            <!-- Filters -->
-            <div class="flex flex-wrap gap-3 justify-center md:justify-end">
-                <button onclick="filterProducts(event, 'all')" class="filter-btn active bg-primary text-white px-6 py-2 rounded-full hover:bg-amber-600 transition-colors text-base">
-                    Semua
-                </button>
-                <button onclick="filterProducts(event, 'Makanan Utama')" class="filter-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-full hover:bg-gray-300 transition-colors text-base">
+                <button class="category-btn bg-white text-dark px-6 py-3 rounded-full font-medium border-2 border-gray-200 hover:border-primary hover:text-primary transition-all duration-300" data-category="makanan-utama">
                     Makanan Utama
                 </button>
-                <button onclick="filterProducts(event, 'Makanan Berkuah')" class="filter-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-full hover:bg-gray-300 transition-colors text-base">
-                    Makanan Berkuah
-                </button>
-                <button onclick="filterProducts(event, 'Makanan Sehat')" class="filter-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-full hover:bg-gray-300 transition-colors text-base">
-                    Makanan Sehat
-                </button>
-                <button onclick="filterProducts(event, 'Minuman')" class="filter-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-full hover:bg-gray-300 transition-colors text-base">
+                <button class="category-btn bg-white text-dark px-6 py-3 rounded-full font-medium border-2 border-gray-200 hover:border-primary hover:text-primary transition-all duration-300" data-category="minuman">
                     Minuman
                 </button>
-            </div>
-        </div>
-    </section>
-    <!-- Products Section -->
-    <section id="products" class="container mx-auto px-4 py-12 bg-gray-50">
-        <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12 text-gray-800">Menu Pilihan Kami</h3>
-        <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
-            <!-- Products will be rendered here by JavaScript -->
-        </div>
-    </section>
-    <!-- Additional Content: Popular Categories -->
-    <section class="container mx-auto px-4 py-12 md:py-16 lg:py-20 bg-white">
-        <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12 text-gray-800">Kategori Populer</h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
-            <div class="text-center p-4 md:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                <img src="https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=150&h=150&fit=crop" alt="Makanan Utama" class="w-full h-32 md:h-40 object-cover rounded-lg mb-4">
-                <h4 class="text-lg md:text-xl font-semibold mb-2">Makanan Utama</h4>
-                <p class="text-gray-600 text-sm md:text-base">Nikmati berbagai hidangan utama khas Indonesia.</p>
-            </div>
-            <div class="text-center p-4 md:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                <img src="https://images.unsplash.com/photo-1547592180-85f173990554?w=150&h=150&fit=crop" alt="Makanan Berkuah" class="w-full h-32 md:h-40 object-cover rounded-lg mb-4">
-                <h4 class="text-lg md:text-xl font-semibold mb-2">Makanan Berkuah</h4>
-                <p class="text-gray-600 text-sm md:text-base">Soto, bakso, dan hidangan berkuah lainnya.</p>
-            </div>
-            <div class="text-center p-4 md:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?w=150&h=150&fit=crop" alt="Makanan Sehat" class="w-full h-32 md:h-40 object-cover rounded-lg mb-4">
-                <h4 class="text-lg md:text-xl font-semibold mb-2">Makanan Sehat</h4>
-                <p class="text-gray-600 text-sm md:text-base">Pilihan sehat untuk gaya hidup Anda.</p>
-            </div>
-            <div class="text-center p-4 md:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=150&h=150&fit=crop" alt="Minuman" class="w-full h-32 md:h-40 object-cover rounded-lg mb-4">
-                <h4 class="text-lg md:text-xl font-semibold mb-2">Minuman</h4>
-                <p class="text-gray-600 text-sm md:text-base">Minuman segar untuk menemani makanan Anda.</p>
-            </div>
-        </div>
-    </section>
-    <!-- Additional Content: How It Works -->
-    <section class="container mx-auto px-4 py-12 md:py-16 lg:py-20 bg-gray-50">
-        <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12 text-gray-800">Cara Kerja FoodOrder</h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
-            <div class="text-center p-4 md:p-6">
-                <i class="fas fa-search text-primary text-4xl md:text-5xl mb-4"></i>
-                <h4 class="text-lg md:text-xl font-semibold mb-2">1. Cari & Pilih</h4>
-                <p class="text-gray-600 text-sm md:text-base">Temukan makanan favorit Anda dari berbagai menu.</p>
-            </div>
-            <div class="text-center p-4 md:p-6">
-                <i class="fas fa-cart-plus text-primary text-4xl md:text-5xl mb-4"></i>
-                <h4 class="text-lg md:text-xl font-semibold mb-2">2. Tambah ke Keranjang</h4>
-                <p class="text-gray-600 text-sm md:text-base">Tambahkan makanan ke keranjang dengan mudah.</p>
-            </div>
-            <div class="text-center p-4 md:p-6">
-                <i class="fas fa-truck text-primary text-4xl md:text-5xl mb-4"></i>
-                <h4 class="text-lg md:text-xl font-semibold mb-2">3. Pesan & Terima</h4>
-                <p class="text-gray-600 text-sm md:text-base">Lengkapi pesanan dan tunggu pengiriman cepat.</p>
-            </div>
-        </div>
-    </section>
-    <!-- Loading Spinner -->
-    <div id="loadingSpinner" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white p-6 rounded-lg">
-            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-            <p class="mt-4 text-gray-600">Memuat...</p>
-        </div>
-    </div>
-    <!-- Product Detail Modal -->
-    <div id="productModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden" role="dialog" aria-labelledby="modalTitle">
-        <div class="bg-white rounded-lg max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
-            <div class="p-6">
-                <div class="flex justify-between items-start mb-4">
-                    <h3 id="modalTitle" class="text-xl md:text-2xl font-bold text-gray-800"></h3>
-                    <button onclick="closeModal('productModal')" aria-label="Tutup modal">
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
-                </div>
-                <img id="modalImage" src="" alt="" class="w-full h-48 object-cover rounded-lg mb-4">
-                <div class="space-y-3">
-                    <div class="flex items-center justify-between">
-                        <span id="modalPrice" class="text-xl md:text-2xl font-bold text-primary"></span>
-                        <div class="flex items-center space-x-1">
-                            <i class="fas fa-star text-yellow-400"></i>
-                            <span id="modalRating" class="text-gray-600"></span>
-                        </div>
-                    </div>
-                    <p id="modalDescription" class="text-gray-600 text-sm md:text-base"></p>
-                    <div class="flex items-center space-x-2 text-sm text-gray-500">
-                        <i class="fas fa-clock"></i>
-                        <span id="modalCookingTime"></span>
-                    </div>
-                    <div class="flex items-center space-x-2 text-sm text-gray-500">
-                        <i class="fas fa-tag"></i>
-                        <span id="modalCategory"></span>
-                    </div>
-                </div>
-                <div class="mt-6 flex items-center justify-between">
-                    <div class="flex items-center space-x-3">
-                        <button onclick="decreaseQuantity()" class="bg-gray-200 text-gray-700 w-8 h-8 rounded-full hover:bg-gray-300" aria-label="Kurangi jumlah">-</button>
-                        <span id="quantity" class="text-xl font-semibold">1</span>
-                        <button onclick="increaseQuantity()" class="bg-gray-200 text-gray-700 w-8 h-8 rounded-full hover:bg-gray-300" aria-label="Tambah jumlah">+</button>
-                    </div>
-                    <button onclick="addToCart()" class="bg-primary text-white px-4 md:px-6 py-2 rounded-lg hover:bg-amber-600 transition-colors text-sm md:text-base">
-                        <i class="fas fa-cart-plus mr-2"></i>Beli Sekarang
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Checkout Modal -->
-    <div id="checkoutModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden" role="dialog" aria-labelledby="checkoutTitle">
-        <div class="bg-white rounded-lg w-full max-w-md sm:max-w-lg md:max-w-xl mx-4 max-h-[90vh] overflow-y-auto">
-            <div class="p-4 sm:p-6">
-                <div class="flex justify-between items-start mb-4 sm:mb-6">
-                    <h3 id="checkoutTitle" class="text-xl sm:text-2xl font-bold text-gray-800">Checkout Pesanan</h3>
-                    <button onclick="closeModal('checkoutModal')" aria-label="Tutup modal">
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
-                </div>
-                <!-- Order Summary -->
-                <div class="mb-4 sm:mb-6">
-                    <h4 class="text-base sm:text-lg font-semibold mb-2 sm:mb-3">Ringkasan Pesanan</h4>
-                    <div id="orderSummary" class="bg-gray-50 p-3 sm:p-4 rounded-lg max-h-48 overflow-y-auto"></div>
-                </div>
-                <!-- Customer Form -->
-                <form id="checkoutForm" class="space-y-3 sm:space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1 sm:mb-2">Nama Lengkap *</label>
-                        <input type="text" id="customerName" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1 sm:mb-2">Nomor Telepon *</label>
-                        <input type="tel" id="customerPhone" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1 sm:mb-2">Alamat Lengkap *</label>
-                        <textarea id="customerAddress" required rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"></textarea>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1 sm:mb-2">Catatan Tambahan</label>
-                        <textarea id="orderNotes" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Contoh: Pedas sedang, tanpa cabai, dll."></textarea>
-                    </div>
-                    <div class="border-t pt-3 sm:pt-4">
-                        <div class="flex justify-between items-center text-base sm:text-lg font-bold">
-                            <span>Total Pembayaran:</span>
-                            <span id="totalAmount" class="text-primary"></span>
-                        </div>
-                    </div>
-                    <button type="submit" class="w-full bg-accent text-white py-3 rounded-lg font-semibold hover:bg-emerald-600 transition-colors text-base sm:text-lg">
-                        <i class="fas fa-check mr-2"></i>Selesaikan Pesanan
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-    <!-- Order Status Modal -->
-    <div id="orderStatusModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden" role="dialog" aria-labelledby="statusTitle">
-        <div class="bg-white rounded-lg max-w-md w-full mx-4 p-6">
-            <div class="flex justify-between items-start mb-4">
-                <h3 id="statusTitle" class="text-xl md:text-2xl font-bold text-gray-800">Status Pesanan</h3>
-                <button onclick="closeModal('orderStatusModal')" aria-label="Tutup modal">
-                    <i class="fas fa-times text-xl"></i>
+                <button class="category-btn bg-white text-dark px-6 py-3 rounded-full font-medium border-2 border-gray-200 hover:border-primary hover:text-primary transition-all duration-300" data-category="dessert">
+                    Dessert
                 </button>
             </div>
-            <div id="orderStatusDetails" class="space-y-4">
-                <!-- Status details will be rendered here -->
+
+            <!-- Products Grid -->
+            <div id="productsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <!-- Products will be dynamically loaded here -->
             </div>
-            <button onclick="closeModal('orderStatusModal')" class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-amber-600 mt-6">
-                Tutup
-            </button>
+        </div>
+    </section>
+
+    <!-- Product Detail Modal -->
+    <div id="productModal" class="fixed inset-0 z-50 hidden">
+        <div class="modal-backdrop fixed inset-0" onclick="closeProductModal()"></div>
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto transform transition-all duration-300 scale-95 opacity-0" id="productModalContent">
+                <div class="relative">
+                    <button onclick="closeProductModal()" class="absolute top-4 right-4 z-10 bg-white bg-opacity-80 hover:bg-opacity-100 text-gray-600 hover:text-gray-800 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300">
+                        <i class="fas fa-times text-lg"></i>
+                    </button>
+                    <div id="productModalBody">
+                        <!-- Product details will be loaded here -->
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12 mt-16">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-8">
-                <div>
-                    <div class="flex items-center space-x-2 mb-4">
-                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=50&h=50&fit=crop" alt="FoodOrder Logo" class="w-10 h-10">
-                        <h3 class="text-xl md:text-2xl font-bold">FoodOrder</h3>
+
+    <!-- Checkout Modal -->
+    <div id="checkoutModal" class="fixed inset-0 z-50 hidden">
+        <div class="modal-backdrop fixed inset-0" onclick="closeCheckoutModal()"></div>
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-screen overflow-y-auto transform transition-all duration-300 scale-95 opacity-0" id="checkoutModalContent">
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-2xl font-bold text-dark">Checkout Pesanan</h3>
+                        <button onclick="closeCheckoutModal()" class="text-gray-400 hover:text-gray-600 transition-colors duration-300">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
                     </div>
-                    <p class="text-gray-400 text-sm md:text-base">Pesan makanan favorit Anda dengan mudah dan cepat. Nikmati pengalaman kuliner terbaik di ujung jari Anda.</p>
-                </div>
-                <div>
-                    <h4 class="text-lg md:text-xl font-semibold mb-4">Layanan</h4>
-                    <ul class="space-y-2 text-gray-400 text-sm md:text-base">
-                        <li><a href="#" class="hover:text-white transition-colors">Cara Pesan</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Promo & Diskon</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Program Loyalitas</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-lg md:text-xl font-semibold mb-4">Tentang Kami</h4>
-                    <ul class="space-y-2 text-gray-400 text-sm md:text-base">
-                        <li><a href="#" class="hover:text-white transition-colors">Tentang FoodOrder</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Kebijakan Privasi</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Syarat & Ketentuan</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-lg md:text-xl font-semibold mb-4">Kontak Kami</h4>
-                    <ul class="space-y-2 text-gray-400 text-sm md:text-base">
-                        <li>Email: <a href="mailto:support@foodorder.id" class="hover:text-white transition-colors">support@foodorder.id</a></li>
-                        <li>Telepon: <a href="tel:+621234567890" class="hover:text-white transition-colors">+62 123 4567 890</a></li>
-                        <li>Alamat: Jl. Kuliner Nusantara No. 1, Jakarta Selatan</li>
-                    </ul>
+                    
+                    <form id="checkoutForm" class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Nama Lengkap</label>
+                            <input type="text" id="customerName" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300" placeholder="Masukkan nama lengkap">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Nomor Telepon</label>
+                            <input type="tel" id="customerPhone" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300" placeholder="Masukkan nomor telepon">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Alamat Pengiriman</label>
+                            <textarea id="customerAddress" required rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 resize-none" placeholder="Masukkan alamat lengkap"></textarea>
+                        </div>
+                        
+                        <div id="locationInfo" class="hidden bg-blue-50 p-4 rounded-lg">
+                            <div class="flex items-center text-blue-700">
+                                <i class="fas fa-map-marker-alt mr-2"></i>
+                                <span class="font-medium">Lokasi Terdeteksi:</span>
+                            </div>
+                            <p id="detectedLocation" class="text-blue-600 text-sm mt-1"></p>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Jumlah</label>
+                            <div class="flex items-center space-x-4">
+                                <button type="button" onclick="decreaseQuantity()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <span id="quantity" class="text-xl font-semibold text-dark min-w-[2rem] text-center">1</span>
+                                <button type="button" onclick="increaseQuantity()" class="bg-primary hover:bg-opacity-90 text-white w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="border-t pt-4">
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-lg font-medium text-gray-700">Total Pembayaran:</span>
+                                <span id="totalPrice" class="text-2xl font-bold text-primary">Rp 0</span>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="w-full gradient-bg text-white py-4 rounded-lg font-semibold text-lg hover:shadow-lg transform hover:scale-105 transition-all duration-300 flex items-center justify-center">
+                            <span id="submitBtnText">Selesaikan Pesanan</span>
+                            <div id="submitLoader" class="loading-spinner ml-3 hidden"></div>
+                        </button>
+                    </form>
                 </div>
             </div>
-            <div class="flex flex-col md:flex-row justify-between items-center pt-6 border-t border-gray-700">
-                <p class="text-gray-400 text-sm md:text-base mb-4 md:mb-0">&copy; 2025 FoodOrder. All rights reserved.</p>
-                <div class="flex space-x-6">
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="Facebook">
-                        <i class="fab fa-facebook text-xl md:text-2xl"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="Instagram">
-                        <i class="fab fa-instagram text-xl md:text-2xl"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="WhatsApp">
-                        <i class="fab fa-whatsapp text-xl md:text-2xl"></i>
-                    </a>
+        </div>
+    </div>
+
+    <!-- COD Confirmation Modal -->
+    <div id="codModal" class="fixed inset-0 z-50 hidden">
+        <div class="modal-backdrop fixed inset-0"></div>
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full transform transition-all duration-300 scale-95 opacity-0" id="codModalContent">
+                <div class="p-8 text-center">
+                    <div class="mb-6">
+                        <div class="bg-green-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-check text-green-500 text-3xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-dark mb-2">Pesanan Berhasil!</h3>
+                        <p class="text-gray-600">Pesanan Anda telah diterima dan akan segera diproses</p>
+                    </div>
+                    
+                    <div class="bg-gray-50 rounded-lg p-4 mb-6 text-left">
+                        <h4 class="font-semibold text-dark mb-3">Detail Pesanan:</h4>
+                        <div id="orderSummary" class="space-y-2 text-sm text-gray-600">
+                            <!-- Order details will be populated here -->
+                        </div>
+                    </div>
+                    
+                    <div class="bg-blue-50 rounded-lg p-4 mb-6">
+                        <div class="flex items-center text-blue-700 mb-2">
+                            <i class="fas fa-money-bill-wave mr-2"></i>
+                            <span class="font-semibold">Pembayaran COD</span>
+                        </div>
+                        <p class="text-blue-600 text-sm">Bayar langsung kepada kurir saat makanan tiba</p>
+                    </div>
+                    
+                    <button onclick="closeCodModal()" class="w-full gradient-bg text-white py-3 rounded-lg font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300">
+                        Tutup
+                    </button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="bg-primary p-2 rounded-full">
+                            <i class="fas fa-utensils text-white"></i>
+                        </div>
+                        <h4 class="text-xl font-bold">FoodOrder</h4>
+                    </div>
+                    <p class="text-gray-400">Platform pemesanan makanan online terpercaya dengan layanan terbaik untuk Anda.</p>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Kontak</h5>
+                    <div class="space-y-2 text-gray-400">
+                        <p><i class="fas fa-phone mr-2"></i> +62 812-3456-7890</p>
+                        <p><i class="fas fa-envelope mr-2"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="462f282029062029292229342223346825292b">[email&#160;protected]</a></p>
+                        <p><i class="fas fa-map-marker-alt mr-2"></i> Jakarta, Indonesia</p>
+                    </div>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Ikuti Kami</h5>
+                    <div class="flex space-x-4">
+                        <a href="#" class="bg-gray-700 hover:bg-primary w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="bg-gray-700 hover:bg-primary w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="bg-gray-700 hover:bg-primary w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 FoodOrder. All rights reserved.</p>
             </div>
         </div>
     </footer>
-    <!-- Combined JavaScript -->
-    <script>
-        // Dummy product data with location tags
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // Mock Database - Products
         const products = [
             {
                 id: 1,
                 name: "Nasi Gudeg Jogja",
                 price: 25000,
+                category: "makanan-utama",
                 image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=300&fit=crop",
-                description: "Nasi gudeg khas Jogja dengan ayam kampung, telur, dan sambal krecek yang gurih dan manis",
-                category: "Makanan Utama",
+                description: "Gudeg khas Jogja dengan ayam kampung, telur, dan krecek. Disajikan dengan nasi hangat dan sambal krecek yang pedas.",
                 rating: 4.8,
-                cooking_time: "15-20 menit",
-                merchant_id: 'merchant1',
-                location_tags: ['Yogyakarta']
+                cookTime: "20-25 menit"
             },
             {
                 id: 2,
                 name: "Ayam Bakar Taliwang",
                 price: 35000,
+                category: "makanan-utama",
                 image: "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=400&h=300&fit=crop",
-                description: "Ayam bakar khas Lombok dengan bumbu pedas dan plecing kangkung segar",
-                category: "Makanan Utama",
-                rating: 4.7,
-                cooking_time: "20-25 menit",
-                merchant_id: 'merchant1',
-                location_tags: ['Lombok']
+                description: "Ayam bakar khas Lombok dengan bumbu taliwang yang pedas dan gurih. Disajikan dengan plecing kangkung.",
+                rating: 4.9,
+                cookTime: "25-30 menit"
             },
             {
                 id: 3,
-                name: "Soto Betawi",
-                price: 28000,
-                image: "https://images.unsplash.com/photo-1547592180-85f173990554?w=400&h=300&fit=crop",
-                description: "Soto khas Betawi dengan kuah santan, daging sapi, dan jeroan yang lezat",
-                category: "Makanan Berkuah",
-                rating: 4.6,
-                cooking_time: "10-15 menit",
-                merchant_id: 'merchant2',
-                location_tags: ['Jakarta']
+                name: "Es Teh Manis",
+                price: 8000,
+                category: "minuman",
+                image: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&h=300&fit=crop",
+                description: "Es teh manis segar dengan gula aren asli. Minuman tradisional yang menyegarkan.",
+                rating: 4.5,
+                cookTime: "5 menit"
             },
             {
                 id: 4,
-                name: "Gado-Gado Jakarta",
-                price: 20000,
-                image: "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&h=300&fit=crop",
-                description: "Gado-gado dengan sayuran segar, lontong, dan bumbu kacang yang kental",
-                category: "Makanan Sehat",
-                rating: 4.5,
-                cooking_time: "5-10 menit",
-                merchant_id: 'merchant2',
-                location_tags: ['Jakarta']
+                name: "Sate Ayam Madura",
+                price: 30000,
+                category: "makanan-utama",
+                image: "https://images.unsplash.com/photo-1529563021893-cc83c992d75d?w=400&h=300&fit=crop",
+                description: "Sate ayam khas Madura dengan bumbu kacang yang kental dan gurih. 10 tusuk sate dengan lontong.",
+                rating: 4.7,
+                cookTime: "15-20 menit"
             },
             {
                 id: 5,
-                name: "Rendang Padang",
-                price: 40000,
-                image: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=400&h=300&fit=crop",
-                description: "Rendang daging sapi khas Padang dengan bumbu rempah yang kaya dan pedas",
-                category: "Makanan Utama",
-                rating: 4.9,
-                cooking_time: "15-20 menit",
-                merchant_id: 'merchant1',
-                location_tags: ['Padang']
+                name: "Es Cendol",
+                price: 12000,
+                category: "dessert",
+                image: "https://images.unsplash.com/photo-1563379091339-03246963d4d6?w=400&h=300&fit=crop",
+                description: "Es cendol dengan santan kental, gula merah, dan cendol hijau. Dessert tradisional yang menyegarkan.",
+                rating: 4.6,
+                cookTime: "5-10 menit"
             },
             {
                 id: 6,
-                name: "Mie Ayam Bakso",
-                price: 18000,
-                image: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&h=300&fit=crop",
-                description: "Mie ayam dengan bakso sapi, pangsit, dan kuah kaldu yang gurih",
-                category: "Makanan Berkuah",
+                name: "Jus Alpukat",
+                price: 15000,
+                category: "minuman",
+                image: "https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?w=400&h=300&fit=crop",
+                description: "Jus alpukat segar dengan susu kental manis dan es batu. Kaya nutrisi dan menyegarkan.",
                 rating: 4.4,
-                cooking_time: "10-15 menit",
-                merchant_id: 'merchant2',
-                location_tags: ['Jakarta']
+                cookTime: "5 menit"
             },
             {
                 id: 7,
-                name: "Nasi Liwet Solo",
-                price: 22000,
-                image: "https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=400&h=300&fit=crop",
-                description: "Nasi liwet khas Solo dengan ayam suwir, telur, dan sambal terasi",
-                category: "Makanan Utama",
-                rating: 4.6,
-                cooking_time: "15-20 menit",
-                merchant_id: 'merchant1',
-                location_tags: ['Solo']
+                name: "Rendang Daging",
+                price: 45000,
+                category: "makanan-utama",
+                image: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=400&h=300&fit=crop",
+                description: "Rendang daging sapi khas Padang dengan bumbu rempah yang kaya. Dimasak hingga empuk dan bumbu meresap.",
+                rating: 4.9,
+                cookTime: "30-35 menit"
             },
             {
                 id: 8,
-                name: "Es Cendol Dawet",
-                price: 12000,
-                image: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&h=300&fit=crop",
-                description: "Minuman segar es cendol dengan santan dan gula merah yang manis",
-                category: "Minuman",
+                name: "Klepon",
+                price: 18000,
+                category: "dessert",
+                image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop",
+                description: "Klepon tradisional dengan isian gula merah dan taburan kelapa parut. 8 buah klepon dalam satu porsi.",
                 rating: 4.3,
-                cooking_time: "5 menit",
-                merchant_id: 'merchant3',
-                location_tags: ['Jakarta', 'Yogyakarta']
-            },
-            {
-                id: 9,
-                name: "Teh Tarik Aceh",
-                price: 8000,
-                image: "https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=400&h=300&fit=crop",
-                description: "Teh tarik khas Aceh yang creamy dan hangat, cocok untuk segala cuaca",
-                category: "Minuman",
-                rating: 4.2,
-                cooking_time: "3-5 menit",
-                merchant_id: 'merchant3',
-                location_tags: ['Aceh']
+                cookTime: "10-15 menit"
             }
         ];
 
-        // Format Rupiah
-        function formatRupiah(number) {
-            if (typeof number !== 'number' || isNaN(number)) {
-                return 'Rp 0';
-            }
-            return new Intl.NumberFormat('id-ID', {
-                style: 'currency',
-                currency: 'IDR',
-                minimumFractionDigits: 0
-            }).format(number);
-        }
-
-        // Supabase Configuration
-        const SUPABASE_URL = 'YOUR_SUPABASE_URL';
-        const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
-
-        class DatabaseService {
-            #supabase = null;
-            constructor() {
-                this.isConnected = this.#initializeSupabase();
-            }
-            #initializeSupabase() {
-                try {
-                    if (!window.supabase) {
-                        console.warn('Supabase CDN not loaded. Using local data only.');
-                        return false;
-                    }
-                    if (SUPABASE_URL === 'YOUR_SUPABASE_URL' || SUPABASE_ANON_KEY === 'YOUR_SUPABASE_ANON_KEY') {
-                        console.warn('Supabase credentials not configured. Using local data only.');
-                        return false;
-                    }
-                    this.#supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                    console.log('Supabase initialized successfully');
-                    return true;
-                } catch (error) {
-                    console.error('Error initializing Supabase:', error);
-                    return false;
-                }
-            }
-            async fetchProducts(merchantId = null) {
-                if (!this.isConnected || !this.#supabase) {
-                    console.log('Using local product data');
-                    return { data: merchantId ? products.filter(p => p.merchant_id === merchantId) : products, error: null };
-                }
-                try {
-                    let query = this.#supabase
-                        .from('products')
-                        .select('*')
-                        .order('id', { ascending: true });
-                    if (merchantId) {
-                        query = query.eq('merchant_id', merchantId);
-                    }
-                    const { data, error } = await query;
-                    return { data: data || (merchantId ? products.filter(p => p.merchant_id === merchantId) : products), error };
-                } catch (error) {
-                    console.error('Error in fetchProducts:', error);
-                    return { data: merchantId ? products.filter(p => p.merchant_id === merchantId) : products, error };
-                }
-            }
-            async insertOrder(orderData) {
-                if (!this.isConnected || !this.#supabase) {
-                    console.log('Supabase not connected. Order saved locally:', orderData);
-                    localStorage.setItem(`order_${Date.now()}`, JSON.stringify(orderData));
-                    return { data: orderData, error: null };
-                }
-                try {
-                    const { data, error } = await this.#supabase
-                        .from('orders')
-                        .insert([{
-                            customer_name: orderData.customerName,
-                            customer_phone: orderData.customerPhone,
-                            customer_address: orderData.customerAddress,
-                            order_notes: orderData.orderNotes,
-                            items: JSON.stringify(orderData.items),
-                            total_amount: orderData.total,
-                            order_date: orderData.orderDate,
-                            status: orderData.status,
-                            payment_method: orderData.paymentMethod,
-                            merchant_id: orderData.merchant_id,
-                            customer_location: orderData.customerLocation
-                        }])
-                        .select()
-                        .single();
-                    if (error) throw error;
-                    return { data, error: null };
-                } catch (error) {
-                    console.error('Error in insertOrder:', error);
-                    return { data: null, error };
-                }
-            }
-            async initializeTables() {
-                if (!this.isConnected || !this.#supabase) {
-                    console.log('Supabase not connected. Cannot initialize tables.');
-                    return false;
-                }
-                try {
-                    const { data: existingProducts } = await this.#supabase
-                        .from('products')
-                        .select('id')
-                        .limit(1);
-                    if (!existingProducts || existingProducts.length === 0) {
-                        console.log('Inserting sample products...');
-                        const { error } = await this.#supabase
-                            .from('products')
-                            .insert(products.map(product => ({
-                                name: product.name,
-                                price: product.price,
-                                image: product.image,
-                                description: product.description,
-                                category: product.category,
-                                rating: product.rating,
-                                cooking_time: product.cooking_time,
-                                merchant_id: product.merchant_id,
-                                location_tags: product.location_tags
-                            })));
-                        if (error) {
-                            console.error('Error inserting sample products:', error);
-                        } else {
-                            console.log('Sample products inserted successfully');
-                        }
-                    }
-                    return true;
-                } catch (error) {
-                    console.error('Error initializing tables:', error);
-                    return false;
-                }
-            }
-        }
-
-        const dbService = new DatabaseService();
-
-        // App Logic
+        // Global variables
         let currentProduct = null;
-        let cart = [];
         let currentQuantity = 1;
-        let filteredProducts = [];
-        let recommendedProducts = [];
-        let currentSlide = 0;
-        let currentMerchantId = 'merchant1'; // Example: filter by merchant1
         let userLocation = null;
+        let cartCount = 0;
 
-        document.addEventListener('DOMContentLoaded', async function() {
-            showLoading();
-            loadCartFromStorage();
-            await getUserLocation();
-            await initializeApp();
-            renderSlider();
-            renderRecommendations();
-            hideLoading();
-            updateCartCount();
-            setupSearchBar();
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProducts();
+            setupEventListeners();
+            detectLocation();
         });
 
-        // Location Detection
-        async function getUserLocation() {
-            if (!navigator.geolocation) {
-                showToast('Geolocation tidak didukung oleh browser Anda.');
-                document.getElementById('locationInfo').textContent = 'Lokasi tidak tersedia. Menampilkan semua rekomendasi.';
-                recommendedProducts = products.filter(p => p.merchant_id === currentMerchantId);
-                return;
-            }
-            try {
-                showLoading();
-                const position = await new Promise((resolve, reject) => {
-                    navigator.geolocation.getCurrentPosition(resolve, reject, {
-                        enableHighAccuracy: true,
-                        timeout: 10000,
-                        maximumAge: 0
+        // Setup event listeners
+        function setupEventListeners() {
+            // Category filter buttons
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Update active button
+                    document.querySelectorAll('.category-btn').forEach(b => {
+                        b.classList.remove('active', 'bg-primary', 'text-white');
+                        b.classList.add('bg-white', 'text-dark', 'border-2', 'border-gray-200');
                     });
+                    this.classList.add('active', 'bg-primary', 'text-white');
+                    this.classList.remove('bg-white', 'text-dark', 'border-2', 'border-gray-200');
+                    
+                    // Filter products
+                    const category = this.dataset.category;
+                    loadProducts(category);
                 });
-                const { latitude, longitude } = position.coords;
-                userLocation = { latitude, longitude };
-                const response = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json&zoom=10`);
-                const data = await response.json();
-                const city = data.address?.city || data.address?.town || 'Lokasi tidak dikenal';
-                userLocation.city = city;
-                document.getElementById('locationInfo').textContent = `Lokasi Anda: ${city}`;
-                recommendedProducts = products.filter(p => 
-                    p.merchant_id === currentMerchantId && 
-                    (p.location_tags.includes(city) || p.location_tags.includes('Jakarta'))
-                );
-                if (recommendedProducts.length === 0) {
-                    recommendedProducts = products.filter(p => p.merchant_id === currentMerchantId);
-                    showToast(`Tidak ada rekomendasi khusus untuk ${city}. Menampilkan semua produk.`);
-                }
-            } catch (error) {
-                console.error('Error getting location:', error);
-                showToast('Gagal mendeteksi lokasi. Silakan izinkan akses lokasi atau coba lagi.');
-                document.getElementById('locationInfo').textContent = 'Gagal mendeteksi lokasi. Menampilkan semua rekomendasi.';
-                recommendedProducts = products.filter(p => p.merchant_id === currentMerchantId);
-            } finally {
-                hideLoading();
-            }
+            });
+
+            // Checkout form
+            document.getElementById('checkoutForm').addEventListener('submit', handleCheckout);
+
+            // Location button
+            document.getElementById('locationBtn').addEventListener('click', detectLocation);
         }
 
-        async function initializeApp() {
-            try {
-                const { data: fetchedProducts, error } = await dbService.fetchProducts(currentMerchantId);
-                if (error) {
-                    console.warn('Using local products due to database error:', error);
-                } else if (fetchedProducts && fetchedProducts.length > 0) {
-                    products.splice(0, products.length, ...fetchedProducts.map(product => ({
-                        id: product.id,
-                        name: product.name,
-                        price: product.price,
-                        image: product.image,
-                        description: product.description,
-                        category: product.category,
-                        rating: product.rating,
-                        cooking_time: product.cooking_time,
-                        merchant_id: product.merchant_id,
-                        location_tags: product.location_tags || []
-                    })));
-                }
-                filteredProducts = products.filter(p => p.merchant_id === currentMerchantId);
-                renderProducts();
-                await dbService.initializeTables();
-            } catch (error) {
-                console.error('Error initializing app:', error);
-                renderProducts();
-            }
-        }
-
-        // Slider Logic
-        function renderSlider() {
-            const featuredProducts = filteredProducts
-                .sort((a, b) => b.rating - a.rating)
-                .slice(0, 3);
-            const sliderTrack = document.getElementById('sliderTrack');
-            const sliderDots = document.getElementById('sliderDots');
-            sliderTrack.innerHTML = featuredProducts.map(product => `
-                <div class="flex-none w-full">
-                    <div class="relative">
-                        <img src="${product.image}" alt="${product.name}" class="w-full h-48 sm:h-64 md:h-80 object-cover rounded-xl">
-                        <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-3 sm:p-4 md:p-6 rounded-b-xl">
-                            <h3 class="text-base sm:text-lg md:text-2xl font-bold mb-2">${product.name}</h3>
-                            <p class="text-xs sm:text-sm md:text-base line-clamp-2 mb-3 sm:mb-4">${product.description}</p>
-                            <button onclick="openProductModal(products.find(p => p.id === ${product.id})); event.stopPropagation();" class="bg-primary text-white px-3 sm:px-4 py-1 sm:py-2 rounded-lg hover:bg-amber-600 text-xs sm:text-sm md:text-base">
-                                Pesan Sekarang
+        // Load and display products
+        function loadProducts(category = 'all') {
+            const grid = document.getElementById('productsGrid');
+            const filteredProducts = category === 'all' ? products : products.filter(p => p.category === category);
+            
+            grid.innerHTML = filteredProducts.map(product => `
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover cursor-pointer transform transition-all duration-300" onclick="openProductModal(${product.id})">
+                    <div class="relative overflow-hidden">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover transition-transform duration-300 hover:scale-110">
+                        <div class="absolute top-4 right-4 bg-white bg-opacity-90 px-2 py-1 rounded-full text-sm font-medium text-dark">
+                            <i class="fas fa-star text-yellow-400 mr-1"></i>
+                            ${product.rating}
+                        </div>
+                        <div class="absolute bottom-4 left-4 bg-primary text-white px-3 py-1 rounded-full text-sm font-medium">
+                            <i class="fas fa-clock mr-1"></i>
+                            ${product.cookTime}
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-xl font-semibold text-dark mb-2">${product.name}</h4>
+                        <p class="text-gray-600 text-sm mb-4 line-clamp-2">${product.description}</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-2xl font-bold text-primary">Rp ${product.price.toLocaleString('id-ID')}</span>
+                            <button class="bg-primary hover:bg-opacity-90 text-white px-4 py-2 rounded-full font-medium transition-all duration-300 transform hover:scale-105">
+                                <i class="fas fa-plus mr-2"></i>
+                                Pesan
                             </button>
                         </div>
                     </div>
                 </div>
             `).join('');
-            sliderDots.innerHTML = featuredProducts.map((_, i) => `
-                <button class="w-2 h-2 sm:w-3 sm:h-3 rounded-full ${i === 0 ? 'bg-white' : 'bg-gray-400'}" onclick="goToSlide(${i})" aria-label="Slide ${i + 1}"></button>
-            `).join('');
-            autoSlide();
         }
 
-        function goToSlide(index) {
-            currentSlide = index;
-            const sliderTrack = document.getElementById('sliderTrack');
-            sliderTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
-            document.querySelectorAll('#sliderDots button').forEach((dot, i) => {
-                dot.classList.toggle('bg-white', i === currentSlide);
-                dot.classList.toggle('bg-gray-400', i !== currentSlide);
-            });
-        }
+        // Open product modal
+        function openProductModal(productId) {
+            currentProduct = products.find(p => p.id === productId);
+            if (!currentProduct) return;
 
-        function nextSlide() {
-            currentSlide = (currentSlide + 1) % 3;
-            goToSlide(currentSlide);
-        }
+            const modal = document.getElementById('productModal');
+            const modalContent = document.getElementById('productModalContent');
+            const modalBody = document.getElementById('productModalBody');
 
-        function prevSlide() {
-            currentSlide = (currentSlide - 1 + 3) % 3;
-            goToSlide(currentSlide);
-        }
-
-        function autoSlide() {
-            setInterval(nextSlide, 5000);
-        }
-
-        // Recommendation Logic
-        function renderRecommendations() {
-            const recommendationGrid = document.getElementById('recommendationGrid');
-            recommendationGrid.innerHTML = '';
-            if (recommendedProducts.length === 0) {
-                recommendationGrid.innerHTML = '<p class="col-span-full text-center text-gray-500 py-8">Tidak ada rekomendasi tersedia.</p>';
-                return;
-            }
-            recommendedProducts.forEach(product => {
-                const productCard = createProductCard(product);
-                recommendationGrid.appendChild(productCard);
-            });
-        }
-
-        // Search Bar Logic
-        function setupSearchBar() {
-            const searchBar = document.getElementById('searchBar');
-            let timeout;
-            searchBar.addEventListener('input', () => {
-                clearTimeout(timeout);
-                timeout = setTimeout(() => {
-                    const query = searchBar.value.trim().toLowerCase();
-                    const activeCategory = document.querySelector('.filter-btn.active')?.textContent.toLowerCase() || 'all';
-                    filteredProducts = products.filter(product => {
-                        const matchesCategory = activeCategory === 'all' || product.category.toLowerCase() === activeCategory;
-                        const matchesQuery = product.name.toLowerCase().includes(query);
-                        const matchesMerchant = currentMerchantId ? product.merchant_id === currentMerchantId : true;
-                        return matchesCategory && matchesQuery && matchesMerchant;
-                    });
-                    renderProducts(filteredProducts);
-                }, 300);
-            });
-        }
-
-        function renderProducts(productsToRender = filteredProducts) {
-            const productsGrid = document.getElementById('productsGrid');
-            productsGrid.innerHTML = '';
-            if (productsToRender.length === 0) {
-                productsGrid.innerHTML = '<p class="col-span-full text-center text-gray-500 py-8">Tidak ada produk ditemukan.</p>';
-                return;
-            }
-            productsToRender.forEach(product => {
-                const productCard = createProductCard(product);
-                productsGrid.appendChild(productCard);
-            });
-        }
-
-        function createProductCard(product) {
-            const card = document.createElement('div');
-            card.className = 'bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer transform hover:scale-105 transition-transform';
-            card.onclick = () => openProductModal(product);
-            card.innerHTML = `
+            modalBody.innerHTML = `
                 <div class="relative">
-                    <img src="${product.image}" alt="${product.name}" class="w-full h-40 sm:h-48 md:h-56 object-cover" loading="lazy">
-                    <div class="absolute top-2 right-2 bg-white rounded-full px-2 py-1 text-xs font-semibold text-gray-600">
-                        <i class="fas fa-star text-yellow-400"></i> ${product.rating}
+                    <img src="${currentProduct.image}" alt="${currentProduct.name}" class="w-full h-64 md:h-80 object-cover">
+                    <div class="absolute bottom-4 left-4 bg-white bg-opacity-90 px-3 py-2 rounded-full">
+                        <div class="flex items-center text-sm font-medium text-dark">
+                            <i class="fas fa-star text-yellow-400 mr-1"></i>
+                            ${currentProduct.rating}
+                            <span class="mx-2">•</span>
+                            <i class="fas fa-clock mr-1"></i>
+                            ${currentProduct.cookTime}
+                        </div>
                     </div>
                 </div>
-                <div class="p-4">
-                    <h4 class="font-bold text-base sm:text-lg mb-2 text-gray-800">${product.name}</h4>
-                    <p class="text-gray-600 text-xs sm:text-sm mb-3 line-clamp-2">${product.description}</p>
-                    <div class="flex items-center justify-between mb-3">
-                        <span class="text-primary font-bold text-base sm:text-lg md:text-xl">${formatRupiah(product.price)}</span>
-                        <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">${product.category}</span>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center text-xs sm:text-sm text-gray-500">
-                            <i class="fas fa-clock mr-1"></i>
-                            <span>${product.cooking_time}</span>
+                <div class="p-6">
+                    <h3 class="text-3xl font-bold text-dark mb-4">${currentProduct.name}</h3>
+                    <p class="text-gray-600 text-lg mb-6 leading-relaxed">${currentProduct.description}</p>
+                    <div class="flex items-center justify-between mb-6">
+                        <span class="text-3xl font-bold text-primary">Rp ${currentProduct.price.toLocaleString('id-ID')}</span>
+                        <div class="bg-gray-100 px-4 py-2 rounded-full">
+                            <span class="text-sm font-medium text-gray-600">Kategori: ${getCategoryName(currentProduct.category)}</span>
                         </div>
-                        <button onclick="quickAddToCart(${product.id}); event.stopPropagation();" class="bg-primary text-white px-3 sm:px-4 py-1 sm:py-2 rounded-lg hover:bg-amber-600 transition-colors text-xs sm:text-sm font-semibold">
-                            <i class="fas fa-plus mr-1"></i>Pesan
-                        </button>
                     </div>
+                    <button onclick="openCheckoutModal()" class="w-full gradient-bg text-white py-4 rounded-lg font-semibold text-lg hover:shadow-lg transform hover:scale-105 transition-all duration-300">
+                        <i class="fas fa-shopping-cart mr-2"></i>
+                        Beli Sekarang
+                    </button>
                 </div>
             `;
-            return card;
+
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modalContent.classList.remove('scale-95', 'opacity-0');
+                modalContent.classList.add('scale-100', 'opacity-100');
+            }, 10);
         }
 
-        function filterProducts(event, category) {
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('active', 'bg-primary', 'text-white');
-                btn.classList.add('bg-gray-200', 'text-gray-700');
-            });
-            event.target.classList.add('active', 'bg-primary', 'text-white');
-            event.target.classList.remove('bg-gray-200', 'text-gray-700');
-            const query = document.getElementById('searchBar').value.trim().toLowerCase();
-            filteredProducts = products.filter(product => {
-                const matchesCategory = category === 'all' || product.category === category;
-                const matchesQuery = product.name.toLowerCase().includes(query);
-                const matchesMerchant = currentMerchantId ? product.merchant_id === currentMerchantId : true;
-                return matchesCategory && matchesQuery && matchesMerchant;
-            });
-            renderProducts(filteredProducts);
+        // Close product modal
+        function closeProductModal() {
+            const modal = document.getElementById('productModal');
+            const modalContent = document.getElementById('productModalContent');
+            
+            modalContent.classList.remove('scale-100', 'opacity-100');
+            modalContent.classList.add('scale-95', 'opacity-0');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
         }
 
-        function openProductModal(product) {
-            currentProduct = product;
+        // Open checkout modal
+        function openCheckoutModal() {
+            closeProductModal();
+            
+            const modal = document.getElementById('checkoutModal');
+            const modalContent = document.getElementById('checkoutModalContent');
+            
+            // Reset form
             currentQuantity = 1;
-            document.getElementById('modalTitle').textContent = product.name;
-            document.getElementById('modalImage').src = product.image;
-            document.getElementById('modalImage').alt = product.name;
-            document.getElementById('modalPrice').textContent = formatRupiah(product.price);
-            document.getElementById('modalRating').textContent = product.rating;
-            document.getElementById('modalDescription').textContent = product.description;
-            document.getElementById('modalCookingTime').textContent = product.cooking_time;
-            document.getElementById('modalCategory').textContent = product.category;
             document.getElementById('quantity').textContent = currentQuantity;
-            document.getElementById('productModal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-            document.getElementById('modalTitle').focus();
-            trapFocus('productModal');
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.add('hidden');
-            document.body.style.overflow = 'auto';
-            if (modalId === 'checkoutModal') {
-                document.getElementById('checkoutForm').reset();
+            updateTotalPrice();
+            
+            // Fill location if available
+            if (userLocation) {
+                document.getElementById('locationInfo').classList.remove('hidden');
+                document.getElementById('detectedLocation').textContent = userLocation;
             }
+
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modalContent.classList.remove('scale-95', 'opacity-0');
+                modalContent.classList.add('scale-100', 'opacity-100');
+            }, 10);
         }
 
-        function trapFocus(modalId) {
-            const modal = document.getElementById(modalId);
-            const focusable = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-            const first = focusable[0];
-            const last = focusable[focusable.length - 1];
-            modal.addEventListener('keydown', (e) => {
-                if (e.key === 'Tab') {
-                    if (e.shiftKey && document.activeElement === first) {
-                        e.preventDefault();
-                        last.focus();
-                    } else if (!e.shiftKey && document.activeElement === last) {
-                        e.preventDefault();
-                        first.focus();
-                    }
-                }
-            });
+        // Close checkout modal
+        function closeCheckoutModal() {
+            const modal = document.getElementById('checkoutModal');
+            const modalContent = document.getElementById('checkoutModalContent');
+            
+            modalContent.classList.remove('scale-100', 'opacity-100');
+            modalContent.classList.add('scale-95', 'opacity-0');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
         }
 
+        // Quantity controls
         function increaseQuantity() {
             currentQuantity++;
             document.getElementById('quantity').textContent = currentQuantity;
+            updateTotalPrice();
         }
 
         function decreaseQuantity() {
             if (currentQuantity > 1) {
                 currentQuantity--;
                 document.getElementById('quantity').textContent = currentQuantity;
+                updateTotalPrice();
             }
         }
 
-        function quickAddToCart(productId) {
-            const product = products.find(p => p.id === productId);
-            if (!product) return;
-            const existingItem = cart.find(item => item.id === productId);
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                cart.push({ ...product, quantity: 1 });
+        // Update total price
+        function updateTotalPrice() {
+            if (currentProduct) {
+                const total = currentProduct.price * currentQuantity;
+                document.getElementById('totalPrice').textContent = `Rp ${total.toLocaleString('id-ID')}`;
             }
-            saveCartToStorage();
-            updateCartCount();
-            showToast(`${product.name} ditambahkan ke keranjang!`);
         }
 
-        function addToCart() {
-            if (!currentProduct) return;
-            const existingItem = cart.find(item => item.id === currentProduct.id);
-            if (existingItem) {
-                existingItem.quantity += currentQuantity;
-            } else {
-                cart.push({ ...currentProduct, quantity: currentQuantity });
-            }
-            saveCartToStorage();
-            updateCartCount();
-            closeModal('productModal');
-            openCheckoutModal();
-        }
-
-        function updateCartCount() {
-            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            document.getElementById('cartCount').textContent = totalItems;
-            saveCartToStorage();
-        }
-
-        function openCheckoutModal() {
-            if (cart.length === 0) {
-                showToast('Keranjang Anda kosong. Silakan tambah produk terlebih dahulu.');
-                return;
-            }
-            renderOrderSummary();
-            calculateTotal();
-            if (userLocation && userLocation.city) {
-                document.getElementById('customerAddress').value = userLocation.city;
-            }
-            document.getElementById('checkoutModal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-            document.getElementById('checkoutTitle').focus();
-            trapFocus('checkoutModal');
-        }
-
-        function renderOrderSummary() {
-            const orderSummary = document.getElementById('orderSummary');
-            orderSummary.innerHTML = cart.length === 0 
-                ? '<p class="text-center text-gray-500 py-4">Keranjang kosong.</p>'
-                : cart.map((item, index) => `
-                    <div class="flex items-center justify-between py-2 border-b border-gray-200 last:border-b-0">
-                        <div class="flex items-center space-x-3">
-                            <img src="${item.image}" alt="${item.name}" class="w-10 sm:w-12 h-10 sm:h-12 object-cover rounded">
-                            <div>
-                                <h5 class="font-semibold text-xs sm:text-sm">${item.name}</h5>
-                                <p class="text-xs text-gray-500">${formatRupiah(item.price)} x ${item.quantity}</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center space-x-2">
-                            <span class="font-semibold text-xs sm:text-sm">${formatRupiah(item.price * item.quantity)}</span>
-                            <button onclick="removeFromCart(${item.id})" class="text-red-500 hover:text-red-700 text-sm" aria-label="Hapus item">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                `).join('');
-        }
-
-        function removeFromCart(productId) {
-            cart = cart.filter(item => item.id !== productId);
-            saveCartToStorage();
-            updateCartCount();
-            renderOrderSummary();
-            calculateTotal();
-            if (cart.length === 0) closeModal('checkoutModal');
-        }
-
-        function calculateTotal() {
-            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            document.getElementById('totalAmount').textContent = formatRupiah(total);
-        }
-
-        document.getElementById('checkoutForm').addEventListener('submit', async function(e) {
+        // Handle checkout form submission
+        async function handleCheckout(e) {
             e.preventDefault();
-            const phone = document.getElementById('customerPhone').value.trim();
-            const name = document.getElementById('customerName').value.trim();
-            const address = document.getElementById('customerAddress').value.trim();
-            // Check for empty required fields
-            if (name === '' || phone === '' || address === '') {
-                alert('Mohon isi semua field yang diperlukan: Nama, Nomor Telepon, dan Alamat.');
-                return;
-            }
-            // Additional validations
-            if (name.length < 2) {
-                alert('Nama harus minimal 2 karakter.');
-                return;
-            }
-            if (!/^\d{10,13}$/.test(phone.replace(/\D/g, ''))) {
-                alert('Nomor telepon tidak valid (harus 10-13 angka).');
-                return;
-            }
-            if (address.length < 10) {
-                alert('Alamat harus minimal 10 karakter.');
-                return;
-            }
+            
+            const submitBtn = document.getElementById('submitBtnText');
+            const loader = document.getElementById('submitLoader');
+            
+            // Show loading
+            submitBtn.textContent = 'Memproses...';
+            loader.classList.remove('hidden');
+            
+            // Get form data
             const formData = {
-                customerName: name,
-                customerPhone: phone,
-                customerAddress: address,
-                orderNotes: document.getElementById('orderNotes').value.trim(),
-                items: cart,
-                total: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0),
+                customerName: document.getElementById('customerName').value,
+                customerPhone: document.getElementById('customerPhone').value,
+                customerAddress: document.getElementById('customerAddress').value,
+                product: currentProduct,
+                quantity: currentQuantity,
+                totalPrice: currentProduct.price * currentQuantity,
+                location: userLocation,
                 orderDate: new Date().toISOString(),
                 status: 'pending',
-                paymentMethod: 'COD',
-                merchant_id: currentMerchantId,
-                customerLocation: userLocation ? { city: userLocation.city, latitude: userLocation.latitude, longitude: userLocation.longitude } : null
+                paymentMethod: 'COD'
             };
-            showLoading();
-            await submitOrder(formData);
-            hideLoading();
-        });
 
-        async function submitOrder(orderData) {
             try {
-                const { data, error } = await dbService.insertOrder(orderData);
-                if (error) {
-                    showToast('Gagal menyimpan pesanan ke database. Pesanan disimpan lokal.');
-                    localStorage.setItem(`pending_order_${Date.now()}`, JSON.stringify(orderData));
-                    showOrderStatusModal(orderData);
-                    return;
-                }
-                showToast('Pesanan berhasil disimpan!');
-                showOrderStatusModal({ ...orderData, orderId: data.id });
+                // Simulate API call to Supabase
+                await simulateOrderSubmission(formData);
+                
+                // Update cart count
+                cartCount++;
+                document.getElementById('cartCount').textContent = cartCount;
+                
+                // Close checkout modal and show COD modal
+                closeCheckoutModal();
+                setTimeout(() => {
+                    showCodModal(formData);
+                }, 300);
+                
             } catch (error) {
-                showToast('Terjadi kesalahan saat memproses pesanan. Silakan coba lagi.');
                 console.error('Error submitting order:', error);
+                alert('Terjadi kesalahan saat memproses pesanan. Silakan coba lagi.');
+            } finally {
+                // Reset button
+                submitBtn.textContent = 'Selesaikan Pesanan';
+                loader.classList.add('hidden');
             }
         }
 
-        function showOrderStatusModal(orderData) {
-            closeModal('checkoutModal');
-            const orderStatusDetails = document.getElementById('orderStatusDetails');
-            orderStatusDetails.innerHTML = `
-                <div class="space-y-2">
-                    <p class="text-gray-600">Status Saat Ini: Pending</p>
-                    <div class="mt-4 space-y-2">
-                        <div class="flex items-center">
-                            <i class="fas fa-circle-check text-green-500 mr-2"></i>
-                            <span>Pesanan Diterima</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-circle text-gray-300 mr-2"></i>
-                            <span>Sedang Diproses</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-circle text-gray-300 mr-2"></i>
-                            <span>Dalam Pengiriman</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-circle text-gray-300 mr-2"></i>
-                            <span>Selesai</span>
-                        </div>
-                    </div>
-                    <div class="mt-4 bg-gray-50 p-4 rounded-lg">
-                        <h4 class="font-semibold mb-2">Rincian Pesanan</h4>
-                        <div class="space-y-2">
-                            <div class="flex justify-between">
-                                <span class="text-sm text-gray-600">Nama:</span>
-                                <span class="text-sm font-semibold">${orderData.customerName}</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-sm text-gray-600">Telepon:</span>
-                                <span class="text-sm font-semibold">${orderData.customerPhone}</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-sm text-gray-600">Alamat:</span>
-                                <span class="text-sm font-semibold">${orderData.customerAddress}</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-sm text-gray-600">Total Items:</span>
-                                <span class="text-sm font-semibold">${orderData.items.reduce((sum, item) => sum + item.quantity, 0)} ${orderData.items.length === 1 ? 'item' : 'items'}</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-sm text-gray-600">Total Bayar:</span>
-                                <span class="text-sm font-bold text-primary">${formatRupiah(orderData.total)}</span>
-                            </div>
-                            ${orderData.customerLocation ? `
-                            <div class="flex justify-between">
-                                <span class="text-sm text-gray-600">Lokasi:</span>
-                                <span class="text-sm font-semibold">${orderData.customerLocation.city}</span>
-                            </div>
-                            ` : ''}
-                            <div class="pt-2 border-t">
-                                <p class="text-xs text-gray-500">Estimasi waktu pengiriman: 30-45 menit</p>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="mt-4 text-sm text-gray-500">Update status akan muncul secara otomatis. Refresh halaman untuk update terbaru.</p>
+        // Simulate order submission to Supabase
+        async function simulateOrderSubmission(orderData) {
+            // Simulate network delay
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            // Store in localStorage for demo purposes
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            orders.push({
+                ...orderData,
+                id: Date.now(),
+                orderNumber: `FO${Date.now().toString().slice(-6)}`
+            });
+            localStorage.setItem('orders', JSON.stringify(orders));
+            
+            console.log('Order submitted to database:', orderData);
+        }
+
+        // Show COD confirmation modal
+        function showCodModal(orderData) {
+            const modal = document.getElementById('codModal');
+            const modalContent = document.getElementById('codModalContent');
+            const orderSummary = document.getElementById('orderSummary');
+            
+            orderSummary.innerHTML = `
+                <div class="flex justify-between">
+                    <span>Produk:</span>
+                    <span class="font-medium">${orderData.product.name}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Jumlah:</span>
+                    <span class="font-medium">${orderData.quantity}x</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Nama:</span>
+                    <span class="font-medium">${orderData.customerName}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Telepon:</span>
+                    <span class="font-medium">${orderData.customerPhone}</span>
+                </div>
+                <div class="flex justify-between font-semibold text-primary">
+                    <span>Total:</span>
+                    <span>Rp ${orderData.totalPrice.toLocaleString('id-ID')}</span>
                 </div>
             `;
-            document.getElementById('orderStatusModal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-            document.getElementById('statusTitle').focus();
-            trapFocus('orderStatusModal');
-            resetApp();
+
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modalContent.classList.remove('scale-95', 'opacity-0');
+                modalContent.classList.add('scale-100', 'opacity-100');
+            }, 10);
         }
 
-        function resetApp() {
-            cart = [];
-            currentProduct = null;
-            currentQuantity = 1;
-            saveCartToStorage();
-            updateCartCount();
-            document.body.style.overflow = 'auto';
+        // Close COD modal
+        function closeCodModal() {
+            const modal = document.getElementById('codModal');
+            const modalContent = document.getElementById('codModalContent');
+            
+            modalContent.classList.remove('scale-100', 'opacity-100');
+            modalContent.classList.add('scale-95', 'opacity-0');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                // Reset checkout form
+                document.getElementById('checkoutForm').reset();
+            }, 300);
         }
 
-        function showLoading() {
-            document.getElementById('loadingSpinner').classList.remove('hidden');
-        }
-
-        function hideLoading() {
-            document.getElementById('loadingSpinner').classList.add('hidden');
-        }
-
-        function showToast(message) {
-            const toast = document.createElement('div');
-            toast.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50';
-            toast.textContent = message;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
-        }
-
-        function loadCartFromStorage() {
-            const saved = localStorage.getItem('foodorder_cart');
-            if (saved) {
-                cart = JSON.parse(saved);
+        // Detect user location
+        function detectLocation() {
+            const locationBtn = document.getElementById('locationBtn');
+            const locationText = document.getElementById('locationText');
+            
+            locationText.textContent = 'Mendeteksi...';
+            locationBtn.disabled = true;
+            
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    async (position) => {
+                        const { latitude, longitude } = position.coords;
+                        
+                        try {
+                            // Use reverse geocoding to get address
+                            const response = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=YOUR_API_KEY`);
+                            const data = await response.json();
+                            
+                            if (data.results && data.results.length > 0) {
+                                userLocation = data.results[0].formatted;
+                            } else {
+                                userLocation = `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
+                            }
+                        } catch (error) {
+                            // Fallback to coordinates if geocoding fails
+                            userLocation = `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
+                        }
+                        
+                        locationText.textContent = 'Lokasi Terdeteksi';
+                        locationBtn.disabled = false;
+                        
+                        // Show success message
+                        showLocationSuccess();
+                    },
+                    (error) => {
+                        console.error('Geolocation error:', error);
+                        locationText.textContent = 'Gagal Deteksi';
+                        locationBtn.disabled = false;
+                        
+                        // Show error message
+                        alert('Tidak dapat mendeteksi lokasi. Pastikan Anda mengizinkan akses lokasi.');
+                    }
+                );
+            } else {
+                locationText.textContent = 'Tidak Didukung';
+                locationBtn.disabled = false;
+                alert('Browser Anda tidak mendukung deteksi lokasi.');
             }
         }
 
-        function saveCartToStorage() {
-            localStorage.setItem('foodorder_cart', JSON.stringify(cart));
+        // Show location success notification
+        function showLocationSuccess() {
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-20 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform duration-300';
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas fa-check-circle mr-2"></i>
+                    <span>Lokasi berhasil terdeteksi!</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 100);
+            
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
         }
 
-        document.getElementById('cartBtn').addEventListener('click', function() {
-            openCheckoutModal();
-        });
+        // Get category display name
+        function getCategoryName(category) {
+            const categoryNames = {
+                'makanan-utama': 'Makanan Utama',
+                'minuman': 'Minuman',
+                'dessert': 'Dessert'
+            };
+            return categoryNames[category] || category;
+        }
 
-        document.getElementById('prevSlide').addEventListener('click', prevSlide);
-        document.getElementById('nextSlide').addEventListener('click', nextSlide);
-
-        window.addEventListener('click', function(e) {
-            const modals = ['productModal', 'checkoutModal', 'orderStatusModal'];
-            modals.forEach(modalId => {
-                const modal = document.getElementById(modalId);
-                if (e.target === modal) {
-                    closeModal(modalId);
+        // Close modals when clicking outside
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal-backdrop')) {
+                if (!document.getElementById('productModal').classList.contains('hidden')) {
+                    closeProductModal();
                 }
-            });
+                if (!document.getElementById('checkoutModal').classList.contains('hidden')) {
+                    closeCheckoutModal();
+                }
+            }
         });
 
+        // Close modals with Escape key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
-                const modals = ['productModal', 'checkoutModal', 'orderStatusModal'];
-                modals.forEach(modalId => {
-                    const modal = document.getElementById(modalId);
-                    if (!modal.classList.contains('hidden')) {
-                        closeModal(modalId);
-                    }
-                });
+                if (!document.getElementById('productModal').classList.contains('hidden')) {
+                    closeProductModal();
+                }
+                if (!document.getElementById('checkoutModal').classList.contains('hidden')) {
+                    closeCheckoutModal();
+                }
+                if (!document.getElementById('codModal').classList.contains('hidden')) {
+                    closeCodModal();
+                }
             }
         });
     </script>
 </body>
+
 </html>
