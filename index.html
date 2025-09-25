@@ -1,26 +1,243 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Food Ordering App</title>
-  <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.22.9/babel.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
+  <title>FoodOrder - Pesan Makanan Online</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#eff6ff',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
 </head>
-<body>
-  <div id="root"></div>
-  <script type="text/babel">
-    const { useState, useEffect } = React;
+<body class="bg-gray-50 min-h-screen">
+  <!-- Header -->
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex h-16 items-center justify-between">
+        <div class="flex items-center space-x-4">
+          <h1 class="text-2xl font-bold text-primary-600">🍔 FoodOrder</h1>
+        </div>
+        <div class="flex items-center space-x-4">
+          <div class="relative flex-1 max-w-md">
+            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
+            <input type="text" id="searchInput" placeholder="Cari makanan, merchant..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent" />
+          </div>
+          <button id="gridViewBtn" class="p-2 rounded-lg bg-primary-500 text-white hover:bg-primary-600 transition-colors">
+            <i class="fas fa-th-large"></i>
+          </button>
+          <button id="listViewBtn" class="p-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 transition-colors">
+            <i class="fas fa-list"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
 
+  <!-- Category Filter -->
+  <div class="border-b bg-white/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex items-center gap-4 overflow-x-auto" id="categoryFilter">
+        <i class="fas fa-filter text-gray-500 flex-shrink-0"></i>
+        <!-- Categories will be loaded here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div id="loadingSpinner" class="flex items-center justify-center py-16">
+    <div class="text-center">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto mb-4"></div>
+      <p class="text-gray-500">Loading produk...</p>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- No Results Message -->
+    <div id="noResults" class="text-center py-16 hidden">
+      <p class="text-gray-500 text-lg">Tidak ada produk yang ditemukan</p>
+      <p class="text-sm text-gray-400 mt-2">Coba ubah filter atau kata kunci pencarian</p>
+    </div>
+
+    <!-- Products Grid -->
+    <div id="productsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <!-- Products will be loaded here -->
+    </div>
+  </main>
+
+  <!-- Product Detail Modal -->
+  <div id="productModal" class="fixed inset-0 z-50 hidden">
+    <div class="fixed inset-0 bg-black bg-opacity-50" onclick="closeProductModal()"></div>
+    <div class="fixed inset-0 flex items-center justify-center p-4">
+      <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h2 id="modalProductName" class="text-2xl font-bold text-gray-900"></h2>
+            <button onclick="closeProductModal()" class="text-gray-400 hover:text-gray-600">
+              <i class="fas fa-times text-xl"></i>
+            </button>
+          </div>
+          <div class="space-y-6">
+            <img id="modalProductImage" class="w-full h-64 object-cover rounded-lg" />
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <p id="modalProductPrice" class="text-2xl font-bold text-primary-600"></p>
+                <span id="modalProductCategory" class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm font-medium"></span>
+              </div>
+              <p id="modalProductDescription" class="text-gray-600"></p>
+              <!-- Merchant Details -->
+              <div class="border rounded-lg p-4 bg-gray-50">
+                <div class="flex items-center space-x-4">
+                  <img id="modalMerchantAvatar" class="w-12 h-12 rounded-full object-cover" />
+                  <div class="flex-1">
+                    <h4 id="modalMerchantName" class="font-semibold text-gray-900"></h4>
+                    <div class="flex items-center space-x-2 text-sm text-gray-500">
+                      <i class="fas fa-map-marker-alt"></i>
+                      <span id="modalMerchantLocation"></span>
+                    </div>
+                    <div class="flex items-center space-x-4 mt-2 text-sm">
+                      <div class="flex items-center space-x-1">
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <span id="modalProductRating" class="font-medium"></span>
+                      </div>
+                      <span id="modalProductSold" class="text-gray-500"></span>
+                      <div class="flex items-center space-x-1">
+                        <i class="fas fa-phone text-gray-400"></i>
+                        <span id="modalMerchantPhone" class="text-gray-600"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Quantity Selector -->
+              <div class="flex items-center justify-between">
+                <label class="text-gray-700 font-medium">Jumlah:</label>
+                <div class="flex items-center space-x-3">
+                  <button onclick="decreaseQuantity()" class="w-8 h-8 rounded-lg border border-gray-300 flex items-center justify-center hover:bg-gray-50">
+                    <i class="fas fa-minus text-sm"></i>
+                  </button>
+                  <span id="quantity" class="font-semibold text-lg w-8 text-center">1</span>
+                  <button onclick="increaseQuantity()" class="w-8 h-8 rounded-lg border border-gray-300 flex items-center justify-center hover:bg-gray-50">
+                    <i class="fas fa-plus text-sm"></i>
+                  </button>
+                </div>
+              </div>
+              <hr class="border-gray-200">
+              <div class="flex items-center justify-between text-lg font-semibold">
+                <span>Total:</span>
+                <span id="totalPrice" class="text-primary-600"></span>
+              </div>
+              <button onclick="handleBuyNow()" class="w-full bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2">
+                <i class="fas fa-shopping-cart"></i>
+                <span>Beli Sekarang</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout Modal -->
+  <div id="checkoutModal" class="fixed inset-0 z-50 hidden">
+    <div class="fixed inset-0 bg-black bg-opacity-50" onclick="closeCheckoutModal()"></div>
+    <div class="fixed inset-0 flex items-center justify-center p-4">
+      <div class="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-2xl font-bold text-gray-900">Checkout Pesanan</h2>
+            <button onclick="closeCheckoutModal()" class="text-gray-400 hover:text-gray-600">
+              <i class="fas fa-times text-xl"></i>
+            </button>
+          </div>
+          <div class="space-y-6">
+            <!-- Order Summary -->
+            <div class="border rounded-lg p-4 bg-gray-50">
+              <h4 class="font-semibold mb-3 text-gray-900">Ringkasan Pesanan</h4>
+              <div class="flex items-center space-x-3">
+                <img id="checkoutProductImage" class="w-16 h-16 object-cover rounded-lg" />
+                <div class="flex-1">
+                  <p id="checkoutProductName" class="font-medium text-gray-900"></p>
+                  <p id="checkoutMerchantName" class="text-sm text-gray-500"></p>
+                  <div class="flex items-center justify-between mt-1">
+                    <span id="checkoutQuantity" class="text-sm text-gray-600"></span>
+                    <span id="checkoutTotalPrice" class="font-semibold text-gray-900"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Customer Form -->
+            <form id="orderForm" class="space-y-4">
+              <div>
+                <label for="fullName" class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap *</label>
+                <input type="text" id="fullName" required placeholder="Masukkan nama lengkap" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent" />
+              </div>
+              <div>
+                <label for="address" class="block text-sm font-medium text-gray-700 mb-1">Alamat Lengkap *</label>
+                <textarea id="address" required rows="2" placeholder="Masukkan alamat lengkap" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"></textarea>
+              </div>
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label for="rt" class="block text-sm font-medium text-gray-700 mb-1">RT</label>
+                  <input type="text" id="rt" placeholder="001" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent" />
+                </div>
+                <div>
+                  <label for="rw" class="block text-sm font-medium text-gray-700 mb-1">RW</label>
+                  <input type="text" id="rw" placeholder="002" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent" />
+                </div>
+              </div>
+              <div>
+                <label for="whatsapp" class="block text-sm font-medium text-gray-700 mb-1">Nomor WhatsApp *</label>
+                <input type="tel" id="whatsapp" required placeholder="08xxxxxxxxxx" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent" />
+              </div>
+              <div>
+                <label for="notes" class="block text-sm font-medium text-gray-700 mb-1">Catatan Pesanan</label>
+                <textarea id="notes" rows="2" placeholder="Catatan tambahan (opsional)" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"></textarea>
+              </div>
+            </form>
+            <hr class="border-gray-200">
+            <div class="space-y-4">
+              <div class="flex items-center justify-between text-lg font-semibold">
+                <span>Total Pembayaran:</span>
+                <span id="finalTotalPrice" class="text-primary-600"></span>
+              </div>
+              <p class="text-sm text-gray-500">
+                Dengan mengklik "Proses Pesanan", Anda akan diarahkan ke WhatsApp admin untuk melanjutkan pembayaran.
+              </p>
+              <button onclick="handleOrderSubmit()" class="w-full bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors">
+                Proses Pesanan via WhatsApp
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
     // Supabase configuration
-    const supabase = Supabase.createClient(
-      'https://dlnenwglsmfyhdysmqdc.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRsbmVud2dsc21meWhkeXNtcWRjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYxMTM5ODIsImV4cCI6MjA3MTY4OTk4Mn0.oWKClbQFN5RDS_MkFkPFbwel-LBmD8iGJX1KxN3Db0U'
+    const { createClient } = supabase;
+    const supabaseClient = createClient(
+      'https://dlnenwglsmfyhdysmqdc.supabase.co', // Ganti dengan URL Supabase Anda
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRsbmVud2dsc21meWhkeXNtcWRjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYxMTM5ODIsImV4cCI6MjA3MTY4OTk4Mn0.oWKClbQFN5RDS_MkFkPFbwel-LBmD8iGJX1KxN3Db0U' // Ganti dengan anon key Supabase Anda
     );
 
+    // WhatsApp operator numbers
     const whatsappNumbers = [
       '+6281234567890',
       '+6280987654321',
@@ -28,272 +245,257 @@
       '+6285566778899'
     ];
 
-    const App = () => {
-      const [products, setProducts] = useState([]);
-      const [filteredProducts, setFilteredProducts] = useState([]);
-      const [categories, setCategories] = useState([]);
-      const [selectedCategory, setSelectedCategory] = useState('all');
-      const [searchQuery, setSearchQuery] = useState('');
-      const [selectedProduct, setSelectedProduct] = useState(null);
-      const [quantity, setQuantity] = useState(1);
-      const [showProductModal, setShowProductModal] = useState(false);
-      const [showCheckoutModal, setShowCheckoutModal] = useState(false);
-      const [checkoutData, setCheckoutData] = useState({
-        fullName: '',
-        address: '',
-        rt: '',
-        rw: '',
-        whatsapp: '',
-        notes: ''
-      });
+    // State variables
+    let products = [];
+    let filteredProducts = [];
+    let categories = [];
+    let selectedProduct = null;
+    let quantity = 1;
+    let viewMode = 'grid';
 
-      // Fetch products from Supabase
-      useEffect(() => {
-        const fetchProducts = async () => {
-          const { data, error } = await supabase.from('products').select('*');
-          if (error) {
-            console.error('Error fetching products:', error);
-            return;
-          }
-          setProducts(data);
-          setFilteredProducts(data);
-          const uniqueCategories = ['all', ...new Set(data.map(p => p.category))];
-          setCategories(uniqueCategories);
+    // DOM Elements
+    const searchInput = document.getElementById('searchInput');
+    const categoryFilter = document.getElementById('categoryFilter');
+    const productsContainer = document.getElementById('productsContainer');
+    const noResults = document.getElementById('noResults');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const productModal = document.getElementById('productModal');
+    const checkoutModal = document.getElementById('checkoutModal');
+    const gridViewBtn = document.getElementById('gridViewBtn');
+    const listViewBtn = document.getElementById('listViewBtn');
+
+    // Fetch products from Supabase
+    async function fetchProducts() {
+      loadingSpinner.classList.remove('hidden');
+      try {
+        const { data, error } = await supabaseClient.from('products').select('*');
+        if (error) {
+          console.error('Error fetching products:', error);
+          noResults.classList.remove('hidden');
+          noResults.querySelector('p').textContent = 'Gagal memuat produk';
+          return;
+        }
+        console.log('Fetched products:', data); // Debugging
+        products = data;
+        filteredProducts = data;
+        categories = ['all', ...new Set(data.map(p => p.category))];
+        renderCategories();
+        renderProducts();
+      } catch (err) {
+        console.error('Unexpected error:', err);
+        noResults.classList.remove('hidden');
+        noResults.querySelector('p').textContent = 'Terjadi kesalahan';
+      } finally {
+        loadingSpinner.classList.add('hidden');
+      }
+    }
+
+    // Render categories
+    function renderCategories() {
+      categoryFilter.innerHTML = '<i class="fas fa-filter text-gray-500 flex-shrink-0"></i>';
+      categories.forEach(category => {
+        const button = document.createElement('button');
+        button.className = `px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+          category === 'all' ? 'bg-primary-500 text-white' : 'bg-gray-200 text-gray-700'
+        }`;
+        button.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+        button.onclick = () => {
+          document.querySelectorAll('#categoryFilter button').forEach(btn => {
+            btn.className = 'px-4 py-2 rounded-full text-sm font-medium bg-gray-200 text-gray-700 transition-colors';
+          });
+          button.className = 'px-4 py-2 rounded-full text-sm font-medium bg-primary-500 text-white transition-colors';
+          filterProducts(category, searchInput.value);
         };
-        fetchProducts();
-      }, []);
+        categoryFilter.appendChild(button);
+      });
+    }
 
-      // Handle search and filter
-      useEffect(() => {
-        let filtered = products;
-        if (selectedCategory !== 'all') {
-          filtered = filtered.filter(p => p.category === selectedCategory);
-        }
-        if (searchQuery) {
-          filtered = filtered.filter(p =>
-            p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            p.description.toLowerCase().includes(searchQuery.toLowerCase())
-          );
-        }
-        setFilteredProducts(filtered);
-      }, [selectedCategory, searchQuery, products]);
-
-      const openProductModal = (product) => {
-        setSelectedProduct(product);
-        setQuantity(1);
-        setShowProductModal(true);
-      };
-
-      const handleCheckout = () => {
-        setShowProductModal(false);
-        setShowCheckoutModal(true);
-      };
-
-      const handleCheckoutSubmit = () => {
-        const randomOperator = whatsappNumbers[Math.floor(Math.random() * whatsappNumbers.length)];
-        const message = `New Order:
-        Product: ${selectedProduct.name}
-        Quantity: ${quantity}
-        Total: Rp${(selectedProduct.price * quantity).toLocaleString()}
-        Name: ${checkoutData.fullName}
-        Address: ${checkoutData.address}, RT ${checkoutData.rt}, RW ${checkoutData.rw}
-        WhatsApp: ${checkoutData.whatsapp}
-        Notes: ${checkoutData.notes || '-'}`;
-        
-        const whatsappUrl = `https://wa.me/${randomOperator}?text=${encodeURIComponent(message)}`;
-        window.open(whatsappUrl, '_blank');
-        setShowCheckoutModal(false);
-        setCheckoutData({
-          fullName: '',
-          address: '',
-          rt: '',
-          rw: '',
-          whatsapp: '',
-          notes: ''
-        });
-      };
-
-      return (
-        <div className="min-h-screen bg-gray-100">
-          {/* Header */}
-          <header className="bg-white shadow">
-            <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-              <h1 className="text-3xl font-bold text-gray-900">Food Ordering App</h1>
-            </div>
-          </header>
-
-          {/* Search and Category Filter */}
-          <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col sm:flex-row gap-4 mb-6">
-              <input
-                type="text"
-                placeholder="Search products..."
-                className="flex-1 p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              <select
-                className="p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-              >
-                {categories.map(category => (
-                  <option key={category} value={category}>{category.charAt(0).toUpperCase() + category.slice(1)}</option>
-                ))}
-              </select>
-            </div>
-
-            {/* Slider */}
-            <div className="relative mb-6">
-              <div className="overflow-x-auto flex gap-4 pb-4">
-                {categories.map(category => (
-                  <button
-                    key={category}
-                    className={`px-4 py-2 rounded-full ${selectedCategory === category ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
-                    onClick={() => setSelectedCategory(category)}
-                  >
-                    {category.charAt(0).toUpperCase() + category.slice(1)}
-                  </button>
-                ))}
+    // Render products
+    function renderProducts() {
+      productsContainer.innerHTML = '';
+      if (filteredProducts.length === 0) {
+        noResults.classList.remove('hidden');
+        return;
+      }
+      noResults.classList.add('hidden');
+      filteredProducts.forEach(product => {
+        const productCard = document.createElement('div');
+        productCard.className = viewMode === 'grid' 
+          ? 'bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer'
+          : 'bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer flex';
+        productCard.innerHTML = viewMode === 'grid' 
+          ? `
+            <img src="${product.image_url || 'https://via.placeholder.com/150'}" alt="${product.name}" class="w-full h-48 object-cover"/>
+            <div class="p-4">
+              <h3 class="text-lg font-semibold text-gray-900">${product.name}</h3>
+              <p class="text-primary-600 font-medium">Rp${product.price.toLocaleString('id-ID')}</p>
+              <p class="text-sm text-gray-500 mt-1 line-clamp-2">${product.description}</p>
+              <div class="flex items-center space-x-2 mt-2 text-sm text-gray-500">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>${product.location}</span>
               </div>
+              <p class="text-sm text-gray-500 mt-1">${product.merchant_name}</p>
             </div>
-
-            {/* Product Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredProducts.map(product => (
-                <div
-                  key={product.id}
-                  className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
-                  onClick={() => openProductModal(product)}
-                >
-                  <img src={product.image_url} alt={product.name} className="w-full h-48 object-cover" />
-                  <div className="p-4">
-                    <h3 className="text-lg font-semibold">{product.name}</h3>
-                    <p className="text-gray-600">Rp{product.price.toLocaleString()}</p>
-                    <p className="text-gray-500 text-sm mt-1">{product.description}</p>
-                    <p className="text-gray-500 text-sm mt-1">Location: {product.location}</p>
-                    <p className="text-gray-500 text-sm">Merchant: {product.merchant_name}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Product Modal */}
-          {showProductModal && selectedProduct && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-              <div className="bg-white rounded-lg p-6 max-w-lg w-full">
-                <h2 className="text-2xl font-bold mb-4">{selectedProduct.name}</h2>
-                <img src={selectedProduct.image_url} alt={selectedProduct.name} className="w-full h-64 object-cover mb-4" />
-                <p className="text-gray-600 mb-2">Rp{selectedProduct.price.toLocaleString()}</p>
-                <p className="text-gray-500 mb-2">{selectedProduct.description}</p>
-                <p className="text-gray-500 mb-2">Location: {selectedProduct.location}</p>
-                <p className="text-gray-500 mb-4">Merchant: {selectedProduct.merchant_name}</p>
-                <div className="flex items-center mb-4">
-                  <button
-                    className="px-3 py-1 bg-gray-200 rounded-l-md"
-                    onClick={() => setQuantity(q => Math.max(1, q - 1))}
-                  >
-                    -
-                  </button>
-                  <span className="px-4 py-1 bg-gray-100">{quantity}</span>
-                  <button
-                    className="px-3 py-1 bg-gray-200 rounded-r-md"
-                    onClick={() => setQuantity(q => q + 1)}
-                  >
-                    +
-                  </button>
-                </div>
-                <div className="flex gap-4">
-                  <button
-                    className="flex-1 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
-                    onClick={handleCheckout}
-                  >
-                    Buy Now
-                  </button>
-                  <button
-                    className="flex-1 bg-gray-300 text-gray-700 py-2 rounded-md hover:bg-gray-400"
-                    onClick={() => setShowProductModal(false)}
-                  >
-                    Close
-                  </button>
-                </div>
+          `
+          : `
+            <img src="${product.image_url || 'https://via.placeholder.com/150'}" alt="${product.name}" class="w-32 h-32 object-cover flex-shrink-0"/>
+            <div class="p-4 flex-1">
+              <h3 class="text-lg font-semibold text-gray-900">${product.name}</h3>
+              <p class="text-primary-600 font-medium">Rp${product.price.toLocaleString('id-ID')}</p>
+              <p class="text-sm text-gray-500 mt-1 line-clamp-2">${product.description}</p>
+              <div class="flex items-center space-x-2 mt-2 text-sm text-gray-500">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>${product.location}</span>
               </div>
+              <p class="text-sm text-gray-500 mt-1">${product.merchant_name}</p>
             </div>
-          )}
+          `;
+        productCard.onclick = () => openProductModal(product);
+        productsContainer.appendChild(productCard);
+      });
+    }
 
-          {/* Checkout Modal */}
-          {showCheckoutModal && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-              <div className="bg-white rounded-lg p-6 max-w-lg w-full">
-                <h2 className="text-2xl font-bold mb-4">Checkout</h2>
-                <div className="space-y-4">
-                  <input
-                    type="text"
-                    placeholder="Full Name"
-                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    value={checkoutData.fullName}
-                    onChange={(e) => setCheckoutData({ ...checkoutData, fullName: e.target.value })}
-                  />
-                  <input
-                    type="text"
-                    placeholder="Address"
-                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    value={checkoutData.address}
-                    onChange={(e) => setCheckoutData({ ...checkoutData, address: e.target.value })}
-                  />
-                  <div className="flex gap-4">
-                    <input
-                      type="text"
-                      placeholder="RT"
-                      className="w-1/2 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      value={checkoutData.rt}
-                      onChange={(e) => setCheckoutData({ ...checkoutData, rt: e.target.value })}
-                    />
-                    <input
-                      type="text"
-                      placeholder="RW"
-                      className="w-1/2 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      value={checkoutData.rw}
-                      onChange={(e) => setCheckoutData({ ...checkoutData, rw: e.target.value })}
-                    />
-                  </div>
-                  <input
-                    type="text"
-                    placeholder="WhatsApp Number"
-                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    value={checkoutData.whatsapp}
-                    onChange={(e) => setCheckoutData({ ...checkoutData, whatsapp: e.target.value })}
-                  />
-                  <textarea
-                    placeholder="Order Notes"
-                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    value={checkoutData.notes}
-                    onChange={(e) => setCheckoutData({ ...checkoutData, notes: e.target.value })}
-                  />
-                </div>
-                <div className="flex gap-4 mt-6">
-                  <button
-                    className="flex-1 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
-                    onClick={handleCheckoutSubmit}
-                  >
-                    Process Order
-                  </button>
-                  <button
-                    className="flex-1 bg-gray-300 text-gray-700 py-2 rounded-md hover:bg-gray-400"
-                    onClick={() => setShowCheckoutModal(false)}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      );
+    // Filter and search products
+    function filterProducts(category, query) {
+      filteredProducts = products;
+      if (category !== 'all') {
+        filteredProducts = filteredProducts.filter(p => p.category === category);
+      }
+      if (query) {
+        filteredProducts = filteredProducts.filter(p =>
+          p.name.toLowerCase().includes(query.toLowerCase()) ||
+          p.description.toLowerCase().includes(query.toLowerCase())
+        );
+      }
+      renderProducts();
+    }
+
+    // Search input handler
+    searchInput.addEventListener('input', () => {
+      const activeCategory = categoryFilter.querySelector('.bg-primary-500')?.textContent.toLowerCase() || 'all';
+      filterProducts(activeCategory, searchInput.value);
+    });
+
+    // View mode handlers
+    gridViewBtn.onclick = () => {
+      viewMode = 'grid';
+      gridViewBtn.classList.add('bg-primary-500', 'text-white');
+      gridViewBtn.classList.remove('border', 'border-gray-300', 'text-gray-600');
+      listViewBtn.classList.remove('bg-primary-500', 'text-white');
+      listViewBtn.classList.add('border', 'border-gray-300', 'text-gray-600');
+      productsContainer.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6';
+      renderProducts();
     };
 
-    ReactDOM.render(<App />, document.getElementById('root'));
+    listViewBtn.onclick = () => {
+      viewMode = 'list';
+      listViewBtn.classList.add('bg-primary-500', 'text-white');
+      listViewBtn.classList.remove('border', 'border-gray-300', 'text-gray-600');
+      gridViewBtn.classList.remove('bg-primary-500', 'text-white');
+      gridViewBtn.classList.add('border', 'border-gray-300', 'text-gray-600');
+      productsContainer.className = 'grid grid-cols-1 gap-6';
+      renderProducts();
+    };
+
+    // Open product modal
+    function openProductModal(product) {
+      console.log('Opening modal for product:', product); // Debugging
+      selectedProduct = product;
+      quantity = 1;
+      document.getElementById('modalProductName').textContent = product.name;
+      document.getElementById('modalProductImage').src = product.image_url || 'https://via.placeholder.com/150';
+      document.getElementById('modalProductPrice').textContent = `Rp${product.price.toLocaleString('id-ID')}`;
+      document.getElementById('modalProductCategory').textContent = product.category;
+      document.getElementById('modalProductDescription').textContent = product.description;
+      document.getElementById('modalMerchantName').textContent = product.merchant_name;
+      document.getElementById('modalMerchantLocation').textContent = product.location;
+      document.getElementById('modalMerchantAvatar').src = 'https://via.placeholder.com/50'; // Ganti dengan avatar merchant jika ada
+      document.getElementById('modalProductRating').textContent = product.rating || '4.5';
+      document.getElementById('modalProductSold').textContent = `${product.sold || 100} terjual`;
+      document.getElementById('modalMerchantPhone').textContent = product.merchant_phone || 'N/A';
+      document.getElementById('quantity').textContent = quantity;
+      document.getElementById('totalPrice').textContent = `Rp${(product.price * quantity).toLocaleString('id-ID')}`;
+      productModal.classList.remove('hidden');
+    }
+
+    // Close product modal
+    function closeProductModal() {
+      productModal.classList.add('hidden');
+      selectedProduct = null;
+      quantity = 1;
+    }
+
+    // Quantity handlers
+    function decreaseQuantity() {
+      if (quantity > 1) {
+        quantity--;
+        document.getElementById('quantity').textContent = quantity;
+        document.getElementById('totalPrice').textContent = `Rp${(selectedProduct.price * quantity).toLocaleString('id-ID')}`;
+      }
+    }
+
+    function increaseQuantity() {
+      quantity++;
+      document.getElementById('quantity').textContent = quantity;
+      document.getElementById('totalPrice').textContent = `Rp${(selectedProduct.price * quantity).toLocaleString('id-ID')}`;
+    }
+
+    // Handle buy now
+    function handleBuyNow() {
+      console.log('Proceeding to checkout'); // Debugging
+      closeProductModal();
+      document.getElementById('checkoutProductName').textContent = selectedProduct.name;
+      document.getElementById('checkoutProductImage').src = selectedProduct.image_url || 'https://via.placeholder.com/150';
+      document.getElementById('checkoutMerchantName').textContent = selectedProduct.merchant_name;
+      document.getElementById('checkoutQuantity').textContent = `Jumlah: ${quantity}`;
+      document.getElementById('checkoutTotalPrice').textContent = `Rp${(selectedProduct.price * quantity).toLocaleString('id-ID')}`;
+      document.getElementById('finalTotalPrice').textContent = `Rp${(selectedProduct.price * quantity).toLocaleString('id-ID')}`;
+      checkoutModal.classList.remove('hidden');
+    }
+
+    // Close checkout modal
+    function closeCheckoutModal() {
+      checkoutModal.classList.add('hidden');
+      document.getElementById('orderForm').reset();
+    }
+
+    // Handle order submission
+    function handleOrderSubmit() {
+      const form = document.getElementById('orderForm');
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+      const fullName = document.getElementById('fullName').value;
+      const address = document.getElementById('address').value;
+      const rt = document.getElementById('rt').value;
+      const rw = document.getElementById('rw').value;
+      const whatsapp = document.getElementById('whatsapp').value;
+      const notes = document.getElementById('notes').value;
+
+      if (!whatsapp.match(/^\+?62\d{9,12}$/)) {
+        alert('Masukkan nomor WhatsApp yang valid (contoh: +6281234567890 atau 081234567890)');
+        return;
+      }
+
+      const randomOperator = whatsappNumbers[Math.floor(Math.random() * whatsappNumbers.length)];
+      const message = `Pesanan Baru:
+Produk: ${selectedProduct.name}
+Jumlah: ${quantity}
+Total: Rp${(selectedProduct.price * quantity).toLocaleString('id-ID')}
+Nama: ${fullName}
+Alamat: ${address}, RT ${rt || '-'}, RW ${rw || '-'}
+WhatsApp: ${whatsapp}
+Catatan: ${notes || '-'}`;
+      
+      console.log('Sending to WhatsApp:', message); // Debugging
+      const whatsappUrl = `https://wa.me/${randomOperator}?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, '_blank');
+      closeCheckoutModal();
+    }
+
+    // Initialize
+    fetchProducts();
   </script>
 </body>
 </html>
