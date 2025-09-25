@@ -1,1585 +1,478 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YNM8NXTRM4"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-YNM8NXTRM4');
-</script>  
-
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Eracoding - Platform belajar coding terdepan di Indonesia dengan kurikulum industri dan mentor berpengalaman.">
-    <meta name="keywords" content="belajar coding, kursus programming, web development, data science,Eracoding, UI/UX, Eracoding.com">
-    <title>ERACODING - Platform Belajar Coding</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Pemesanan Makanan - FoodieHub</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.2/vanilla-tilt.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
-    <style>
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        .floating { animation: float 4s ease-in-out infinite; }
-        .course-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
-        .course-card { transition: all 0.3s ease; }
-        #mobile-menu {
-            transition: all 0.3s ease-in-out;
-            position: fixed;
-            top: 0;
-            right: 0;
-            height: 100%;
-            width: 75%;
-            max-width: 300px;
-            background-color: white;
-            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
-        }
-        #mobile-menu .menu-content { padding: 1rem; }
-        .close-button {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            font-size: 1.5rem;
-            color: #FF233C;
-            cursor: pointer;
-        }
-        .hero-bg {
-            background: linear-gradient(rgba(225, 10, 40, 0.8), rgba(225, 50, 40, 0.8)), url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjA7E8h_2HC3cTqLl-W0mnEfDoARV5oT9087t8yMzo0bFM8Mqx20a22NzqFSn3MRUyjyiNK56Aj2qB_jLT3iTUicPEtwYEzHLUpkR0f1HFOlyZjXgG1oQVtvs-YCkBIIBSWyaq5GKrL2w1yp38t_VTeVmoB9188W61kgqDgitbMo36DWFReb5lhBvHXFms/s3774/20250909_070208.jpg');
-            background-attachment: fixed;
-            background-size: cover;
-            background-position: center;
-        }
-        .btn-animated {
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-animated::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: -100%;
-            width: 100%;
-            height: 2px;
-            background: white;
-            transition: all 0.3s ease;
-        }
-        .btn-animated:hover::after { left: 0; }
-        #back-to-top {
-            position: fixed;
-            bottom: 16px;
-            right: 16px;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        #quiz-popup, #trend-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        #quiz-content, #trend-modal-content {
-            background: white;
-            padding: 2rem;
-            border-radius: 1rem;
-            max-width: 500px;
-            width: 90%;
-            position: relative;
-            animation: slideIn 0.5s ease;
-        }
-        @keyframes slideIn {
-            from { transform: translateY(-50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        #course-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        #course-modal-content {
-            background: white;
-            padding: 2rem;
-            border-radius: 1rem;
-            max-width: 600px;
-            width: 90%;
-            position: relative;
-            animation: slideIn 0.5s ease;
-        }
-        .testimonial-slider {
-            overflow: hidden;
-            position: relative;
-        }
-        .testimonial-slide {
-            display: none;
-            animation: fadeIn 1s ease;
-        }
-        .testimonial-slide.active { display: block; }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .faq-item.active .faq-answer {
-            max-height: 200px;
-            padding: 1rem 0;
-        }
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-        .skill-card:hover .progress-bar {
-            transform: scale(1.05);
-            transition: transform 0.3s ease;
-        }
-        .trend-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-        }
-        .newsletter-form {
-            display: flex;
-            flex-wrap: nowrap;
-            gap: 0.5rem;
-            align-items: center;
-        }
-        .newsletter-form input {
-            flex: 1;
-            min-width: 0;
-        }
-        .newsletter-form button { flex-shrink: 0; }
-        @media (min-width: 768px) {
-            .newsletter-form { flex-direction: row; }
-        }
-        .badge-unlock {
-            animation: badgePop 0.5s ease;
-        }
-        @keyframes badgePop {
-            0% { transform: scale(0); opacity: 0; }
-            80% { transform: scale(1.2); opacity: 1; }
-            100% { transform: scale(1); }
-        }
-        #code-editor {
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 14px;
-            resize: none;
-        }
-        .leaderboard-item:hover {
-            background-color: #f1f5f9;
-            transition: all 0.3s ease;
-        }
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YNM8NXTRM4"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-YNM8NXTRM4');
-</script>
-  
-<body class="font-sans bg-gray-50">
-    <!-- Navigation -->
-    <nav class="bg-white shadow-lg sticky top-0 z-50" data-aos="fade-down">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0 flex items-center">
-                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEihQYmq3BmuW1iLbKAKTM_xSvucQg26Qwwy-73TwpHWeloTWfE7zkeclewaz-9_thzuAe6X8XsL2mLgCQEFPxVgndvzbVJjTLE0b12GWlt2DkjQtglV3Oys6f96eeb8b__268P_2TLjHQnTU3v5gbQ0R1F_20L4nLU33PIqVwbGCdtySmvbEXbkHcu28zc/s320/20250911_114839.png" alt="Logo eracoding.com" class="h-12 w-auto">
-                    </div>
+<body class="bg-gradient-to-br from-indigo-100 to-blue-200 min-h-screen font-inter transition-colors duration-500 dark:bg-gradient-to-br dark:from-gray-900 dark:to-gray-800" id="body">
+    <!-- Header -->
+    <header class="w-full bg-white dark:bg-gray-900 shadow-xl p-4 sticky top-0 z-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <img src="https://via.placeholder.com/40?text=FH" alt="Logo FoodieHub" class="h-10 rounded-full shadow-md">
+                <h1 class="text-xl sm:text-2xl lg:text-3xl font-bold text-indigo-600 dark:text-indigo-300">FoodieHub</h1>
+            </div>
+            <div class="flex items-center space-x-2 sm:space-x-4">
+                <div class="relative w-40 sm:w-48 md:w-64">
+                    <input type="text" id="search-input" placeholder="Cari makanan..." class="w-full px-4 py-2 border border-indigo-200 dark:border-gray-600 rounded-full focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 dark:text-white transition-all duration-300 shadow-sm text-sm sm:text-base" aria-label="Cari makanan">
+                    <i class="fas fa-search absolute right-3 top-3 text-indigo-400 dark:text-gray-400"></i>
                 </div>
-                <div class="hidden md:ml-6 md:flex md:items-center md:space-x-8">
-                    <a href="https://eracoding.com" class="px-3 py-2 rounded-md text-sm font-medium text-gray-900 hover:text-blue-600">Beranda</a>
-                    <a href="https://product.eracoding.com" class="px-3 py-2 rounded-md text-sm font-medium text-gray-900 hover:text-blue-600">Product</a>
-                    <a href="https://bootcamp.eracoding.com" class="px-3 py-2 rounded-md text-sm font-medium text-gray-900 hover:text-blue-600">Bootcamp</a>
-                    <a href="https://kelas.eracoding.com" class="px-3 py-2 rounded-md text-sm font-medium text-gray-900 hover:text-blue-600">Kelas Saya</a>
-                    <a href="https://whatsapp.com/channel/0029Vb6GVqw0Qearxmwd151l" class="px-3 py-2 rounded-md text-sm font-medium text-gray-900 hover:text-blue-600">Informasi</a>
-                    <a href="https://m.eracoding.com" class="btn-animated px-4 py-2 rounded-md text-sm font-medium bg-blue-900 text-white hover:bg-blue-900">Masuk</a>
-                </div>
-                <div class="-mr-2 flex items-center md:hidden">
-                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none" aria-controls="mobile-menu" aria-expanded="false">
-                        <span class="sr-only">Open main menu</span>
-                        <i class="fas fa-bars"></i>
-                    </button>
-                </div>
+                <button id="theme-toggle" class="p-2 rounded-full bg-indigo-100 dark:bg-gray-700 text-indigo-600 dark:text-indigo-300 hover:bg-indigo-200 dark:hover:bg-gray-600 transition-all duration-300 shadow-sm" aria-label="Toggle tema">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button id="sidebar-toggle" class="p-2 text-gray-700 dark:text-gray-300 hover:text-indigo-500 transition-all duration-300 lg:hidden" aria-label="Buka sidebar">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
             </div>
         </div>
-        <div class="md:hidden hidden" id="mobile-menu" data-aos="slide-left">
-            <div class="menu-content pt-4 pb-3 relative">
-                <i class="fas fa-times close-button" id="close-menu"></i>
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="space-y-4">
-                        <a href="https://eracoding.com" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600">Beranda</a>
-                        <a href="https://product.eracoding.com" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600">Product</a>
-                        <a href="https://bootcamp.eracoding.com" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600">Bootcamp</a>
-                        <a href="https://kelas.eracoding.com" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600">Kelas Saya</a>
-                        <a href="https://whatsapp.com/channel/0029Vb6GVqw0Qearxmwd151l" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600">Informasi</a>
-                        <a href="https://m.eracoding.com" class="block px-3 py-2 rounded-md text-base font-medium bg-blue-900 text-white hover:bg-blue-900">Masuk</a>
-                    </div>
-                </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-white dark:bg-gray-900 shadow-2xl transform -translate-x-full lg:translate-x-0 transition-transform duration-500 z-40 lg:sticky lg:top-16">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold text-indigo-600 dark:text-indigo-300">Navigasi</h2>
+                <button id="sidebar-close" class="p-2 text-gray-700 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400 transition-all duration-300 lg:hidden" aria-label="Tutup sidebar">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
             </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <div class="hero-bg text-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-24">
-            <div class="grid md:grid-cols-2 gap-8 items-center" data-aos="zoom-in">
-                <div class="space-y-6">
-                    <h1 class="text-4xl md:text-5xl font-bold leading-tight"><span id="typed-hero"></span></h1>
-                    <p class="text-xl text-blue-100">Kuasai teknologi masa depan dengan kursus praktis, mentor ahli, dan proyek berbasis industri.</p>
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="https://kelas.eracoding.com" class="btn-animated bg-white text-red-500 px-6 py-3 rounded-lg font-medium text-center hover:bg-gray-200 transition duration-300">Mulai Belajar</a>
-                        <a href="https://product.eracoding.com" class="btn-animated border-2 border-white text-white px-6 py-3 rounded-lg font-medium text-center hover:bg-white hover:text-red-500 transition duration-300">Lihat Kelas</a>
-                    </div>
-                    <div class="flex items-center space-x-2 mt-4">
-                        <div class="flex -space-x-2">
-                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/082315b5-c3fe-4e37-852a-952d50d1e889.png" alt="Foto mentor" class="w-10 h-10 rounded-full border-2 border-white floating">
-                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/1e6a7719-5e81-4e73-b132-1cc5d32ffaa6.png" alt="Foto developer" class="w-10 h-10 rounded-full border-2 border-white floating" style="animation-delay: 0.5s;">
-                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/55aec51c-347a-4d41-8db2-0408dd83c6ad.png" alt="Foto instruktur" class="w-10 h-10 rounded-full border-2 border-white floating" style="animation-delay: 1s;">
-                        </div>
-                        <p class="text-sm text-blue-100">Bergabung dengan 100+ siswa lainnya</p>
-                    </div>
-                    <button id="quiz-button" class="mt-4 text-blue-100 underline hover:text-white transition duration-300">Temukan Jalur Belajarmu!</button>
-                </div>
-                
-                </div>
-            </div>
-        </div>
-    </div>
-
-<!-- Solid Alert Penyambutan -->
-<div id="timeAlert" class="fixed top-6 left-1/2 transform -translate-x-1/2 -translate-y-full px-6 py-4 rounded-xl flex items-center gap-4 z-50 transition-all duration-500 shadow-2xl">
-    <!-- Icon SVG -->
-    <svg id="alertIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 flex-shrink-0 text-white animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"></svg>
-    <div>
-        <p id="alertText" class="font-semibold text-white text-lg animate-pulse-slow"></p>
-    </div>
-    <button id="closeAlert" class="text-white font-bold hover:text-gray-200">&times;</button>
-</div>
-
-<style>
-/* Animasi teks subtle highlight/pulse */
-@keyframes pulseSlow {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.8; }
-}
-.animate-pulse-slow { animation: pulseSlow 2s infinite; }
-</style>
-
-<script>
-const alertBanner = document.getElementById('timeAlert');
-const alertText = document.getElementById('alertText');
-const alertIcon = document.getElementById('alertIcon');
-const closeBtn = document.getElementById('closeAlert');
-
-// Tentukan ikon & warna & pesan sesuai waktu
-function getTimeGreeting() {
-    const hour = new Date().getHours();
-    if(hour >= 5 && hour < 12){
-        return { message: "Selamat Pagi! Semoga harimu menyenangkan.", color: "bg-yellow-500", icon: '<path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m8.66-12.66l-.71.71M4.05 19.66l-.71.71M21 12h-1M4 12H3m16.66 4.66l-.71-.71M6.34 6.34l-.71-.71M12 5a7 7 0 100 14 7 7 0 000-14z"/>' };
-    } else if(hour >= 12 && hour < 15){
-        return { message: "Selamat Siang! Semoga harimu produktif.", color: "bg-blue-500", icon: '<path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m8-8h1M3 12h1m14.36-6.36l-.71.71M6.36 17.64l-.71.71M17.66 17.66l-.71-.71M6.34 6.34l-.71-.71M12 8v4l3 3"/>' };
-    } else if(hour >= 15 && hour < 18){
-        return { message: "Selamat Sore! Semoga harimu menyenangkan.", color: "bg-orange-500", icon: '<path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m8-8h1M3 12h1m14.36-6.36l-.71.71M6.36 17.64l-.71.71M17.66 17.66l-.71-.71M6.34 6.34l-.71-.71M12 8v4l3 3"/>' };
-    } else {
-        return { message: "Selamat Malam! Semoga harimu tenang dan nyaman.", color: "bg-purple-700", icon: '<path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z"/>' };
-    }
-}
-
-function showAlert() {
-    const greeting = getTimeGreeting();
-    alertText.textContent = greeting.message;
-    alertIcon.innerHTML = greeting.icon;
-    alertBanner.className = `fixed top-6 left-1/2 transform -translate-x-1/2 -translate-y-full px-6 py-4 rounded-xl flex items-center gap-4 z-50 transition-all duration-500 shadow-2xl ${greeting.color} animate-fade-in`;
-
-    // Slide-down animasi
-    setTimeout(() => {
-        alertBanner.style.transform = 'translate(-50%, 0)';
-    }, 50);
-
-    // Auto close 5 detik
-    const autoClose = setTimeout(() => {
-        alertBanner.style.transform = 'translate(-50%, -150%)';
-    }, 5000);
-
-    // Tombol close manual
-    closeBtn.addEventListener('click', () => {
-        clearTimeout(autoClose);
-        alertBanner.style.transform = 'translate(-50%, -150%)';
-    });
-}
-
-window.addEventListener('load', showAlert);
-</script>
-
-    <!-- Personalized Learning Path Quiz -->
-    <div id="quiz-popup">
-        <div id="quiz-content" class="text-gray-900">
-            <button id="close-quiz" class="absolute top-2 right-2 text-gray-600 hover:text-gray-900"><i class="fas fa-times"></i></button>
-            <h2 class="text-2xl font-bold mb-4">Temukan Jalur Belajar yang Cocok</h2>
-            <p class="text-gray-600 mb-4">Jawab pertanyaan berikut untuk mendapatkan rekomendasi kursus dan roadmap belajar.</p>
-            <form id="quiz-form">
-                <div class="mb-4">
-                    <label class="block text-sm font-medium mb-2">Minat Utama Anda?</label>
-                    <select class="w-full p-2 border rounded-md" id="quiz-interest">
-                        <option value="web">Web Development</option>
-                        <option value="data">Data Science</option>
-                        <option value="uiux">UI/UX Design</option>
-                    </select>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-sm font-medium mb-2">Level Pengalaman?</label>
-                    <select class="w-full p-2 border rounded-md" id="quiz-level">
-                        <option value="beginner">Pemula</option>
-                        <option value="intermediate">Menengah</option>
-                        <option value="advanced">Lanjutan</option>
-                    </select>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-sm font-medium mb-2">Tujuan Karir Anda?</label>
-                    <select class="w-full p-2 border rounded-md" id="quiz-goal">
-                        <option value="freelance">Freelancer</option>
-                        <option value="startup">Bekerja di Startup</option>
-                        <option value="enterprise">Perusahaan Besar</option>
-                    </select>
-                </div>
-                <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Lihat Jalur Belajar</button>
-            </form>
-            <div id="quiz-result" class="mt-4 hidden">
-                <p class="text-green-600 font-medium mb-2">Rekomendasi: <span id="recommended-course"></span></p>
-                <div class="text-gray-600 text-sm" id="learning-path"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Course Preview Modal -->
-    <div id="course-modal">
-        <div id="course-modal-content" class="text-gray-900">
-            <button id="close-modal" class="absolute top-2 right-2 text-gray-600 hover:text-gray-900"><i class="fas fa-times"></i></button>
-            <h2 class="text-2xl font-bold mb-4" id="modal-title"></h2>
-            <video controls class="w-full rounded-lg mb-4" id="modal-video">
-                <source src="" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-            <p class="text-gray-600 mb-4" id="modal-description"></p>
-            <p class="text-gray-600 mb-4"><strong>Level:</strong> <span id="modal-level"></span></p>
-            <p class="text-gray-600 mb-4"><strong>Harga:</strong> <s id="modal-original-price"></s> <span id="modal-discounted-price" class="text-blue-600"></span></p>
-            <a href="#" id="modal-link" class="btn-animated bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Daftar Sekarang</a>
-        </div>
-    </div>
-
-    <!-- Stats -->
-    <div class="bg-white py-12 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center" data-aos="fade-up" data-aos-delay="100">
-                <div class="space-y-2" data-aos="zoom-in">
-                    <p class="text-4xl font-bold text-blue-900">5</p>
-                    <p class="text-gray-600">Kelas Online</p>
-                </div>
-                <div class="space-y-2" data-aos="zoom-in" data-aos-delay="200">
-                    <p class="text-4xl font-bold text-blue-900">100</p>
-                    <p class="text-gray-600">Siswa</p>
-                </div>
-                <div class="space-y-2" data-aos="zoom-in" data-aos-delay="300">
-                    <p class="text-4xl font-bold text-blue-900">85%</p>
-                    <p class="text-gray-600">Kepuasan Siswa</p>
-                </div>
-                <div class="space-y-2" data-aos="zoom-in" data-aos-delay="400">
-                    <p class="text-4xl font-bold text-blue-900">3</p>
-                    <p class="text-gray-600">Partner Perusahaan</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-  // marketplace.js
-
-// Setup Supabase
-const SUPABASE_URL = "https://dlnenwglsmfyhdysmqdc.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRsbmVud2dsc21meWhkeXNtcWRjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYxMTM5ODIsImV4cCI6MjA3MTY4OTk4Mn0.oWKClbQFN5RDS_MkFkPFbwel-LBmD8iGJX1KxN3Db0U";
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-let selectedProduct = null;
-let activeCategoryId = null;
-let debounceTimeout = null;
-
-// Show/hide loading spinner
-export function setLoading(isLoading) {
-  const spinner = document.getElementById("loadingSpinner");
-  if (!spinner) return;
-  if (isLoading) spinner.classList.remove("hidden");
-  else spinner.classList.add("hidden");
-}
-
-// Render kategori
-export async function loadCategories() {
-  setLoading(true);
-  const { data, error } = await supabase.from("categories").select("*");
-  setLoading(false);
-  const container = document.getElementById("categories");
-  if (!container) return;
-
-  container.innerHTML = "";
-
-  if (error || !data || data.length === 0) {
-    container.innerHTML = `<p class="text-gray-400 italic">Kategori tidak tersedia.</p>`;
-    return;
-  }
-
-  data.forEach(cat => {
-    const btn = document.createElement("button");
-    btn.className = "px-5 py-2 rounded-full font-semibold whitespace-nowrap transition ";
-    if (cat.id === activeCategoryId) {
-      btn.classList.add("bg-green-600", "text-white", "shadow-lg");
-    } else {
-      btn.classList.add("bg-green-100", "text-green-700", "hover:bg-green-200");
-    }
-    btn.textContent = cat.name;
-    btn.onclick = () => {
-      if (activeCategoryId === cat.id) {
-        activeCategoryId = null; // toggle off
-      } else {
-        activeCategoryId = cat.id;
-      }
-      loadCategories();
-      loadProducts(activeCategoryId);
-    };
-    container.appendChild(btn);
-  });
-}
-
-// Render produk
-export async function loadProducts(categoryId = null, keyword = "") {
-  setLoading(true);
-  let query = supabase.from("products").select("*");
-  if (categoryId) query = query.eq("category_id", categoryId);
-  if (keyword) query = query.ilike("name", `%${keyword}%`);
-  const { data, error } = await query;
-  setLoading(false);
-
-  const container = document.getElementById("products");
-  if (!container) return;
-
-  container.innerHTML = "";
-
-  if (error || !data || data.length === 0) {
-    container.innerHTML = `<p class="col-span-full text-center text-gray-400 italic mt-10">Produk tidak ditemukan.</p>`;
-    return;
-  }
-
-  data.forEach(prod => {
-    const card = document.createElement("div");
-    card.className = "border border-green-200 rounded-xl shadow-sm p-4 bg-white hover:shadow-lg transition cursor-pointer flex flex-col";
-    card.innerHTML = `
-      <img src="${prod.image_url}" alt="${prod.name}" class="w-full h-40 object-cover rounded-lg mb-4 shadow-md" />
-      <h3 class="font-semibold text-lg text-green-800 mb-1 truncate">${prod.name}</h3>
-      <p class="text-green-600 font-bold text-lg mb-1">Rp${prod.price.toLocaleString('id-ID')}</p>
-      <p class="text-sm text-gray-500 mb-4 truncate">${prod.location}</p>
-      <button class="mt-auto bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg font-semibold transition shadow-md">Beli</button>
-    `;
-    card.querySelector("button").onclick = () => openProductModal(prod);
-    container.appendChild(card);
-  });
-}
-
-// Open modal produk
-export function openProductModal(prod) {
-  selectedProduct = prod;
-  const modalName = document.getElementById("modalProductName");
-  const modalImage = document.getElementById("modalProductImage");
-  const modalPrice = document.getElementById("modalProductPrice");
-  const modalLocation = document.getElementById("modalProductLocation");
-  const productModal = document.getElementById("productModal");
-  const openCheckoutBtn = document.getElementById("openCheckoutBtn");
-
-  if (!modalName || !modalImage || !modalPrice || !modalLocation || !productModal || !openCheckoutBtn) return;
-
-  modalName.textContent = prod.name;
-  modalImage.src = prod.image_url;
-  modalImage.alt = prod.name;
-  modalPrice.textContent = "Rp " + prod.price.toLocaleString('id-ID');
-  modalLocation.textContent = prod.location;
-  productModal.classList.remove("hidden");
-
-  openCheckoutBtn.onclick = () => {
-    closeModal("productModal");
-    const checkoutModal = document.getElementById("checkoutModal");
-    if (checkoutModal) checkoutModal.classList.remove("hidden");
-  };
-}
-
-// Close modal
-export function closeModal(id) {
-  const modal = document.getElementById(id);
-  if (modal) modal.classList.add("hidden");
-}
-
-// Close modal on overlay click
-export function setupModalOverlayClose() {
-  const productModal = document.getElementById("productModal");
-  const checkoutModal = document.getElementById("checkoutModal");
-
-  if (productModal) {
-    productModal.addEventListener("click", (e) => {
-      if (e.target.id === "productModal") closeModal("productModal");
-    });
-  }
-  if (checkoutModal) {
-    checkoutModal.addEventListener("click", (e) => {
-      if (e.target.id === "checkoutModal") closeModal("checkoutModal");
-    });
-  }
-}
-
-// Checkout form submit handler
-export function setupCheckoutForm() {
-  const form = document.getElementById("checkoutForm");
-  if (!form) return;
-
-  form.onsubmit = async (e) => {
-    e.preventDefault();
-    if (!selectedProduct) return;
-
-    const order = {
-      product_id: selectedProduct.id,
-      customer_name: document.getElementById("custName").value.trim(),
-      customer_address: document.getElementById("custAddress").value.trim(),
-      customer_phone: document.getElementById("custPhone").value.trim(),
-      status: "pending"
-    };
-
-    setLoading(true);
-    const { error } = await supabase.from("orders").insert(order);
-    setLoading(false);
-
-    if (error) {
-      alert("Gagal membuat pesanan: " + error.message);
-    } else {
-      alert("Pesanan berhasil dibuat!");
-      closeModal("checkoutModal");
-      form.reset();
-    }
-  };
-}
-
-// Search bar with debounce
-export function setupSearchBar() {
-  const searchBar = document.getElementById("searchBar");
-  if (!searchBar) return;
-
-  searchBar.addEventListener("input", (e) => {
-    clearTimeout(debounceTimeout);
-    debounceTimeout = setTimeout(() => {
-      const keyword = e.target.value.trim();
-      loadProducts(activeCategoryId, keyword);
-    }, 300);
-  });
-}
-
-// Initialize all
-export function initMarketplace() {
-  loadCategories();
-  loadProducts();
-  setupModalOverlayClose();
-  setupCheckoutForm();
-  setupSearchBar();
-}
-
-<!-- Branding Model Asset - Foto Keluar dari Frame -->
-<div class="max-w-4xl mx-auto px-4 py-16">
-  <div class="bg-white rounded-lg shadow-md overflow-visible flex flex-col md:flex-row items-center md:items-start gap-6 p-6">
-    <!-- Foto Model -->
-    <div class="md:w-1/2 relative overflow-visible">
-      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEikdEfKIsL-x_Dtn-YwQwsSxL56vYUw3jFZ-Nro48hqIyov5JIIJ4PoHXKlD-wIssjLOn6Fv2iVkiBK9b6kLLLmaN1QjuDJK6cVEOirac5mbirQTgUXCZuGdEeHbR5RtN7YgSaeFfK6F8sC98jA5tdrQI7-Cws3swzWQtI5ewFBt3ThpHp4lZVNmWoacKM/s3264/20250909_143726.png" 
-           alt="Model Memegang Laptop" 
-           class="w-full rounded-lg object-cover transition-transform duration-500 ease-in-out transform -translate-y-5 hover:translate-y-0 hover:scale-105 shadow-lg" />
-    </div>
-    <!-- Deskripsi -->
-    <div class="md:w-1/2">
-      <h2 class="text-2xl font-semibold mb-3">Model Memegang Laptop dengan Fokus</h2>
-      <p class="text-gray-600">
-        Seorang model muda memegang laptop dengan ekspresi fokus, mengenakan pakaian casual smart. Latar belakang minimalis dan pencahayaan natural menambah kesan profesional.
-      </p>
-    </div>
-  </div>
-</div>
-
-<!-- Course Trending Interactive -->
-<div class="py-16 bg-blue-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12" data-aos="fade-up">
-            <h2 class="text-3xl font-bold text-blue-900 mb-4 flex items-center justify-center space-x-2">
-                <span>Course Trending</span>
-                <!-- SVG Fire Icon -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500 animate-pulse" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M11.3 1.046a1 1 0 00-1.6 0C8.38 2.5 6.5 5.03 6.5 7.5c0 2.94 2.36 5.33 5.33 5.33s5.34-2.36 5.34-5.33c0-2.24-1.64-4.47-5.87-6.453z"/>
-                </svg>
-            </h2>
-            <p class="text-lg text-gray-600 max-w-3xl mx-auto">Lihat course yang sedang dipelajari oleh orang lain</p>
-        </div>
-
-        <div class="grid md:grid-cols-3 gap-8" data-aos="fade-up" data-aos-delay="100">
-            <!-- Card 1 - Trending -->
-            <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition duration-300 group relative">
-                <!-- Badge Trending -->
-                <div class="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center space-x-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-yellow-300" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M11.3 1.046a1 1 0 00-1.6 0C8.38 2.5 6.5 5.03 6.5 7.5c0 2.94 2.36 5.33 5.33 5.33s5.34-2.36 5.34-5.33c0-2.24-1.64-4.47-5.87-6.453z"/>
-                    </svg>
-                    <span>Trending</span>
-                </div>
-
-                <h3 class="text-lg font-bold mb-2 group-hover:text-blue-700 transition">Web Development</h3>
-                <div class="w-full bg-gray-200 rounded-full h-4 mb-2 overflow-hidden">
-                    <div class="bg-red-500 h-4 rounded-full transition-all duration-1000 ease-out" style="width: 0%;" data-target="90"></div>
-                </div>
-                <p class="text-gray-600 text-sm flex items-center space-x-1">
-                    <span>Paling laris</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500 animate-pulse" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M11.3 1.046a1 1 0 00-1.6 0C8.38 2.5 6.5 5.03 6.5 7.5c0 2.94 2.36 5.33 5.33 5.33s5.34-2.36 5.34-5.33c0-2.24-1.64-4.47-5.87-6.453z"/>
-                    </svg>
-                </p>
-            </div>
-
-            <!-- Card 2 -->
-            <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition duration-300 group relative">
-                <h3 class="text-lg font-bold mb-2 group-hover:text-green-700 transition">Data Science</h3>
-                <div class="w-full bg-gray-200 rounded-full h-4 mb-2 overflow-hidden">
-                    <div class="bg-green-500 h-4 rounded-full transition-all duration-1000 ease-out" style="width: 0%;" data-target="70"></div>
-                </div>
-                <p class="text-gray-600 text-sm">Populer saat ini</p>
-            </div>
-
-            <!-- Card 3 -->
-            <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition duration-300 group relative">
-                <h3 class="text-lg font-bold mb-2 group-hover:text-yellow-700 transition">UI/UX Design</h3>
-                <div class="w-full bg-gray-200 rounded-full h-4 mb-2 overflow-hidden">
-                    <div class="bg-yellow-500 h-4 rounded-full transition-all duration-1000 ease-out" style="width: 0%;" data-target="40"></div>
-                </div>
-                <p class="text-gray-600 text-sm">Sedang naik daun</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-// Animasi progres bar saat scroll ke viewport
-const bars = document.querySelectorAll('[data-target]');
-const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-        if(entry.isIntersecting){
-            const bar = entry.target;
-            const targetWidth = bar.getAttribute('data-target');
-            bar.style.width = targetWidth + '%';
-        }
-    });
-}, {threshold: 0.5});
-
-bars.forEach(bar => observer.observe(bar));
-</script>
-  
-    <!-- Why Coding Matters -->
-    <div class="py-16 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12" data-aos="fade-up">
-                <h2 class="text-3xl font-bold text-blue-900 mb-4">Mengapa Belajar Coding Penting?</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Di era digital, coding adalah kunci untuk inovasi dan peluang karir tanpa batas.</p>
-            </div>
-            <div class="grid md:grid-cols-3 gap-8" data-aos="fade-up" data-aos-delay="100">
-                <div class="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300" data-aos="slide-up">
-                    <div class="text-red-500 mb-4">
-                        <i class="fas fa-rocket text-4xl floating"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Peluang Karir Tak Terbatas</h3>
-                    <p class="text-gray-600">Dari pengembang web hingga data scientist, coding membuka pintu ke berbagai profesi teknologi dengan gaji kompetitif.</p>
-                </div>
-                <div class="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300" data-aos="slide-up" data-aos-delay="100">
-                    <div class="text-red-500 mb-4">
-                        <i class="fas fa-brain text-4xl floating"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Melatih Pemikiran Kritis</h3>
-                    <p class="text-gray-600">Coding mengasah logika, pemecahan masalah, dan kreativitas, yang berguna di berbagai aspek kehidupan.</p>
-                </div>
-                <div class="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300" data-aos="slide-up" data-aos-delay="200">
-                    <div class="text-red-500 mb-4">
-                        <i class="fas fa-globe text-4xl floating"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Membangun Masa Depan</h3>
-                    <p class="text-gray-600">Jadilah bagian dari revolusi digital dengan menciptakan aplikasi, website, atau solusi teknologi inovatif.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-  
- 
-  
-    <!-- Gamified Achievement Badges -->
-    <div class="py-16 bg-red-500">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12" data-aos="fade-up">
-                <h2 class="text-3xl font-bold text-white p-6 mb-4">Raih Pencapaianmu</h2>
-                <p class="text-lg text-white p-6 max-w-3xl mx-auto">Selesaikan tantangan dan kelas untuk membuka lencana eksklusif!</p>
-            </div>
-            <div class="grid md:grid-cols-4 gap-8" data-aos="fade-up" data-aos-delay="100">
-                <div class="bg-white p-6 rounded-xl shadow-sm text-center badge-unlock" data-aos="zoom-in">
-                    <i class="fas fa-code text-4xl text-blue-500 mb-4"></i>
-                    <h3 class="text-lg font-bold">Code Master</h3>
-                    <p class="text-gray-600 text-sm">Selesaikan 3 proyek coding.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow-sm text-center badge-unlock" data-aos="zoom-in" data-aos-delay="100">
-                    <i class="fas fa-trophy text-4xl text-yellow-500  mb-4"></i>
-                    <h3 class="text-lg font-bold">Project Pro</h3>
-                    <p class="text-gray-600 text-sm">Bangun 5 proyek portofolio.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow-sm text-center badge-unlock" data-aos="zoom-in" data-aos-delay="200">
-                    <i class="fas fa-users text-4xl text-green-700  mb-4"></i>
-                    <h3 class="text-lg font-bold">Community Star</h3>
-                    <p class="text-gray-600 text-sm">Bantu 10 siswa di forum.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow-sm text-center badge-unlock" data-aos="zoom-in" data-aos-delay="300">
-                    <i class="fas fa-graduation-cap text-4xl text-pruple-700  mb-4"></i>
-                    <h3 class="text-lg font-bold">Certified Expert</h3>
-                    <p class="text-gray-600 text-sm">Selesaikan bootcamp intensif.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-<!-- Event Eracoding Top Professional Slider -->
-<div class="bg-gray-50 py-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Judul -->
-        <div class="text-center mb-10">
-            <h2 class="text-3xl font-bold text-gray-900">Event Eracoding</h2>
-            <p class="text-lg text-gray-600 max-w-2xl mx-auto mt-2">Ikuti event terbaru dari Eracoding untuk menambah wawasan dan pengalaman belajar.</p>
-        </div>
-
-        <!-- Slider Container -->
-        <div id="eventTopSliderContainer" class="overflow-hidden relative">
-            <div id="eventTopSlider" class="flex gap-8 items-stretch">
-                <!-- Event Card 1 -->
-                <div class="bg-white rounded-2xl shadow-lg flex-shrink-0 w-[320px] md:w-[360px] hover:shadow-2xl transition duration-300">
-                    <img src="https://via.placeholder.com/360x200" alt="Workshop Golang" class="w-full h-48 object-cover rounded-t-2xl">
-                    <div class="p-5 text-center">
-                        <p class="text-sm text-gray-500 mb-1">10 September 2025</p>
-                        <h3 class="text-xl font-semibold mb-2">Workshop Golang Dasar</h3>
-                        <p class="text-gray-600 mb-4">Pelajari dasar-dasar Golang dari mentor berpengalaman secara langsung.</p>
-                        <a href="#" class="inline-block bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition">Daftar</a>
-                    </div>
-                </div>
-
-                <!-- Event Card 2 -->
-                <div class="bg-white rounded-2xl shadow-lg flex-shrink-0 w-[320px] md:w-[360px] hover:shadow-2xl transition duration-300">
-                    <img src="https://via.placeholder.com/360x200" alt="Webinar UI/UX" class="w-full h-48 object-cover rounded-t-2xl">
-                    <div class="p-5 text-center">
-                        <p class="text-sm text-gray-500 mb-1">15 September 2025</p>
-                        <h3 class="text-xl font-semibold mb-2">Webinar UI/UX Design</h3>
-                        <p class="text-gray-600 mb-4">Tingkatkan skill desain antarmuka melalui webinar interaktif.</p>
-                        <a href="#" class="inline-block bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition">Daftar</a>
-                    </div>
-                </div>
-
-                <!-- Event Card 3 -->
-                <div class="bg-white rounded-2xl shadow-lg flex-shrink-0 w-[320px] md:w-[360px] hover:shadow-2xl transition duration-300">
-                    <img src="https://via.placeholder.com/360x200" alt="Hackathon Eracoding" class="w-full h-48 object-cover rounded-t-2xl">
-                    <div class="p-5 text-center">
-                        <p class="text-sm text-gray-500 mb-1">20 September 2025</p>
-                        <h3 class="text-xl font-semibold mb-2">Hackathon Eracoding</h3>
-                        <p class="text-gray-600 mb-4">Bersaing dengan developer lain untuk menyelesaikan tantangan coding seru.</p>
-                        <a href="#" class="inline-block bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition">Daftar</a>
-                    </div>
-                </div>
-
-                <!-- Duplikasi untuk loop seamless -->
-                <div class="bg-white rounded-2xl shadow-lg flex-shrink-0 w-[320px] md:w-[360px] hover:shadow-2xl transition duration-300">
-                    <img src="https://via.placeholder.com/360x200" alt="Workshop Golang" class="w-full h-48 object-cover rounded-t-2xl">
-                    <div class="p-5 text-center">
-                        <p class="text-sm text-gray-500 mb-1">10 September 2025</p>
-                        <h3 class="text-xl font-semibold mb-2">Workshop Golang Dasar</h3>
-                        <p class="text-gray-600 mb-4">Pelajari dasar-dasar Golang dari mentor berpengalaman secara langsung.</p>
-                        <a href="#" class="inline-block bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition">Daftar</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-const topSlider = document.getElementById('eventTopSlider');
-const topContainer = document.getElementById('eventTopSliderContainer');
-let topPos = 0;
-const topSpeed = 0.6;
-let topPaused = false;
-
-// Pause on hover / touch
-topContainer.addEventListener('mouseenter', () => topPaused = true);
-topContainer.addEventListener('mouseleave', () => topPaused = false);
-topContainer.addEventListener('touchstart', () => topPaused = true);
-topContainer.addEventListener('touchend', () => topPaused = false);
-
-function animateTopSlider() {
-    if(!topPaused){
-        topPos += topSpeed;
-        if(topPos >= topSlider.scrollWidth / 2) topPos = 0; // loop seamless
-        topSlider.style.transform = `translateX(-${topPos}px)`;
-    }
-    requestAnimationFrame(animateTopSlider);
-}
-
-window.addEventListener('load', animateTopSlider);
-</script>
-
-    <!-- Popular Courses -->
-    <div class="py-16 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12" data-aos="fade-up">
-                <h2 class="text-3xl font-bold text-blue-900 mb-4">Kelas Populer</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Temukan kelas yang sesuai dengan minat dan level keahlian Anda.</p>
-                <div class="mt-6 flex justify-center space-x-4">
-                    <button class="course-filter bg-blue-900 text-white px-4 py-2 rounded-md hover:bg-bg-gray-600  " data-category="all">Semua</button>
-                    <button class="course-filter bg-gray-600  text-white p-6 px-4 py-2 rounded-md hover:bg-blue-900 " data-category="web">Web Development</button>
-                    <button class="course-filter bg-blue-900  text-white p-6 px-4 py-2 rounded-md hover:bg-gray-600  " data-category="data">Data Science</button>
-                    <button class="course-filter bg-gray-600  text-white p-6 px-4 py-2 rounded-md hover:bg-blue-900 " data-category="uiux">UI/UX</button>
-                </div>
-            </div>
-            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 course-container" data-aos="fade-up" data-aos-delay="100"></div>
-            <div class="text-center mt-12">
-                <a href="https://product.eracoding.com" class="btn-animated inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-red-500 hover:bg-red-500 transition duration-300">
-                    Lihat Semua Kelas
-                    <i class="fas fa-arrow-right ml-2"></i>
+            <nav class="space-y-4">
+                <a href="/index.html" class="flex items-center space-x-2 text-gray-700 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400 transition-all duration-300 text-base">
+                    <i class="fas fa-home"></i>
+                    <span>Beranda</span>
                 </a>
+                <a href="/menu.html" class="flex items-center space-x-2 text-gray-700 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400 transition-all duration-300 text-base">
+                    <i class="fas fa-utensils"></i>
+                    <span>Menu</span>
+                </a>
+                <a href="/promo.html" class="flex items-center space-x-2 text-gray-700 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400 transition-all duration-300 text-base">
+                    <i class="fas fa-tags"></i>
+                    <span>Promo</span>
+                </a>
+                <a href="/contact.html" class="flex items-center space-x-2 text-gray-700 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400 transition-all duration-300 text-base">
+                    <i class="fas fa-envelope"></i>
+                    <span>Kontak</span>
+                </a>
+            </nav>
+        </div>
+    </aside>
+
+    <!-- Overlay untuk sidebar di mobile -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden lg:hidden transition-opacity duration-500"></div>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 lg:ml-64 relative transition-all duration-500">
+        <!-- Slider -->
+        <div id="slider" class="relative w-full h-48 sm:h-64 lg:h-80 mb-8 overflow-hidden rounded-2xl shadow-xl">
+            <div id="slider-container" class="flex transition-transform duration-500">
+                <!-- Slide akan dirender di sini via JS -->
             </div>
-        </div>
-    </div>
-<!-- Partner Perusahaan Section -->
-<div class="py-12 bg-gray-50">
-    <h2 class="text-2xl font-bold text-center mb-6">Partner Perusahaan</h2>
-    <div class="overflow-hidden relative">
-        <div id="partnerSlider" class="flex gap-8 whitespace-nowrap">
-            <img src="logo-eracoding.png" class="h-16 w-auto object-contain">
-            <img src="logo-company1.png" class="h-16 w-auto object-contain">
-            <img src="logo-company2.png" class="h-16 w-auto object-contain">
-            <img src="logo-company3.png" class="h-16 w-auto object-contain">
-            <img src="logo-company4.png" class="h-16 w-auto object-contain">
-            <!-- Duplikat untuk loop seamless -->
-            <img src="logo-eracoding.png" class="h-16 w-auto object-contain">
-            <img src="logo-company1.png" class="h-16 w-auto object-contain">
-            <img src="logo-company2.png" class="h-16 w-auto object-contain">
-            <img src="logo-company3.png" class="h-16 w-auto object-contain">
-            <img src="logo-company4.png" class="h-16 w-auto object-contain">
-        </div>
-    </div>
-</div>
-
-<script>
-const partnerTrack = document.getElementById('partnerSlider');
-let partnerPos = 0;
-const partnerSpeed = 0.5;
-
-function animatePartnerSlider() {
-    partnerPos += partnerSpeed;
-    if(partnerPos >= partnerTrack.scrollWidth / 2) partnerPos = 0; // loop seamless
-    partnerTrack.style.transform = `translateX(-${partnerPos}px)`;
-    requestAnimationFrame(animatePartnerSlider);
-}
-
-window.addEventListener('load', animatePartnerSlider);
-</script>
-  
-<!-- Teacher Profiles Slider -->
-<div class="py-16 bg-blue-900 overflow-hidden">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12" data-aos="fade-up">
-            <h2 class="text-3xl font-bold text-white p-6 mb-4">Temui Pengajar Kami</h2>
-            <p class="text-lg text-white p-6 max-w-3xl mx-auto">Belajar dari profesional berpengalaman di bidang teknologi.</p>
+            <button id="slider-prev" class="absolute left-4 top-1/2 transform -translate-y-1/2 p-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition-all duration-300 shadow-md" aria-label="Slide sebelumnya">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button id="slider-next" class="absolute right-4 top-1/2 transform -translate-y-1/2 p-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition-all duration-300 shadow-md" aria-label="Slide berikutnya">
+                <i class="fas fa-chevron-right"></i>
+            </button>
         </div>
 
-        <!-- Slider Container -->
-        <div id="teacherSliderContainer" class="relative">
-            <div id="teacherSlider" class="flex gap-8">
-                <!-- Teacher Cards -->
-                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300 min-w-[300px]">
-                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEikdEfKIsL-x_Dtn-YwQwsSxL56vYUw3jFZ-Nro48hqIyov5JIIJ4PoHXKlD-wIssjLOn6Fv2iVkiBK9b6kLLLmaN1QjuDJK6cVEOirac5mbirQTgUXCZuGdEeHbR5RtN7YgSaeFfK6F8sC98jA5tdrQI7-Cws3swzWQtI5ewFBt3ThpHp4lZVNmWoacKM/s3264/20250909_143726.png" alt="Mahesa Hafis" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
-                    <h3 class="text-xl font-bold text-center mb-2">Mahesa Hafis F</h3>
-                    <p class="text-gray-600 text-center mb-2">Frontend Developer</p>
-                    <p class="text-gray-600 text-sm text-center">Berpengalaman 4 tahun di frontend developer</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300 min-w-[300px]">
-                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgdSsx4IEvM1k5JT5kqt6YCST8gveSKYcoPLtLXxQhel96k3TNN-XKmftYXl60HqbHmdzN6NT1nxrC3Xg8q0dMidMho9RRJ1YgLAuGqjfMHv3AvhyphenhyphenftFNK2XRug9x9cdQ0aqxsiD8kaFdOpe_BuPsYHji7Usgsp6qxdgPd6uMBUBc-eX2cOSvJAUPfrvAE/s3264/20250909_145939.png" alt="Andy" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
-                    <h3 class="text-xl font-bold text-center mb-2">Andy</h3>
-                    <p class="text-gray-600 text-center mb-2">Software Engineering</p>
-                    <p class="text-gray-600 text-sm text-center">Ahli software engineering dengan spesialisasi dalam sistem pembelajaran adaptif</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300 min-w-[300px]">
-                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgdSsx4IEvM1k5JT5kqt6YCST8gveSKYcoPLtLXxQhel96k3TNN-XKmftYXl60HqbHmdzN6NT1nxrC3Xg8q0dMidMho9RRJ1YgLAuGqjfMHv3AvhyphenhyphenftFNK2XRug9x9cdQ0aqxsiD8kaFdOpe_BuPsYHji7Usgsp6qxdgPd6uMBUBc-eX2cOSvJAUPfrvAE/s3264/20250909_145939.png" alt="Dwi Ariyanto" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
-                    <h3 class="text-xl font-bold text-center mb-2">Dwi Ariyanto</h3>
-                    <p class="text-gray-600 text-center mb-2">UI/UX Designer</p>
-                    <p class="text-gray-600 text-sm text-center">Merancang antarmuka menggunakan Figma.</p>
-                </div>
-                <!-- Duplikat untuk looping seamless -->
+        <div id="loading" class="absolute inset-0 flex items-center justify-center bg-white bg-opacity-70 dark:bg-gray-900 dark:bg-opacity-70 hidden rounded-xl">
+            <i class="fas fa-spinner fa-spin text-5xl text-indigo-500"></i>
+        </div>
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+            <!-- Kartu produk akan dirender di sini via JS -->
+        </div>
+        <div id="no-results" class="text-center text-gray-500 dark:text-gray-400 mt-8 hidden text-sm sm:text-base">Tidak ada hasil yang ditemukan. Coba kata kunci lain!</div>
+    </main>
+
+    <!-- Modal Detail Produk -->
+    <div id="product-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center hidden transition-opacity duration-500" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="bg-white dark:bg-gray-900 p-4 sm:p-6 lg:p-8 rounded-2xl shadow-2xl max-w-sm sm:max-w-md lg:max-w-lg w-full transform scale-90 transition-all duration-500">
+            <button class="absolute top-4 right-4 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-all duration-300" onclick="closeModal('product-modal')" aria-label="Tutup modal">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+            <h2 id="modal-title" class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 dark:text-white mb-4"></h2>
+            <img id="modal-image" class="w-full h-36 sm:h-40 lg:h-48 object-cover rounded-xl mb-4 shadow-md" src="" alt="" loading="lazy">
+            <p id="modal-description" class="text-gray-600 dark:text-gray-300 mb-4 text-xs sm:text-sm lg:text-base"></p>
+            <p id="modal-price" class="text-lg sm:text-xl lg:text-2xl font-semibold text-green-600 mb-4"></p>
+            <div class="flex items-center mb-4 sm:mb-6">
+                <label for="quantity" class="text-gray-700 dark:text-gray-300 mr-4 text-xs sm:text-sm lg:text-base">Jumlah:</label>
+                <input type="number" id="quantity" min="1" value="1" class="w-16 sm:w-20 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500 transition-all duration-300 shadow-sm text-sm">
             </div>
-        </div>
-    </div>
-</div>
-
-<script>
-const slider = document.getElementById('teacherSlider');
-const container = document.getElementById('teacherSliderContainer');
-let pos = 0;
-let direction = 1;
-const speed = 0.5; // atur kecepatan scroll
-let isPaused = false;
-
-// Pause on hover / touch
-container.addEventListener('mouseenter', () => isPaused = true);
-container.addEventListener('mouseleave', () => isPaused = false);
-container.addEventListener('touchstart', () => isPaused = true);
-container.addEventListener('touchend', () => isPaused = false);
-
-function animateSlider() {
-    if(!isPaused){
-        pos += speed * direction;
-        const maxScroll = slider.scrollWidth - container.offsetWidth;
-        if(pos >= maxScroll) direction = -1;
-        if(pos <= 0) direction = 1;
-        slider.style.transform = `translateX(-${pos}px)`;
-    }
-    requestAnimationFrame(animateSlider);
-}
-
-window.addEventListener('load', animateSlider);
-</script>
- 
-    <!-- Tech Trend Modal -->
-    <div id="trend-modal">
-        <div id="trend-modal-content" class="text-gray-900">
-            <button id="close-trend-modal" class="absolute top-2 right-2 text-gray-600 hover:text-gray-900"><i class="fas fa-times"></i></button>
-            <h2 class="text-2xl font-bold mb-4" id="trend-title"></h2>
-            <p class="text-gray-600 mb-4" id="trend-description"></p>
-            <p class="text-gray-600 mb-4"><strong>Aplikasi Dunia Nyata:</strong> <span id="trend-application"></span></p>
-            <a href="#" id="trend-course-link" class="btn-animated bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Ikuti Kursus Terkait</a>
-        </div>
-    </div>
-  
-     <!-- Testimonials -->
-    <div class="py-16 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-blue-900 mb-4">Kisah Sukses Alumni</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Bagaimana Eracoding membantu mereka di dunia teknologi.</p>
-            </div>
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Testimonial 1 -->
-                <div class="bg-white p-8 rounded-xl shadow-sm">
-                    <div class="flex items-center mb-4">
-                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi37A_U47n85X-Ds6d_w8Nu3yx8KMAdjBkfyo9JI2lUWTefxBsLhw4lbqPh9cx2WTsndncue5ceRQJD80kRqLNs6R38m0GldyxmrAMqm4_rpM38I0vsUn0yaFRqftelRotUS4S9kjqpGAms6wL918vljFEmBgUiO_0ey2qci-gx9WGTmW0_Ru94QZTqdWw/s3264/20250909_150732.png" alt="testi" class="w-12 h-12 rounded-full object-cover">
-                        <div class="ml-4">
-                            <h4 class="font-bold">Yay**</h4>
-                            <p class="text-gray-600 text-sm">Pelajar</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 italic">"Awalnya saya cuma iseng coba-coba belajar coding di Eracoding, tapi ternyata gampang banget ngerti materinya. Pengajarnya juga sabar kalau kita nanya. Lumayan ngebantu banget buat mulai ngoding dari nol."</p>
-                    <div class="flex mt-4 text-yellow-400">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                </div>
-                
-                <!-- Testimonial 2 -->
-                <div class="bg-white p-8 rounded-xl shadow-sm">
-                    <div class="flex items-center mb-4">
-                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi37A_U47n85X-Ds6d_w8Nu3yx8KMAdjBkfyo9JI2lUWTefxBsLhw4lbqPh9cx2WTsndncue5ceRQJD80kRqLNs6R38m0GldyxmrAMqm4_rpM38I0vsUn0yaFRqftelRotUS4S9kjqpGAms6wL918vljFEmBgUiO_0ey2qci-gx9WGTmW0_Ru94QZTqdWw/s3264/20250909_150732.png" alt="testi" class="w-12 h-12 rounded-full object-cover">
-                        <div class="ml-4">
-                            <h4 class="font-bold">Fer**</h4>
-                            <p class="text-gray-600 text-sm">Pelajar</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 italic">"Eracoding bikin belajar coding terasa nggak berat. Gak cuma teori, tapi langsung praktik juga. Rasanya lebih ngerti dan termotivasi buat terus belajar."</p>
-                    <div class="flex mt-4 text-yellow-400">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                </div>
-                
-                <!-- Testimonial 3 -->
-                <div class="bg-white p-8 rounded-xl shadow-sm">
-                    <div class="flex items-center mb-4">
-                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi37A_U47n85X-Ds6d_w8Nu3yx8KMAdjBkfyo9JI2lUWTefxBsLhw4lbqPh9cx2WTsndncue5ceRQJD80kRqLNs6R38m0GldyxmrAMqm4_rpM38I0vsUn0yaFRqftelRotUS4S9kjqpGAms6wL918vljFEmBgUiO_0ey2qci-gx9WGTmW0_Ru94QZTqdWw/s3264/20250909_150732.png" alt="testi" class="w-12 h-12 rounded-full object-cover">
-                        <div class="ml-4">
-                            <h4 class="font-bold">Ami**</h4>
-                            <p class="text-gray-600 text-sm">Pelajar</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 italic">"Mantappp"</p>
-                    <div class="flex mt-4 text-yellow-400">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star-half-alt"></i>
-                    </div>
-                </div>
+            <p id="total-price" class="text-base sm:text-lg lg:text-xl font-semibold text-indigo-600 dark:text-indigo-400 mb-4 sm:mb-6"></p>
+            <div class="flex justify-end space-x-2 sm:space-x-4">
+                <button onclick="closeModal('product-modal')" class="px-4 sm:px-6 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-300 shadow-md text-sm sm:text-base">Tutup</button>
+                <button id="buy-button" class="px-4 sm:px-6 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition-all duration-300 shadow-md text-sm sm:text-base">Beli Sekarang</button>
             </div>
         </div>
     </div>
 
-   <!-- FAQ Section -->
-    <div class="py-16 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12" data-aos="fade-up">
-                <h2 class="text-3xl font-bold text-blue-900 mb-4">Pertanyaan yang Sering Diajukan</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Temukan jawaban atas pertanyaan umum tentang belajar di Eracoding.</p>
+    <!-- Modal Checkout -->
+    <div id="checkout-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center hidden transition-opacity duration-500" role="dialog" aria-modal="true">
+        <div class="bg-white dark:bg-gray-900 p-4 sm:p-6 lg:p-8 rounded-2xl shadow-2xl max-w-sm sm:max-w-md lg:max-w-lg w-full transform scale-90 transition-all duration-500">
+            <button class="absolute top-4 right-4 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-all duration-300" onclick="closeModal('checkout-modal')" aria-label="Tutup modal">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+            <h2 class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 dark:text-white mb-4 sm:mb-6">Checkout</h2>
+            <form id="checkout-form">
+                <div class="mb-4 sm:mb-5">
+                    <label for="name" class="block text-gray-700 dark:text-gray-300 font-medium mb-2 text-xs sm:text-sm lg:text-base">Nama</label>
+                    <input type="text" id="name" class="w-full px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 shadow-sm text-sm sm:text-base" required>
+                </div>
+                <div class="mb-4compare sm:mb-5">
+                    <label for="address" class="block text-gray-700 dark:text-gray-300 font-medium mb-2 text-xs sm:text-sm lg:text-base">Alamat</label>
+                    <input type="text" id="address" class="w-full px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 shadow-sm text-sm sm:text-base" required>
+                </div>
+                <div class="mb-4 sm:mb-6">
+                    <label for="phone" class="block text-gray-700 dark:text-gray-300 font-medium mb-2 text-xs sm:text-sm lg:text-base">Nomor Telepon</label>
+                    <input type="tel" id="phone" class="w-full px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 shadow-sm text-sm sm:text-base" required pattern="[0-9]{10,15}">
+                </div>
+                <p id="checkout-total" class="text-base sm:text-lg lg:text-xl font-semibold text-indigo-600 dark:text-indigo-400 mb-4 sm:mb-6"></p>
+                <div class="flex justify-end space-x-2 sm:space-x-4">
+                    <button type="button" onclick="closeModal('checkout-modal')" class="px-4 sm:px-6 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-300 shadow-md text-sm sm:text-base">Batal</button>
+                    <button type="submit" class="px-4 sm:px-6 py-2 bg-green-600 text-white rounded-full hover:bg-green-700 transition-all duration-300 shadow-md text-sm sm:text-base">Selesaikan Pesanan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal COD Confirmation -->
+    <div id="cod-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center hidden transition-opacity duration-500" role="dialog" aria-modal="true">
+        <div class="bg-white dark:bg-gray-900 p-4 sm:p-6 lg:p-8 rounded-2xl shadow-2xl max-w-sm sm:max-w-md lg:max-w-lg w-full transform scale-90 transition-all duration-500">
+            <button class="absolute top-4 right-4 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-all duration-300" onclick="closeModal('cod-modal')" aria-label="Tutup modal">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+            <div class="flex items-center space-x-3 mb-4">
+                <i class="fas fa-check-circle text-3xl sm:text-4xl text-green-500"></i>
+                <h2 class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 dark:text-white">Konfirmasi COD</h2>
             </div>
-            <div class="space-y-4" data-aos="fade-up" data-aos-delay="100">
-                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300">
-                    <h3 class="text-lg font-bold mb-2">Apakah saya perlu pengalaman coding sebelumnya?</h3>
-                    <p class="text-gray-600">Tidak! Kami memiliki kelas untuk semua level, mulai dari pemula hingga mahir.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300">
-                    <h3 class="text-lg font-bold mb-2">Berapa lama waktu yang dibutuhkan untuk menyelesaikan kelas?</h3>
-                    <p class="text-gray-600">Tergantung kelasnya, mulai dari 4 minggu untuk kelas dasar hingga 6 bulan untuk bootcamp intensif.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300">
-                    <h3 class="text-lg font-bold mb-2">Apakah ada sertifikat setelah selesai?</h3>
-                    <p class="text-gray-600">Ya, setiap kelas memberikan sertifikat penyelesaian yang diakui industri.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300">
-                    <h3 class="text-lg font-bold mb-2">Bagaimana cara bergabung dengan komunitas?</h3>
-                    <p class="text-gray-600">Setelah mendaftar, Anda akan mendapatkan akses ke forum eksklusif dan grup WhatsApp kami.</p>
-                </div>
-            </div>
-            <div class="text-center mt-8">
-                <a href="https://faq.eracoding.com" class="btn-animated text-gray-600 hover:text-gray-600 font-medium">Lihat FAQ Lengkap <i class="fas fa-arrow-right ml-1"></i></a>
+            <p class="text-gray-600 dark:text-gray-300 mb-4 sm:mb-6 text-xs sm:text-sm lg:text-base">Pesanan Anda berhasil! Pembayaran akan dilakukan saat barang diterima (Cash on Delivery). Terima kasih!</p>
+            <div class="flex justify-end">
+                <button onclick="closeModal('cod-modal')" class="px-4 sm:px-6 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition-all duration-300 shadow-md text-sm sm:text-base">Tutup</button>
             </div>
         </div>
     </div>
 
-  
-  <!-- CTA Section -->
-    <div class="bg-red-500 text-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
-            <div class="grid md:grid-cols-2 gap-8 items-center" data-aos="zoom-in">
-                <div>
-                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Siap Memulai Perjalanan Coding-mu?</h2>
-                    <p class="text-lg text-blue-100 mb-6">Bergabung dengan ribuan siswa lainnya dan jadilah bagian dari generasi digital masa depan.</p>
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="https://m.eracoding.com" class="btn-animated bg-white text-red-500 px-6 py-3 rounded-lg font-medium text-center hover:bg-gray-100 transition duration-300">Daftar Sekarang</a>
-                        <a href="https://wa.me/620895328045013" class="btn-animated border-2 border-white text-white px-6 py-3 rounded-lg font-medium text-center hover:bg-white hover:text-red-500 transition duration-300">Konsultasi</a>
-                    </div>
+    <!-- Footer with Sitemap -->
+    <footer class="w-full bg-white dark:bg-gray-900 shadow-xl p-6 sm:p-8 mt-auto transition-colors duration-300">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 text-gray-600 dark:text-gray-400 text-xs sm:text-sm">
+            <div>
+                <h3 class="text-base sm:text-lg font-bold text-indigo-600 dark:text-indigo-300 mb-4">FoodieHub</h3>
+                <p class="mb-4">Nikmati makanan favorit Anda dengan pengalaman pemesanan yang mudah dan cepat.</p>
+                <div class="flex space-x-4">
+                    <a href="https://facebook.com/foodiehub" target="_blank" class="hover:text-indigo-500 dark:hover:text-indigo-400 transition-all duration-300" aria-label="Facebook"><i class="fab fa-facebook-f text-lg"></i></a>
+                    <a href="https://instagram.com/foodiehub" target="_blank" class="hover:text-indigo-500 dark:hover:text-indigo-400 transition-all duration-300" aria-label="Instagram"><i class="fab fa-instagram text-lg"></i></a>
+                    <a href="https://twitter.com/foodiehub" target="_blank" class="hover:text-indigo-500 dark:hover:text-indigo-400 transition-all duration-300" aria-label="Twitter"><i class="fab fa-twitter text-lg"></i></a>
                 </div>
-                <div class="hidden md:block" data-aos="zoom-in-left">
-                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e12c14b1-5d13-4e93-af49-9b70d73dc785.png" alt="eracoding.com" class="w-full rounded-lg shadow-xl floating">
-                </div>
+            </div>
+            <div>
+                <h3 class="text-base sm:text-lg font-bold text-indigo-600 dark:text-indigo-300 mb-4">Navigasi</h3>
+                <ul class="space-y-2">
+                    <li><a href="/index.html" class="hover:text-indigo-500 dark:hover:text-indigo-400 transition-all duration-300">Beranda</a></li>
+                    <li><a href="/menu.html" class="hover:text-indigo-500 dark:hover:text-indigo-400 transition-all duration-300">Menu</a></li>
+                    <li><a href="/promo.html" class="hover:text-indigo-500 dark:hover:text-indigo-400 transition-all duration-300">Promo</a></li>
+                    <li><a href="/contact.html" class="hover:text-indigo-500 dark:hover:text-indigo-400 transition-all duration-300">Kontak</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-base sm:text-lg font-bold text-indigo-600 dark:text-indigo-300 mb-4">Bantuan</h3>
+                <ul class="space-y-2">
+                    <li><a href="/faq.html" class="hover:text-indigo-500 dark:hover:text-indigo-400 transition-all duration-300">FAQ</a></li>
+                    <li><a href="/privacy.html" class="hover:text-indigo-500 dark:hover:text-indigo-400 transition-all duration-300">Kebijakan Privasi</a></li>
+                    <li><a href="/terms.html" class="hover:text-indigo-500 dark:hover:text-indigo-400 transition-all duration-300">Syarat & Ketentuan</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-base sm:text-lg font-bold text-indigo-600 dark:text-indigo-300 mb-4">Kontak</h3>
+                <ul class="space-y-2">
+                    <li><a href="mailto:support@foodiehub.com" class="hover:text-indigo-500 dark:hover:text-indigo-400 transition-all duration-300">support@foodiehub.com</a></li>
+                    <li><a href="tel:+6281234567890" class="hover:text-indigo-500 dark:hover:text-indigo-400 transition-all duration-300">+62 812-3456-7890</a></li>
+                    <li>Jl. Makanan Enak No. 123, Jakarta</li>
+                </ul>
             </div>
         </div>
-    </div>
-
-<!-- Branding Model Asset - Foto Keluar dari Frame -->
-<div class="max-w-4xl mx-auto px-4 py-16">
-  <div class="bg-white rounded-lg shadow-md overflow-visible flex flex-col md:flex-row items-center md:items-start gap-6 p-6">
-    <!-- Foto Model -->
-    <div class="md:w-1/2 relative overflow-visible">
-      <img src="assets/model-laptop.jpg" 
-           alt="Model Memegang Laptop" 
-           class="w-full rounded-lg object-cover transition-transform duration-500 ease-in-out transform -translate-y-5 hover:translate-y-0 hover:scale-105 shadow-lg" />
-    </div>
-    <!-- Deskripsi -->
-    <div class="md:w-1/2">
-      <h2 class="text-2xl font-semibold mb-3">Model Memegang Laptop dengan Fokus</h2>
-      <p class="text-gray-600">
-        Seorang model muda memegang laptop dengan ekspresi fokus, mengenakan pakaian casual smart. Latar belakang minimalis dan pencahayaan natural menambah kesan profesional.
-      </p>
-    </div>
-  </div>
-</div>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white pt-16 pb-8" data-aos="fade-up">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div class="col-span-1 md:col-span-2">
-                    <div class="flex items-center mb-4">
-                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgvS03BwzbSVhvG2i6-da1uEV10uwB0k_a8YkXXQelgrQi0kyetYp5BfhUg48taSUpAti-LmWkaAYlgTAM9Ki-ugYIrUL6q23qbeNo_sGdbV6gqihFc9sUtd4xKlKt2geuwI6p0Lscc1JxBvFrAs1idYD6An-vvy9JqRXayLHtLFteHOar0B4vX6skIjhM/s320/20250911_115233.png" alt="Logoeracoding" class="h-12 w-auto">
-                    </div>
-                    <p class="text-gray-400 mb-4">Platform belajar coding terdepan di Indonesia dengan fokus pada keterampilan yang dibutuhkan industri.</p>
-                    <h3 class="text-lg font-bold mb-4">Ikuti kami</h3>
-                    <div class="flex space-x-4">
-                        <a href="https://twitter.com/orilix" class="text-gray-400 hover:text-white"><i class="fab fa-twitter text-xl"></i></a>
-                        <a href="https://instagram.com/orilix" class="text-gray-400 hover:text-white"><i class="fab fa-instagram text-xl"></i></a>
-                        <a href="https://linkedin.com/company/orilix" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin text-xl"></i></a>
-                        <a href="https://youtube.com/@eracodingindonesia" class="text-gray-400 hover:text-white"><i class="fab fa-youtube text-xl"></i></a>
-                    </div>
-                </div>
-                <div>
-                    <h3 class="text-lg font-bold mb-4">Kelas</h3>
-                    <ul class="space-y-2">
-                        <li><a href="https://product.eracoding.com" class="text-gray-400 hover:text-white">Web Development</a></li>
-                        <li><a href="https://product.eracoding.com" class="text-gray-400 hover:text-white">Data Science</a></li>
-                        <li><a href="https://product.eracoding.com" class="text-gray-400 hover:text-white">UI/UX Design</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-lg font-bold mb-4">Perusahaan</h3>
-                    <ul class="space-y-2">
-                        <li><a href="https://tentang.eracoding.com" class="text-gray-400 hover:text-white">Tentang Kami</a></li>
-                        <li><a href="https://eragru.eracoding.com" class="text-gray-400 hover:text-white">Eracoding Profesional</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Blog</a></li>
-                        <li><a href="https://kontak.eracoding.com" class="text-gray-400 hover:text-white">Kontak</a></li>
-                    </ul> 
-                </div>
-                <div class="col-span-1">
-                    <h3 class="text-lg font-bold mb-4">Daftar Newsletter</h3>
-                    <p class="text-gray-400 mb-4">Dapatkan update terbaru tentang kelas, tips coding, dan tren teknologi.</p>
-                    <form class="newsletter-form">
-                        <input type="email" placeholder="Masukkan email Anda" class="px-4 py-2 rounded-md text-gray-900 focus:outline-none">
-                        <button type="submit" class="btn-animated bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-500 transition duration-300">Daftar</button>
-                    </form>
-                </div>
-<div class="eracoding-badges-sitemap">
-  <a href="https://eracoding.com" target="_blank">
-    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgdnAXHKoXwS8kXedqscIQJqSRAwAUfKqrvIqubCzphHxVTfK0OhpFVQgiJX0LVKs8nrhzooosK8x1pb9YyNYe0KarGnEaAnbcuxZ1_D0ea-KMH-rn6jRzzQQ6zql4YnBkLNyjSb4wNmrJq09-kRrmkX4mMLszkPscIO2IJPAE97hT5xvsIiGXZrrxN4dA/s3264/20250910_234423.png" alt="Eracoding Badge 1">
-  </a>
-  <a href="https://eracoding.com" target="_blank">
-    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiRhw7VgI_E73xTdl-JxjhtdacClyO_kbxYHNDN8UIY_B4I4FOtje30ewFr-CKFEXyp6FCSbpkKpvbrCr_IlUzbmirQ4DrU05DR_oYgSwVWJBPo9pXSRELcGhPfboeHHe9NSLPfq8knNhXkP0ZbVndqjeANSSMof67Gk9bkqcRC-bnz3-A9gMZmM-3y8X4/s3264/20250910_235348.png" alt="Eracoding Badge 2">
-  </a>
-  <a href="https://eracoding.com" target="_blank">
-    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhT8rbW6jUXcBPwbuqOD2HXQgTrLf0KFh7H8195pzRk1ooMn9BN32NQ7AP9CI8-I74tXEQeWid0rEGz6i2hzfveDjcwWJc9ypHj2Q9qyeAadwJvonzZOsgZpvui6lE3ZeyPZJqCLcmCa_Dkf9rwkY6CowGQfeN7zl22QW9tgqyWgy7Ko6ok7-Qc2YoAc38/s3264/20250911_000203.png" alt="Eracoding Badge 3">
-  </a>
-</div>
-
-<style>
-.eracoding-badges-sitemap {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  justify-content: flex-start; /* bisa flex-start / center / flex-end */
-  align-items: center;
-  margin: 10px 0;
-}
-
-.eracoding-badges-sitemap img {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 5px;
-  transition: transform 0.2s;
-}
-
-.eracoding-badges-sitemap img:hover {
-  transform: scale(1.1);
-}
-
-/* Responsif untuk mobile */
-@media (max-width: 600px) {
-  .eracoding-badges-sitemap img {
-    width: 80px;
-    height: 80px;
-  }
-}
-</style>
-            </div>
-            <div class="border-t border-gray-800 mt-12 pt-8">
-                <div class="md:flex md:items-center md:justify-between">
-                    <p class="text-gray-400 text-sm">© ERA CODING EDUCATION</p>
-                    <div class="mt-4 md:mt-0">
-                        <a href="https://kebijakan-privasi.eracoding.com" class="text-gray-400 text-sm hover:text-white mr-4">Kebijakan Privasi</a>
-                        <a href="https://syarat-ketentuan.eracoding.com" class="text-gray-400 text-sm hover:text-white mr-4">Syarat & Ketentuan</a>
-                        <a href="https://faq.eracoding.com" class="text-gray-400 text-sm hover:text-white">FAQ</a>
-                    </div>
-                </div>
-            </div>
+        <div class="max-w-7xl mx-auto mt-6 sm:mt-8 text-center text-gray-500 dark:text-gray-400 text-xs sm:text-sm">
+            &copy; 2025 FoodieHub. Dibuat dengan ❤️ untuk pecinta kuliner.
         </div>
     </footer>
 
-    <!-- Minimal Back to Top Button -->
-    <button id="back-to-top" class="fixed bottom-16 right-16 bg-white p-6 text-red-500 rounded-full shadow-md hover:bg-white p-6transition duration-300 hidden">
-        <i class="fas fa-arrow-up"></i>
-    </button>
-
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 800, once: true });
+        // Ganti dengan URL dan Anon Key Supabase Anda
+        const supabaseUrl = 'https://your-supabase-url.supabase.co';
+        const supabaseKey = 'your-anon-key';
+        const supabase = Supabase.createClient(supabaseUrl, supabaseKey);
 
-        const typed = new Typed('#typed-hero', {
-            strings: [
-                'Platfrom terkemuka',
-                'di Indonesia',
-                'Untuk belajar coding'
-            ],
-            typeSpeed: 50,
-            backSpeed: 30,
-            backDelay: 2000,
-            loop: true
-        });
-
-        // Mobile menu toggle
-        document.querySelector('[aria-controls="mobile-menu"]').addEventListener('click', function () {
-            const menu = document.getElementById('mobile-menu');
-            const expanded = this.getAttribute('aria-expanded') === 'true';
-            this.setAttribute('aria-expanded', !expanded);
-            menu.classList.toggle('hidden');
-            const icon = this.querySelector('i');
-            icon.classList.toggle('fa-bars');
-            icon.classList.toggle('fa-times');
-        });
-
-        document.querySelectorAll('#mobile-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                const menu = document.getElementById('mobile-menu');
-                const button = document.querySelector('[aria-controls="mobile-menu"]');
-                menu.classList.add('hidden');
-                button.setAttribute('aria-expanded', 'false');
-                const icon = button.querySelector('i');
-                icon.classList.add('fa-bars');
-                icon.classList.remove('fa-times');
-            });
-        });
-
-        document.getElementById('close-menu').addEventListener('click', () => {
-            const menu = document.getElementById('mobile-menu');
-            const button = document.querySelector('[aria-controls="mobile-menu"]');
-            menu.classList.add('hidden');
-            button.setAttribute('aria-expanded', 'false');
-            const icon = button.querySelector('i');
-            icon.classList.add('fa-bars');
-            icon.classList.remove('fa-times');
-        });
-
-        // Anti-inspeksi
-        document.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('keydown', e => {
-            if (e.ctrlKey && e.shiftKey && e.key === 'I' || e.ctrlKey && e.key === 'u' || e.key === 'F12') {
-                e.preventDefault();
-            }
-        });
-        document.addEventListener('wheel', e => {
-            if (e.ctrlKey) e.preventDefault();
-        }, { passive: false });
-
-        // Back to Top Button
-        const backToTopButton = document.getElementById('back-to-top');
-        window.addEventListener('scroll', () => {
-            backToTopButton.classList.toggle('hidden', window.scrollY <= 300);
-        });
-        backToTopButton.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        // Course data
-        const courses = [
-            {
-                title: "Fullstack JavaScript Mastery",
-                level: "Intermediate",
-                rating: 4.9,
-                reviews: 1200,
-                originalPrice: 1200000,
-                discountedPrice: 799000,
-                image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/f677a54b-850e-4ba9-94ce-418d8222b27f.png",
-                description: "Bangun aplikasi web modern dengan React, Node.js, dan MongoDB.",
-                badge: "Populer",
-                badgeColor: "bg-blue-600",
-                link: "https://product.eracoding.com",
-                category: "web",
-                previewVideo: ""
-            },
-            {
-                title: "Data Science with Python",
-                level: "Advanced",
-                rating: 4.8,
-                reviews: 856,
-                originalPrice: 1500000,
-                discountedPrice: 999000,
-                image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/625c2146-2a76-4272-9b84-beec163c8037.png",
-                description: "Kuasai analisis data dan machine learning dengan Python dan Pandas.",
-                badge: "Baru",
-                badgeColor: "bg-purple-600",
-                link: "https://product.eracoding.com",
-                category: "data",
-                previewVideo: ""
-            },
-            {
-                title: "Mobile UI/UX Design",
-                level: "Beginner",
-                rating: 4.7,
-                reviews: 650,
-                originalPrice: 900000,
-                discountedPrice: 599000,
-                image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/5bd51b5c-6294-46be-8b26-71e9047ee718.png",
-                description: "Desain antarmuka mobile dengan Figma dan prinsip UX modern.",
-                badge: "",
-                badgeColor: "",
-                link: "https://product.eracoding.com",
-                category: "uiux",
-                previewVideo: ""
-            }
-        ];
-
-        // Render courses
-        const courseContainer = document.querySelector('.course-container');
-        function renderCourses(category = 'all') {
-            courseContainer.innerHTML = courses
-                .filter(course => category === 'all' || course.category === category)
-                .map((course, index) => `
-                    <div class="course-card bg-white rounded-xl overflow-hidden shadow-md cursor-pointer" data-course-index="${index}" data-aos="zoom-in">
-                        <div class="relative">
-                            <img src="${course.image}" alt="${course.title}" class="w-full h-48 object-cover">
-                            ${course.badge ? `<span class="absolute top-2 right-2 ${course.badgeColor} text-white text-xs px-2 py-1 rounded">${course.badge}</span>` : ''}
-                        </div>
-                        <div class="p-6">
-                            <div class="flex items-center mb-2">
-                                <span class="bg-${course.level.toLowerCase() === 'intermediate' ? 'blue' : course.level.toLowerCase() === 'advanced' ? 'purple' : 'green'}-100 text-${course.level.toLowerCase() === 'intermediate' ? 'blue' : course.level.toLowerCase() === 'advanced' ? 'purple' : 'green'}-800 text-xs font-medium px-2.5 py-0.5 rounded">${course.level}</span>
-                                <span class="text-gray-500 text-sm ml-2"><i class="fas fa-star text-yellow-400"></i> ${course.rating} (${course.reviews.toLocaleString()})</span>
-                            </div>
-                            <h3 class="text-xl font-bold mb-2">${course.title}</h3>
-                            <p class="text-gray-600 mb-4">${course.description}</p>
-                            <div class="flex justify-between items-center">
-                                <div>
-                                    <p class="font-medium"><s class="text-gray-400">Rp${course.originalPrice.toLocaleString()}</s> <span class="text-blue-600">Rp${course.discountedPrice.toLocaleString()}</span></p>
-                                </div>
-                                <a href="${course.link}" class="btn-animated text-blue-600 hover:text-blue-800 font-medium">Lihat Detail <i class="fas fa-arrow-right ml-1"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-        }
-        renderCourses();
-
-        // Course Filter
-        document.querySelectorAll('.course-filter').forEach(button => {
-            button.addEventListener('click', () => {
-                document.querySelectorAll('.course-filter').forEach(btn => {
-                    btn.classList.remove('bg-blue-600', 'text-white');
-                    btn.classList.add('bg-gray-200', 'text-gray-900');
-                });
-                button.classList.remove('bg-gray-200', 'text-gray-900');
-                button.classList.add('bg-blue-600', 'text-white');
-                renderCourses(button.dataset.category);
-            });
-        });
-
-        // Course Preview Modal
-        const courseModal = document.getElementById('course-modal');
-        const modalTitle = document.getElementById('modal-title');
-        const modalVideo = document.getElementById('modal-video').querySelector('source');
-        const modalDescription = document.getElementById('modal-description');
-        const modalLevel = document.getElementById('modal-level');
-        const modalOriginalPrice = document.getElementById('modal-original-price');
-        const modalDiscountedPrice = document.getElementById('modal-discounted-price');
-        const modalLink = document.getElementById('modal-link');
-        const closeModal = document.getElementById('close-modal');
-
-        courseContainer.addEventListener('click', (e) => {
-            const courseCard = e.target.closest('.course-card');
-            if (courseCard) {
-                const index = courseCard.dataset.courseIndex;
-                const course = courses[index];
-                modalTitle.textContent = course.title;
-                modalVideo.src = course.previewVideo;
-                modalVideo.parentElement.load();
-                modalDescription.textContent = course.description;
-                modalLevel.textContent = course.level;
-                modalOriginalPrice.textContent = `Rp${course.originalPrice.toLocaleString()}`;
-                modalDiscountedPrice.textContent = `Rp${course.discountedPrice.toLocaleString()}`;
-                modalLink.href = course.link;
-                courseModal.style.display = 'flex';
-            }
-        });
-
-        closeModal.addEventListener('click', () => {
-            courseModal.style.display = 'none';
-            modalVideo.parentElement.pause();
-        });
-
-        // Personalized Learning Path Quiz
-        const quizPopup = document.getElementById('quiz-popup');
-        const quizButton = document.getElementById('quiz-button');
-        const closeQuiz = document.getElementById('close-quiz');
-        const quizForm = document.getElementById('quiz-form');
-        const quizResult = document.getElementById('quiz-result');
-        const recommendedCourse = document.getElementById('recommended-course');
-        const learningPath = document.getElementById('learning-path');
-
-        quizButton.addEventListener('click', () => {
-            quizPopup.style.display = 'flex';
-        });
-
-        closeQuiz.addEventListener('click', () => {
-            quizPopup.style.display = 'none';
-            quizResult.classList.add('hidden');
-        });
-
-        quizForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const interest = document.getElementById('quiz-interest').value;
-            const level = document.getElementById('quiz-level').value;
-            const goal = document.getElementById('quiz-goal').value;
-            let course = 'Fullstack JavaScript Mastery';
-            let path = '';
-            if (interest === 'data') {
-                course = 'Data Science with Python';
-                path = level === 'beginner' ? 'Mulai dengan Python Dasar, lanjut ke Pandas dan Visualisasi Data, kemudian Machine Learning.' :
-                       level === 'intermediate' ? 'Fokus pada Pandas dan Scikit-learn, lalu proyek machine learning.' :
-                       'Pelajari deep learning dengan TensorFlow dan proyek prediktif.';
-            } else if (interest === 'uiux') {
-                course = 'Mobile UI/UX Design';
-                path = level === 'beginner' ? 'Pelajari dasar desain, prototyping di Figma, dan prinsip UX.' :
-                       level === 'intermediate' ? 'Fokus pada desain interaktif dan user testing.' :
-                       'Bangun portofolio desain aplikasi mobile dan web.';
-            } else {
-                path = level === 'beginner' ? 'Mulai dengan HTML, CSS, JavaScript, lalu React.' :
-                       level === 'intermediate' ? 'Pelajari React dan Node.js, bangun aplikasi fullstack.' :
-                       'Kuasai arsitektur aplikasi dan deployment dengan Docker.';
-            }
-            path += ` Tujuan ${goal}: ${goal === 'freelance' ? 'Bangun portofolio dan cari klien di platform seperti Upwork.' : 
-                                     goal === 'startup' ? 'Fokus pada proyek startup dan kolaborasi tim.' : 
-                                     'Siapkan resume teknis untuk perusahaan besar.'}`;
-            recommendedCourse.textContent = course;
-            learningPath.textContent = path;
-            quizResult.classList.remove('hidden');
-        });
-
-        // Video Testimonial Slider
-        const slides = document.querySelectorAll('.testimonial-slide');
-        const thumbs = document.querySelectorAll('.testimonial-thumb');
+        let selectedProduct = null;
+        let quantity = 1;
+        let allProducts = [];
         let currentSlide = 0;
 
-        function showSlide(index) {
-            slides.forEach((slide, i) => {
-                slide.classList.toggle('active', i === index);
-                slide.querySelector('video').pause();
-                if (i === index) slide.querySelector('video').play();
-            });
-            thumbs.forEach((thumb, i) => {
-                thumb.classList.toggle('active', i === index);
-                thumb.classList.toggle('border-2', i === index);
-                thumb.classList.toggle('border-blue-600', i === index);
+        // Sidebar toggle
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const sidebarClose = document.getElementById('sidebar-close');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+            sidebarOverlay.classList.toggle('hidden');
+        });
+
+        sidebarClose.addEventListener('click', () => {
+            sidebar.classList.add('-translate-x-full');
+            sidebarOverlay.classList.add('hidden');
+        });
+
+        sidebarOverlay.addEventListener('click', () => {
+            sidebar.classList.add('-translate-x-full');
+            sidebarOverlay.classList.add('hidden');
+        });
+
+        // Slider functionality
+        const sliderData = [
+            { image: 'https://via.placeholder.com/1200x400?text=Promo+1', title: 'Promo Spesial', description: 'Dapatkan diskon 20% untuk semua pizza!' },
+            { image: 'https://via.placeholder.com/1200x400?text=Promo+2', title: 'Makan Hemat', description: 'Beli 2 gratis 1 untuk menu tertentu.' },
+            { image: 'https://via.placeholder.com/1200x400?text=Promo+3', title: 'Paket Keluarga', description: 'Paket lengkap untuk 4 orang hanya Rp 150.000!' }
+        ];
+
+        function renderSlider() {
+            const sliderContainer = document.getElementById('slider-container');
+            sliderContainer.innerHTML = '';
+            sliderData.forEach((slide, index) => {
+                const slideDiv = document.createElement('div');
+                slideDiv.className = `w-full flex-shrink-0 bg-cover bg-center ${index === 0 ? 'opacity-100' : 'opacity-0 hidden'}`;
+                slideDiv.style.backgroundImage = `url(${slide.image})`;
+                slideDiv.innerHTML = `
+                    <div class="h-full flex items-center justify-center bg-black bg-opacity-50">
+                        <div class="text-center text-white p-4">
+                            <h3 class="text-xl sm:text-2xl lg:text-3xl font-bold mb-2">${slide.title}</h3>
+                            <p class="text-sm sm:text-base lg:text-lg">${slide.description}</p>
+                        </div>
+                    </div>
+                `;
+                sliderContainer.appendChild(slideDiv);
             });
         }
 
-        thumbs.forEach(thumb => {
-            thumb.addEventListener('click', () => {
-                currentSlide = parseInt(thumb.dataset.slide);
-                showSlide(currentSlide);
+        function showSlide(index) {
+            const slides = document.querySelectorAll('#slider-container > div');
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('opacity-100', i === index);
+                slide.classList.toggle('hidden', i !== index);
             });
-        });
+            currentSlide = index;
+        }
 
-        setInterval(() => {
-            currentSlide = (currentSlide + 1) % slides.length;
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % sliderData.length;
             showSlide(currentSlide);
-        }, 7000);
+        }
 
-        // Tech Trend Explorer
-        const trendModal = document.getElementById('trend-modal');
-        const trendTitle = document.getElementById('trend-title');
-        const trendDescription = document.getElementById('trend-description');
-        const trendApplication = document.getElementById('trend-application');
-        const trendCourseLink = document.getElementById('trend-course-link');
-        const closeTrendModal = document.getElementById('close-trend-modal');
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + sliderData.length) % sliderData.length;
+            showSlide(currentSlide);
+        }
 
-        const trends = {
-            ai: {
-                title: 'Kecerdasan Buatan',
-                description: 'Pelajari AI untuk membangun sistem cerdas seperti chatbot dan analitik prediktif.',
-                application: 'Asisten virtual (contoh: Siri), rekomendasi produk di e-commerce.',
-                courseLink: 'https://product.eracoding.com'
-            },
-            blockchain: {
-                title: 'Web3 & Blockchain',
-                description: 'Kuasai teknologi blockchain untuk aplikasi terdesentralisasi.',
-                application: 'NFT marketplace, smart contract untuk keuangan terdesentralisasi.',
-                courseLink: 'https://product.eracoding.com'
-            },
-            cloud: {
-                title: 'Cloud Computing',
-                description: 'Bangun aplikasi skalabel dengan layanan cloud seperti AWS.',
-                application: 'Hosting aplikasi web, penyimpanan data skala besar.',
-                courseLink: 'https://product.eracoding.com'
+        document.getElementById('slider-prev').addEventListener('click', prevSlide);
+        document.getElementById('slider-next').addEventListener('click', nextSlide);
+
+        // Auto slide every 5 seconds
+        let slideInterval = setInterval(nextSlide, 5000);
+
+        // Pause auto slide on hover
+        document.getElementById('slider').addEventListener('mouseenter', () => clearInterval(slideInterval));
+        document.getElementById('slider').addEventListener('mouseleave', () => slideInterval = setInterval(nextSlide, 5000));
+
+        // Fungsi untuk fetch dan render produk
+        async function fetchProducts() {
+            showLoading(true);
+            const { data, error } = await supabase
+                .from('products')
+                .select('*');
+
+            showLoading(false);
+            if (error) {
+                console.error('Error fetching products:', error);
+                alert('Gagal memuat produk. Silakan coba lagi.');
+                return;
             }
-        };
 
-        document.querySelectorAll('.trend-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const trend = trends[card.dataset.trend];
-                trendTitle.textContent = trend.title;
-                trendDescription.textContent = trend.description;
-                trendApplication.textContent = trend.application;
-                trendCourseLink.href = trend.courseLink;
-                trendModal.style.display = 'flex';
+            allProducts = data;
+            renderProducts(allProducts);
+        }
+
+        function renderProducts(products) {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = '';
+            const noResults = document.getElementById('no-results');
+            noResults.classList.add('hidden');
+
+            if (products.length === 0) {
+                noResults.classList.remove('hidden');
+                return;
+            }
+
+            products.forEach((product, index) => {
+                const card = document.createElement('div');
+                card.className = 'bg-white dark:bg-gray-800 shadow-lg rounded-2xl overflow-hidden transform hover:scale-105 hover:shadow-2xl transition-all duration-500 cursor-pointer opacity-0 animate-fadeIn';
+                card.style.animationDelay = `${index * 100}ms`;
+                card.innerHTML = `
+                    <img src="${product.image_url}" alt="${product.name}" class="w-full h-36 sm:h-40 lg:h-48 object-cover" loading="lazy">
+                    <div class="p-4 sm:p-5">
+                        <h3 class="text-base sm:text-lg lg:text-xl font-bold text-gray-800 dark:text-white truncate">${product.name}</h3>
+                        <p class="text-gray-500 dark:text-gray-400 text-xs sm:text-sm mt-1 line-clamp-2">${product.description}</p>
+                        <p class="text-sm sm:text-base lg:text-lg font-semibold text-green-600 mt-3">Rp ${product.price.toLocaleString()}</p>
+                    </div>
+                `;
+                card.onclick = () => openProductModal(product);
+                grid.appendChild(card);
             });
+        }
+
+        // Search functionality
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filtered = allProducts.filter(p => p.name.toLowerCase().includes(searchTerm) || p.description.toLowerCase().includes(searchTerm));
+            renderProducts(filtered);
         });
 
-        closeTrendModal.addEventListener('click', () => {
-            trendModal.style.display = 'none';
+        // Theme toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            const icon = themeToggle.querySelector('i');
+            icon.classList.toggle('fa-moon');
+            icon.classList.toggle('fa-sun');
+            localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
         });
 
-        // Coding Challenge
-        const codeEditor = document.getElementById('code-editor');
-        const runCodeButton = document.getElementById('run-code');
-        const codeOutput = document.getElementById('code-output');
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            themeToggle.querySelector('i').classList.add('fa-sun');
+            themeToggle.querySelector('i').classList.remove('fa-moon');
+        }
 
-        runCodeButton.addEventListener('click', () => {
-            const code = codeEditor.value;
-            try {
-                const result = eval(code); // Note: Use with caution, replace with sandbox for production
-                codeOutput.textContent = `Hasil: ${result}`;
-                codeOutput.classList.remove('text-red-600');
-                codeOutput.classList.add('text-green-600');
-            } catch (error) {
-                codeOutput.textContent = `Error: ${error.message}`;
-                codeOutput.classList.remove('text-green-600');
-                codeOutput.classList.add('text-red-600');
+        // Show/hide loading
+        function showLoading(show) {
+            document.getElementById('loading').classList.toggle('hidden', !show);
+        }
+
+        // Fungsi buka modal produk
+        function openProductModal(product) {
+            selectedProduct = product;
+            quantity = 1;
+            document.getElementById('modal-title').textContent = product.name;
+            document.getElementById('modal-image').src = product.image_url;
+            document.getElementById('modal-description').textContent = product.description;
+            document.getElementById('modal-price').textContent = `Rp ${product.price.toLocaleString()} / item`;
+            updateTotalPrice();
+            document.getElementById('product-modal').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('product-modal').querySelector('div').classList.remove('scale-90');
+            }, 10);
+
+            document.getElementById('quantity').addEventListener('input', (e) => {
+                quantity = parseInt(e.target.value) || 1;
+                updateTotalPrice();
+            });
+
+            document.getElementById('buy-button').onclick = () => {
+                closeModal('product-modal');
+                document.getElementById('checkout-total').textContent = `Total: Rp ${(product.price * quantity).toLocaleString()}`;
+                document.getElementById('checkout-modal').classList.remove('hidden');
+                setTimeout(() => {
+                    document.getElementById('checkout-modal').querySelector('div').classList.remove('scale-90');
+                }, 10);
+            };
+        }
+
+        function updateTotalPrice() {
+            document.getElementById('total-price').textContent = `Total: Rp ${(selectedProduct.price * quantity).toLocaleString()}`;
+        }
+
+        // Fungsi tutup modal
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.querySelector('div').classList.add('scale-90');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 500);
+        }
+
+        // Handle form checkout
+        document.getElementById('checkout-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!e.target.checkValidity()) {
+                e.target.reportValidity();
+                return;
+            }
+            const name = document.getElementById('name').value;
+            const address = document.getElementById('address').value;
+            const phone = document.getElementById('phone').value;
+
+            const { data, error } = await supabase
+                .from('orders')
+                .insert([
+                    {
+                        product_id: selectedProduct.id,
+                        quantity: quantity,
+                        name,
+                        address,
+                        phone,
+                        total_price: selectedProduct.price * quantity,
+                        status: 'pending'
+                    }
+                ]);
+
+            if (error) {
+                console.error('Error inserting order:', error);
+                alert('Gagal menyimpan pesanan. Silakan coba lagi.');
+                return;
+            }
+
+            closeModal('checkout-modal');
+            document.getElementById('cod-modal').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('cod-modal').querySelector('div').classList.remove('scale-90');
+            }, 10);
+
+            document.getElementById('checkout-form').reset();
+            selectedProduct = null;
+            quantity = 1;
+        });
+
+        // Load products and slider on page load
+        renderSlider();
+        showSlide(0);
+        fetchProducts();
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal('product-modal');
+                closeModal('checkout-modal');
+                closeModal('cod-modal');
+                sidebar.classList.add('-translate-x-full');
+                sidebarOverlay.classList.add('hidden');
             }
         });
 
-        // FAQ Accordion
-        document.querySelectorAll('.faq-question').forEach(button => {
-            button.addEventListener('click', () => {
-                const faqItem = button.parentElement;
-                const isActive = faqItem.classList.contains('active');
-                document.querySelectorAll('.faq-item').forEach(item => {
-                    item.classList.remove('active');
-                    item.querySelector('.faq-answer').style.maxHeight = '0';
-                    item.querySelector('.fa-chevron-down').style.transform = 'rotate(0deg)';
-                });
-                if (!isActive) {
-                    faqItem.classList.add('active');
-                    faqItem.querySelector('.faq-answer').style.maxHeight = '200px';
-                    button.querySelector('.fa-chevron-down').style.transform = 'rotate(180deg)';
-                }
-            });
-        });
+        // Custom CSS for fadeIn animation
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            .animate-fadeIn {
+                animation: fadeIn 0.5s ease-out forwards;
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>
