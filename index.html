@@ -22,258 +22,271 @@
     </script>
 </head>
 <body class="bg-gray-50">
-    <!-- Header -->
-    <header class="bg-white shadow-md sticky top-0 z-40">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-2">
-                    <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=50&h=50&fit=crop" alt="FoodOrder Logo" class="w-10 h-10">
-                    <h1 class="text-2xl font-bold text-gray-800">FoodOrder</h1>
+    <!-- Sidebar -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 z-30 w-64 bg-white shadow-md overflow-y-auto transform -translate-x-full transition-transform duration-300 ease-in-out md:translate-x-0">
+        <div class="p-4">
+            <div class="flex items-center space-x-2 mb-6">
+                <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=50&h=50&fit=crop" alt="FoodOrder Logo" class="w-8 h-8">
+                <h2 class="text-xl font-bold text-gray-800">FoodOrder</h2>
+            </div>
+            <nav class="space-y-2">
+                <a href="#" onclick="scrollToSection('hero')" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+                    <i class="fas fa-home mr-3"></i>Home
+                </a>
+                <a href="#" onclick="scrollToSection('recommendations')" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+                    <i class="fas fa-map-marker-alt mr-3"></i>Rekomendasi Lokasi
+                </a>
+                <a href="#" onclick="scrollToSection('products')" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+                    <i class="fas fa-utensils mr-3"></i>Menu
+                </a>
+                <a href="#" id="historyLink" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg" onclick="openHistoryModal()">
+                    <i class="fas fa-history mr-3"></i>Riwayat Pesanan
+                </a>
+                <a href="#" id="logoutBtn" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg hidden">
+                    <i class="fas fa-sign-out-alt mr-3"></i>Logout
+                </a>
+            </nav>
+        </div>
+    </div>
+    <!-- Sidebar Toggle Button (for mobile) -->
+    <button id="sidebarToggle" class="fixed top-4 left-4 z-40 md:hidden bg-primary text-white p-2 rounded-full shadow-md">
+        <i class="fas fa-bars"></i>
+    </button>
+    <!-- Main Content Wrapper -->
+    <div class="md:ml-64">
+        <!-- Hero Section with Slider -->
+        <section id="hero" class="bg-gradient-to-r from-primary to-amber-600 text-white py-16 md:py-24 lg:py-32">
+            <div class="container mx-auto px-4">
+                <!-- Hero Text -->
+                <div class="text-center mb-8 md:mb-12">
+                    <h2 class="text-3xl md:text-5xl lg:text-6xl font-bold mb-4">Pesan Makanan Favorit Anda</h2>
+                    <p class="text-lg md:text-xl lg:text-2xl mb-8 max-w-xl md:max-w-2xl mx-auto">Nikmati kelezatan makanan Indonesia terbaik dengan layanan antar yang cepat dan mudah. Temukan menu favorit Anda hari ini!</p>
+                    <button onclick="document.getElementById('products').scrollIntoView({behavior: 'smooth'})" class="bg-white text-primary px-6 py-2 md:px-8 md:py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-base md:text-lg">
+                        Mulai Pesan Sekarang
+                    </button>
                 </div>
-                <div class="flex items-center space-x-4">
-                    <div class="relative">
-                        <button id="cartBtn" class="flex items-center space-x-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-amber-600 transition-colors">
-                            <i class="fas fa-shopping-cart"></i>
-                            <span id="cartCount" class="bg-secondary text-white rounded-full px-2 py-1 text-xs">0</span>
+                <!-- Slider -->
+                <div id="slider" class="relative w-full max-w-md md:max-w-3xl lg:max-w-4xl mx-auto overflow-hidden rounded-xl shadow-xl">
+                    <div id="sliderTrack" class="flex transition-transform duration-500 ease-in-out">
+                        <!-- Slides will be rendered here -->
+                    </div>
+                    <button id="prevSlide" class="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 bg-white text-primary p-2 md:p-3 rounded-full shadow-md hover:bg-gray-100" aria-label="Slide sebelumnya">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button id="nextSlide" class="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 bg-white text-primary p-2 md:p-3 rounded-full shadow-md hover:bg-gray-100" aria-label="Slide berikutnya">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="absolute bottom-4 md:bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2 md:space-x-3">
+                        <div id="sliderDots" class="flex space-x-2 md:space-x-3"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Featured Section -->
+        <section class="container mx-auto px-4 py-12 md:py-16 lg:py-20 bg-white">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12 text-gray-800">Mengapa Memilih FoodOrder?</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
+                <div class="text-center p-4 md:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                    <i class="fas fa-truck text-primary text-4xl md:text-5xl mb-4"></i>
+                    <h4 class="text-lg md:text-xl font-semibold mb-2">Pengiriman Cepat</h4>
+                    <p class="text-gray-600 text-sm md:text-base">Dapatkan pesanan Anda dalam 30-45 menit dengan layanan antar kami yang handal.</p>
+                </div>
+                <div class="text-center p-4 md:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                    <i class="fas fa-leaf text-primary text-4xl md:text-5xl mb-4"></i>
+                    <h4 class="text-lg md:text-xl font-semibold mb-2">Bahan Segar</h4>
+                    <p class="text-gray-600 text-sm md:text-base">Semua makanan dibuat dari bahan-bahan segar dan berkualitas tinggi.</p>
+                </div>
+                <div class="text-center p-4 md:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                    <i class="fas fa-star text-primary text-4xl md:text-5xl mb-4"></i>
+                    <h4 class="text-lg md:text-xl font-semibold mb-2">Rating Tinggi</h4>
+                    <p class="text-gray-600 text-sm md:text-base">Ribuan pelanggan puas dengan layanan dan rasa makanan kami.</p>
+                </div>
+            </div>
+        </section>
+        <!-- Promo Section -->
+        <section class="container mx-auto px-4 py-12 md:py-16 lg:py-20 bg-gradient-to-r from-amber-600 to-primary text-white">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12">Promo Spesial Hari Ini</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">
+                <div class="bg-white text-gray-800 p-4 md:p-6 rounded-lg shadow-md">
+                    <h4 class="text-lg md:text-xl font-semibold mb-2">Diskon 20% untuk Pesanan Pertama</h4>
+                    <p class="mb-4 text-sm md:text-base">Gunakan kode: FOOD20 saat checkout. Berlaku hingga akhir bulan.</p>
+                    <button class="bg-primary text-white px-4 py-2 md:px-6 md:py-2 rounded-lg hover:bg-amber-600 text-sm md:text-base">Gunakan Promo</button>
+                </div>
+                <div class="bg-white text-gray-800 p-4 md:p-6 rounded-lg shadow-md">
+                    <h4 class="text-lg md:text-xl font-semibold mb-2">Gratis Ongkir untuk Pesanan di Atas Rp50.000</h4>
+                    <p class="mb-4 text-sm md:text-base">Nikmati pengiriman gratis untuk semua pesanan di atas Rp50.000.</p>
+                    <button class="bg-primary text-white px-4 py-2 md:px-6 md:py-2 rounded-lg hover:bg-amber-600 text-sm md:text-base">Pesan Sekarang</button>
+                </div>
+            </div>
+        </section>
+        <!-- Testimonials Section -->
+        <section class="container mx-auto px-4 py-12 md:py-16 lg:py-20 bg-gray-50">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12 text-gray-800">Apa Kata Pelanggan Kami</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
+                <div class="bg-white p-4 md:p-6 rounded-lg shadow-md">
+                    <p class="text-gray-600 mb-4 text-sm md:text-base">"Makanannya enak dan pengirimannya cepat! Pasti pesan lagi."</p>
+                    <div class="flex items-center">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=40&h=40&fit=crop" alt="User 1" class="w-8 h-8 md:w-10 md:h-10 rounded-full mr-2">
+                        <span class="font-semibold text-sm md:text-base">Anna S.</span>
+                    </div>
+                </div>
+                <div class="bg-white p-4 md:p-6 rounded-lg shadow-md">
+                    <p class="text-gray-600 mb-4 text-sm md:text-base">"Variasi menu yang banyak dan harga terjangkau. Recommended!"</p>
+                    <div class="flex items-center">
+                        <img src="https://images.unsplash.com/photo-1552058544-f2b84fbe85f5?w=40&h=40&fit=crop" alt="User 2" class="w-8 h-8 md:w-10 md:h-10 rounded-full mr-2">
+                        <span class="font-semibold text-sm md:text-base">Budi T.</span>
+                    </div>
+                </div>
+                <div class="bg-white p-4 md:p-6 rounded-lg shadow-md">
+                    <p class="text-gray-600 mb-4 text-sm md:text-base">"Layanan pelanggan ramah dan makanan selalu fresh."</p>
+                    <div class="flex items-center">
+                        <svg class="w-8 h-8 md:w-10 md:h-10 rounded-full mr-2 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                        </svg>
+                        <span class="font-semibold text-sm md:text-base">Citra L.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Location-based Recommendation Section -->
+        <section id="recommendations" class="container mx-auto px-4 py-12 md:py-16 lg:py-20 bg-white">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12 text-gray-800">Rekomendasi Berdasarkan Lokasi Anda</h3>
+            <div id="locationInfo" class="text-center mb-6 text-gray-600"></div>
+            <div id="recommendationGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
+                <!-- Recommendations will be rendered here by JavaScript -->
+            </div>
+        </section>
+        <!-- Filter and Search Section -->
+        <section class="container mx-auto px-4 py-8 bg-white">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8">
+                <!-- Search Bar -->
+                <div class="relative w-full md:w-96">
+                    <input type="text" id="searchBar" placeholder="Cari makanan..." class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-lg" aria-label="Cari produk makanan">
+                    <i class="fas fa-search absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg"></i>
+                </div>
+                <!-- Filters -->
+                <div class="flex flex-wrap gap-3 justify-center md:justify-end">
+                    <button onclick="filterProducts(event, 'all')" class="filter-btn active bg-primary text-white px-6 py-2 rounded-full hover:bg-amber-600 transition-colors text-base">
+                        Semua
+                    </button>
+                    <button onclick="filterProducts(event, 'Makanan Utama')" class="filter-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-full hover:bg-gray-300 transition-colors text-base">
+                        Makanan Utama
+                    </button>
+                    <button onclick="filterProducts(event, 'Makanan Berkuah')" class="filter-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-full hover:bg-gray-300 transition-colors text-base">
+                        Makanan Berkuah
+                    </button>
+                    <button onclick="filterProducts(event, 'Makanan Sehat')" class="filter-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-full hover:bg-gray-300 transition-colors text-base">
+                        Makanan Sehat
+                    </button>
+                    <button onclick="filterProducts(event, 'Minuman')" class="filter-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-full hover:bg-gray-300 transition-colors text-base">
+                        Minuman
+                    </button>
+                </div>
+            </div>
+        </section>
+        <!-- Products Section -->
+        <section id="products" class="container mx-auto px-4 py-12 bg-gray-50">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12 text-gray-800">Menu Pilihan Kami</h3>
+            <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
+                <!-- Products will be rendered here by JavaScript -->
+            </div>
+        </section>
+        <!-- Additional Content: Popular Categories -->
+        <section class="container mx-auto px-4 py-12 md:py-16 lg:py-20 bg-white">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12 text-gray-800">Kategori Populer</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+                <div class="text-center p-4 md:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                    <img src="https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=150&h=150&fit=crop" alt="Makanan Utama" class="w-full h-32 md:h-40 object-cover rounded-lg mb-4">
+                    <h4 class="text-lg md:text-xl font-semibold mb-2">Makanan Utama</h4>
+                    <p class="text-gray-600 text-sm md:text-base">Nikmati berbagai hidangan utama khas Indonesia.</p>
+                </div>
+                <div class="text-center p-4 md:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                    <img src="https://images.unsplash.com/photo-1547592180-85f173990554?w=150&h=150&fit=crop" alt="Makanan Berkuah" class="w-full h-32 md:h-40 object-cover rounded-lg mb-4">
+                    <h4 class="text-lg md:text-xl font-semibold mb-2">Makanan Berkuah</h4>
+                    <p class="text-gray-600 text-sm md:text-base">Soto, bakso, dan hidangan berkuah lainnya.</p>
+                </div>
+                <div class="text-center p-4 md:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                    <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?w=150&h=150&fit=crop" alt="Makanan Sehat" class="w-full h-32 md:h-40 object-cover rounded-lg mb-4">
+                    <h4 class="text-lg md:text-xl font-semibold mb-2">Makanan Sehat</h4>
+                    <p class="text-gray-600 text-sm md:text-base">Pilihan sehat untuk gaya hidup Anda.</p>
+                </div>
+                <div class="text-center p-4 md:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                    <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=150&h=150&fit=crop" alt="Minuman" class="w-full h-32 md:h-40 object-cover rounded-lg mb-4">
+                    <h4 class="text-lg md:text-xl font-semibold mb-2">Minuman</h4>
+                    <p class="text-gray-600 text-sm md:text-base">Minuman segar untuk menemani makanan Anda.</p>
+                </div>
+            </div>
+        </section>
+        <!-- Additional Content: How It Works -->
+        <section class="container mx-auto px-4 py-12 md:py-16 lg:py-20 bg-gray-50">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12 text-gray-800">Cara Kerja FoodOrder</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
+                <div class="text-center p-4 md:p-6">
+                    <i class="fas fa-search text-primary text-4xl md:text-5xl mb-4"></i>
+                    <h4 class="text-lg md:text-xl font-semibold mb-2">1. Cari & Pilih</h4>
+                    <p class="text-gray-600 text-sm md:text-base">Temukan makanan favorit Anda dari berbagai menu.</p>
+                </div>
+                <div class="text-center p-4 md:p-6">
+                    <i class="fas fa-cart-plus text-primary text-4xl md:text-5xl mb-4"></i>
+                    <h4 class="text-lg md:text-xl font-semibold mb-2">2. Tambah ke Keranjang</h4>
+                    <p class="text-gray-600 text-sm md:text-base">Tambahkan makanan ke keranjang dengan mudah.</p>
+                </div>
+                <div class="text-center p-4 md:p-6">
+                    <i class="fas fa-truck text-primary text-4xl md:text-5xl mb-4"></i>
+                    <h4 class="text-lg md:text-xl font-semibold mb-2">3. Pesan & Terima</h4>
+                    <p class="text-gray-600 text-sm md:text-base">Lengkapi pesanan dan tunggu pengiriman cepat.</p>
+                </div>
+            </div>
+        </section>
+        <!-- Loading Spinner -->
+        <div id="loadingSpinner" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white p-6 rounded-lg">
+                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+                <p class="mt-4 text-gray-600">Memuat...</p>
+            </div>
+        </div>
+        <!-- Product Detail Modal -->
+        <div id="productModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden" role="dialog" aria-labelledby="modalTitle">
+            <div class="bg-white rounded-lg max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 id="modalTitle" class="text-xl md:text-2xl font-bold text-gray-800"></h3>
+                        <button onclick="closeModal('productModal')" aria-label="Tutup modal">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+                    <img id="modalImage" src="" alt="" class="w-full h-48 object-cover rounded-lg mb-4">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span id="modalPrice" class="text-xl md:text-2xl font-bold text-primary"></span>
+                            <div class="flex items-center space-x-1">
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <span id="modalRating" class="text-gray-600"></span>
+                            </div>
+                        </div>
+                        <p id="modalDescription" class="text-gray-600 text-sm md:text-base"></p>
+                        <div class="flex items-center space-x-2 text-sm text-gray-500">
+                            <i class="fas fa-clock"></i>
+                            <span id="modalCookingTime"></span>
+                        </div>
+                        <div class="flex items-center space-x-2 text-sm text-gray-500">
+                            <i class="fas fa-tag"></i>
+                            <span id="modalCategory"></span>
+                        </div>
+                    </div>
+                    <div class="mt-6 flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <button onclick="decreaseQuantity()" class="bg-gray-200 text-gray-700 w-8 h-8 rounded-full hover:bg-gray-300" aria-label="Kurangi jumlah">-</button>
+                            <span id="quantity" class="text-xl font-semibold">1</span>
+                            <button onclick="increaseQuantity()" class="bg-gray-200 text-gray-700 w-8 h-8 rounded-full hover:bg-gray-300" aria-label="Tambah jumlah">+</button>
+                        </div>
+                        <button onclick="addToCart()" class="bg-primary text-white px-4 md:px-6 py-2 rounded-lg hover:bg-amber-600 transition-colors text-sm md:text-base">
+                            <i class="fas fa-cart-plus mr-2"></i>Beli Sekarang
                         </button>
                     </div>
                 </div>
             </div>
         </div>
-    </header>
-    <!-- Hero Section with Slider -->
-    <section class="bg-gradient-to-r from-primary to-amber-600 text-white py-16 md:py-24 lg:py-32">
-        <div class="container mx-auto px-4">
-            <!-- Hero Text -->
-            <div class="text-center mb-8 md:mb-12">
-                <h2 class="text-3xl md:text-5xl lg:text-6xl font-bold mb-4">Pesan Makanan Favorit Anda</h2>
-                <p class="text-lg md:text-xl lg:text-2xl mb-8 max-w-xl md:max-w-2xl mx-auto">Nikmati kelezatan makanan Indonesia terbaik dengan layanan antar yang cepat dan mudah. Temukan menu favorit Anda hari ini!</p>
-                <button onclick="document.getElementById('products').scrollIntoView({behavior: 'smooth'})" class="bg-white text-primary px-6 py-2 md:px-8 md:py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-base md:text-lg">
-                    Mulai Pesan Sekarang
-                </button>
-            </div>
-            <!-- Slider -->
-            <div id="slider" class="relative w-full max-w-md md:max-w-3xl lg:max-w-4xl mx-auto overflow-hidden rounded-xl shadow-xl">
-                <div id="sliderTrack" class="flex transition-transform duration-500 ease-in-out">
-                    <!-- Slides will be rendered here -->
-                </div>
-                <button id="prevSlide" class="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 bg-white text-primary p-2 md:p-3 rounded-full shadow-md hover:bg-gray-100" aria-label="Slide sebelumnya">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <button id="nextSlide" class="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 bg-white text-primary p-2 md:p-3 rounded-full shadow-md hover:bg-gray-100" aria-label="Slide berikutnya">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-                <div class="absolute bottom-4 md:bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2 md:space-x-3">
-                    <div id="sliderDots" class="flex space-x-2 md:space-x-3"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Featured Section -->
-    <section class="container mx-auto px-4 py-12 md:py-16 lg:py-20 bg-white">
-        <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12 text-gray-800">Mengapa Memilih FoodOrder?</h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
-            <div class="text-center p-4 md:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                <i class="fas fa-truck text-primary text-4xl md:text-5xl mb-4"></i>
-                <h4 class="text-lg md:text-xl font-semibold mb-2">Pengiriman Cepat</h4>
-                <p class="text-gray-600 text-sm md:text-base">Dapatkan pesanan Anda dalam 30-45 menit dengan layanan antar kami yang handal.</p>
-            </div>
-            <div class="text-center p-4 md:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                <i class="fas fa-leaf text-primary text-4xl md:text-5xl mb-4"></i>
-                <h4 class="text-lg md:text-xl font-semibold mb-2">Bahan Segar</h4>
-                <p class="text-gray-600 text-sm md:text-base">Semua makanan dibuat dari bahan-bahan segar dan berkualitas tinggi.</p>
-            </div>
-            <div class="text-center p-4 md:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                <i class="fas fa-star text-primary text-4xl md:text-5xl mb-4"></i>
-                <h4 class="text-lg md:text-xl font-semibold mb-2">Rating Tinggi</h4>
-                <p class="text-gray-600 text-sm md:text-base">Ribuan pelanggan puas dengan layanan dan rasa makanan kami.</p>
-            </div>
-        </div>
-    </section>
-    <!-- Promo Section -->
-    <section class="container mx-auto px-4 py-12 md:py-16 lg:py-20 bg-gradient-to-r from-amber-600 to-primary text-white">
-        <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12">Promo Spesial Hari Ini</h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">
-            <div class="bg-white text-gray-800 p-4 md:p-6 rounded-lg shadow-md">
-                <h4 class="text-lg md:text-xl font-semibold mb-2">Diskon 20% untuk Pesanan Pertama</h4>
-                <p class="mb-4 text-sm md:text-base">Gunakan kode: FOOD20 saat checkout. Berlaku hingga akhir bulan.</p>
-                <button class="bg-primary text-white px-4 py-2 md:px-6 md:py-2 rounded-lg hover:bg-amber-600 text-sm md:text-base">Gunakan Promo</button>
-            </div>
-            <div class="bg-white text-gray-800 p-4 md:p-6 rounded-lg shadow-md">
-                <h4 class="text-lg md:text-xl font-semibold mb-2">Gratis Ongkir untuk Pesanan di Atas Rp50.000</h4>
-                <p class="mb-4 text-sm md:text-base">Nikmati pengiriman gratis untuk semua pesanan di atas Rp50.000.</p>
-                <button class="bg-primary text-white px-4 py-2 md:px-6 md:py-2 rounded-lg hover:bg-amber-600 text-sm md:text-base">Pesan Sekarang</button>
-            </div>
-        </div>
-    </section>
-    <!-- Testimonials Section -->
-    <section class="container mx-auto px-4 py-12 md:py-16 lg:py-20 bg-gray-50">
-        <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12 text-gray-800">Apa Kata Pelanggan Kami</h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
-            <div class="bg-white p-4 md:p-6 rounded-lg shadow-md">
-                <p class="text-gray-600 mb-4 text-sm md:text-base">"Makanannya enak dan pengirimannya cepat! Pasti pesan lagi."</p>
-                <div class="flex items-center">
-                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=40&h=40&fit=crop" alt="User 1" class="w-8 h-8 md:w-10 md:h-10 rounded-full mr-2">
-                    <span class="font-semibold text-sm md:text-base">Anna S.</span>
-                </div>
-            </div>
-            <div class="bg-white p-4 md:p-6 rounded-lg shadow-md">
-                <p class="text-gray-600 mb-4 text-sm md:text-base">"Variasi menu yang banyak dan harga terjangkau. Recommended!"</p>
-                <div class="flex items-center">
-                    <img src="https://images.unsplash.com/photo-1552058544-f2b84fbe85f5?w=40&h=40&fit=crop" alt="User 2" class="w-8 h-8 md:w-10 md:h-10 rounded-full mr-2">
-                    <span class="font-semibold text-sm md:text-base">Budi T.</span>
-                </div>
-            </div>
-            <div class="bg-white p-4 md:p-6 rounded-lg shadow-md">
-                <p class="text-gray-600 mb-4 text-sm md:text-base">"Layanan pelanggan ramah dan makanan selalu fresh."</p>
-                <div class="flex items-center">
-                    <svg class="w-8 h-8 md:w-10 md:h-10 rounded-full mr-2 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-                    </svg>
-                    <span class="font-semibold text-sm md:text-base">Citra L.</span>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Location-based Recommendation Section -->
-    <section id="recommendations" class="container mx-auto px-4 py-12 md:py-16 lg:py-20 bg-white">
-        <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12 text-gray-800">Rekomendasi Berdasarkan Lokasi Anda</h3>
-        <div id="locationInfo" class="text-center mb-6 text-gray-600"></div>
-        <div id="recommendationGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
-            <!-- Recommendations will be rendered here by JavaScript -->
-        </div>
-    </section>
-    <!-- Filter and Search Section -->
-    <section class="container mx-auto px-4 py-8 bg-white">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8">
-            <!-- Search Bar -->
-            <div class="relative w-full md:w-96">
-                <input type="text" id="searchBar" placeholder="Cari makanan..." class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-lg" aria-label="Cari produk makanan">
-                <i class="fas fa-search absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg"></i>
-            </div>
-            <!-- Filters -->
-            <div class="flex flex-wrap gap-3 justify-center md:justify-end">
-                <button onclick="filterProducts(event, 'all')" class="filter-btn active bg-primary text-white px-6 py-2 rounded-full hover:bg-amber-600 transition-colors text-base">
-                    Semua
-                </button>
-                <button onclick="filterProducts(event, 'Makanan Utama')" class="filter-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-full hover:bg-gray-300 transition-colors text-base">
-                    Makanan Utama
-                </button>
-                <button onclick="filterProducts(event, 'Makanan Berkuah')" class="filter-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-full hover:bg-gray-300 transition-colors text-base">
-                    Makanan Berkuah
-                </button>
-                <button onclick="filterProducts(event, 'Makanan Sehat')" class="filter-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-full hover:bg-gray-300 transition-colors text-base">
-                    Makanan Sehat
-                </button>
-                <button onclick="filterProducts(event, 'Minuman')" class="filter-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-full hover:bg-gray-300 transition-colors text-base">
-                    Minuman
-                </button>
-            </div>
-        </div>
-    </section>
-    <!-- Products Section -->
-    <section id="products" class="container mx-auto px-4 py-12 bg-gray-50">
-        <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12 text-gray-800">Menu Pilihan Kami</h3>
-        <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
-            <!-- Products will be rendered here by JavaScript -->
-        </div>
-    </section>
-    <!-- Additional Content: Popular Categories -->
-    <section class="container mx-auto px-4 py-12 md:py-16 lg:py-20 bg-white">
-        <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12 text-gray-800">Kategori Populer</h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
-            <div class="text-center p-4 md:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                <img src="https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=150&h=150&fit=crop" alt="Makanan Utama" class="w-full h-32 md:h-40 object-cover rounded-lg mb-4">
-                <h4 class="text-lg md:text-xl font-semibold mb-2">Makanan Utama</h4>
-                <p class="text-gray-600 text-sm md:text-base">Nikmati berbagai hidangan utama khas Indonesia.</p>
-            </div>
-            <div class="text-center p-4 md:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                <img src="https://images.unsplash.com/photo-1547592180-85f173990554?w=150&h=150&fit=crop" alt="Makanan Berkuah" class="w-full h-32 md:h-40 object-cover rounded-lg mb-4">
-                <h4 class="text-lg md:text-xl font-semibold mb-2">Makanan Berkuah</h4>
-                <p class="text-gray-600 text-sm md:text-base">Soto, bakso, dan hidangan berkuah lainnya.</p>
-            </div>
-            <div class="text-center p-4 md:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?w=150&h=150&fit=crop" alt="Makanan Sehat" class="w-full h-32 md:h-40 object-cover rounded-lg mb-4">
-                <h4 class="text-lg md:text-xl font-semibold mb-2">Makanan Sehat</h4>
-                <p class="text-gray-600 text-sm md:text-base">Pilihan sehat untuk gaya hidup Anda.</p>
-            </div>
-            <div class="text-center p-4 md:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=150&h=150&fit=crop" alt="Minuman" class="w-full h-32 md:h-40 object-cover rounded-lg mb-4">
-                <h4 class="text-lg md:text-xl font-semibold mb-2">Minuman</h4>
-                <p class="text-gray-600 text-sm md:text-base">Minuman segar untuk menemani makanan Anda.</p>
-            </div>
-        </div>
-    </section>
-    <!-- Additional Content: How It Works -->
-    <section class="container mx-auto px-4 py-12 md:py-16 lg:py-20 bg-gray-50">
-        <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12 text-gray-800">Cara Kerja FoodOrder</h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
-            <div class="text-center p-4 md:p-6">
-                <i class="fas fa-search text-primary text-4xl md:text-5xl mb-4"></i>
-                <h4 class="text-lg md:text-xl font-semibold mb-2">1. Cari & Pilih</h4>
-                <p class="text-gray-600 text-sm md:text-base">Temukan makanan favorit Anda dari berbagai menu.</p>
-            </div>
-            <div class="text-center p-4 md:p-6">
-                <i class="fas fa-cart-plus text-primary text-4xl md:text-5xl mb-4"></i>
-                <h4 class="text-lg md:text-xl font-semibold mb-2">2. Tambah ke Keranjang</h4>
-                <p class="text-gray-600 text-sm md:text-base">Tambahkan makanan ke keranjang dengan mudah.</p>
-            </div>
-            <div class="text-center p-4 md:p-6">
-                <i class="fas fa-truck text-primary text-4xl md:text-5xl mb-4"></i>
-                <h4 class="text-lg md:text-xl font-semibold mb-2">3. Pesan & Terima</h4>
-                <p class="text-gray-600 text-sm md:text-base">Lengkapi pesanan dan tunggu pengiriman cepat.</p>
-            </div>
-        </div>
-    </section>
-    <!-- Loading Spinner -->
-    <div id="loadingSpinner" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white p-6 rounded-lg">
-            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-            <p class="mt-4 text-gray-600">Memuat...</p>
-        </div>
-    </div>
-    <!-- Product Detail Modal -->
-    <div id="productModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden" role="dialog" aria-labelledby="modalTitle">
-        <div class="bg-white rounded-lg max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
-            <div class="p-6">
-                <div class="flex justify-between items-start mb-4">
-                    <h3 id="modalTitle" class="text-xl md:text-2xl font-bold text-gray-800"></h3>
-                    <button onclick="closeModal('productModal')" aria-label="Tutup modal">
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
-                </div>
-                <img id="modalImage" src="" alt="" class="w-full h-48 object-cover rounded-lg mb-4">
-                <div class="space-y-3">
-                    <div class="flex items-center justify-between">
-                        <span id="modalPrice" class="text-xl md:text-2xl font-bold text-primary"></span>
-                        <div class="flex items-center space-x-1">
-                            <i class="fas fa-star text-yellow-400"></i>
-                            <span id="modalRating" class="text-gray-600"></span>
-                        </div>
-                    </div>
-                    <p id="modalDescription" class="text-gray-600 text-sm md:text-base"></p>
-                    <div class="flex items-center space-x-2 text-sm text-gray-500">
-                        <i class="fas fa-clock"></i>
-                        <span id="modalCookingTime"></span>
-                    </div>
-                    <div class="flex items-center space-x-2 text-sm text-gray-500">
-                        <i class="fas fa-tag"></i>
-                        <span id="modalCategory"></span>
-                    </div>
-                </div>
-                <div class="mt-6 flex items-center justify-between">
-                    <div class="flex items-center space-x-3">
-                        <button onclick="decreaseQuantity()" class="bg-gray-200 text-gray-700 w-8 h-8 rounded-full hover:bg-gray-300" aria-label="Kurangi jumlah">-</button>
-                        <span id="quantity" class="text-xl font-semibold">1</span>
-                        <button onclick="increaseQuantity()" class="bg-gray-200 text-gray-700 w-8 h-8 rounded-full hover:bg-gray-300" aria-label="Tambah jumlah">+</button>
-                    </div>
-                    <button onclick="addToCart()" class="bg-primary text-white px-4 md:px-6 py-2 rounded-lg hover:bg-amber-600 transition-colors text-sm md:text-base">
-                        <i class="fas fa-cart-plus mr-2"></i>Beli Sekarang
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- Checkout Modal -->
     <div id="checkoutModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden" role="dialog" aria-labelledby="checkoutTitle">
         <div class="bg-white rounded-lg w-full max-w-md sm:max-w-lg md:max-w-xl mx-4 max-h-[90vh] overflow-y-auto">
@@ -324,7 +337,7 @@
     <div id="orderStatusModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden" role="dialog" aria-labelledby="statusTitle">
         <div class="bg-white rounded-lg max-w-md w-full mx-4 p-6">
             <div class="flex justify-between items-start mb-4">
-                <h3 id="statusTitle" class="text-xl md:text-2xl font-bold text-gray-800">Status Pesanan</h3>
+                <h3 id="statusTitle" class="text-2xl font-bold text-gray-800">Status Pesanan</h3>
                 <button onclick="closeModal('orderStatusModal')" aria-label="Tutup modal">
                     <i class="fas fa-times text-xl"></i>
                 </button>
@@ -340,33 +353,33 @@
     <!-- Footer -->
     <footer class="bg-gray-900 text-white py-12 mt-16">
         <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
                 <div>
                     <div class="flex items-center space-x-2 mb-4">
                         <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=50&h=50&fit=crop" alt="FoodOrder Logo" class="w-10 h-10">
-                        <h3 class="text-xl md:text-2xl font-bold">FoodOrder</h3>
+                        <h3 class="text-2xl font-bold">FoodOrder</h3>
                     </div>
-                    <p class="text-gray-400 text-sm md:text-base">Pesan makanan favorit Anda dengan mudah dan cepat. Nikmati pengalaman kuliner terbaik di ujung jari Anda.</p>
+                    <p class="text-gray-400">Pesan makanan favorit Anda dengan mudah dan cepat. Nikmati pengalaman kuliner terbaik di ujung jari Anda.</p>
                 </div>
                 <div>
-                    <h4 class="text-lg md:text-xl font-semibold mb-4">Layanan</h4>
-                    <ul class="space-y-2 text-gray-400 text-sm md:text-base">
+                    <h4 class="text-xl font-semibold mb-4">Layanan</h4>
+                    <ul class="space-y-2 text-gray-400">
                         <li><a href="#" class="hover:text-white transition-colors">Cara Pesan</a></li>
                         <li><a href="#" class="hover:text-white transition-colors">Promo & Diskon</a></li>
                         <li><a href="#" class="hover:text-white transition-colors">Program Loyalitas</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="text-lg md:text-xl font-semibold mb-4">Tentang Kami</h4>
-                    <ul class="space-y-2 text-gray-400 text-sm md:text-base">
+                    <h4 class="text-xl font-semibold mb-4">Tentang Kami</h4>
+                    <ul class="space-y-2 text-gray-400">
                         <li><a href="#" class="hover:text-white transition-colors">Tentang FoodOrder</a></li>
                         <li><a href="#" class="hover:text-white transition-colors">Kebijakan Privasi</a></li>
                         <li><a href="#" class="hover:text-white transition-colors">Syarat & Ketentuan</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="text-lg md:text-xl font-semibold mb-4">Kontak Kami</h4>
-                    <ul class="space-y-2 text-gray-400 text-sm md:text-base">
+                    <h4 class="text-xl font-semibold mb-4">Kontak Kami</h4>
+                    <ul class="space-y-2 text-gray-400">
                         <li>Email: <a href="mailto:support@foodorder.id" class="hover:text-white transition-colors">support@foodorder.id</a></li>
                         <li>Telepon: <a href="tel:+621234567890" class="hover:text-white transition-colors">+62 123 4567 890</a></li>
                         <li>Alamat: Jl. Kuliner Nusantara No. 1, Jakarta Selatan</li>
@@ -374,16 +387,16 @@
                 </div>
             </div>
             <div class="flex flex-col md:flex-row justify-between items-center pt-6 border-t border-gray-700">
-                <p class="text-gray-400 text-sm md:text-base mb-4 md:mb-0">&copy; 2025 FoodOrder. All rights reserved.</p>
+                <p class="text-gray-400 mb-4 md:mb-0">&copy; 2025 FoodOrder. All rights reserved.</p>
                 <div class="flex space-x-6">
                     <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="Facebook">
-                        <i class="fab fa-facebook text-xl md:text-2xl"></i>
+                        <i class="fab fa-facebook text-2xl"></i>
                     </a>
                     <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="Instagram">
-                        <i class="fab fa-instagram text-xl md:text-2xl"></i>
+                        <i class="fab fa-instagram text-2xl"></i>
                     </a>
                     <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="WhatsApp">
-                        <i class="fab fa-whatsapp text-xl md:text-2xl"></i>
+                        <i class="fab fa-whatsapp text-2xl"></i>
                     </a>
                 </div>
             </div>
@@ -730,7 +743,7 @@
         function renderSlider() {
             const featuredProducts = filteredProducts
                 .sort((a, b) => b.rating - a.rating)
-                .slice(0, 3);
+                .slice(0, 3); // Top 3 by rating
             const sliderTrack = document.getElementById('sliderTrack');
             const sliderDots = document.getElementById('sliderDots');
             sliderTrack.innerHTML = featuredProducts.map(product => `
@@ -1028,15 +1041,15 @@
             }
             // Additional validations
             if (name.length < 2) {
-                alert('Nama harus minimal 2 karakter.');
+                showToast('Nama harus minimal 2 karakter.');
                 return;
             }
             if (!/^\d{10,13}$/.test(phone.replace(/\D/g, ''))) {
-                alert('Nomor telepon tidak valid (harus 10-13 angka).');
+                showToast('Nomor telepon tidak valid (harus 10-13 angka).');
                 return;
             }
             if (address.length < 10) {
-                alert('Alamat harus minimal 10 karakter.');
+                showToast('Alamat harus minimal 10 karakter.');
                 return;
             }
             const formData = {
