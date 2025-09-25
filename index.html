@@ -3,476 +3,914 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Halaman Pemesanan Makanan - FoodieHub</title>
+    <title>FoodOrder - Pesan Makanan Online</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#f59e0b',
+                        secondary: '#ef4444',
+                        accent: '#10b981'
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body class="bg-gradient-to-br from-indigo-100 to-blue-200 min-h-screen font-inter transition-colors duration-500 dark:bg-gradient-to-br dark:from-gray-900 dark:to-gray-800" id="body">
+<body class="bg-gray-50">
     <!-- Header -->
-    <header class="w-full bg-white dark:bg-gray-900 shadow-xl p-4 sticky top-0 z-50 transition-all duration-300">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex items-center space-x-3">
-                <img src="https://via.placeholder.com/40?text=FH" alt="Logo FoodieHub" class="h-10 rounded-full shadow-md">
-                <h1 class="text-xl sm:text-2xl lg:text-3xl font-bold text-indigo-600 dark:text-indigo-300">FoodieHub</h1>
-            </div>
-            <div class="flex items-center space-x-2 sm:space-x-4">
-                <div class="relative w-40 sm:w-48 md:w-64">
-                    <input type="text" id="search-input" placeholder="Cari makanan..." class="w-full px-4 py-2 border border-indigo-200 dark:border-gray-600 rounded-full focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 dark:text-white transition-all duration-300 shadow-sm text-sm sm:text-base" aria-label="Cari makanan">
-                    <i class="fas fa-search absolute right-3 top-3 text-indigo-400 dark:text-gray-400"></i>
+    <header class="bg-white shadow-md sticky top-0 z-40">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=50&h=50&fit=crop" alt="FoodOrder Logo" class="w-10 h-10">
+                    <h1 class="text-2xl font-bold text-gray-800">FoodOrder</h1>
                 </div>
-                <button id="theme-toggle" class="p-2 rounded-full bg-indigo-100 dark:bg-gray-700 text-indigo-600 dark:text-indigo-300 hover:bg-indigo-200 dark:hover:bg-gray-600 transition-all duration-300 shadow-sm" aria-label="Toggle tema">
-                    <i class="fas fa-moon"></i>
-                </button>
-                <button id="sidebar-toggle" class="p-2 text-gray-700 dark:text-gray-300 hover:text-indigo-500 transition-all duration-300 lg:hidden" aria-label="Buka sidebar">
-                    <i class="fas fa-bars text-xl"></i>
-                </button>
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <button id="cartBtn" class="flex items-center space-x-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-amber-600 transition-colors">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span id="cartCount" class="bg-secondary text-white rounded-full px-2 py-1 text-xs">0</span>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
-
-    <!-- Sidebar -->
-    <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-white dark:bg-gray-900 shadow-2xl transform -translate-x-full lg:translate-x-0 transition-transform duration-500 z-40 lg:sticky lg:top-16">
-        <div class="p-6">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-bold text-indigo-600 dark:text-indigo-300">Navigasi</h2>
-                <button id="sidebar-close" class="p-2 text-gray-700 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400 transition-all duration-300 lg:hidden" aria-label="Tutup sidebar">
-                    <i class="fas fa-times text-xl"></i>
+    <!-- Hero Section with Slider -->
+    <section class="bg-gradient-to-r from-primary to-amber-600 text-white py-16">
+        <div class="container mx-auto px-4">
+            <!-- Slider -->
+            <div id="slider" class="relative w-full max-w-3xl mx-auto overflow-hidden rounded-lg">
+                <div id="sliderTrack" class="flex transition-transform duration-500 ease-in-out">
+                    <!-- Slides will be rendered here -->
+                </div>
+                <button id="prevSlide" class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white text-primary p-2 rounded-full shadow-md hover:bg-gray-100" aria-label="Slide sebelumnya">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button id="nextSlide" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white text-primary p-2 rounded-full shadow-md hover:bg-gray-100" aria-label="Slide berikutnya">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                    <div id="sliderDots" class="flex space-x-2"></div>
+                </div>
+            </div>
+            <!-- Hero Text -->
+            <div class="text-center mt-8">
+                <h2 class="text-4xl md:text-6xl font-bold mb-4">Pesan Makanan Favorit Anda</h2>
+                <p class="text-xl mb-8">Nikmati kelezatan makanan Indonesia terbaik dengan layanan antar yang cepat</p>
+                <button onclick="document.getElementById('products').scrollIntoView({behavior: 'smooth'})" class="bg-white text-primary px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+                    Mulai Pesan Sekarang
                 </button>
             </div>
-            <nav class="space-y-4">
-                <a href="/index.html" class="flex items-center space-x-2 text-gray-700 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400 transition-all duration-300 text-base">
-                    <i class="fas fa-home"></i>
-                    <span>Beranda</span>
-                </a>
-                <a href="/menu.html" class="flex items-center space-x-2 text-gray-700 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400 transition-all duration-300 text-base">
-                    <i class="fas fa-utensils"></i>
-                    <span>Menu</span>
-                </a>
-                <a href="/promo.html" class="flex items-center space-x-2 text-gray-700 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400 transition-all duration-300 text-base">
-                    <i class="fas fa-tags"></i>
-                    <span>Promo</span>
-                </a>
-                <a href="/contact.html" class="flex items-center space-x-2 text-gray-700 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400 transition-all duration-300 text-base">
-                    <i class="fas fa-envelope"></i>
-                    <span>Kontak</span>
-                </a>
-            </nav>
         </div>
-    </aside>
-
-    <!-- Overlay untuk sidebar di mobile -->
-    <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden lg:hidden transition-opacity duration-500"></div>
-
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 lg:ml-64 relative transition-all duration-500">
-        <!-- Slider -->
-        <div id="slider" class="relative w-full h-48 sm:h-64 lg:h-80 mb-8 overflow-hidden rounded-2xl shadow-xl">
-            <div id="slider-container" class="flex transition-transform duration-500">
-                <!-- Slide akan dirender di sini via JS -->
+    </section>
+    <!-- Filter and Search Section -->
+    <section class="container mx-auto px-4 py-8">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+            <!-- Search Bar -->
+            <div class="relative w-full md:w-1/3">
+                <input type="text" id="searchBar" placeholder="Cari makanan..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" aria-label="Cari produk makanan">
+                <i class="fas fa-search absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
             </div>
-            <button id="slider-prev" class="absolute left-4 top-1/2 transform -translate-y-1/2 p-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition-all duration-300 shadow-md" aria-label="Slide sebelumnya">
-                <i class="fas fa-chevron-left"></i>
-            </button>
-            <button id="slider-next" class="absolute right-4 top-1/2 transform -translate-y-1/2 p-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition-all duration-300 shadow-md" aria-label="Slide berikutnya">
-                <i class="fas fa-chevron-right"></i>
-            </button>
-        </div>
-
-        <div id="loading" class="absolute inset-0 flex items-center justify-center bg-white bg-opacity-70 dark:bg-gray-900 dark:bg-opacity-70 hidden rounded-xl">
-            <i class="fas fa-spinner fa-spin text-5xl text-indigo-500"></i>
-        </div>
-        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-            <!-- Kartu produk akan dirender di sini via JS -->
-        </div>
-        <div id="no-results" class="text-center text-gray-500 dark:text-gray-400 mt-8 hidden text-sm sm:text-base">Tidak ada hasil yang ditemukan. Coba kata kunci lain!</div>
-    </main>
-
-    <!-- Modal Detail Produk -->
-    <div id="product-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center hidden transition-opacity duration-500" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-        <div class="bg-white dark:bg-gray-900 p-4 sm:p-6 lg:p-8 rounded-2xl shadow-2xl max-w-sm sm:max-w-md lg:max-w-lg w-full transform scale-90 transition-all duration-500">
-            <button class="absolute top-4 right-4 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-all duration-300" onclick="closeModal('product-modal')" aria-label="Tutup modal">
-                <i class="fas fa-times text-xl"></i>
-            </button>
-            <h2 id="modal-title" class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 dark:text-white mb-4"></h2>
-            <img id="modal-image" class="w-full h-36 sm:h-40 lg:h-48 object-cover rounded-xl mb-4 shadow-md" src="" alt="" loading="lazy">
-            <p id="modal-description" class="text-gray-600 dark:text-gray-300 mb-4 text-xs sm:text-sm lg:text-base"></p>
-            <p id="modal-price" class="text-lg sm:text-xl lg:text-2xl font-semibold text-green-600 mb-4"></p>
-            <div class="flex items-center mb-4 sm:mb-6">
-                <label for="quantity" class="text-gray-700 dark:text-gray-300 mr-4 text-xs sm:text-sm lg:text-base">Jumlah:</label>
-                <input type="number" id="quantity" min="1" value="1" class="w-16 sm:w-20 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500 transition-all duration-300 shadow-sm text-sm">
+            <!-- Filters -->
+            <div class="flex flex-wrap gap-4 justify-center">
+                <button onclick="filterProducts(event, 'all')" class="filter-btn active bg-primary text-white px-6 py-2 rounded-full hover:bg-amber-600 transition-colors">
+                    Semua
+                </button>
+                <button onclick="filterProducts(event, 'Makanan Utama')" class="filter-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-full hover:bg-gray-300 transition-colors">
+                    Makanan Utama
+                </button>
+                <button onclick="filterProducts(event, 'Makanan Berkuah')" class="filter-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-full hover:bg-gray-300 transition-colors">
+                    Makanan Berkuah
+                </button>
+                <button onclick="filterProducts(event, 'Makanan Sehat')" class="filter-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-full hover:bg-gray-300 transition-colors">
+                    Makanan Sehat
+                </button>
+                <button onclick="filterProducts(event, 'Minuman')" class="filter-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-full hover:bg-gray-300 transition-colors">
+                    Minuman
+                </button>
             </div>
-            <p id="total-price" class="text-base sm:text-lg lg:text-xl font-semibold text-indigo-600 dark:text-indigo-400 mb-4 sm:mb-6"></p>
-            <div class="flex justify-end space-x-2 sm:space-x-4">
-                <button onclick="closeModal('product-modal')" class="px-4 sm:px-6 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-300 shadow-md text-sm sm:text-base">Tutup</button>
-                <button id="buy-button" class="px-4 sm:px-6 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition-all duration-300 shadow-md text-sm sm:text-base">Beli Sekarang</button>
-            </div>
+        </div>
+    </section>
+    <!-- Products Section -->
+    <section id="products" class="container mx-auto px-4 py-8">
+        <h3 class="text-3xl font-bold text-center mb-8 text-gray-800">Menu Pilihan</h3>
+        <div id="productsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Products will be rendered here by JavaScript -->
+        </div>
+    </section>
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white p-6 rounded-lg">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+            <p class="mt-4 text-gray-600">Memuat...</p>
         </div>
     </div>
-
-    <!-- Modal Checkout -->
-    <div id="checkout-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center hidden transition-opacity duration-500" role="dialog" aria-modal="true">
-        <div class="bg-white dark:bg-gray-900 p-4 sm:p-6 lg:p-8 rounded-2xl shadow-2xl max-w-sm sm:max-w-md lg:max-w-lg w-full transform scale-90 transition-all duration-500">
-            <button class="absolute top-4 right-4 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-all duration-300" onclick="closeModal('checkout-modal')" aria-label="Tutup modal">
-                <i class="fas fa-times text-xl"></i>
-            </button>
-            <h2 class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 dark:text-white mb-4 sm:mb-6">Checkout</h2>
-            <form id="checkout-form">
-                <div class="mb-4 sm:mb-5">
-                    <label for="name" class="block text-gray-700 dark:text-gray-300 font-medium mb-2 text-xs sm:text-sm lg:text-base">Nama</label>
-                    <input type="text" id="name" class="w-full px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 shadow-sm text-sm sm:text-base" required>
+    <!-- Product Detail Modal -->
+    <div id="productModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden" role="dialog" aria-labelledby="modalTitle">
+        <div class="bg-white rounded-lg max-w-md w-full mx-4 max-h-screen overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <h3 id="modalTitle" class="text-2xl font-bold text-gray-800"></h3>
+                    <button onclick="closeModal('productModal')" aria-label="Tutup modal">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
                 </div>
-                <div class="mb-4compare sm:mb-5">
-                    <label for="address" class="block text-gray-700 dark:text-gray-300 font-medium mb-2 text-xs sm:text-sm lg:text-base">Alamat</label>
-                    <input type="text" id="address" class="w-full px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 shadow-sm text-sm sm:text-base" required>
-                </div>
-                <div class="mb-4 sm:mb-6">
-                    <label for="phone" class="block text-gray-700 dark:text-gray-300 font-medium mb-2 text-xs sm:text-sm lg:text-base">Nomor Telepon</label>
-                    <input type="tel" id="phone" class="w-full px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 shadow-sm text-sm sm:text-base" required pattern="[0-9]{10,15}">
-                </div>
-                <p id="checkout-total" class="text-base sm:text-lg lg:text-xl font-semibold text-indigo-600 dark:text-indigo-400 mb-4 sm:mb-6"></p>
-                <div class="flex justify-end space-x-2 sm:space-x-4">
-                    <button type="button" onclick="closeModal('checkout-modal')" class="px-4 sm:px-6 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-300 shadow-md text-sm sm:text-base">Batal</button>
-                    <button type="submit" class="px-4 sm:px-6 py-2 bg-green-600 text-white rounded-full hover:bg-green-700 transition-all duration-300 shadow-md text-sm sm:text-base">Selesaikan Pesanan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal COD Confirmation -->
-    <div id="cod-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center hidden transition-opacity duration-500" role="dialog" aria-modal="true">
-        <div class="bg-white dark:bg-gray-900 p-4 sm:p-6 lg:p-8 rounded-2xl shadow-2xl max-w-sm sm:max-w-md lg:max-w-lg w-full transform scale-90 transition-all duration-500">
-            <button class="absolute top-4 right-4 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-all duration-300" onclick="closeModal('cod-modal')" aria-label="Tutup modal">
-                <i class="fas fa-times text-xl"></i>
-            </button>
-            <div class="flex items-center space-x-3 mb-4">
-                <i class="fas fa-check-circle text-3xl sm:text-4xl text-green-500"></i>
-                <h2 class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 dark:text-white">Konfirmasi COD</h2>
-            </div>
-            <p class="text-gray-600 dark:text-gray-300 mb-4 sm:mb-6 text-xs sm:text-sm lg:text-base">Pesanan Anda berhasil! Pembayaran akan dilakukan saat barang diterima (Cash on Delivery). Terima kasih!</p>
-            <div class="flex justify-end">
-                <button onclick="closeModal('cod-modal')" class="px-4 sm:px-6 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition-all duration-300 shadow-md text-sm sm:text-base">Tutup</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer with Sitemap -->
-    <footer class="w-full bg-white dark:bg-gray-900 shadow-xl p-6 sm:p-8 mt-auto transition-colors duration-300">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 text-gray-600 dark:text-gray-400 text-xs sm:text-sm">
-            <div>
-                <h3 class="text-base sm:text-lg font-bold text-indigo-600 dark:text-indigo-300 mb-4">FoodieHub</h3>
-                <p class="mb-4">Nikmati makanan favorit Anda dengan pengalaman pemesanan yang mudah dan cepat.</p>
-                <div class="flex space-x-4">
-                    <a href="https://facebook.com/foodiehub" target="_blank" class="hover:text-indigo-500 dark:hover:text-indigo-400 transition-all duration-300" aria-label="Facebook"><i class="fab fa-facebook-f text-lg"></i></a>
-                    <a href="https://instagram.com/foodiehub" target="_blank" class="hover:text-indigo-500 dark:hover:text-indigo-400 transition-all duration-300" aria-label="Instagram"><i class="fab fa-instagram text-lg"></i></a>
-                    <a href="https://twitter.com/foodiehub" target="_blank" class="hover:text-indigo-500 dark:hover:text-indigo-400 transition-all duration-300" aria-label="Twitter"><i class="fab fa-twitter text-lg"></i></a>
-                </div>
-            </div>
-            <div>
-                <h3 class="text-base sm:text-lg font-bold text-indigo-600 dark:text-indigo-300 mb-4">Navigasi</h3>
-                <ul class="space-y-2">
-                    <li><a href="/index.html" class="hover:text-indigo-500 dark:hover:text-indigo-400 transition-all duration-300">Beranda</a></li>
-                    <li><a href="/menu.html" class="hover:text-indigo-500 dark:hover:text-indigo-400 transition-all duration-300">Menu</a></li>
-                    <li><a href="/promo.html" class="hover:text-indigo-500 dark:hover:text-indigo-400 transition-all duration-300">Promo</a></li>
-                    <li><a href="/contact.html" class="hover:text-indigo-500 dark:hover:text-indigo-400 transition-all duration-300">Kontak</a></li>
-                </ul>
-            </div>
-            <div>
-                <h3 class="text-base sm:text-lg font-bold text-indigo-600 dark:text-indigo-300 mb-4">Bantuan</h3>
-                <ul class="space-y-2">
-                    <li><a href="/faq.html" class="hover:text-indigo-500 dark:hover:text-indigo-400 transition-all duration-300">FAQ</a></li>
-                    <li><a href="/privacy.html" class="hover:text-indigo-500 dark:hover:text-indigo-400 transition-all duration-300">Kebijakan Privasi</a></li>
-                    <li><a href="/terms.html" class="hover:text-indigo-500 dark:hover:text-indigo-400 transition-all duration-300">Syarat & Ketentuan</a></li>
-                </ul>
-            </div>
-            <div>
-                <h3 class="text-base sm:text-lg font-bold text-indigo-600 dark:text-indigo-300 mb-4">Kontak</h3>
-                <ul class="space-y-2">
-                    <li><a href="mailto:support@foodiehub.com" class="hover:text-indigo-500 dark:hover:text-indigo-400 transition-all duration-300">support@foodiehub.com</a></li>
-                    <li><a href="tel:+6281234567890" class="hover:text-indigo-500 dark:hover:text-indigo-400 transition-all duration-300">+62 812-3456-7890</a></li>
-                    <li>Jl. Makanan Enak No. 123, Jakarta</li>
-                </ul>
-            </div>
-        </div>
-        <div class="max-w-7xl mx-auto mt-6 sm:mt-8 text-center text-gray-500 dark:text-gray-400 text-xs sm:text-sm">
-            &copy; 2025 FoodieHub. Dibuat dengan ❤️ untuk pecinta kuliner.
-        </div>
-    </footer>
-
-    <script>
-        // Ganti dengan URL dan Anon Key Supabase Anda
-        const supabaseUrl = 'https://your-supabase-url.supabase.co';
-        const supabaseKey = 'your-anon-key';
-        const supabase = Supabase.createClient(supabaseUrl, supabaseKey);
-
-        let selectedProduct = null;
-        let quantity = 1;
-        let allProducts = [];
-        let currentSlide = 0;
-
-        // Sidebar toggle
-        const sidebarToggle = document.getElementById('sidebar-toggle');
-        const sidebarClose = document.getElementById('sidebar-close');
-        const sidebar = document.getElementById('sidebar');
-        const sidebarOverlay = document.getElementById('sidebar-overlay');
-
-        sidebarToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('-translate-x-full');
-            sidebarOverlay.classList.toggle('hidden');
-        });
-
-        sidebarClose.addEventListener('click', () => {
-            sidebar.classList.add('-translate-x-full');
-            sidebarOverlay.classList.add('hidden');
-        });
-
-        sidebarOverlay.addEventListener('click', () => {
-            sidebar.classList.add('-translate-x-full');
-            sidebarOverlay.classList.add('hidden');
-        });
-
-        // Slider functionality
-        const sliderData = [
-            { image: 'https://via.placeholder.com/1200x400?text=Promo+1', title: 'Promo Spesial', description: 'Dapatkan diskon 20% untuk semua pizza!' },
-            { image: 'https://via.placeholder.com/1200x400?text=Promo+2', title: 'Makan Hemat', description: 'Beli 2 gratis 1 untuk menu tertentu.' },
-            { image: 'https://via.placeholder.com/1200x400?text=Promo+3', title: 'Paket Keluarga', description: 'Paket lengkap untuk 4 orang hanya Rp 150.000!' }
-        ];
-
-        function renderSlider() {
-            const sliderContainer = document.getElementById('slider-container');
-            sliderContainer.innerHTML = '';
-            sliderData.forEach((slide, index) => {
-                const slideDiv = document.createElement('div');
-                slideDiv.className = `w-full flex-shrink-0 bg-cover bg-center ${index === 0 ? 'opacity-100' : 'opacity-0 hidden'}`;
-                slideDiv.style.backgroundImage = `url(${slide.image})`;
-                slideDiv.innerHTML = `
-                    <div class="h-full flex items-center justify-center bg-black bg-opacity-50">
-                        <div class="text-center text-white p-4">
-                            <h3 class="text-xl sm:text-2xl lg:text-3xl font-bold mb-2">${slide.title}</h3>
-                            <p class="text-sm sm:text-base lg:text-lg">${slide.description}</p>
+                <img id="modalImage" src="" alt="" class="w-full h-48 object-cover rounded-lg mb-4">
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span id="modalPrice" class="text-2xl font-bold text-primary"></span>
+                        <div class="flex items-center space-x-1">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <span id="modalRating" class="text-gray-600"></span>
                         </div>
                     </div>
-                `;
-                sliderContainer.appendChild(slideDiv);
-            });
+                    <p id="modalDescription" class="text-gray-600"></p>
+                    <div class="flex items-center space-x-2 text-sm text-gray-500">
+                        <i class="fas fa-clock"></i>
+                        <span id="modalCookingTime"></span>
+                    </div>
+                    <div class="flex items-center space-x-2 text-sm text-gray-500">
+                        <i class="fas fa-tag"></i>
+                        <span id="modalCategory"></span>
+                    </div>
+                </div>
+                <div class="mt-6 flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <button onclick="decreaseQuantity()" class="bg-gray-200 text-gray-700 w-8 h-8 rounded-full hover:bg-gray-300" aria-label="Kurangi jumlah">-</button>
+                        <span id="quantity" class="text-xl font-semibold">1</span>
+                        <button onclick="increaseQuantity()" class="bg-gray-200 text-gray-700 w-8 h-8 rounded-full hover:bg-gray-300" aria-label="Tambah jumlah">+</button>
+                    </div>
+                    <button onclick="addToCart()" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-amber-600 transition-colors">
+                        <i class="fas fa-cart-plus mr-2"></i>Beli Sekarang
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Checkout Modal -->
+    <div id="checkoutModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden" role="dialog" aria-labelledby="checkoutTitle">
+        <div class="bg-white rounded-lg max-w-lg w-full mx-4 max-h-screen overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-6">
+                    <h3 id="checkoutTitle" class="text-2xl font-bold text-gray-800">Checkout Pesanan</h3>
+                    <button onclick="closeModal('checkoutModal')" aria-label="Tutup modal">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                <!-- Order Summary -->
+                <div class="mb-6">
+                    <h4 class="text-lg font-semibold mb-3">Ringkasan Pesanan</h4>
+                    <div id="orderSummary" class="bg-gray-50 p-4 rounded-lg"></div>
+                </div>
+                <!-- Customer Form -->
+                <form id="checkoutForm" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Nama Lengkap *</label>
+                        <input type="text" id="customerName" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Nomor Telepon *</label>
+                        <input type="tel" id="customerPhone" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Alamat Lengkap *</label>
+                        <textarea id="customerAddress" required rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Catatan Tambahan</label>
+                        <textarea id="orderNotes" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Contoh: Pedas sedang, tanpa cabai, dll."></textarea>
+                    </div>
+                    <div class="border-t pt-4">
+                        <div class="flex justify-between items-center text-lg font-bold">
+                            <span>Total Pembayaran:</span>
+                            <span id="totalAmount" class="text-primary"></span>
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full bg-accent text-white py-3 rounded-lg font-semibold hover:bg-emerald-600 transition-colors">
+                        <i class="fas fa-check mr-2"></i>Selesaikan Pesanan
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- COD Confirmation Modal -->
+    <div id="codModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden" role="dialog" aria-labelledby="codTitle">
+        <div class="bg-white rounded-lg max-w-md w-full mx-4">
+            <div class="p-6 text-center">
+                <div class="mb-4">
+                    <i class="fas fa-check-circle text-accent text-6xl"></i>
+                </div>
+                <h3 id="codTitle" class="text-2xl font-bold text-gray-800 mb-4">Pesanan Berhasil!</h3>
+                <p class="text-gray-600 mb-2">Pesanan Anda telah diterima dan akan segera diproses.</p>
+                <p class="text-sm text-gray-500 mb-6">Pembayaran: <strong>Cash on Delivery (COD)</strong></p>
+                <div id="orderDetails" class="bg-gray-50 p-4 rounded-lg mb-6 text-left"></div>
+                <button onclick="closeModal('codModal'); resetApp()" class="bg-primary text-white px-8 py-3 rounded-lg font-semibold hover:bg-amber-600 transition-colors">
+                    <i class="fas fa-home mr-2"></i>Kembali ke Beranda
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-16">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex items-center justify-center space-x-2 mb-4">
+                <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=50&h=50&fit=crop" alt="FoodOrder Logo" class="w-10 h-10">
+                <h3 class="text-2xl font-bold">FoodOrder</h3>
+            </div>
+            <p class="text-gray-400 mb-4">Pesan makanan favorit Anda dengan mudah dan cepat</p>
+            <div class="flex justify-center space-x-6">
+                <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fab fa-facebook text-xl"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fab fa-instagram text-xl"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fab fa-whatsapp text-xl"></i>
+                </a>
+            </div>
+            <div class="mt-6 pt-6 border-t border-gray-700">
+                <p class="text-gray-400">&copy; 2025 FoodOrder. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <!-- Combined JavaScript -->
+    <script>
+        // Dummy product data
+        const products = [
+            {
+                id: 1,
+                name: "Nasi Gudeg Jogja",
+                price: 25000,
+                image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=300&fit=crop",
+                description: "Nasi gudeg khas Jogja dengan ayam kampung, telur, dan sambal krecek yang gurih dan manis",
+                category: "Makanan Utama",
+                rating: 4.8,
+                cooking_time: "15-20 menit"
+            },
+            {
+                id: 2,
+                name: "Ayam Bakar Taliwang",
+                price: 35000,
+                image: "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=400&h=300&fit=crop",
+                description: "Ayam bakar khas Lombok dengan bumbu pedas dan plecing kangkung segar",
+                category: "Makanan Utama",
+                rating: 4.7,
+                cooking_time: "20-25 menit"
+            },
+            {
+                id: 3,
+                name: "Soto Betawi",
+                price: 28000,
+                image: "https://images.unsplash.com/photo-1547592180-85f173990554?w=400&h=300&fit=crop",
+                description: "Soto khas Betawi dengan kuah santan, daging sapi, dan jeroan yang lezat",
+                category: "Makanan Berkuah",
+                rating: 4.6,
+                cooking_time: "10-15 menit"
+            },
+            {
+                id: 4,
+                name: "Gado-Gado Jakarta",
+                price: 20000,
+                image: "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&h=300&fit=crop",
+                description: "Gado-gado dengan sayuran segar, lontong, dan bumbu kacang yang kental",
+                category: "Makanan Sehat",
+                rating: 4.5,
+                cooking_time: "5-10 menit"
+            },
+            {
+                id: 5,
+                name: "Rendang Padang",
+                price: 40000,
+                image: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=400&h=300&fit=crop",
+                description: "Rendang daging sapi khas Padang dengan bumbu rempah yang kaya dan pedas",
+                category: "Makanan Utama",
+                rating: 4.9,
+                cooking_time: "15-20 menit"
+            },
+            {
+                id: 6,
+                name: "Mie Ayam Bakso",
+                price: 18000,
+                image: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&h=300&fit=crop",
+                description: "Mie ayam dengan bakso sapi, pangsit, dan kuah kaldu yang gurih",
+                category: "Makanan Berkuah",
+                rating: 4.4,
+                cooking_time: "10-15 menit"
+            },
+            {
+                id: 7,
+                name: "Nasi Liwet Solo",
+                price: 22000,
+                image: "https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=400&h=300&fit=crop",
+                description: "Nasi liwet khas Solo dengan ayam suwir, telur, dan sambal terasi",
+                category: "Makanan Utama",
+                rating: 4.6,
+                cooking_time: "15-20 menit"
+            },
+            {
+                id: 8,
+                name: "Es Cendol Dawet",
+                price: 12000,
+                image: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&h=300&fit=crop",
+                description: "Minuman segar es cendol dengan santan dan gula merah yang manis",
+                category: "Minuman",
+                rating: 4.3,
+                cooking_time: "5 menit"
+            },
+            {
+                id: 9,
+                name: "Teh Tarik Aceh",
+                price: 8000,
+                image: "https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=400&h=300&fit=crop",
+                description: "Teh tarik khas Aceh yang creamy dan hangat, cocok untuk segala cuaca",
+                category: "Minuman",
+                rating: 4.2,
+                cooking_time: "3-5 menit"
+            }
+        ];
+
+        // Format Rupiah
+        function formatRupiah(number) {
+            if (typeof number !== 'number' || isNaN(number)) {
+                return 'Rp 0';
+            }
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(number);
         }
 
-        function showSlide(index) {
-            const slides = document.querySelectorAll('#slider-container > div');
-            slides.forEach((slide, i) => {
-                slide.classList.toggle('opacity-100', i === index);
-                slide.classList.toggle('hidden', i !== index);
-            });
+        // Supabase Configuration
+        const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+        const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+
+        class DatabaseService {
+            #supabase = null;
+            constructor() {
+                this.isConnected = this.#initializeSupabase();
+            }
+            #initializeSupabase() {
+                try {
+                    if (!window.supabase) {
+                        console.warn('Supabase CDN not loaded. Using local data only.');
+                        return false;
+                    }
+                    if (SUPABASE_URL === 'YOUR_SUPABASE_URL' || SUPABASE_ANON_KEY === 'YOUR_SUPABASE_ANON_KEY') {
+                        console.warn('Supabase credentials not configured. Using local data only.');
+                        return false;
+                    }
+                    this.#supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                    console.log('Supabase initialized successfully');
+                    return true;
+                } catch (error) {
+                    console.error('Error initializing Supabase:', error);
+                    return false;
+                }
+            }
+            async fetchProducts() {
+                if (!this.isConnected || !this.#supabase) {
+                    console.log('Using local product data');
+                    return { data: products, error: null };
+                }
+                try {
+                    const { data, error } = await this.#supabase
+                        .from('products')
+                        .select('*')
+                        .order('id', { ascending: true });
+                    return { data: data || products, error };
+                } catch (error) {
+                    console.error('Error in fetchProducts:', error);
+                    return { data: products, error };
+                }
+            }
+            async insertOrder(orderData) {
+                if (!this.isConnected || !this.#supabase) {
+                    console.log('Supabase not connected. Order saved locally:', orderData);
+                    localStorage.setItem(`order_${Date.now()}`, JSON.stringify(orderData));
+                    return { data: orderData, error: null };
+                }
+                try {
+                    const { data, error } = await this.#supabase
+                        .from('orders')
+                        .insert([{
+                            customer_name: orderData.customerName,
+                            customer_phone: orderData.customerPhone,
+                            customer_address: orderData.customerAddress,
+                            order_notes: orderData.orderNotes,
+                            items: JSON.stringify(orderData.items),
+                            total_amount: orderData.total,
+                            order_date: orderData.orderDate,
+                            status: orderData.status,
+                            payment_method: orderData.paymentMethod
+                        }])
+                        .select()
+                        .single();
+                    if (error) throw error;
+                    return { data, error: null };
+                } catch (error) {
+                    console.error('Error in insertOrder:', error);
+                    return { data: null, error };
+                }
+            }
+            async initializeTables() {
+                if (!this.isConnected || !this.#supabase) {
+                    console.log('Supabase not connected. Cannot initialize tables.');
+                    return false;
+                }
+                try {
+                    const { data: existingProducts } = await this.#supabase
+                        .from('products')
+                        .select('id')
+                        .limit(1);
+                    if (!existingProducts || existingProducts.length === 0) {
+                        console.log('Inserting sample products...');
+                        const { error } = await this.#supabase
+                            .from('products')
+                            .insert(products.map(product => ({
+                                name: product.name,
+                                price: product.price,
+                                image: product.image,
+                                description: product.description,
+                                category: product.category,
+                                rating: product.rating,
+                                cooking_time: product.cooking_time
+                            })));
+                        if (error) {
+                            console.error('Error inserting sample products:', error);
+                        } else {
+                            console.log('Sample products inserted successfully');
+                        }
+                    }
+                    return true;
+                } catch (error) {
+                    console.error('Error initializing tables:', error);
+                    return false;
+                }
+            }
+        }
+
+        const dbService = new DatabaseService();
+
+        // App Logic
+        let currentProduct = null;
+        let cart = [];
+        let currentQuantity = 1;
+        let filteredProducts = products;
+        let currentSlide = 0;
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            showLoading();
+            loadCartFromStorage();
+            await initializeApp();
+            renderSlider();
+            hideLoading();
+            updateCartCount();
+            setupSearchBar();
+        });
+
+        async function initializeApp() {
+            try {
+                const { data: fetchedProducts, error } = await dbService.fetchProducts();
+                if (error) {
+                    console.warn('Using local products due to database error:', error);
+                } else if (fetchedProducts && fetchedProducts.length > 0) {
+                    products.splice(0, products.length, ...fetchedProducts.map(product => ({
+                        id: product.id,
+                        name: product.name,
+                        price: product.price,
+                        image: product.image,
+                        description: product.description,
+                        category: product.category,
+                        rating: product.rating,
+                        cooking_time: product.cooking_time
+                    })));
+                }
+                filteredProducts = products; // Reset filteredProducts
+                renderProducts();
+                await dbService.initializeTables();
+            } catch (error) {
+                console.error('Error initializing app:', error);
+                renderProducts();
+            }
+        }
+
+        // Slider Logic
+        function renderSlider() {
+            const featuredProducts = products
+                .sort((a, b) => b.rating - a.rating)
+                .slice(0, 3); // Top 3 by rating
+            const sliderTrack = document.getElementById('sliderTrack');
+            const sliderDots = document.getElementById('sliderDots');
+            sliderTrack.innerHTML = featuredProducts.map(product => `
+                <div class="flex-none w-full">
+                    <div class="relative">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-64 object-cover rounded-lg">
+                        <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4">
+                            <h3 class="text-xl font-bold">${product.name}</h3>
+                            <p class="text-sm line-clamp-2">${product.description}</p>
+                            <button onclick="openProductModal(products.find(p => p.id === ${product.id})); event.stopPropagation();" class="mt-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-amber-600">
+                                Pesan Sekarang
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            sliderDots.innerHTML = featuredProducts.map((_, i) => `
+                <button class="w-3 h-3 rounded-full ${i === 0 ? 'bg-white' : 'bg-gray-400'}" onclick="goToSlide(${i})" aria-label="Slide ${i + 1}"></button>
+            `).join('');
+            autoSlide();
+        }
+
+        function goToSlide(index) {
             currentSlide = index;
+            const sliderTrack = document.getElementById('sliderTrack');
+            sliderTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+            document.querySelectorAll('#sliderDots button').forEach((dot, i) => {
+                dot.classList.toggle('bg-white', i === currentSlide);
+                dot.classList.toggle('bg-gray-400', i !== currentSlide);
+            });
         }
 
         function nextSlide() {
-            currentSlide = (currentSlide + 1) % sliderData.length;
-            showSlide(currentSlide);
+            currentSlide = (currentSlide + 1) % 3;
+            goToSlide(currentSlide);
         }
 
         function prevSlide() {
-            currentSlide = (currentSlide - 1 + sliderData.length) % sliderData.length;
-            showSlide(currentSlide);
+            currentSlide = (currentSlide - 1 + 3) % 3;
+            goToSlide(currentSlide);
         }
 
-        document.getElementById('slider-prev').addEventListener('click', prevSlide);
-        document.getElementById('slider-next').addEventListener('click', nextSlide);
-
-        // Auto slide every 5 seconds
-        let slideInterval = setInterval(nextSlide, 5000);
-
-        // Pause auto slide on hover
-        document.getElementById('slider').addEventListener('mouseenter', () => clearInterval(slideInterval));
-        document.getElementById('slider').addEventListener('mouseleave', () => slideInterval = setInterval(nextSlide, 5000));
-
-        // Fungsi untuk fetch dan render produk
-        async function fetchProducts() {
-            showLoading(true);
-            const { data, error } = await supabase
-                .from('products')
-                .select('*');
-
-            showLoading(false);
-            if (error) {
-                console.error('Error fetching products:', error);
-                alert('Gagal memuat produk. Silakan coba lagi.');
-                return;
-            }
-
-            allProducts = data;
-            renderProducts(allProducts);
+        function autoSlide() {
+            setInterval(nextSlide, 5000); // Auto-slide every 5 seconds
         }
 
-        function renderProducts(products) {
-            const grid = document.getElementById('product-grid');
-            grid.innerHTML = '';
-            const noResults = document.getElementById('no-results');
-            noResults.classList.add('hidden');
+        // Search Bar Logic
+        function setupSearchBar() {
+            const searchBar = document.getElementById('searchBar');
+            searchBar.addEventListener('input', () => {
+                const query = searchBar.value.trim().toLowerCase();
+                const activeCategory = document.querySelector('.filter-btn.active')?.textContent.toLowerCase() || 'all';
+                filteredProducts = products.filter(product => {
+                    const matchesCategory = activeCategory === 'all' || product.category.toLowerCase() === activeCategory;
+                    const matchesQuery = product.name.toLowerCase().includes(query);
+                    return matchesCategory && matchesQuery;
+                });
+                renderProducts(filteredProducts);
+            });
+        }
 
-            if (products.length === 0) {
-                noResults.classList.remove('hidden');
+        function renderProducts(productsToRender = filteredProducts) {
+            const productsGrid = document.getElementById('productsGrid');
+            productsGrid.innerHTML = '';
+            if (productsToRender.length === 0) {
+                productsGrid.innerHTML = '<p class="col-span-full text-center text-gray-500 py-8">Tidak ada produk ditemukan.</p>';
                 return;
             }
+            productsToRender.forEach(product => {
+                const productCard = createProductCard(product);
+                productsGrid.appendChild(productCard);
+            });
+        }
 
-            products.forEach((product, index) => {
-                const card = document.createElement('div');
-                card.className = 'bg-white dark:bg-gray-800 shadow-lg rounded-2xl overflow-hidden transform hover:scale-105 hover:shadow-2xl transition-all duration-500 cursor-pointer opacity-0 animate-fadeIn';
-                card.style.animationDelay = `${index * 100}ms`;
-                card.innerHTML = `
-                    <img src="${product.image_url}" alt="${product.name}" class="w-full h-36 sm:h-40 lg:h-48 object-cover" loading="lazy">
-                    <div class="p-4 sm:p-5">
-                        <h3 class="text-base sm:text-lg lg:text-xl font-bold text-gray-800 dark:text-white truncate">${product.name}</h3>
-                        <p class="text-gray-500 dark:text-gray-400 text-xs sm:text-sm mt-1 line-clamp-2">${product.description}</p>
-                        <p class="text-sm sm:text-base lg:text-lg font-semibold text-green-600 mt-3">Rp ${product.price.toLocaleString()}</p>
+        function createProductCard(product) {
+            const card = document.createElement('div');
+            card.className = 'bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer transform hover:scale-105 transition-transform';
+            card.onclick = () => openProductModal(product);
+            card.innerHTML = `
+                <div class="relative">
+                    <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover" loading="lazy">
+                    <div class="absolute top-2 right-2 bg-white rounded-full px-2 py-1 text-xs font-semibold text-gray-600">
+                        <i class="fas fa-star text-yellow-400"></i> ${product.rating}
                     </div>
-                `;
-                card.onclick = () => openProductModal(product);
-                grid.appendChild(card);
+                </div>
+                <div class="p-4">
+                    <h4 class="font-bold text-lg mb-2 text-gray-800">${product.name}</h4>
+                    <p class="text-gray-600 text-sm mb-3 line-clamp-2">${product.description}</p>
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-primary font-bold text-xl">${formatRupiah(product.price)}</span>
+                        <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">${product.category}</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i class="fas fa-clock mr-1"></i>
+                            <span>${product.cooking_time}</span>
+                        </div>
+                        <button onclick="quickAddToCart(${product.id}); event.stopPropagation();" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-amber-600 transition-colors text-sm font-semibold">
+                            <i class="fas fa-plus mr-1"></i>Pesan
+                        </button>
+                    </div>
+                </div>
+            `;
+            return card;
+        }
+
+        function filterProducts(event, category) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-primary', 'text-white');
+                btn.classList.add('bg-gray-200', 'text-gray-700');
             });
+            event.target.classList.add('active', 'bg-primary', 'text-white');
+            event.target.classList.remove('bg-gray-200', 'text-gray-700');
+            const query = document.getElementById('searchBar').value.trim().toLowerCase();
+            filteredProducts = products.filter(product => {
+                const matchesCategory = category === 'all' || product.category === category;
+                const matchesQuery = product.name.toLowerCase().includes(query);
+                return matchesCategory && matchesQuery;
+            });
+            renderProducts(filteredProducts);
         }
 
-        // Search functionality
-        document.getElementById('search-input').addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-            const filtered = allProducts.filter(p => p.name.toLowerCase().includes(searchTerm) || p.description.toLowerCase().includes(searchTerm));
-            renderProducts(filtered);
-        });
-
-        // Theme toggle
-        const themeToggle = document.getElementById('theme-toggle');
-        themeToggle.addEventListener('click', () => {
-            document.documentElement.classList.toggle('dark');
-            const icon = themeToggle.querySelector('i');
-            icon.classList.toggle('fa-moon');
-            icon.classList.toggle('fa-sun');
-            localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-        });
-
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-            themeToggle.querySelector('i').classList.add('fa-sun');
-            themeToggle.querySelector('i').classList.remove('fa-moon');
-        }
-
-        // Show/hide loading
-        function showLoading(show) {
-            document.getElementById('loading').classList.toggle('hidden', !show);
-        }
-
-        // Fungsi buka modal produk
         function openProductModal(product) {
-            selectedProduct = product;
-            quantity = 1;
-            document.getElementById('modal-title').textContent = product.name;
-            document.getElementById('modal-image').src = product.image_url;
-            document.getElementById('modal-description').textContent = product.description;
-            document.getElementById('modal-price').textContent = `Rp ${product.price.toLocaleString()} / item`;
-            updateTotalPrice();
-            document.getElementById('product-modal').classList.remove('hidden');
-            setTimeout(() => {
-                document.getElementById('product-modal').querySelector('div').classList.remove('scale-90');
-            }, 10);
-
-            document.getElementById('quantity').addEventListener('input', (e) => {
-                quantity = parseInt(e.target.value) || 1;
-                updateTotalPrice();
-            });
-
-            document.getElementById('buy-button').onclick = () => {
-                closeModal('product-modal');
-                document.getElementById('checkout-total').textContent = `Total: Rp ${(product.price * quantity).toLocaleString()}`;
-                document.getElementById('checkout-modal').classList.remove('hidden');
-                setTimeout(() => {
-                    document.getElementById('checkout-modal').querySelector('div').classList.remove('scale-90');
-                }, 10);
-            };
+            currentProduct = product;
+            currentQuantity = 1;
+            document.getElementById('modalTitle').textContent = product.name;
+            document.getElementById('modalImage').src = product.image;
+            document.getElementById('modalImage').alt = product.name;
+            document.getElementById('modalPrice').textContent = formatRupiah(product.price);
+            document.getElementById('modalRating').textContent = product.rating;
+            document.getElementById('modalDescription').textContent = product.description;
+            document.getElementById('modalCookingTime').textContent = product.cooking_time;
+            document.getElementById('modalCategory').textContent = product.category;
+            document.getElementById('quantity').textContent = currentQuantity;
+            document.getElementById('productModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            document.getElementById('modalTitle').focus();
+            trapFocus('productModal');
         }
 
-        function updateTotalPrice() {
-            document.getElementById('total-price').textContent = `Total: Rp ${(selectedProduct.price * quantity).toLocaleString()}`;
-        }
-
-        // Fungsi tutup modal
         function closeModal(modalId) {
-            const modal = document.getElementById(modalId);
-            modal.querySelector('div').classList.add('scale-90');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-            }, 500);
+            document.getElementById(modalId).classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            if (modalId === 'checkoutModal') {
+                document.getElementById('checkoutForm').reset();
+            }
         }
 
-        // Handle form checkout
-        document.getElementById('checkout-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            if (!e.target.checkValidity()) {
-                e.target.reportValidity();
-                return;
-            }
-            const name = document.getElementById('name').value;
-            const address = document.getElementById('address').value;
-            const phone = document.getElementById('phone').value;
-
-            const { data, error } = await supabase
-                .from('orders')
-                .insert([
-                    {
-                        product_id: selectedProduct.id,
-                        quantity: quantity,
-                        name,
-                        address,
-                        phone,
-                        total_price: selectedProduct.price * quantity,
-                        status: 'pending'
+        function trapFocus(modalId) {
+            const modal = document.getElementById(modalId);
+            const focusable = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            modal.addEventListener('keydown', (e) => {
+                if (e.key === 'Tab') {
+                    if (e.shiftKey && document.activeElement === first) {
+                        e.preventDefault();
+                        last.focus();
+                    } else if (!e.shiftKey && document.activeElement === last) {
+                        e.preventDefault();
+                        first.focus();
                     }
-                ]);
+                }
+            });
+        }
 
-            if (error) {
-                console.error('Error inserting order:', error);
-                alert('Gagal menyimpan pesanan. Silakan coba lagi.');
+        function increaseQuantity() {
+            currentQuantity++;
+            document.getElementById('quantity').textContent = currentQuantity;
+        }
+
+        function decreaseQuantity() {
+            if (currentQuantity > 1) {
+                currentQuantity--;
+                document.getElementById('quantity').textContent = currentQuantity;
+            }
+        }
+
+        function quickAddToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            const existingItem = cart.find(item => item.id === productId);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+            saveCartToStorage();
+            updateCartCount();
+            showToast(`${product.name} ditambahkan ke keranjang!`);
+        }
+
+        function addToCart() {
+            if (!currentProduct) return;
+            const existingItem = cart.find(item => item.id === currentProduct.id);
+            if (existingItem) {
+                existingItem.quantity += currentQuantity;
+            } else {
+                cart.push({ ...currentProduct, quantity: currentQuantity });
+            }
+            saveCartToStorage();
+            updateCartCount();
+            closeModal('productModal');
+            openCheckoutModal();
+        }
+
+        function updateCartCount() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCount').textContent = totalItems;
+            saveCartToStorage();
+        }
+
+        function openCheckoutModal() {
+            if (cart.length === 0) {
+                showToast('Keranjang Anda kosong. Silakan tambah produk terlebih dahulu.');
                 return;
             }
+            renderOrderSummary();
+            calculateTotal();
+            document.getElementById('checkoutModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            document.getElementById('checkoutTitle').focus();
+            trapFocus('checkoutModal');
+        }
 
-            closeModal('checkout-modal');
-            document.getElementById('cod-modal').classList.remove('hidden');
+        function renderOrderSummary() {
+            const orderSummary = document.getElementById('orderSummary');
+            orderSummary.innerHTML = cart.length === 0 
+                ? '<p class="text-center text-gray-500 py-4">Keranjang kosong.</p>'
+                : cart.map((item, index) => `
+                    <div class="flex items-center justify-between py-2 border-b border-gray-200 last:border-b-0">
+                        <div class="flex items-center space-x-3">
+                            <img src="${item.image}" alt="${item.name}" class="w-12 h-12 object-cover rounded">
+                            <div>
+                                <h5 class="font-semibold text-sm">${item.name}</h5>
+                                <p class="text-xs text-gray-500">${formatRupiah(item.price)} x ${item.quantity}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="font-semibold">${formatRupiah(item.price * item.quantity)}</span>
+                            <button onclick="removeFromCart(${item.id})" class="text-red-500 hover:text-red-700 text-sm" aria-label="Hapus item">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            saveCartToStorage();
+            updateCartCount();
+            renderOrderSummary();
+            calculateTotal();
+            if (cart.length === 0) closeModal('checkoutModal');
+        }
+
+        function calculateTotal() {
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            document.getElementById('totalAmount').textContent = formatRupiah(total);
+        }
+
+        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const phone = document.getElementById('customerPhone').value;
+            const name = document.getElementById('customerName').value;
+            if (!/^\d{10,13}$/.test(phone.replace(/\D/g, ''))) {
+                showToast('Nomor telepon tidak valid (10-13 angka).');
+                return;
+            }
+            if (name.trim().length < 2) {
+                showToast('Nama harus minimal 2 karakter.');
+                return;
+            }
+            const formData = {
+                customerName: name.trim(),
+                customerPhone: phone,
+                customerAddress: document.getElementById('customerAddress').value.trim(),
+                orderNotes: document.getElementById('orderNotes').value.trim(),
+                items: cart,
+                total: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0),
+                orderDate: new Date().toISOString(),
+                status: 'pending',
+                paymentMethod: 'COD'
+            };
+            showLoading();
             setTimeout(() => {
-                document.getElementById('cod-modal').querySelector('div').classList.remove('scale-90');
-            }, 10);
-
-            document.getElementById('checkout-form').reset();
-            selectedProduct = null;
-            quantity = 1;
+                hideLoading();
+                submitOrder(formData);
+            }, 1500);
         });
 
-        // Load products and slider on page load
-        renderSlider();
-        showSlide(0);
-        fetchProducts();
+        async function submitOrder(orderData) {
+            try {
+                const { data, error } = await dbService.insertOrder(orderData);
+                if (error) {
+                    showToast('Gagal menyimpan pesanan ke database. Pesanan disimpan lokal.');
+                    localStorage.setItem(`pending_order_${Date.now()}`, JSON.stringify(orderData));
+                    showCODModal(orderData);
+                    return;
+                }
+                showCODModal({ ...orderData, orderId: data.id });
+            } catch (error) {
+                showToast('Terjadi kesalahan saat memproses pesanan. Silakan coba lagi.');
+                console.error('Error submitting order:', error);
+            }
+        }
 
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
+        function showCODModal(orderData) {
+            closeModal('checkoutModal');
+            const orderDetails = document.getElementById('orderDetails');
+            orderDetails.innerHTML = `
+                <div class="space-y-2">
+                    <div class="flex justify-between">
+                        <span class="text-sm text-gray-600">Nama:</span>
+                        <span class="text-sm font-semibold">${orderData.customerName}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-sm text-gray-600">Telepon:</span>
+                        <span class="text-sm font-semibold">${orderData.customerPhone}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-sm text-gray-600">Total Items:</span>
+                        <span class="text-sm font-semibold">${orderData.items.reduce((sum, item) => sum + item.quantity, 0)} ${orderData.items.length === 1 ? 'item' : 'items'}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-sm text-gray-600">Total Bayar:</span>
+                        <span class="text-sm font-bold text-primary">${formatRupiah(orderData.total)}</span>
+                    </div>
+                    <div class="pt-2 border-t">
+                        <p class="text-xs text-gray-500">Estimasi waktu pengiriman: 30-45 menit</p>
+                    </div>
+                </div>
+            `;
+            document.getElementById('codModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            document.getElementById('codTitle').focus();
+            trapFocus('codModal');
+        }
+
+        function resetApp() {
+            cart = [];
+            currentProduct = null;
+            currentQuantity = 1;
+            saveCartToStorage();
+            updateCartCount();
+            document.body.style.overflow = 'auto';
+        }
+
+        function showLoading() {
+            document.getElementById('loadingSpinner').classList.remove('hidden');
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingSpinner').classList.add('hidden');
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        function loadCartFromStorage() {
+            const saved = localStorage.getItem('foodorder_cart');
+            if (saved) {
+                cart = JSON.parse(saved);
+            }
+        }
+
+        function saveCartToStorage() {
+            localStorage.setItem('foodorder_cart', JSON.stringify(cart));
+        }
+
+        document.getElementById('cartBtn').addEventListener('click', function() {
+            openCheckoutModal();
+        });
+
+        document.getElementById('prevSlide').addEventListener('click', prevSlide);
+        document.getElementById('nextSlide').addEventListener('click', nextSlide);
+
+        window.addEventListener('click', function(e) {
+            const modals = ['productModal', 'checkoutModal', 'codModal'];
+            modals.forEach(modalId => {
+                const modal = document.getElementById(modalId);
+                if (e.target === modal) {
+                    closeModal(modalId);
+                }
+            });
+        });
+
+        document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
-                closeModal('product-modal');
-                closeModal('checkout-modal');
-                closeModal('cod-modal');
-                sidebar.classList.add('-translate-x-full');
-                sidebarOverlay.classList.add('hidden');
+                const modals = ['productModal', 'checkoutModal', 'codModal'];
+                modals.forEach(modalId => {
+                    const modal = document.getElementById(modalId);
+                    if (!modal.classList.contains('hidden')) {
+                        closeModal(modalId);
+                    }
+                });
             }
         });
-
-        // Custom CSS for fadeIn animation
-        const style = document.createElement('style');
-        style.innerHTML = `
-            @keyframes fadeIn {
-                from { opacity: 0; transform: translateY(20px); }
-                to { opacity: 1; transform: translateY(0); }
-            }
-            .animate-fadeIn {
-                animation: fadeIn 0.5s ease-out forwards;
-            }
-        `;
-        document.head.appendChild(style);
     </script>
 </body>
 </html>
