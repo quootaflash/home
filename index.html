@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
   <title>Pemesanan Makanan — Demo</title>
   <!-- Tailwind CDN (quick start). Untuk produksi gunakan build Tailwind. -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -24,6 +24,35 @@
     #sidebar-backdrop.open {
       display: block;
     }
+    /* Disable text selection and copy-paste */
+    body {
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+    }
+    /* Ensure product grid is scrollable and proportional */
+    #produk-grid {
+      min-height: calc(100vh - 200px);
+    }
+    /* Search bar adjustments for mobile */
+    @media (max-width: 767px) {
+      #search-container {
+        position: relative;
+        width: 100%;
+      }
+      #search {
+        display: none;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      #search.active {
+        display: block;
+      }
+      #search-icon {
+        cursor: pointer;
+      }
+    }
   </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
@@ -38,12 +67,12 @@
         </div>
       </div>
       <div class="flex-1 mx-6">
-        <div class="relative">
-          <svg class="absolute left-3 top-2.5 h-5 w-5 text-gray-400" viewBox="0 0 24 24" fill="none" aria-hidden>
+        <div id="search-container" class="relative">
+          <svg id="search-icon" class="absolute left-3 top-2.5 h-5 w-5 text-gray-400 md:cursor-default" viewBox="0 0 24 24" fill="none" aria-hidden>
             <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             <circle cx="11" cy="11" r="5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          <input id="search" type="search" placeholder="Cari makanan, merchant, kategori..." class="w-full border border-gray-200 rounded-xl py-2 pl-11 pr-4 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500" />
+          <input id="search" type="search" placeholder="Cari makanan, merchant, kategori..." class="w-full border border-gray-200 rounded-xl py-2 pl-11 pr-4 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500 md:block" />
         </div>
       </div>
       <nav class="hidden md:flex items-center gap-3">
@@ -93,7 +122,7 @@
   </section>
   <!-- MAIN GRID -->
   <main class="max-w-6xl mx-auto px-4 py-6">
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4" id="produk-grid">
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 overflow-auto" id="produk-grid">
       <!-- cards injected here -->
     </div>
   </main>
@@ -241,6 +270,21 @@
       t.classList.remove("hidden");
       setTimeout(() => t.classList.add("hidden"), ms);
     }
+    // SECURITY: Block inspect, zoom, and copy-paste
+    document.addEventListener("contextmenu", (e) => e.preventDefault());
+    document.addEventListener("keydown", (e) => {
+      if (
+        e.key === "F12" ||
+        (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "C" || e.key === "J")) ||
+        (e.ctrlKey && e.key === "U")
+      ) {
+        e.preventDefault();
+        showToast("Aksi ini tidak diizinkan.");
+      }
+    });
+    document.addEventListener("copy", (e) => e.preventDefault());
+    document.addEventListener("cut", (e) => e.preventDefault());
+    document.addEventListener("paste", (e) => e.preventDefault());
     // MOBILE SIDEBAR CONTROLS
     const sidebar = document.getElementById("mobile-sidebar");
     const backdrop = document.getElementById("sidebar-backdrop");
@@ -268,6 +312,20 @@
       if (selectedQuantity > 1) {
         selectedQuantity--;
         document.getElementById("modal-quantity").innerText = selectedQuantity;
+      }
+    });
+    // SEARCH CONTROLS
+    const searchInput = document.getElementById("search");
+    const searchIcon = document.getElementById("search-icon");
+    searchIcon.addEventListener("click", () => {
+      if (window.innerWidth <= 767) {
+        searchInput.classList.toggle("active");
+        if (searchInput.classList.contains("active")) {
+          searchInput.focus();
+        } else {
+          searchInput.value = "";
+          renderProduk(produkData);
+        }
       }
     });
     // LOAD DATA FROM SUPABASE
@@ -325,13 +383,13 @@
       }
       for (const item of list) {
         const card = document.createElement("article");
-        card.className = "bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition cursor-pointer";
+        card.className = "bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition cursor-pointer aspect-[3/4]";
         const img = document.createElement("img");
         img.src = item.gambar || "";
         img.alt = item.nama || "";
         img.className = "h-40 w-full object-cover";
         const body = document.createElement("div");
-        body.className = "p-3";
+        body.className = "p-3 flex flex-col justify-between flex-1";
         const title = document.createElement("h3");
         title.className = "text-sm font-semibold";
         title.innerText = item.nama || "—";
@@ -357,7 +415,6 @@
         body.appendChild(row);
         card.appendChild(img);
         card.appendChild(body);
-        card.addEventListener("click", () => openModal(item));
         grid.appendChild(card);
       }
     }
@@ -497,6 +554,11 @@
         sidebar.classList.add("translate-x-full");
         backdrop.classList.remove("open");
         document.body.classList.remove("sidebar-open");
+        if (window.innerWidth <= 767) {
+          searchInput.classList.remove("active");
+          searchInput.value = "";
+          renderProduk(produkData);
+        }
       }
     });
   </script>
