@@ -9,7 +9,7 @@
   <!-- Supabase JS CDN -->
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
   <style>
-    /* Simple scrollbar hide for modal backdrop on ios */
+    /* Hide scroll when modal or sidebar is open */
     body.modal-open, body.sidebar-open {
       overflow: hidden;
     }
@@ -21,11 +21,22 @@
     #mobile-sidebar.open {
       transform: translateX(0);
     }
+    /* Backdrop for sidebar */
+    #sidebar-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 40;
+    }
+    #sidebar-backdrop.open {
+      display: block;
+    }
   </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
   <!-- NAVBAR -->
-  <header class="bg-white shadow sticky top-0 z-40">
+  <header class="bg-white shadow sticky top-0 z-50">
     <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
       <div class="flex items-center gap-3">
         <img src="https://via.placeholder.com/150x50?text=FoodOrder+Logo" alt="FoodOrder Logo" class="h-10 w-auto" onerror="this.style.display='none'"/>
@@ -53,6 +64,7 @@
     </div>
   </header>
   <!-- MOBILE SIDEBAR -->
+  <div id="sidebar-backdrop" class=""></div>
   <div id="mobile-sidebar" class="fixed inset-y-0 right-0 z-50 w-64 bg-white shadow-lg md:hidden">
     <div class="flex justify-end p-4">
       <button id="close-sidebar" class="p-2">
@@ -200,7 +212,7 @@
     if (!SUPABASE_URL || !SUPABASE_ANON) {
       console.error("Supabase credential belum diisi. Ganti SUPABASE_URL dan SUPABASE_ANON.");
     }
-    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
     // State
     let produkData = [];
     let operatorData = [];
@@ -231,22 +243,25 @@
     // MOBILE SIDEBAR CONTROLS
     function openSidebar() {
       document.getElementById("mobile-sidebar").classList.add("open");
+      document.getElementById("sidebar-backdrop").classList.add("open");
       document.body.classList.add("sidebar-open");
     }
     function closeSidebar() {
       document.getElementById("mobile-sidebar").classList.remove("open");
+      document.getElementById("sidebar-backdrop").classList.remove("open");
       document.body.classList.remove("sidebar-open");
     }
     document.getElementById("mobile-menu-btn").addEventListener("click", openSidebar);
     document.getElementById("close-sidebar").addEventListener("click", closeSidebar);
+    document.getElementById("sidebar-backdrop").addEventListener("click", closeSidebar);
     // LOAD DATA FROM SUPABASE
     async function loadData() {
       try {
-        const { data: produk, error: err1 } = await supabase
+        const { data: produk, error: err1 } = await supabaseClient
           .from("produk")
           .select("id,nama,deskripsi,harga,gambar,merchant,alamat,kategori")
           .order("id", { ascending: true });
-        const { data: msgs, error: err2 } = await supabase
+        const { data: msgs, error: err2 } = await supabaseClient
           .from("message")
           .select("id,nomor")
           .order("id", { ascending: true });
@@ -326,7 +341,6 @@
         body.appendChild(row);
         card.appendChild(img);
         card.appendChild(body);
-        // card click opens modal
         card.addEventListener("click", () => openModal(item));
         grid.appendChild(card);
       }
@@ -361,18 +375,15 @@
     }
     function openCheckout() {
       if (!selectedProduk) return showToast("Pilih produk terlebih dahulu.");
-      // fill summary
       const sum = document.getElementById("checkout-summary");
       sum.innerHTML = `
         <div class="font-semibold">${selectedProduk.nama}</div>
         <div class="text-xs text-gray-500">${selectedProduk.merchant} • ${selectedProduk.alamat || ""}</div>
         <div class="mt-2 text-rose-600 font-bold">${rupiah(selectedProduk.harga)}</div>
       `;
-      // reset inputs
       document.getElementById("input-nama").value = "";
       document.getElementById("input-alamat").value = "";
       document.getElementById("input-hp").value = "";
-      // show
       closeModal();
       document.getElementById("modal-checkout").classList.remove("hidden");
       document.body.classList.add("modal-open");
@@ -381,17 +392,16 @@
       document.getElementById("modal-checkout").classList.add("hidden");
       document.body.classList.remove("modal-open");
     }
-    // VALIDasi nomor hp (simple)
+    // VALIDASI NOMOR HP
     function normalizeHp(raw) {
       if (!raw) return "";
       let s = String(raw).trim().replace(/\s+/g, "");
-      s = s.replace(/^(\+62|62)/, "0"); // normalize to 0...
-      // return in international format without đông for wa.me: 6281234...
+      s = s.replace(/^(\+62|62)/, "0");
       if (s.startsWith("0")) return "62" + s.slice(1);
       if (s.startsWith("62")) return s;
       return s;
     }
-    // HANDLE CHECKOUT -> pick WA number (rotation) -> redirect
+    // HANDLE CHECKOUT
     function handleCheckout() {
       const nama = document.getElementById("input-nama").value.trim();
       const alamat = document.getElementById("input-alamat").value.trim();
@@ -404,11 +414,9 @@
       if (!operatorData.length) {
         return showToast("Tidak ada nomor operator. Hubungi admin.");
       }
-      // pick operator by rotation. Use bumpWaIndex to persist.
       const idx = getWaIndex() % operatorData.length;
-      bumpWaIndex(); // increment for next time
+      bumpWaIndex();
       const operator = operatorData[idx];
-      // build message payload
       const list = [
         `Halo Admin, saya ingin pesan:`,
         `Nama: ${nama}`,
@@ -421,13 +429,10 @@
         `*Catatan:*`
       ];
       const text = encodeURIComponent(list.join("\n"));
-      // redirect to wa.me in new tab
       const waNumber = String(operator.nomor).replace(/\D/g, "");
       if (!waNumber) return showToast("Nomor operator tidak valid.");
-      // open
       const url = `https://wa.me/${waNumber}?text=${text}`;
       window.open(url, "_blank");
-      // optional: store last order locally (for analytics or UI)
       try {
         const history = JSON.parse(localStorage.getItem("orders") || "[]");
         history.unshift({
@@ -436,7 +441,7 @@
           harga: selectedProduk.harga,
           nama,
           alamat,
-          Circumflex: hpRaw,
+          hp: hpRaw,
           operator: waNumber,
           ts: new Date().toISOString()
         });
@@ -447,11 +452,11 @@
     }
     // INIT
     loadData();
-    // Optional: hero action scroll to product grid
+    // HERO ACTION SCROLL
     document.getElementById("hero-action")?.addEventListener("click", () => {
       document.getElementById("produk-grid").scrollIntoView({ behavior: "smooth", block: "start" });
     });
-    // accessibility: close modals and sidebar with ESC
+    // ACCESSIBILITY: CLOSE MODALS AND SIDEBAR WITH ESC
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
         closeModal();
