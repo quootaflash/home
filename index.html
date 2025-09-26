@@ -114,9 +114,13 @@
           </div>
         </div>
         <p id="modal-deskripsi" class="mt-3 text-sm text-gray-600"></p>
-        <div class="mt-3">
+        <div class="mt-3 flex items-center gap-2">
           <label class="text-xs text-gray-600">Jumlah Pesanan</label>
-          <input id="modal-quantity" type="number" min="1" value="1" class="w-full border border-gray-200 rounded-md px-3 py-2 mt-1 text-sm" />
+          <div class="flex items-center border border-gray-200 rounded-md">
+            <button id="decrease-quantity" class="px-3 py-1 text-gray-600 hover:bg-gray-100">-</button>
+            <span id="modal-quantity" class="px-3 py-1 text-sm">1</span>
+            <button id="increase-quantity" class="px-3 py-1 text-gray-600 hover:bg-gray-100">+</button>
+          </div>
         </div>
         <div class="mt-4 grid grid-cols-2 gap-2">
           <button onclick="openCheckout()" class="col-span-2 bg-rose-600 text-white py-2 rounded-lg">Pesan Sekarang</button>
@@ -255,6 +259,17 @@
       backdrop.classList.remove("open");
       document.body.classList.remove("sidebar-open");
     });
+    // QUANTITY CONTROLS
+    document.getElementById("increase-quantity").addEventListener("click", () => {
+      selectedQuantity++;
+      document.getElementById("modal-quantity").innerText = selectedQuantity;
+    });
+    document.getElementById("decrease-quantity").addEventListener("click", () => {
+      if (selectedQuantity > 1) {
+        selectedQuantity--;
+        document.getElementById("modal-quantity").innerText = selectedQuantity;
+      }
+    });
     // LOAD DATA FROM SUPABASE
     async function loadData() {
       try {
@@ -361,14 +376,14 @@
     // MODAL CONTROLS
     function openModal(item) {
       selectedProduk = item;
-      selectedQuantity = 1; // Reset quantity
+      selectedQuantity = 1; // Default quantity
       document.getElementById("modal-gambar").src = item.gambar || "";
       document.getElementById("modal-nama").innerText = item.nama || "";
       document.getElementById("modal-merchant").innerText = item.merchant || "";
       document.getElementById("modal-deskripsi").innerText = item.deskripsi || "";
       document.getElementById("modal-harga").innerText = rupiah(item.harga);
       document.getElementById("modal-kategori").innerText = item.kategori || "";
-      document.getElementById("modal-quantity").value = 1;
+      document.getElementById("modal-quantity").innerText = selectedQuantity;
       document.getElementById("modal-produk").classList.remove("hidden");
       document.body.classList.add("modal-open");
     }
@@ -378,7 +393,6 @@
     }
     function openCheckout() {
       if (!selectedProduk) return showToast("Pilih produk terlebih dahulu.");
-      selectedQuantity = parseInt(document.getElementById("modal-quantity").value, 10) || 1;
       if (selectedQuantity < 1) {
         showToast("Jumlah pesanan minimal 1.");
         return;
@@ -417,7 +431,12 @@
       const hpRaw = document.getElementById("input-hp").value.trim();
       const hp = normalizeHp(hpRaw);
       if (!nama || !alamat || !hp) {
-        return showToast("Lengkapi semua form checkout.");
+        showToast("Harap lengkapi semua kolom: Nama, Alamat, dan Nomor HP.");
+        return;
+      }
+      if (!hp.match(/^(\+62|62|0)\d{9,12}$/)) {
+        showToast("Nomor HP tidak valid. Gunakan format yang benar (contoh: 0812xxxx).");
+        return;
       }
       if (!selectedProduk) return showToast("Produk tidak tersedia.");
       if (!operatorData.length) {
