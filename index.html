@@ -138,14 +138,14 @@
       <div class="mt-3 space-y-3">
         <div>
           <label class="text-xs text-gray-600">Nama Lengkap</label>
-          <input id="input-nama" required type="text" placeholder="Nama lengkap" class="w-full border border-gray-200 rounded-md px-3 py-2 mt-1 text-sm" />
+          <input id="input-nama" required type="text" placeholder="Nama anda" class="w-full border border-gray-200 rounded-md px-3 py-2 mt-1 text-sm" />
         </div>
         <div>
           <label class="text-xs text-gray-600">Alamat (RT/RW)</label>
           <input id="input-alamat" required type="text" placeholder="Jl. Contoh No 1, RT 01 / RW 02" class="w-full border border-gray-200 rounded-md px-3 py-2 mt-1 text-sm" />
         </div>
         <div>
-          <label class="text-xs text-gray-600">Nomor HP</label>
+          <label class="text-xs text-gray-600">Nomor HP-Whatsaap</label>
           <input id="input-hp" required type="tel" placeholder="0812xxxx" class="w-full border border-gray-200 rounded-md px-3 py-2 mt-1 text-sm" />
         </div>
         <div id="checkout-summary" class="text-sm text-gray-700 bg-gray-50 p-3 rounded-md">
@@ -345,7 +345,7 @@
         price.innerText = rupiah(item.harga);
         const btn = document.createElement("button");
         btn.className = "text-xs bg-emerald-600 text-white px-3 py-1 rounded-md";
-        btn.innerText = "Detail";
+        btn.innerText = "Pesan";
         btn.onclick = (e) => {
           e.stopPropagation();
           openModal(item);
