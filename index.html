@@ -13,14 +13,6 @@
     body.modal-open, body.sidebar-open {
       overflow: hidden;
     }
-    /* Sidebar animation */
-    #mobile-sidebar {
-      transform: translateX(100%);
-      transition: transform 0.3s ease-in-out;
-    }
-    #mobile-sidebar.open {
-      transform: translateX(0);
-    }
     /* Backdrop for sidebar */
     #sidebar-backdrop {
       display: none;
@@ -64,8 +56,8 @@
     </div>
   </header>
   <!-- MOBILE SIDEBAR -->
-  <div id="sidebar-backdrop" class=""></div>
-  <div id="mobile-sidebar" class="fixed inset-y-0 right-0 z-50 w-64 bg-white shadow-lg md:hidden">
+  <div id="sidebar-backdrop"></div>
+  <div id="mobile-sidebar" class="fixed inset-y-0 right-0 z-50 w-64 bg-white shadow-lg translate-x-full transition duration-300 ease-in-out md:hidden">
     <div class="flex justify-end p-4">
       <button id="close-sidebar" class="p-2">
         <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none">
@@ -241,19 +233,23 @@
       setTimeout(() => t.classList.add("hidden"), ms);
     }
     // MOBILE SIDEBAR CONTROLS
-    function openSidebar() {
-      document.getElementById("mobile-sidebar").classList.add("open");
-      document.getElementById("sidebar-backdrop").classList.add("open");
-      document.body.classList.add("sidebar-open");
-    }
-    function closeSidebar() {
-      document.getElementById("mobile-sidebar").classList.remove("open");
-      document.getElementById("sidebar-backdrop").classList.remove("open");
+    const sidebar = document.getElementById("mobile-sidebar");
+    const backdrop = document.getElementById("sidebar-backdrop");
+    document.getElementById("mobile-menu-btn").addEventListener("click", () => {
+      sidebar.classList.toggle("translate-x-full");
+      backdrop.classList.toggle("open");
+      document.body.classList.toggle("sidebar-open");
+    });
+    document.getElementById("close-sidebar").addEventListener("click", () => {
+      sidebar.classList.add("translate-x-full");
+      backdrop.classList.remove("open");
       document.body.classList.remove("sidebar-open");
-    }
-    document.getElementById("mobile-menu-btn").addEventListener("click", openSidebar);
-    document.getElementById("close-sidebar").addEventListener("click", closeSidebar);
-    document.getElementById("sidebar-backdrop").addEventListener("click", closeSidebar);
+    });
+    document.getElementById("sidebar-backdrop").addEventListener("click", () => {
+      sidebar.classList.add("translate-x-full");
+      backdrop.classList.remove("open");
+      document.body.classList.remove("sidebar-open");
+    });
     // LOAD DATA FROM SUPABASE
     async function loadData() {
       try {
@@ -461,7 +457,9 @@
       if (e.key === "Escape") {
         closeModal();
         closeCheckout();
-        closeSidebar();
+        sidebar.classList.add("translate-x-full");
+        backdrop.classList.remove("open");
+        document.body.classList.remove("sidebar-open");
       }
     });
   </script>
