@@ -114,6 +114,10 @@
           </div>
         </div>
         <p id="modal-deskripsi" class="mt-3 text-sm text-gray-600"></p>
+        <div class="mt-3">
+          <label class="text-xs text-gray-600">Jumlah Pesanan</label>
+          <input id="modal-quantity" type="number" min="1" value="1" class="w-full border border-gray-200 rounded-md px-3 py-2 mt-1 text-sm" />
+        </div>
         <div class="mt-4 grid grid-cols-2 gap-2">
           <button onclick="openCheckout()" class="col-span-2 bg-rose-600 text-white py-2 rounded-lg">Pesan Sekarang</button>
           <button onclick="closeModal()" class="col-span-2 border border-gray-200 py-2 rounded-lg">Tutup</button>
@@ -210,6 +214,7 @@
     let operatorData = [];
     let kategoriSet = new Set();
     let selectedProduk = null;
+    let selectedQuantity = 1;
     // WA rotation pointer stored in localStorage to persist between sessions
     const WA_INDEX_KEY = "wa_rotation_index";
     function getWaIndex() {
@@ -356,12 +361,14 @@
     // MODAL CONTROLS
     function openModal(item) {
       selectedProduk = item;
+      selectedQuantity = 1; // Reset quantity
       document.getElementById("modal-gambar").src = item.gambar || "";
       document.getElementById("modal-nama").innerText = item.nama || "";
       document.getElementById("modal-merchant").innerText = item.merchant || "";
       document.getElementById("modal-deskripsi").innerText = item.deskripsi || "";
       document.getElementById("modal-harga").innerText = rupiah(item.harga);
       document.getElementById("modal-kategori").innerText = item.kategori || "";
+      document.getElementById("modal-quantity").value = 1;
       document.getElementById("modal-produk").classList.remove("hidden");
       document.body.classList.add("modal-open");
     }
@@ -371,11 +378,17 @@
     }
     function openCheckout() {
       if (!selectedProduk) return showToast("Pilih produk terlebih dahulu.");
+      selectedQuantity = parseInt(document.getElementById("modal-quantity").value, 10) || 1;
+      if (selectedQuantity < 1) {
+        showToast("Jumlah pesanan minimal 1.");
+        return;
+      }
       const sum = document.getElementById("checkout-summary");
       sum.innerHTML = `
         <div class="font-semibold">${selectedProduk.nama}</div>
         <div class="text-xs text-gray-500">${selectedProduk.merchant} • ${selectedProduk.alamat || ""}</div>
-        <div class="mt-2 text-rose-600 font-bold">${rupiah(selectedProduk.harga)}</div>
+        <div class="mt-2">Jumlah: ${selectedQuantity}</div>
+        <div class="mt-2 text-rose-600 font-bold">Total: ${rupiah(selectedProduk.harga * selectedQuantity)}</div>
       `;
       document.getElementById("input-nama").value = "";
       document.getElementById("input-alamat").value = "";
@@ -413,6 +426,7 @@
       const idx = getWaIndex() % operatorData.length;
       bumpWaIndex();
       const operator = operatorData[idx];
+      const totalHarga = selectedProduk.harga * selectedQuantity;
       const list = [
         `Halo Admin, saya ingin pesan:`,
         `Nama: ${nama}`,
@@ -420,7 +434,9 @@
         `HP: ${hpRaw}`,
         `Merchant: ${selectedProduk.merchant || "-"}`,
         `Produk: ${selectedProduk.nama || "-"} (${selectedProduk.kategori || "-"})`,
-        `Harga: ${rupiah(selectedProduk.harga)}`,
+        `Jumlah: ${selectedQuantity}`,
+        `Harga Satuan: ${rupiah(selectedProduk.harga)}`,
+        `Total Harga: ${rupiah(totalHarga)}`,
         `---`,
         `*Catatan:*`
       ];
@@ -435,6 +451,8 @@
           produkId: selectedProduk.id,
           produkNama: selectedProduk.nama,
           harga: selectedProduk.harga,
+          jumlah: selectedQuantity,
+          total: totalHarga,
           nama,
           alamat,
           hp: hpRaw,
