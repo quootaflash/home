@@ -16,11 +16,16 @@
                     },
                     animation: {
                         fadeIn: 'fadeIn 0.5s ease-in-out',
+                        slideIn: 'slideIn 0.3s ease-in-out',
                     },
                     keyframes: {
                         fadeIn: {
                             '0%': { opacity: '0' },
                             '100%': { opacity: '1' },
+                        },
+                        slideIn: {
+                            '0%': { transform: 'translateY(-10px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
                         },
                     },
                 },
@@ -51,7 +56,7 @@
                 </button>
             </div>
         </div>
-        <div id="mobile-menu" class="hidden md:hidden bg-white shadow-md px-4 sm:px-6 py-6">
+        <div id="mobile-menu" class="hidden bg-white shadow-md px-4 sm:px-6 py-6 md:hidden animate-slideIn">
             <a href="#" class="block py-2 text-secondary hover:text-primary font-medium transition-colors duration-300">Home</a>
             <a href="#" class="block py-2 text-secondary hover:text-primary font-medium transition-colors duration-300">Categories</a>
             <a href="#" class="block py-2 text-secondary hover:text-primary font-medium transition-colors duration-300">Merchants</a>
@@ -69,11 +74,11 @@
 
     <!-- Image Slider (Auto-Swipe) -->
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="relative overflow-hidden rounded-xl shadow-lg max-w-5xl mx-auto">
+        <div id="slider-container" class="relative overflow-hidden rounded-xl shadow-lg max-w-4xl mx-auto">
             <div id="slider" class="flex transition-transform duration-700 ease-in-out">
-                <img src="https://via.placeholder.com/1200x300?text=Food+Banner+1" alt="Banner 1" class="w-full h-[250px] sm:h-[300px] object-cover">
-                <img src="https://via.placeholder.com/1200x300?text=Food+Banner+2" alt="Banner 2" class="w-full h-[250px] sm:h-[300px] object-cover">
-                <img src="https://via.placeholder.com/1200x300?text=Food+Banner+3" alt="Banner 3" class="w-full h-[250px] sm:h-[300px] object-cover">
+                <img src="https://via.placeholder.com/1200x300?text=Food+Banner+1" alt="Banner 1" class="w-full h-[200px] sm:h-[250px] lg:h-[300px] object-cover flex-shrink-0">
+                <img src="https://via.placeholder.com/1200x300?text=Food+Banner+2" alt="Banner 2" class="w-full h-[200px] sm:h-[250px] lg:h-[300px] object-cover flex-shrink-0">
+                <img src="https://via.placeholder.com/1200x300?text=Food+Banner+3" alt="Banner 3" class="w-full h-[200px] sm:h-[250px] lg:h-[300px] object-cover flex-shrink-0">
             </div>
             <button id="prev-slide" class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-primary text-white p-2 rounded-r-full hover:bg-accent focus:outline-none opacity-80 hover:opacity-100 transition-opacity duration-300">
                 <i class="fas fa-chevron-left"></i>
@@ -93,7 +98,7 @@
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-10 animate-fadeIn">
         <h2 class="text-3xl font-bold text-secondary mb-6 text-center tracking-tight">Explore Our Menu</h2>
         <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            <!-- Product cards will be populated by JavaScript -->
+            <div id="loading" class="col-span-full text-center text-gray-500 hidden">Loading products...</div>
         </div>
     </div>
 
@@ -185,26 +190,31 @@
 
     <script>
         // Initialize Supabase client
-        const supabase = Supabase.createClient('YOUR_SUPABASE_URL', 'YOUR_SUPABASE_KEY');
+        const supabase = supabase.createClient('YOUR_SUPABASE_URL', 'YOUR_SUPABASE_KEY');
 
-        // Sample WhatsApp numbers (from message table)
-        const whatsappNumbers = [
-            '+6281234567890',
-            '+6281234567891',
-            '+6281234567892',
-            '+6281234567893'
-        ];
-        let currentOperatorIndex = 0;
+        // Fetch WhatsApp numbers from Supabase
+        async function fetchWhatsAppNumbers() {
+            const { data, error } = await supabase.from('message').select('whatsapp_number').eq('is_active', true);
+            if (error) {
+                console.error('Error fetching WhatsApp numbers:', error);
+                return ['+6281234567890', '+6281234567891', '+6281234567892', '+6281234567893'];
+            }
+            return data.map(item => item.whatsapp_number);
+        }
 
         // Fetch products from Supabase
         async function fetchProducts(searchTerm = '') {
+            const loading = document.getElementById('loading');
+            loading.classList.remove('hidden');
             let query = supabase.from('products').select('*');
             if (searchTerm) {
                 query = query.or(`name.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%,merchant_name.ilike.%${searchTerm}%,category.ilike.%${searchTerm}%`);
             }
             const { data, error } = await query;
+            loading.classList.add('hidden');
             if (error) {
                 console.error('Error fetching products:', error);
+                document.getElementById('product-grid').innerHTML = '<p class="col-span-full text-center text-gray-500 text-sm">Failed to load products.</p>';
                 return;
             }
             renderProducts(data);
@@ -215,7 +225,7 @@
             const productGrid = document.getElementById('product-grid');
             productGrid.innerHTML = '';
             if (products.length === 0) {
-                productGrid.innerHTML = '<p class="col-span-full text-center text-gray-500">No products found.</p>';
+                productGrid.innerHTML = '<p class="col-span-full text-center text-gray-500 text-sm">No products found.</p>';
                 return;
             }
             products.forEach(product => {
@@ -239,6 +249,7 @@
             const { data, error } = await supabase.from('products').select('*').eq('id', productId).single();
             if (error) {
                 console.error('Error fetching product:', error);
+                alert('Failed to load product details.');
                 return;
             }
             document.getElementById('modal-title').textContent = data.name;
@@ -249,25 +260,29 @@
             document.getElementById('modal-address').textContent = `Address: ${data.merchant_address}`;
             document.getElementById('product-id').value = data.id;
             document.getElementById('product-modal').classList.remove('hidden');
-            document.getElementById('product-modal').querySelector('div').classList.add('scale-100');
+            setTimeout(() => document.getElementById('product-modal').querySelector('div').classList.add('scale-100'), 10);
         }
 
         // Open checkout modal
         document.getElementById('order-btn').addEventListener('click', () => {
             document.getElementById('product-modal').classList.add('hidden');
             document.getElementById('checkout-modal').classList.remove('hidden');
-            document.getElementById('checkout-modal').querySelector('div').classList.add('scale-100');
+            setTimeout(() => document.getElementById('checkout-modal').querySelector('div').classList.add('scale-100'), 10);
         });
 
         // Close modals
         document.getElementById('close-modal').addEventListener('click', () => {
             document.getElementById('product-modal').classList.add('hidden');
+            document.getElementById('product-modal').querySelector('div').classList.remove('scale-100');
         });
         document.getElementById('close-checkout').addEventListener('click', () => {
             document.getElementById('checkout-modal').classList.add('hidden');
+            document.getElementById('checkout-modal').querySelector('div').classList.remove('scale-100');
         });
 
         // Handle checkout form submission
+        let whatsappNumbers = [];
+        let currentOperatorIndex = 0;
         document.getElementById('checkout-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const fullName = document.getElementById('full-name').value;
@@ -280,71 +295,144 @@
                 return;
             }
 
-            // Fetch product details
-            const { data: product } = await supabase.from('products').select('*').eq('id', productId).single();
+            const { data: product, error } = await supabase.from('products').select('*').eq('id', productId).single();
+            if (error) {
+                console.error('Error fetching product for checkout:', error);
+                alert('Failed to retrieve product details.');
+                return;
+            }
 
-            // Rotate WhatsApp operator
-            const operatorNumber = whatsappNumbers[currentOperatorIndex];
+            const operatorNumber = whatsappNumbers[currentOperatorIndex] || whatsappNumbers[0];
             currentOperatorIndex = (currentOperatorIndex + 1) % whatsappNumbers.length;
 
-            // Construct WhatsApp message
             const message = `New Order:\nName: ${fullName}\nAddress: ${address}\nPhone: ${phone}\nMerchant: ${product.merchant_name}\nProduct: ${product.name}\nPrice: Rp ${product.price}`;
             const whatsappUrl = `https://wa.me/${operatorNumber}?text=${encodeURIComponent(message)}`;
 
-            // Redirect to WhatsApp
             window.location.href = whatsappUrl;
 
-            // Reset form and close modal
             document.getElementById('checkout-form').reset();
             document.getElementById('checkout-modal').classList.add('hidden');
+            document.getElementById('checkout-modal').querySelector('div').classList.remove('scale-100');
         });
 
-        // Auto-Swipe Slider (one image at a time)
+        // Auto-Swipe Slider with Touch Support
         let currentSlide = 0;
+        let touchStartX = 0;
+        let touchEndX = 0;
         const slides = document.querySelectorAll('#slider img');
         const dots = document.querySelectorAll('.slide-dot');
+        const slider = document.getElementById('slider');
+        let autoSlideInterval = null;
+
         function showSlide(index) {
-            document.getElementById('slider').style.transform = `translateX(-${index * 100}%)`;
+            if (slides.length === 0) return;
+            if (index >= slides.length) index = 0;
+            if (index < 0) index = slides.length - 1;
+            currentSlide = index;
+            slider.style.transform = `translateX(-${currentSlide * 100}%)`;
             dots.forEach((dot, i) => {
-                dot.classList.toggle('bg-primary', i === index);
-                dot.classList.toggle('bg-gray-300', i !== index);
-                dot.classList.toggle('scale-110', i === index);
+                dot.classList.toggle('bg-primary', i === currentSlide);
+                dot.classList.toggle('bg-gray-300', i !== currentSlide);
+                dot.classList.toggle('scale-110', i === currentSlide);
             });
         }
-        function autoSlide() {
-            currentSlide = (currentSlide + 1) % slides.length;
-            showSlide(currentSlide);
+
+        function startAutoSlide() {
+            if (autoSlideInterval) clearInterval(autoSlideInterval);
+            autoSlideInterval = setInterval(() => {
+                showSlide(currentSlide + 1);
+            }, 4000);
         }
+
+        function stopAutoSlide() {
+            if (autoSlideInterval) clearInterval(autoSlideInterval);
+        }
+
         document.getElementById('next-slide').addEventListener('click', () => {
-            currentSlide = (currentSlide + 1) % slides.length;
-            showSlide(currentSlide);
+            stopAutoSlide();
+            showSlide(currentSlide + 1);
+            startAutoSlide();
         });
+
         document.getElementById('prev-slide').addEventListener('click', () => {
-            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-            showSlide(currentSlide);
+            stopAutoSlide();
+            showSlide(currentSlide - 1);
+            startAutoSlide();
         });
+
         dots.forEach(dot => {
             dot.addEventListener('click', () => {
-                currentSlide = parseInt(dot.getAttribute('data-index'));
-                showSlide(currentSlide);
+                stopAutoSlide();
+                showSlide(parseInt(dot.getAttribute('data-index')));
+                startAutoSlide();
             });
         });
-        setInterval(autoSlide, 4000); // Auto-swipe every 4 seconds
+
+        // Touch support for mobile
+        const sliderContainer = document.getElementById('slider-container');
+        sliderContainer.addEventListener('touchstart', (e) => {
+            stopAutoSlide();
+            touchStartX = e.touches[0].clientX;
+        });
+
+        sliderContainer.addEventListener('touchmove', (e) => {
+            touchEndX = e.touches[0].clientX;
+        });
+
+        sliderContainer.addEventListener('touchend', () => {
+            const deltaX = touchStartX - touchEndX;
+            if (Math.abs(deltaX) > 50) {
+                stopAutoSlide();
+                if (deltaX > 0) {
+                    showSlide(currentSlide + 1);
+                } else {
+                    showSlide(currentSlide - 1);
+                }
+                startAutoSlide();
+            }
+            touchStartX = 0;
+            touchEndX = 0;
+        });
+
+        sliderContainer.addEventListener('mouseenter', stopAutoSlide);
+        sliderContainer.addEventListener('mouseleave', startAutoSlide);
 
         // Mobile menu toggle
         document.getElementById('menu-toggle').addEventListener('click', () => {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
         });
 
-        // Real-time search functionality with Supabase
-        document.getElementById('search-bar').addEventListener('input', async (e) => {
+        // Debounced search
+        function debounce(func, wait) {
+            let timeout;
+            return function (...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+        }
+
+        document.getElementById('search-bar').addEventListener('input', debounce(async (e) => {
             const searchTerm = e.target.value.trim();
             await fetchProducts(searchTerm);
-        });
+        }, 300));
 
         // Initialize
-        fetchProducts();
-        showSlide(currentSlide);
+        async function initialize() {
+            whatsappNumbers = await fetchWhatsAppNumbers();
+            if (whatsappNumbers.length === 0) {
+                console.error('No active WhatsApp numbers found, using fallback');
+                whatsappNumbers = ['+6281234567890', '+6281234567891', '+6281234567892', '+6281234567893'];
+            }
+            await fetchProducts();
+            if (slides.length > 0) {
+                showSlide(currentSlide);
+                startAutoSlide();
+            }
+        }
+
+        // Run initialization on DOM content loaded
+        document.addEventListener('DOMContentLoaded', initialize);
     </script>
 
     <style>
@@ -356,8 +444,11 @@
                 grid-template-columns: 1fr;
             }
             .container {
-                padding-left: 16px;
-                padding-right: 16px;
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+            .text-3xl {
+                font-size: 1.75rem;
             }
         }
         @media (min-width: 641px) and (max-width: 1024px) {
