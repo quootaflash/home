@@ -1,9 +1,9 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Home Pemesanan Makanan</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pesan Makanan Online</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -14,243 +14,345 @@
               50: '#fff8f2',
               100: '#ffefe0',
               500: '#ff6a00',
+              600: '#f55a00',
               700: '#e05500'
+            }
+          },
+          animation: {
+            'fade-in': 'fadeIn 0.3s ease-out',
+            'slide-in': 'slideIn 0.3s ease-out'
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' }
+            },
+            slideIn: {
+              '0%': { transform: 'translateY(10px)', opacity: '0' },
+              '100%': { transform: 'translateY(0)', opacity: '1' }
             }
           }
         }
       }
     }
   </script>
-  <!-- Supabase JS -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.16.0/dist/umd/supabase.min.js"></script>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans">
-
+<body class="bg-gray-50 text-gray-800 font-sans antialiased">
   <!-- Header / Navbar -->
-  <header class="bg-white shadow sticky top-0 z-20">
+  <header class="bg-white shadow-lg sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
         <div class="flex items-center gap-4">
-          <img id="main-logo" src="LOGO_SRC" alt="logo" class="h-10 w-10 object-contain"/>
-          <div>
-            <h1 class="text-lg font-semibold">Nama App</h1>
-            <p class="text-xs text-gray-500">Pesan makanan cepat</p>
+          <img id="main-logo" src="LOGO_SRC" alt="logo" class="h-12 w-12 object-contain transition-transform hover:scale-105">
+          <div class="hidden sm:block">
+            <h1 class="text-xl font-bold text-gray-900">Pesan Makanan</h1>
+            <p class="text-sm text-gray-500">Cepat, mudah, dan lezat</p>
           </div>
         </div>
-
-        <div class="flex items-center gap-3">
-          <div class="relative">
+        <div class="flex items-center gap-4">
+          <div class="relative hidden md:block">
             <input id="search" type="search" placeholder="Cari makanan atau merchant..." 
-              class="w-72 px-4 py-2 rounded-md border border-gray-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500"/>
-            <button id="clear-search" class="absolute right-1 top-1/2 -translate-y-1/2 text-gray-400 hidden">✕</button>
+              class="w-64 lg:w-96 px-4 py-2 rounded-full border border-gray-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all duration-200">
+            <button id="clear-search" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hidden hover:text-brand-500">✕</button>
           </div>
-
-          <nav class="hidden md:flex gap-3 items-center">
-            <button id="btn-categories" class="px-3 py-2 rounded-md text-sm bg-white border border-gray-200">Kategori</button>
-            <button id="btn-wishlist" class="px-3 py-2 rounded-md text-sm bg-white border border-gray-200">Wishlist</button>
+          <nav class="hidden md:flex gap-4 items-center">
+            <button id="btn-home" class="px-4 py-2 rounded-full text-sm bg-brand-50 text-brand-700 hover:bg-brand-100 transition-colors">Beranda</button>
+            <button id="btn-categories" class="px-4 py-2 rounded-full text-sm bg-brand-50 text-brand-700 hover:bg-brand-100 transition-colors">Kategori</button>
+            <button id="btn-wishlist" class="px-4 py-2 rounded-full text-sm bg-brand-50 text-brand-700 hover:bg-brand-100 transition-colors">Wishlist</button>
           </nav>
-
-          <button id="mobile-menu-btn" class="md:hidden px-3 py-2 bg-white border rounded-md">Menu</button>
+          <button id="mobile-menu-btn" class="md:hidden p-2 rounded-full bg-brand-50 hover:bg-brand-100 transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <!-- Mobile Search -->
+      <div class="md:hidden px-4 py-3">
+        <div class="relative">
+          <input id="mobile-search" type="search" placeholder="Cari makanan atau merchant..." 
+            class="w-full px-4 py-2 rounded-full border border-gray-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all duration-200">
+          <button id="mobile-clear-search" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hidden hover:text-brand-500">✕</button>
+        </div>
+      </div>
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="hidden md:hidden bg-white border-t shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col gap-3">
+          <button id="mobile-home" class="px-4 py-2 text-left rounded-md bg-brand-50 text-brand-700">Beranda</button>
+          <button id="mobile-categories" class="px-4 py-2 text-left rounded-md bg-brand-50 text-brand-700">Kategori</button>
+          <button id="mobile-wishlist" class="px-4 py-2 text-left rounded-md bg-brand-50 text-brand-700">Wishlist</button>
         </div>
       </div>
     </div>
-
-    <!-- Category strip -->
-    <div class="bg-white border-t border-b">
-      <div class="max-w-7xl mx-auto px-4 py-3 flex gap-3 overflow-x-auto">
-        <button class="category-chip px-3 py-1 rounded-full bg-brand-50 text-sm">Semua</button>
+    <!-- Category Strip -->
+    <div class="bg-white border-t border-b shadow-sm overflow-hidden">
+      <div class="max-w-7xl mx-auto px-4 py-3 flex gap-3 overflow-x-auto scrollbar-hidden">
+        <button class="category-chip px-4 py-2 rounded-full bg-brand-50 text-sm font-medium text-brand-700 hover:bg-brand-100 transition-colors flex-shrink-0">Semua</button>
       </div>
     </div>
   </header>
 
   <!-- Hero / Slider -->
-  <section class="max-w-7xl mx-auto px-4 py-6">
-    <div id="hero-slider" class="relative rounded-lg overflow-hidden h-48 bg-gray-100">
-      <div class="absolute inset-0 flex items-center justify-between px-4">
-        <button id="hero-prev" class="bg-white/80 rounded-full p-2 shadow">‹</button>
-        <button id="hero-next" class="bg-white/80 rounded-full p-2 shadow">›</button>
+  <section class="max-w-7xl mx-auto px-4 py-8">
+    <div id="hero-slider" class="relative rounded-xl overflow-hidden h-48 sm:h-64 bg-gradient-to-r from-brand-500 to-brand-700">
+      <div class="absolute inset-0 flex items-center justify-between px-4 sm:px-6">
+        <button id="hero-prev" class="bg-white/90 rounded-full p-2 sm:p-3 shadow-lg hover:bg-white transition-colors">‹</button>
+        <button id="hero-next" class="bg-white/90 rounded-full p-2 sm:p-3 shadow-lg hover:bg-white transition-colors">›</button>
       </div>
-      <div id="hero-content" class="h-full flex items-center justify-center text-center px-6">
-        <div>
-          <h2 class="text-2xl font-bold">Promo Hari Ini</h2>
-          <p class="text-sm text-gray-600">Slide untuk melihat merchant unggulan</p>
-        </div>
-      </div>
+      <div id="hero-content" class="h-full flex items-center justify-center text-center px-6 animate-fade-in"></div>
     </div>
   </section>
 
-  <!-- Main Content: product grid -->
-  <main class="max-w-7xl mx-auto px-4 pb-20">
-    <div class="mt-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4" id="product-grid">
-      <!-- cards injected here -->
+  <!-- Promotional Banner -->
+  <section class="max-w-7xl mx-auto px-4 py-6">
+    <div class="bg-brand-100 rounded-xl p-4 sm:p-6 flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+      <div class="flex-1 text-center sm:text-left">
+        <h2 class="text-xl sm:text-2xl font-bold text-gray-900">Diskon Spesial 50%</h2>
+        <p class="text-sm text-gray-600 mt-2">Pesan sekarang dan nikmati promo terbatas untuk semua makanan favoritmu!</p>
+        <button id="promo-btn" class="mt-4 px-4 py-2 sm:px-6 sm:py-3 rounded-full bg-brand-500 text-white font-medium hover:bg-brand-600 transition-colors">Lihat Promo</button>
+      </div>
+      <img src="https://via.placeholder.com/200x150?text=Promo" alt="promo" class="w-40 h-32 sm:w-48 sm:h-36 object-cover rounded-lg">
     </div>
+  </section>
+
+  <!-- Featured Merchants -->
+  <section class="max-w-7xl mx-auto px-4 py-6">
+    <h2 class="text-xl font-bold text-gray-900 mb-4">Merchant Unggulan</h2>
+    <div id="merchant-grid" class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4"></div>
+  </section>
+
+  <!-- Main Content: Product Grid -->
+  <main class="max-w-7xl mx-auto px-4 pb-20">
+    <h2 class="text-xl font-bold text-gray-900 mb-4">Semua Produk</h2>
+    <div id="loading" class="text-center py-12 hidden">
+      <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand-500 mx-auto"></div>
+      <p class="mt-4 text-gray-600">Memuat produk...</p>
+    </div>
+    <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4" id="product-grid"></div>
   </main>
 
-  <!-- Product Modal -->
-  <div id="product-modal" class="fixed inset-0 hidden z-30 items-center justify-center bg-black/40 p-4">
-    <div class="bg-white rounded-xl w-full max-w-2xl shadow-lg overflow-hidden">
-      <div class="flex items-center justify-between p-4 border-b">
-        <h3 id="modal-title" class="font-semibold text-lg">Produk</h3>
-        <button id="modal-close" class="text-gray-500">✕</button>
-      </div>
-      <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
         <div>
-          <div class="relative h-60 bg-gray-100 rounded overflow-hidden" id="modal-image-wrap">
-            <img id="modal-image" src="" alt="foto" class="w-full h-full object-cover"/>
-            <div class="absolute left-2 top-2 flex gap-2">
-              <button id="img-prev" class="bg-white/90 rounded-full p-1">‹</button>
-              <button id="img-next" class="bg-white/90 rounded-full p-1">›</button>
-            </div>
+          <img id="footer-logo" src="LOGO_SRC" alt="logo" class="h-12 w-12 object-contain mb-4">
+          <h3 class="text-lg font-semibold">Pesan Makanan</h3>
+          <p class="text-sm text-gray-400 mt-2">Platform pemesanan makanan online terbaik untuk pengalaman kuliner yang cepat dan mudah.</p>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold">Navigasi</h3>
+          <ul class="mt-4 space-y-2">
+            <li><a href="#" class="text-sm text-gray-400 hover:text-white transition-colors">Beranda</a></li>
+            <li><a href="#" class="text-sm text-gray-400 hover:text-white transition-colors">Kategori</a></li>
+            <li><a href="#" class="text-sm text-gray-400 hover:text-white transition-colors">Wishlist</a></li>
+            <li><a href="#" class="text-sm text-gray-400 hover:text-white transition-colors">Promo</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold">Kontak Kami</h3>
+          <ul class="mt-4 space-y-2">
+            <li><a href="mailto:support@pesanmakanan.com" class="text-sm text-gray-400 hover:text-white transition-colors">support@pesanmakanan.com</a></li>
+            <li><a href="tel:+6281234567890" class="text-sm text-gray-400 hover:text-white transition-colors">+62 812-3456-7890</a></li>
+            <li><span class="text-sm text-gray-400">Jakarta, Indonesia</span></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold">Ikuti Kami</h3>
+          <div class="mt-4 flex gap-4">
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.04c-5.5 0-9.96 4.46-9.96 9.96 0 4.96 3.63 9.08 8.38 9.85v-6.97h-2.52v-2.88h2.52v-2.2c0-2.49 1.49-3.86 3.76-3.86 1.09 0 2.23.19 2.23.19v2.45h-1.26c-1.24 0-1.63.77-1.63 1.56v1.86h2.77l-.44 2.88h-2.33v6.97c4.75-.77 8.38-4.89 8.38-9.85 0-5.5-4.46-9.96-9.96-9.96z"/></svg>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.04c-5.5 0-9.96 4.46-9.96 9.96 0 4.41 3.21 8.06 7.44 8.79v-6.21h-2.24v-2.58h2.24v-1.96c0-2.22 1.33-3.44 3.36-3.44.96 0 1.98.17 1.98.17v2.19h-1.12c-1.11 0-1.46.69-1.46 1.39v1.65h2.47l-.39 2.58h-2.08v6.21c4.22-.69 7.44-4.38 7.44-8.79 0-5.5-4.46-9.96-9.96-9.96z"/></svg>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M23.94 4.56c-.88.39-1.83.65-2.82.77 1.01-.61 1.79-1.57 2.16-2.71-.95.57-2 .98-3.12 1.2-.9-.96-2.18-1.56-3.6-1.56-2.72 0-4.92 2.2-4.92 4.92 0 .39.04.77.13 1.13-4.09-.21-7.72-2.17-10.15-5.15-.42.72-.66 1.56-.66 2.46 0 1.7.87 3.2 2.18 4.08-.8-.03-1.56-.25-2.22-.62v.06c0 2.38 1.69 4.36 3.94 4.81-.41.11-.85.17-1.3.17-.32 0-.63-.03-.94-.09.63 1.97 2.46 3.41 4.63 3.45-1.69 1.33-3.83 2.12-6.15 2.12-.4 0-.79-.02-1.18-.07 2.18 1.4 4.77 2.22 7.55 2.22 9.06 0 14.01-7.51 14.01-14.01 0-.21-.01-.43-.02-.64.96-.7 1.79-1.57 2.44-2.56z"/></svg>
+            </a>
           </div>
         </div>
+      </div>
+      <div class="mt-8 pt-8 border-t border-gray-800 text-center">
+        <p class="text-sm text-gray-400">&copy; 2025 Pesan Makanan. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
 
-        <div>
-          <p id="modal-merchant" class="text-sm text-gray-500"></p>
-          <h4 id="modal-name" class="text-xl font-bold mt-1"></h4>
-          <p id="modal-desc" class="text-sm text-gray-600 mt-2"></p>
+  <!-- Mobile Bottom Navigation -->
+  <nav class="fixed bottom-0 left-0 right-0 bg-white shadow-lg z-50 md:hidden">
+    <div class="max-w-7xl mx-auto px-4 py-2 flex justify-around">
+      <button id="nav-home" class="flex flex-col items-center text-brand-700 py-1">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7m-9 5v6h4v-6m-4-2h4"></path>
+        </svg>
+        <span class="text-xs mt-1">Beranda</span>
+      </button>
+      <button id="nav-categories" class="flex flex-col items-center text-gray-500 py-1">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path>
+        </svg>
+        <span class="text-xs mt-1">Kategori</span>
+      </button>
+      <button id="nav-search" class="flex flex-col items-center text-gray-500 py-1">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+        <span class="text-xs mt-1">Cari</span>
+      </button>
+      <button id="nav-wishlist" class="flex flex-col items-center text-gray-500 py-1">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+        </svg>
+        <span class="text-xs mt-1">Wishlist</span>
+      </button>
+    </div>
+  </nav>
 
-          <div class="mt-4 flex items-center justify-between">
+  <!-- Product Modal -->
+  <div id="product-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center bg-black/60 p-4 transition-opacity duration-300">
+    <div class="bg-white rounded-2xl w-full max-w-md sm:max-w-3xl shadow-2xl overflow-hidden animate-slide-in">
+      <div class="flex items-center justify-between p-4 sm:p-6 border-b">
+        <h3 id="modal-title" class="font-bold text-lg sm:text-xl text-gray-900"></h3>
+        <button id="modal-close" class="text-gray-500 hover:text-gray-700 transition-colors">✕</button>
+      </div>
+      <div class="p-4 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+        <div class="relative h-64 sm:h-80 bg-gray-100 rounded-xl overflow-hidden">
+          <img id="modal-image" src="" alt="foto" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105" loading="lazy">
+          <div class="absolute left-3 top-3 flex gap-2">
+            <button id="img-prev" class="bg-white/90 rounded-full p-1 sm:p-2 shadow hover:bg-white transition-colors">‹</button>
+            <button id="img-next" class="bg-white/90 rounded-full p-1 sm:p-2 shadow hover:bg-white transition-colors">›</button>
+          </div>
+        </div>
+        <div class="space-y-4">
+          <div>
+            <p id="modal-merchant" class="text-sm text-gray-500"></p>
+            <h4 id="modal-name" class="text-xl sm:text-2xl font-bold text-gray-900"></h4>
+            <p id="modal-desc" class="text-sm text-gray-600 mt-2"></p>
+          </div>
+          <div class="flex items-center justify-between">
             <div>
               <div class="text-xs text-gray-500">Harga</div>
-              <div id="modal-price" class="text-2xl font-semibold text-brand-700"></div>
+              <div id="modal-price" class="text-xl sm:text-2xl font-semibold text-brand-700"></div>
             </div>
-            <div>
-              <button id="btn-wishlist-toggle" class="px-3 py-2 rounded-md border">♡ Wishlist</button>
-            </div>
+            <button id="btn-wishlist-toggle" class="px-3 py-1 sm:px-4 sm:py-2 rounded-full bg-brand-50 text-brand-700 hover:bg-brand-100 transition-colors">♡ Wishlist</button>
           </div>
-
-          <div class="mt-6">
-            <button id="btn-order" class="w-full px-4 py-3 rounded-md bg-brand-500 text-white font-medium">Pesan</button>
-          </div>
+          <button id="btn-order" class="w-full px-4 py-3 rounded-full bg-brand-500 text-white font-medium hover:bg-brand-600 transition-colors">Pesan Sekarang</button>
         </div>
       </div>
     </div>
   </div>
 
   <!-- Checkout Modal -->
-  <div id="checkout-modal" class="fixed inset-0 hidden z-40 items-center justify-center bg-black/40 p-4">
-    <div class="bg-white rounded-xl w-full max-w-md shadow-lg overflow-hidden">
-      <div class="flex items-center justify-between p-4 border-b">
-        <h3 class="font-semibold">Form Checkout</h3>
-        <button id="checkout-close" class="text-gray-500">✕</button>
+  <div id="checkout-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center bg-black/60 p-4 transition-opacity duration-300">
+    <div class="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden animate-slide-in">
+      <div class="flex items-center justify-between p-6 border-b">
+        <h3 class="font-bold text-xl text-gray-900">Formulir Pemesanan</h3>
+        <button id="checkout-close" class="text-gray-500 hover:text-gray-700 transition-colors">✕</button>
       </div>
-      <form id="checkout-form" class="p-4 space-y-3">
+      <form id="checkout-form" class="p-6 space-y-4">
         <div>
-          <label class="text-sm text-gray-600">Nama Lengkap</label>
-          <input name="full_name" required class="w-full px-3 py-2 border rounded-md"/>
+          <label class="text-sm text-gray-600 font-medium">Nama Lengkap</label>
+          <input name="full_name" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all">
         </div>
-        <div class="grid grid-cols-2 gap-2">
+        <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="text-sm text-gray-600">RT</label>
-            <input name="rt" required class="w-full px-3 py-2 border rounded-md"/>
+            <label class="text-sm text-gray-600 font-medium">RT</label>
+            <input name="rt" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all">
           </div>
           <div>
-            <label class="text-sm text-gray-600">RW</label>
-            <input name="rw" required class="w-full px-3 py-2 border rounded-md"/>
+            <label class="text-sm text-gray-600 font-medium">RW</label>
+            <input name="rw" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all">
           </div>
         </div>
         <div>
-          <label class="text-sm text-gray-600">Nomor HP (aktif)</label>
-          <input name="phone" required class="w-full px-3 py-2 border rounded-md" placeholder="08xxxxxxxx"/>
+          <label class="text-sm text-gray-600 font-medium">Nomor HP (Aktif)</label>
+          <input name="phone" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all" placeholder="08xxxxxxxx">
         </div>
-
-        <div class="pt-2">
-          <button type="submit" class="w-full px-4 py-3 rounded-md bg-brand-500 text-white font-medium">Konfirmasi & Kirim ke WhatsApp</button>
-        </div>
+        <button type="submit" class="w-full px-4 py-3 rounded-full bg-brand-500 text-white font-medium hover:bg-brand-600 transition-colors">Konfirmasi & Kirim ke WhatsApp</button>
       </form>
     </div>
   </div>
 
 <script>
 /* =================== CONFIG =================== */
-/* Ganti nilai ini dengan kredensial Supabase Anda */
 const SUPABASE_URL = 'https://SUPABASE_URL';
 const SUPABASE_ANON_KEY = 'SUPABASE_ANON_KEY';
-const LOGO_SRC = 'LOGO_SRC'; // optional overwrite
-/* nama tabel produk dan pesan.
-   disarankan tabel produk: 'produk' (kolom: id, name, description, price, images (array), merchant_name, merchant_address, category)
-   tabel message: 'message' atau 'messages' dengan kolom 'wa_number' (string) */
+const LOGO_SRC = 'LOGO_SRC';
 const TABLE_PRODUCTS = 'produk';
 const TABLE_MESSAGES = 'message';
 /* ============================================ */
 
 if (LOGO_SRC !== 'LOGO_SRC') {
   document.getElementById('main-logo').src = LOGO_SRC;
+  document.getElementById('footer-logo').src = LOGO_SRC;
 }
 
 const supabase = supabaseJs.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
 let PRODUCTS = [];
 let MESSAGES = [];
 let CURRENT_PRODUCT = null;
 let CURRENT_IMAGES = [];
 let CURRENT_IMAGE_INDEX = 0;
+let HERO_INTERVAL = null;
 
 /* ---------- Utils ---------- */
-function rupiah(n){
-  if (n==null) return '-';
+function rupiah(n) {
+  if (n == null) return '-';
   return 'Rp ' + Number(n).toLocaleString('id-ID');
 }
 
-function sanitizePhone(raw){
-  if(!raw) return raw;
-  const digits = raw.replace(/\D/g,'');
-  if(digits.length === 0) return raw;
-  if(digits.startsWith('0')) return '62' + digits.slice(1);
-  if(digits.startsWith('62')) return digits;
-  // assume local number -> prefix 62
-  return '62' + digits;
+function sanitizePhone(raw) {
+  if (!raw) return raw;
+  const digits = raw.replace(/\D/g, '');
+  if (digits.length === 0) return raw;
+  return digits.startsWith('0') ? '62' + digits.slice(1) : digits.startsWith('62') ? digits : '62' + digits;
 }
 
 async function tryFetch(table, select = '*') {
   try {
     const { data, error } = await supabase.from(table).select(select);
-    if(error) {
-      // try console but continue
+    if (error) {
       console.warn('Supabase select error table', table, error.message);
       return null;
     }
     return data;
-  } catch(e){
+  } catch (e) {
     console.warn('Fetch fail', e);
     return null;
   }
 }
 
-/* ---------- Load data ---------- */
-async function loadMessages(){
+/* ---------- Load Data ---------- */
+async function loadMessages() {
   let data = await tryFetch(TABLE_MESSAGES, 'wa_number');
-  if(!data) {
-    // try fallback plural
-    data = await tryFetch(TABLE_MESSAGES + 's', 'wa_number');
-  }
+  if (!data) data = await tryFetch(TABLE_MESSAGES + 's', 'wa_number');
   MESSAGES = (data || []).map(r => r.wa_number).filter(Boolean);
-  if(MESSAGES.length === 0) {
-    // fallback placeholder numbers for testing
-    MESSAGES = ['081234567890','081111111111','081222222222','081333333333'];
+  if (MESSAGES.length === 0) {
+    MESSAGES = ['081234567890', '081111111111', '081222222222', '081333333333'];
   }
 }
 
-async function loadProducts(){
+async function loadProducts() {
+  document.getElementById('loading').classList.remove('hidden');
   let data = await tryFetch(TABLE_PRODUCTS);
-  if(!data) {
-    // try english fallback
-    data = await tryFetch('products');
-  }
+  if (!data) data = await tryFetch('products');
   PRODUCTS = (data || []).map(p => normalizeProduct(p));
+  document.getElementById('loading').classList.add('hidden');
   renderCategories();
   renderProducts(PRODUCTS);
+  renderMerchants(PRODUCTS);
   initHero(PRODUCTS);
 }
 
-/* Normalize incoming product object to stable shape */
-function normalizeProduct(p){
+/* Normalize Product */
+function normalizeProduct(p) {
   return {
-    id: p.id ?? p._id ?? Math.random().toString(36).slice(2,9),
+    id: p.id ?? p._id ?? Math.random().toString(36).slice(2, 9),
     name: p.name ?? p.nama ?? p.product_name ?? 'Produk',
     description: p.description ?? p.desc ?? p.deskripsi ?? '',
     price: p.price ?? p.harga ?? 0,
-    images: Array.isArray(p.images) ? p.images : (p.images ? [p.images] : (p.image ? [p.image] : [])),
+    images: Array.isArray(p.images) ? p.images : (p.image ? [p.image] : []),
     merchant_name: p.merchant_name ?? p.merchant ?? p.nama_merchant ?? 'Merchant',
     merchant_address: p.merchant_address ?? p.address ?? p.alamat ?? '',
     category: p.category ?? p.kategori ?? 'Umum'
@@ -258,68 +360,91 @@ function normalizeProduct(p){
 }
 
 /* ---------- Render UI ---------- */
-const grid = document.getElementById('product-grid');
-
-function renderProducts(list){
+function renderProducts(list) {
+  const grid = document.getElementById('product-grid');
   grid.innerHTML = '';
-  if(list.length === 0){
-    grid.innerHTML = '<div class="col-span-full text-center text-gray-500 py-12">Tidak ada produk</div>';
+  if (list.length === 0) {
+    grid.innerHTML = '<div class="col-span-full text-center text-gray-500 py-12">Tidak ada produk ditemukan</div>';
     return;
   }
-  for(const p of list){
+  list.forEach(p => {
     const img = p.images[0] || 'https://via.placeholder.com/400x300?text=No+Image';
     const card = document.createElement('article');
-    card.className = 'bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition cursor-pointer';
+    card.className = 'bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer animate-slide-in';
     card.innerHTML = `
-      <div class="h-40 bg-gray-100 overflow-hidden">
-        <img src="${img}" alt="${escapeHtml(p.name)}" class="w-full h-full object-cover"/>
+      <div class="h-40 sm:h-48 bg-gray-100 overflow-hidden">
+        <img src="${img}" alt="${escapeHtml(p.name)}" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105" loading="lazy">
       </div>
-      <div class="p-3">
-        <h3 class="font-semibold text-sm">${escapeHtml(p.name)}</h3>
-        <p class="text-xs text-gray-500 mt-1">${escapeHtml(p.merchant_name)}</p>
+      <div class="p-3 sm:p-4">
+        <h3 class="font-semibold text-sm sm:text-base text-gray-900 truncate">${escapeHtml(p.name)}</h3>
+        <p class="text-xs sm:text-sm text-gray-500 mt-1 truncate">${escapeHtml(p.merchant_name)}</p>
         <div class="mt-3 flex items-center justify-between">
-          <div class="text-sm font-medium text-brand-700">${rupiah(p.price)}</div>
-          <button class="px-3 py-1 text-xs border rounded-md open-btn">Lihat</button>
+          <div class="text-sm sm:text-base font-medium text-brand-700">${rupiah(p.price)}</div>
+          <button class="px-2 py-1 sm:px-3 sm:py-1 text-xs sm:text-sm bg-brand-50 rounded-full text-brand-700 hover:bg-brand-100 transition-colors open-btn">Lihat</button>
         </div>
       </div>
     `;
-    card.querySelector('.open-btn').addEventListener('click', (e)=>{
+    card.querySelector('.open-btn').addEventListener('click', e => {
       e.stopPropagation();
       openProductModal(p);
     });
-    card.addEventListener('click', ()=> openProductModal(p));
+    card.addEventListener('click', () => openProductModal(p));
     grid.appendChild(card);
-  }
-}
-
-/* categories */
-function renderCategories(){
-  const container = document.querySelector('header + section') || document.querySelector('header .max-w-7xl');
-  const strip = document.querySelector('header .border-t .max-w-7xl div');
-  // build unique categories
-  const cats = ['Semua', ...Array.from(new Set(PRODUCTS.map(p=>p.category || 'Umum')))];
-  const target = strip;
-  target.innerHTML = '';
-  cats.forEach(c=>{
-    const btn = document.createElement('button');
-    btn.className = 'category-chip px-3 py-1 rounded-full text-sm';
-    btn.textContent = c;
-    btn.addEventListener('click', ()=> {
-      document.querySelectorAll('.category-chip').forEach(x=>x.classList.remove('bg-brand-500','text-white'));
-      btn.classList.add('bg-brand-500','text-white');
-      filterByCategory(c === 'Semua' ? null : c);
-    });
-    target.appendChild(btn);
   });
 }
 
-/* ---------- Modal handlers ---------- */
-const modal = document.getElementById('product-modal');
-const modalClose = document.getElementById('modal-close');
-modalClose.addEventListener('click', ()=> modal.classList.add('hidden'));
-modal.addEventListener('click', (e)=> { if(e.target === modal) modal.classList.add('hidden'); });
+/* Render Featured Merchants */
+function renderMerchants(list) {
+  const grid = document.getElementById('merchant-grid');
+  grid.innerHTML = '';
+  const featured = list.filter(p => p.images.length > 0).slice(0, 4);
+  if (featured.length === 0) {
+    grid.innerHTML = '<div class="col-span-full text-center text-gray-500 py-12">Tidak ada merchant unggulan</div>';
+    return;
+  }
+  featured.forEach(p => {
+    const img = p.images[0] || 'https://via.placeholder.com/400x300?text=No+Image';
+    const card = document.createElement('article');
+    card.className = 'bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer animate-slide-in';
+    card.innerHTML = `
+      <div class="h-40 sm:h-48 bg-gray-100 overflow-hidden">
+        <img src="${img}" alt="${escapeHtml(p.merchant_name)}" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105" loading="lazy">
+      </div>
+      <div class="p-3 sm:p-4">
+        <h3 class="font-semibold text-sm sm:text-base text-gray-900 truncate">${escapeHtml(p.merchant_name)}</h3>
+        <p class="text-xs sm:text-sm text-gray-500 mt-1 truncate">${escapeHtml(p.merchant_address || 'Lokasi tidak tersedia')}</p>
+        <button class="mt-3 px-2 py-1 sm:px-3 sm:py-1 text-xs sm:text-sm bg-brand-50 rounded-full text-brand-700 hover:bg-brand-100 transition-colors">Lihat Menu</button>
+      </div>
+    `;
+    card.addEventListener('click', () => openProductModal(p));
+    grid.appendChild(card);
+  });
+}
 
-function openProductModal(p){
+/* Categories */
+function renderCategories() {
+  const strip = document.querySelector('.category-chip').parentElement;
+  const cats = ['Semua', ...Array.from(new Set(PRODUCTS.map(p => p.category || 'Umum')))];
+  strip.innerHTML = '';
+  cats.forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'category-chip px-3 sm:px-4 py-1 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-brand-700 hover:bg-brand-100 transition-colors flex-shrink-0';
+    btn.textContent = c;
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.category-chip').forEach(x => x.classList.remove('bg-brand-500', 'text-white'));
+      btn.classList.add('bg-brand-500', 'text-white');
+      filterByCategory(c === 'Semua' ? null : c);
+    });
+    strip.appendChild(btn);
+  });
+}
+
+/* ---------- Modal Handlers ---------- */
+const productModal = document.getElementById('product-modal');
+document.getElementById('modal-close').addEventListener('click', () => productModal.classList.add('hidden'));
+productModal.addEventListener('click', e => { if (e.target === productModal) productModal.classList.add('hidden'); });
+
+function openProductModal(p) {
   CURRENT_PRODUCT = p;
   CURRENT_IMAGES = p.images.length ? p.images : ['https://via.placeholder.com/600x400?text=No+Image'];
   CURRENT_IMAGE_INDEX = 0;
@@ -329,56 +454,58 @@ function openProductModal(p){
   document.getElementById('modal-desc').textContent = p.description;
   document.getElementById('modal-price').textContent = rupiah(p.price);
   document.getElementById('modal-merchant').textContent = p.merchant_name + (p.merchant_address ? ' · ' + p.merchant_address : '');
-  modal.classList.remove('hidden');
+  productModal.classList.remove('hidden');
 }
 
-/* image next/prev inside modal */
-document.getElementById('img-next').addEventListener('click', ()=> {
-  if(!CURRENT_IMAGES.length) return;
+/* Image Navigation */
+document.getElementById('img-next').addEventListener('click', () => {
+  if (!CURRENT_IMAGES.length) return;
   CURRENT_IMAGE_INDEX = (CURRENT_IMAGE_INDEX + 1) % CURRENT_IMAGES.length;
   document.getElementById('modal-image').src = CURRENT_IMAGES[CURRENT_IMAGE_INDEX];
 });
-document.getElementById('img-prev').addEventListener('click', ()=> {
-  if(!CURRENT_IMAGES.length) return;
+document.getElementById('img-prev').addEventListener('click', () => {
+  if (!CURRENT_IMAGES.length) return;
   CURRENT_IMAGE_INDEX = (CURRENT_IMAGE_INDEX - 1 + CURRENT_IMAGES.length) % CURRENT_IMAGES.length;
   document.getElementById('modal-image').src = CURRENT_IMAGES[CURRENT_IMAGE_INDEX];
 });
 
-/* Wishlist button (simple localStorage) */
-document.getElementById('btn-wishlist-toggle').addEventListener('click', ()=> {
+/* Wishlist */
+document.getElementById('btn-wishlist-toggle').addEventListener('click', () => {
   const key = 'wishlist_ids_v1';
   const list = JSON.parse(localStorage.getItem(key) || '[]');
   const id = CURRENT_PRODUCT.id;
-  if(list.includes(id)){
-    const updated = list.filter(x=>x!==id);
+  const btn = document.getElementById('btn-wishlist-toggle');
+  if (list.includes(id)) {
+    const updated = list.filter(x => x !== id);
     localStorage.setItem(key, JSON.stringify(updated));
+    btn.textContent = '♡ Wishlist';
     alert('Dihapus dari wishlist');
   } else {
     list.push(id);
     localStorage.setItem(key, JSON.stringify(list));
+    btn.textContent = '♥ Wishlist';
     alert('Ditambahkan ke wishlist');
   }
 });
 
-/* Open checkout form from product modal */
-document.getElementById('btn-order').addEventListener('click', ()=> {
-  modal.classList.add('hidden');
+/* Checkout */
+document.getElementById('btn-order').addEventListener('click', () => {
+  productModal.classList.add('hidden');
   openCheckoutModal(CURRENT_PRODUCT);
 });
 
-function openCheckoutModal(product){
+function openCheckoutModal(product) {
   const modal = document.getElementById('checkout-modal');
   const form = document.getElementById('checkout-form');
   form.reset();
   form.dataset.productId = product.id;
-  // quick fill for testing
   modal.classList.remove('hidden');
 }
-document.getElementById('checkout-close').addEventListener('click', ()=> document.getElementById('checkout-modal').classList.add('hidden'));
-document.getElementById('checkout-modal').addEventListener('click', (e)=> { if(e.target === document.getElementById('checkout-modal')) document.getElementById('checkout-modal').classList.add('hidden'); });
+document.getElementById('checkout-close').addEventListener('click', () => document.getElementById('checkout-modal').classList.add('hidden'));
+document.getElementById('checkout-modal').addEventListener('click', e => { if (e.target === document.getElementById('checkout-modal')) document.getElementById('checkout-modal').classList.add('hidden'); });
 
-/* ---------- Checkout submit -> WhatsApp rotation ---------- */
-document.getElementById('checkout-form').addEventListener('submit', async (e)=>{
+/* Checkout Submit */
+document.getElementById('checkout-form').addEventListener('submit', async e => {
   e.preventDefault();
   const fd = new FormData(e.target);
   const payload = {
@@ -388,10 +515,8 @@ document.getElementById('checkout-form').addEventListener('submit', async (e)=>{
     phone: fd.get('phone'),
     product: CURRENT_PRODUCT
   };
-  // choose operator
   const op = chooseOperator();
   const opFormatted = sanitizePhone(op);
-  // build message
   const lines = [
     `Nama: ${payload.full_name}`,
     `Alamat: RT ${payload.rt}/RW ${payload.rw}`,
@@ -402,99 +527,230 @@ document.getElementById('checkout-form').addEventListener('submit', async (e)=>{
     `Catatan: -`
   ];
   const text = encodeURIComponent(lines.join('\n'));
-  // open WhatsApp
   const waUrl = `https://wa.me/${opFormatted}?text=${text}`;
-  // increment rotation counter persistently
   incrementRotationCounter();
   window.open(waUrl, '_blank');
   document.getElementById('checkout-modal').classList.add('hidden');
 });
 
-/* choose operator number with rotation logic */
-function chooseOperator(){
-  if(MESSAGES.length === 0) return '081234567890'; // fallback
+/* Operator Rotation */
+function chooseOperator() {
+  if (MESSAGES.length === 0) return '081234567890';
   let idx = Number(localStorage.getItem('wa_rotation_index_v1') || 0);
-  const number = MESSAGES[idx % MESSAGES.length];
-  return number;
+  return MESSAGES[idx % MESSAGES.length];
 }
-function incrementRotationCounter(){
+function incrementRotationCounter() {
   let idx = Number(localStorage.getItem('wa_rotation_index_v1') || 0);
   idx = (idx + 1) % (MESSAGES.length || 4);
   localStorage.setItem('wa_rotation_index_v1', String(idx));
 }
 
-/* ---------- Filters & Search ---------- */
-document.getElementById('search').addEventListener('input', (e)=>{
-  const v = e.target.value.trim().toLowerCase();
-  document.getElementById('clear-search').classList.toggle('hidden', v.length===0);
-  if(v.length === 0){
+/* Filters & Search */
+function setupSearch(inputId, clearId) {
+  const input = document.getElementById(inputId);
+  const clear = document.getElementById(clearId);
+  if (!input || !clear) return;
+  input.addEventListener('input', e => {
+    const v = e.target.value.trim().toLowerCase();
+    clear.classList.toggle('hidden', v.length === 0);
+    if (v.length === 0) {
+      renderProducts(PRODUCTS);
+      return;
+    }
+    const filtered = PRODUCTS.filter(p =>
+      (p.name || '').toLowerCase().includes(v) ||
+      (p.description || '').toLowerCase().includes(v) ||
+      (p.merchant_name || '').toLowerCase().includes(v) ||
+      (p.category || '').toLowerCase().includes(v)
+    );
+    renderProducts(filtered);
+  });
+  clear.addEventListener('click', () => {
+    input.value = '';
+    clear.classList.add('hidden');
+    renderProducts(PRODUCTS);
+  });
+}
+setupSearch('search', 'clear-search');
+setupSearch('mobile-search', 'mobile-clear-search');
+
+function filterByCategory(cat) {
+  if (!cat) {
     renderProducts(PRODUCTS);
     return;
   }
-  const filtered = PRODUCTS.filter(p=>{
-    return (p.name||'').toLowerCase().includes(v) ||
-           (p.description||'').toLowerCase().includes(v) ||
-           (p.merchant_name||'').toLowerCase().includes(v) ||
-           (p.category||'').toLowerCase().includes(v);
-  });
-  renderProducts(filtered);
-});
-document.getElementById('clear-search').addEventListener('click', ()=>{
-  document.getElementById('search').value = '';
-  document.getElementById('clear-search').classList.add('hidden');
-  renderProducts(PRODUCTS);
-});
-
-function filterByCategory(cat){
-  if(!cat) { renderProducts(PRODUCTS); return; }
   const filtered = PRODUCTS.filter(p => (p.category || 'Umum') === cat);
   renderProducts(filtered);
 }
 
-/* ---------- Hero slider simple ---------- */
-let heroIndex = 0;
-function initHero(list){
+/* Hero Slider */
+function initHero(list) {
   const hero = document.getElementById('hero-content');
-  const imgs = list.filter(Boolean).slice(0,5).map(p=>p.images[0] || '');
-  if(imgs.length === 0) {
-    hero.innerHTML = '<div><h2 class="text-2xl font-bold">Selamat datang</h2><p class="text-sm text-gray-600">Temukan makanan favoritmu</p></div>';
+  const featured = list.filter(p => p.images.length > 0).slice(0, 5);
+  if (featured.length === 0) {
+    hero.innerHTML = '<div class="text-white"><h2 class="text-2xl sm:text-3xl font-bold">Selamat Datang</h2><p class="text-sm sm:text-base mt-2">Temukan makanan favoritmu sekarang</p></div>';
     return;
   }
-  function show(i){
-    const prod = list[i];
+  function show(i) {
+    const prod = featured[i];
     hero.innerHTML = `
-      <div class="w-full h-full flex items-center gap-6">
-        <img src="${prod.images[0]||'https://via.placeholder.com/300x200?text=No+Image'}" class="h-36 w-48 object-cover rounded-md shadow"/>
-        <div class="text-left">
-          <h3 class="text-xl font-bold">${escapeHtml(prod.merchant_name)}</h3>
-          <p class="text-sm text-gray-600">${escapeHtml(prod.name)} · ${rupiah(prod.price)}</p>
+      <div class="w-full h-full flex flex-col sm:flex-row items-center gap-4 sm:gap-8 px-4 sm:px-6">
+        <img src="${prod.images[0] || 'https://via.placeholder.com/300x200?text=No+Image'}" class="h-32 w-48 sm:h-48 sm:w-64 object-cover rounded-xl shadow-lg" loading="lazy">
+        <div class="text-white text-center sm:text-left">
+          <h3 class="text-xl sm:text-2xl font-bold">${escapeHtml(prod.merchant_name)}</h3>
+          <p class="text-sm sm:text-base mt-2">${escapeHtml(prod.name)} · ${rupiah(prod.price)}</p>
+          <button class="mt-2 sm:mt-4 px-3 py-1 sm:px-4 sm:py-2 rounded-full bg-white text-brand-700 font-medium hover:bg-brand-50 transition-colors" onclick="openProductModal(PRODUCTS[${list.indexOf(prod)}])">Lihat Sekarang</button>
         </div>
       </div>
     `;
   }
+  let heroIndex = 0;
   show(0);
-  document.getElementById('hero-next').addEventListener('click', ()=> {
-    heroIndex = (heroIndex + 1) % list.length;
+  document.getElementById('hero-next').addEventListener('click', () => {
+    heroIndex = (heroIndex + 1) % featured.length;
     show(heroIndex);
+    clearInterval(HERO_INTERVAL);
+    HERO_INTERVAL = setInterval(() => {
+      heroIndex = (heroIndex + 1) % featured.length;
+      show(heroIndex);
+    }, 5000);
   });
-  document.getElementById('hero-prev').addEventListener('click', ()=> {
-    heroIndex = (heroIndex - 1 + list.length) % list.length;
+  document.getElementById('hero-prev').addEventListener('click', () => {
+    heroIndex = (heroIndex - 1 + featured.length) % featured.length;
     show(heroIndex);
+    clearInterval(HERO_INTERVAL);
+    HERO_INTERVAL = setInterval(() => {
+      heroIndex = (heroIndex + 1) % featured.length;
+      show(heroIndex);
+    }, 5000);
+  });
+  HERO_INTERVAL = setInterval(() => {
+    heroIndex = (heroIndex + 1) % featured.length;
+    show(heroIndex);
+  }, 5000);
+}
+
+/* Navigation Handlers */
+function setupNav() {
+  const navItems = [
+    { id: 'btn-home', mobileId: 'mobile-home', navId: 'nav-home', action: () => window.scrollTo({ top: 0, behavior: 'smooth' }) },
+    { id: 'btn-categories', mobileId: 'mobile-categories', navId: 'nav-categories', action: () => {
+      const categoryStrip = document.querySelector('.border-t.border-b.shadow-sm');
+      categoryStrip.scrollIntoView({ behavior: 'smooth' });
+    } },
+    { id: 'btn-wishlist', mobileId: 'mobile-wishlist', navId: 'nav-wishlist', action: () => {
+      const wishlist = JSON.parse(localStorage.getItem('wishlist_ids_v1') || '[]');
+      const filtered = PRODUCTS.filter(p => wishlist.includes(p.id));
+      renderProducts(filtered);
+    }}
+  ];
+  navItems.forEach(item => {
+    const updateActive = () => {
+      document.querySelectorAll('.md\\:flex button, #mobile-menu button, nav.fixed button').forEach(btn => {
+        btn.classList.remove('bg-brand-500', 'text-white', 'text-brand-700');
+        btn.classList.add('text-gray-500');
+      });
+      document.getElementById(item.id)?.classList.add('bg-brand-500', 'text-white');
+      document.getElementById(item.mobileId)?.classList.add('bg-brand-500', 'text-white');
+      document.getElementById(item.navId)?.classList.add('text-brand-700');
+      document.getElementById(item.navId)?.classList.remove('text-gray-500');
+      document.getElementById('mobile-menu').classList.add('hidden');
+    };
+    document.getElementById(item.id)?.addEventListener('click', () => { item.action(); updateActive(); });
+    document.getElementById(item.mobileId)?.addEventListener('click', () => { item.action(); updateActive(); });
+    document.getElementById(item.navId)?.addEventListener('click', () => { item.action(); updateActive(); });
+  });
+  document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+  });
+  document.getElementById('nav-search').addEventListener('click', () => {
+    document.getElementById('mobile-search').focus();
+    document.querySelectorAll('nav.fixed button').forEach(btn => {
+      btn.classList.remove('text-brand-700');
+      btn.classList.add('text-gray-500');
+    });
+    document.getElementById('nav-search').classList.add('text-brand-700');
+    document.getElementById('nav-search').classList.remove('text-gray-500');
+  });
+  document.getElementById('promo-btn').addEventListener('click', () => {
+    // Add promo logic if needed
+    alert('Lihat semua promo di halaman kategori!');
   });
 }
 
-/* ---------- Init ---------- */
-async function init(){
+/* Init */
+async function init() {
   await loadMessages();
   await loadProducts();
+  setupNav();
 }
 init();
 
-/* ---------- Small helpers ---------- */
-function escapeHtml(s){
-  if(!s) return '';
-  return String(s).replace(/[&<>"']/g, (m)=> ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+/* Helpers */
+function escapeHtml(s) {
+  if (!s) return '';
+  return String(s).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[m]);
 }
 </script>
+<style>
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hidden {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@media (max-width: 640px) {
+  #product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  #merchant-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .category-chip {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+  #hero-slider {
+    height: 12rem;
+  }
+  #hero-content img {
+    height: 8rem;
+    width: 12rem;
+  }
+  #hero-content h3 {
+    font-size: 1.25rem;
+  }
+  #hero-content p {
+    font-size: 0.875rem;
+  }
+  #hero-content button {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+  #promo-btn {
+    padding: 0.5rem 1.5rem;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 768px) {
+  #product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  #merchant-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 769px) {
+  #product-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  #merchant-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+</style>
 </body>
 </html>
