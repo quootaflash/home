@@ -1,431 +1,399 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="light">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GoFood - Pesan Makanan Online</title>
-  <meta name="description" content="Pesan makanan online dengan mudah dan cepat di GoFood, temukan berbagai pilihan makanan dari merchant terbaik.">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="https://unpkg.com/@popperjs/core@2"></script>
-</head>
-<body class="bg-gray-50 font-sans text-gray-800">
-  <!-- Sticky Header -->
-  <header class="sticky top-0 z-50 bg-white shadow-sm p-4">
-    <div class="container mx-auto flex justify-between items-center">
-      <img src="https://via.placeholder.com/150x50?text=GoFood+Logo" alt="GoFood Logo" class="h-10">
-      <div class="relative w-full max-w-md">
-        <input
-          type="text"
-          id="searchInput"
-          placeholder="Cari makanan..."
-          class="w-full pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200"
-          aria-label="Cari makanan"
-        >
-        <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
-      </div>
-    </div>
-  </header>
-
-  <!-- Breadcrumb -->
-  <nav class="container mx-auto p-4 text-sm text-gray-600" aria-label="Breadcrumb">
-    <span>Home > Makanan</span>
-  </nav>
-
-  <!-- Category Slider -->
-  <section class="container mx-auto p-4">
-    <div id="categorySlider" class="flex overflow-x-auto space-x-4 pb-4">
-      <!-- Categories dynamically populated -->
-    </div>
-  </section>
-
-  <!-- Product Grid -->
-  <main class="container mx-auto p-4">
-    <div class="flex justify-between items-center mb-4">
-      <h2 class="text-xl font-semibold">Semua Makanan</h2>
-      <select id="sortSelect" class="border rounded-md p-2" aria-label="Urutkan produk">
-        <option value="price-asc">Harga: Rendah ke Tinggi</option>
-        <option value="price-desc">Harga: Tinggi ke Rendah</option>
-        <option value="popular">Populer</option>
-        <option value="latest">Terbaru</option>
-      </select>
-    </div>
-    <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <!-- Products dynamically populated -->
-    </div>
-    <button id="loadMore" class="mt-6 w-full py-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition" aria-label="Muat lebih banyak produk">Load More</button>
-  </main>
-
-  <!-- Scroll to Top Button -->
-  <button id="scrollToTop" class="fixed bottom-4 right-4 bg-green-500 text-white p-3 rounded-full shadow-lg hidden hover:bg-green-600" aria-label="Kembali ke atas">
-    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
-    </svg>
-  </button>
-
-  <!-- Sticky Cart Summary (Mobile) -->
-  <div id="cartSummary" class="fixed bottom-0 left-0 right-0 bg-white p-4 shadow-lg lg:hidden hidden">
-    <div class="container mx-auto flex justify-between items-center">
-      <span id="cartCount" class="font-semibold">0 Item</span>
-      <span id="cartTotal" class="font-semibold">Rp 0</span>
-      <button id="openCheckout" class="bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600" aria-label="Buka checkout">Checkout</button>
-    </div>
-  </div>
-
-  <!-- Product Modal -->
-  <div id="productModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-    <div class="bg-white rounded-2xl p-6 w-full max-w-lg mx-4">
-      <button id="closeProductModal" class="absolute top-4 right-4 text-gray-600" aria-label="Tutup modal produk">
-        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </button>
-      <img id="modalImage" class="w-full h-48 object-cover rounded-lg" alt="Product Image">
-      <h3 id="modalName" class="text-xl font-bold mt-4"></h3>
-      <p id="modalPrice" class="text-green-500 font-semibold"></p>
-      <p id="modalMerchant" class="text-gray-600"></p>
-      <p id="modalDescription" class="text-gray-600 mt-2"></p>
-      <div class="flex items-center mt-4">
-        <button id="decreaseQty" class="bg-gray-200 px-3 py-1 rounded-l" aria-label="Kurangi jumlah">-</button>
-        <input id="modalQty" type="number" value="1" min="1" class="w-12 text-center border-t border-b" aria-label="Jumlah produk">
-        <button id="increaseQty" class="bg-gray-200 px-3 py-1 rounded-r" aria-label="Tambah jumlah">+</button>
-      </div>
-      <button id="buyNow" class="mt-4 w-full bg-green-500 text-white py-2 rounded-full hover:bg-green-600" aria-label="Beli sekarang">Beli Sekarang</button>
-    </div>
-  </div>
-
-  <!-- Checkout Modal -->
-  <div id="checkoutModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-    <div class="bg-white rounded-2xl p-6 w-full max-w-lg mx-4">
-      <button id="closeCheckoutModal" class="absolute top-4 right-4 text-gray-600" aria-label="Tutup modal checkout">
-        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </button>
-      <h3 class="text-xl font-bold">Checkout</h3>
-      <div id="checkoutItems" class="mt-4"></div>
-      <p id="checkoutTotal" class="font-semibold mt-2"></p>
-      <p class="text-sm text-gray-600">Estimasi pengiriman: 30-45 menit</p>
-      <form id="checkoutForm" class="mt-4">
-        <label class="block mb-2">
-          Nama Lengkap
-          <input type="text" name="name" required class="w-full p-2 border rounded-md" aria-label="Nama Lengkap">
-        </label>
-        <label class="block mb-2">
-          Alamat (RT & RW)
-          <input type="text" name="address" required class="w-full p-2 border rounded-md" aria-label="Alamat">
-        </label>
-        <label class="block mb-2">
-          Nomor WhatsApp
-          <input type="tel" name="whatsapp" required class="w-full p-2 border rounded-md" aria-label="Nomor WhatsApp">
-          <span class="text-sm text-gray-500">Contoh: +6281234567890</span>
-        </label>
-        <label class="block mb-2">
-          Catatan Pesanan
-          <textarea name="notes" class="w-full p-2 border rounded-md" aria-label="Catatan Pesanan"></textarea>
-        </label>
-        <button type="submit" id="processOrder" class="w-full bg-green-500 text-white py-2 rounded-full hover:bg-green-600" aria-label="Proses pesanan">Proses Pesanan</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Toast Notification -->
-  <div id="toast" class="fixed bottom-4 right-4 bg-green-500 text-white p-4 rounded-lg shadow-lg hidden">
-    <span id="toastMessage"></span>
-  </div>
-
-  <!-- Sitemap Footer -->
-  <footer class="bg-white p-6 mt-8 shadow-inner">
-    <div class="container mx-auto">
-      <h3 class="text-lg font-semibold mb-4">Peta Situs</h3>
-      <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-sm text-gray-600">
-        <li><a href="/" class="hover:text-green-500">Beranda</a></li>
-        <li><a href="/makanan" class="hover:text-green-500">Makanan</a></li>
-        <li><a href="/promo" class="hover:text-green-500">Promo</a></li>
-        <li><a href="/tentang" class="hover:text-green-500">Tentang Kami</a></li>
-        <li><a href="/kategori" class="hover:text-green-500">Kategori</a></li>
-        <li><a href="/merchant" class="hover:text-green-500">Merchant</a></li>
-        <li><a href="/bantuan" class="hover:text-green-500">Bantuan</a></li>
-        <li><a href="/kebijakan-privasi" class="hover:text-green-500">Kebijakan Privasi</a></li>
-      </ul>
-      <p class="mt-4 text-sm text-gray-500">© 2025 GoFood. All rights reserved.</p>
-    </div>
-  </footer>
-
-  <script>
-    // Supabase Initialization
-    const supabase = window.supabase.createClient('https://dlnenwglsmfyhdysmqdc.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRsbmVud2dsc21meWhkeXNtcWRjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYxMTM5ODIsImV4cCI6MjA3MTY4OTk4Mn0.oWKClbQFN5RDS_MkFkPFbwel-LBmD8iGJX1KxN3Db0U');
-    let products = [];
-    let categories = [];
-    let cart = [];
-    let currentPage = 1;
-    const itemsPerPage = 9;
-
-    // Fetch Products
-    async function fetchProducts() {
-      try {
-        const { data, error } = await supabase.from('products').select('*').range((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage - 1);
-        if (error) throw error;
-        if (!data || data.length === 0) {
-          showToast('Tidak ada produk tersedia', 'error');
-          return;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Order - Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
         }
-        products = data;
-        renderProducts(products);
-      } catch (error) {
-        showToast('Produk gagal dimuat', 'error');
-      }
-    }
-
-    // Fetch Categories
-    async function fetchCategories() {
-      try {
-        const { data, error } = await supabase.from('products').select('category').distinct();
-        if (error) throw error;
-        categories = data ? data.map(item => item.category) : ['All'];
-        if (categories.length === 0) categories = ['All'];
-        renderCategories();
-      } catch (error) {
-        showToast('Kategori gagal dimuat', 'error');
-        categories = ['All'];
-        renderCategories();
-      }
-    }
-
-    // Render Products
-    function renderProducts(productsToRender) {
-      const grid = document.getElementById('productGrid');
-      if (!productsToRender || productsToRender.length === 0) {
-        grid.innerHTML = '<p class="text-center text-gray-600">Tidak ada produk ditemukan</p>';
-        return;
-      }
-      grid.innerHTML = productsToRender.map(product => `
-        <article class="bg-white rounded-xl shadow-md hover:shadow-lg transform hover:-translate-y-1 transition p-4 relative">
-          <img src="${product.image}" alt="${product.name}" class="w-full h-40 object-cover rounded-lg">
-          <button class="absolute top-2 right-2 text-gray-400 hover:text-red-500" onclick="toggleWishlist(${product.id})" aria-label="Tambah ke wishlist">
-            <svg class="h-6 w-6 ${localStorage.getItem('wishlist')?.includes(product.id) ? 'text-red-500' : ''}" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-            </svg>
-          </button>
-          <h3 class="text-lg font-semibold mt-2">${product.name}</h3>
-          <p class="text-sm text-gray-600">${product.description.slice(0, 50)}...</p>
-          <p class="text-green-500 font-semibold">Rp ${product.price.toLocaleString()}</p>
-          <p class="text-sm text-gray-500">${product.merchant}</p>
-          ${product.discount ? `<span class="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded">Diskon ${product.discount}%</span>` : ''}
-          <button onclick="openProductModal(${product.id})" class="w-full mt-2 bg-green-500 text-white py-2 rounded-full hover:bg-green-600" aria-label="Lihat detail ${product.name}">Lihat</button>
-        </article>
-      `).join('');
-    }
-
-    // Render Categories
-    function renderCategories() {
-      const slider = document.getElementById('categorySlider');
-      slider.innerHTML = categories.map(category => `
-        <button onclick="filterByCategory('${category}')" class="flex-shrink-0 bg-white rounded-lg shadow-sm hover:shadow-md p-2" aria-label="Filter kategori ${category}">
-          <img src="/category-${category}.jpg" alt="${category}" class="w-24 h-24 object-cover rounded">
-          <p class="text-sm mt-1">${category}</p>
-        </button>
-      `).join('');
-    }
-
-    // Filter by Category
-    function filterByCategory(category) {
-      const filtered = category === 'All' ? products : products.filter(p => p.category === category);
-      renderProducts(filtered);
-    }
-
-    // Search Products
-    document.getElementById('searchInput').addEventListener('input', (e) => {
-      const query = e.target.value.toLowerCase();
-      const filtered = products.filter(p => p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query));
-      renderProducts(filtered);
-    });
-
-    // Sort Products
-    document.getElementById('sortSelect').addEventListener('change', (e) => {
-      const value = e.target.value;
-      let sorted = [...products];
-      if (value === 'price-asc') sorted.sort((a, b) => a.price - b.price);
-      if (value === 'price-desc') sorted.sort((a, b) => b.price - a.price);
-      if (value === 'popular') sorted.sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
-      if (value === 'latest') sorted.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-      renderProducts(sorted);
-    });
-
-    // Open Product Modal
-    function openProductModal(id) {
-      const product = products.find(p => p.id === id);
-      if (!product) return;
-      document.getElementById('modalImage').src = product.image;
-      document.getElementById('modalImage').alt = product.name;
-      document.getElementById('modalName').innerText = product.name;
-      document.getElementById('modalPrice').innerText = `Rp ${product.price.toLocaleString()}`;
-      document.getElementById('modalMerchant').innerText = product.merchant;
-      document.getElementById('modalDescription').innerText = product.description;
-      document.getElementById('modalQty').value = 1;
-      document.getElementById('productModal').classList.remove('hidden');
-      document.getElementById('productModal').classList.add('opacity-0', 'scale-95');
-      setTimeout(() => document.getElementById('productModal').classList.remove('opacity-0', 'scale-95'), 50);
-    }
-
-    // Close Product Modal
-    document.getElementById('closeProductModal').addEventListener('click', () => {
-      document.getElementById('productModal').classList.add('hidden');
-    });
-
-    // Quantity Controls
-    document.getElementById('increaseQty').addEventListener('click', () => {
-      const qty = document.getElementById('modalQty');
-      qty.value = parseInt(qty.value) + 1;
-    });
-    document.getElementById('decreaseQty').addEventListener('click', () => {
-      const qty = document.getElementById('modalQty');
-      if (qty.value > 1) qty.value = parseInt(qty.value) - 1;
-    });
-
-    // Prevent Negative Quantity
-    document.getElementById('modalQty').addEventListener('input', (e) => {
-      if (e.target.value < 1) e.target.value = 1;
-    });
-
-    // Add to Cart
-    document.getElementById('buyNow').addEventListener('click', () => {
-      const product = products.find(p => p.name === document.getElementById('modalName').innerText);
-      const qty = parseInt(document.getElementById('modalQty').value);
-      cart.push({ ...product, qty });
-      updateCartSummary();
-      document.getElementById('productModal').classList.add('hidden');
-      openCheckoutModal();
-    });
-
-    // Update Cart Summary
-    function updateCartSummary() {
-      const cartCount = cart.reduce((sum, item) => sum + item.qty, 0);
-      const cartTotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-      document.getElementById('cartCount').innerText = `${cartCount} Item`;
-      document.getElementById('cartTotal').innerText = `Rp ${cartTotal.toLocaleString()}`;
-      document.getElementById('cartSummary').classList.toggle('hidden', cartCount === 0);
-    }
-
-    // Open Checkout Modal
-    function openCheckoutModal() {
-      document.getElementById('checkoutItems').innerHTML = cart.map((item, index) => `
-        <div class="flex justify-between items-center mb-2">
-          <span>${item.name} (x${item.qty})</span>
-          <div>
-            <span>Rp ${(item.price * item.qty).toLocaleString()}</span>
-            <button onclick="removeFromCart(${index})" class="text-red-500 ml-2" aria-label="Hapus ${item.name} dari keranjang">Hapus</button>
-          </div>
+        /* Custom styles untuk slider */
+        .slider-container {
+            position: relative;
+            overflow: hidden;
+        }
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .slider img {
+            flex-shrink: 0;
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .slider-nav {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+        }
+        .slider-nav button {
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        .slider-dots {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+        }
+        .slider-dots span {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            margin: 0 5px;
+            background: #bbb;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .slider-dots span.active {
+            background: #2563eb;
+        }
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.active {
+            display: flex;
+        }
+        /* Animasi untuk kartu produk */
+        .product-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        /* Dark mode */
+        .dark {
+            background: #1f2937;
+            color: #f3f4f6;
+        }
+        .dark .bg-white {
+            background: #374151;
+        }
+        .dark .text-gray-700 {
+            color: #d1d5db;
+        }
+        .dark .bg-gray-100 {
+            background: #111827;
+        }
+        /* Scroll to top button */
+        #scrollToTop {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #2563eb;
+            color: white;
+            padding: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Navigasi -->
+    <nav class="bg-white dark:bg-gray-800 shadow-lg p-4 sticky top-0 z-20">
+        <div class="container mx-auto flex justify-between items-center">
+            <img src="https://via.placeholder.com/150x50?text=Logo" alt="Logo" class="h-12">
+            <div class="flex items-center space-x-6">
+                <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium">Beranda</a>
+                <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium">Kategori</a>
+                <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium">Kontak</a>
+                <button id="themeToggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                </button>
+            </div>
         </div>
-      `).join('');
-      const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-      document.getElementById('checkoutTotal').innerText = `Total: Rp ${total.toLocaleString()}`;
-      document.getElementById('checkoutModal').classList.remove('hidden');
-      document.getElementById('checkoutModal').classList.add('opacity-0', 'scale-95');
-      setTimeout(() => document.getElementById('checkoutModal').classList.remove('opacity-0', 'scale-95'), 50);
-    }
+    </nav>
 
-    // Remove from Cart
-    function removeFromCart(index) {
-      cart.splice(index, 1);
-      updateCartSummary();
-      if (cart.length === 0) {
-        document.getElementById('checkoutModal').classList.add('hidden');
-      } else {
-        openCheckoutModal();
-      }
-    }
+    <!-- Slider Gambar -->
+    <div class="container mx-auto mt-6 px-4">
+        <div class="slider-container relative">
+            <div class="slider" id="slider">
+                <img src="https://via.placeholder.com/1200x300?text=Banner+1" alt="Banner 1" loading="lazy">
+                <img src="https://via.placeholder.com/1200x300?text=Banner+2" alt="Banner 2" loading="lazy">
+                <img src="https://via.placeholder.com/1200x300?text=Banner+3" alt="Banner 3" loading="lazy">
+            </div>
+            <div class="slider-nav">
+                <button onclick="prevSlide()">&#10094;</button>
+                <button onclick="nextSlide()">&#10095;</button>
+            </div>
+            <div class="slider-dots" id="sliderDots"></div>
+        </div>
+    </div>
 
-    // Close Checkout Modal
-    document.getElementById('closeCheckoutModal').addEventListener('click', () => {
-      document.getElementById('checkoutModal').classList.add('hidden');
-    });
+    <!-- Search Bar dan Filter -->
+    <div class="container mx-auto mt-6 px-4">
+        <div class="flex flex-col sm:flex-row gap-4">
+            <input type="text" id="searchInput" placeholder="Cari makanan..." class="flex-grow p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400">
+            <select id="categoryFilter" class="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
+                <option value="">Semua Kategori</option>
+                <option value="Makanan">Makanan</option>
+                <option value="Minuman">Minuman</option>
+                <option value="Cemilan">Cemilan</option>
+            </select>
+        </div>
+    </div>
 
-    // Process Order
-    document.getElementById('checkoutForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const form = e.target;
-      if (!form.name.value || !form.address.value || !form.whatsapp.value) {
-        showToast('Harap isi semua kolom wajib', 'error');
-        return;
-      }
-      const adminNumbers = ['+6281234567890', '+6280987654321', '+6281122334455', '+6285544332211'];
-      const randomAdmin = adminNumbers[Math.floor(Math.random() * adminNumbers.length)];
-      const message = encodeURIComponent(`
-Pesanan Baru:
-Nama: ${form.name.value}
-Alamat: ${form.address.value}
-Nomor WA: ${form.whatsapp.value}
-Catatan: ${form.notes.value || '-'}
-Produk: ${cart.map(item => `${item.name} (x${item.qty})`).join(', ')}
-Total: Rp ${cart.reduce((sum, item) => sum + item.price * item.qty, 0).toLocaleString()}
-      `);
-      try {
-        window.open(`https://wa.me/${randomAdmin}?text=${message}`, '_blank');
-        showToast('Pesanan diproses, menuju WhatsApp...', 'success');
-        cart = [];
-        updateCartSummary();
-        document.getElementById('checkoutModal').classList.add('hidden');
-        form.reset();
-      } catch (error) {
-        showToast('Gagal memproses pesanan', 'error');
-      }
-    });
+    <!-- Daftar Produk -->
+    <div class="container mx-auto mt-6 px-4">
+        <h2 class="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-200">Daftar Makanan</h2>
+        <div id="productList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+    </div>
 
-    // Wishlist Toggle
-    function toggleWishlist(id) {
-      let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
-      if (wishlist.includes(id)) {
-        wishlist = wishlist.filter(w => w !== id);
-      } else {
-        wishlist.push(id);
-      }
-      localStorage.setItem('wishlist', JSON.stringify(wishlist));
-      renderProducts(products);
-    }
+    <!-- Modal Produk -->
+    <div id="productModal" class="modal">
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg max-w-lg w-full transform transition-all duration-300 scale-95 modal-active:scale-100">
+            <h3 id="modalTitle" class="text-2xl font-bold mb-3 text-gray-800 dark:text-gray-200"></h3>
+            <img id="modalImage" src="" alt="Product" class="w-full h-64 object-cover rounded-lg mb-4" loading="lazy">
+            <p id="modalDescription" class="text-gray-600 dark:text-gray-300 mb-3"></p>
+            <p id="modalPrice" class="text-xl font-semibold mb-3 text-blue-600 dark:text-blue-400"></p>
+            <p id="modalMerchant" class="text-gray-600 dark:text-gray-300 mb-3"></p>
+            <p id="modalAddress" class="text-gray-600 dark:text-gray-300 mb-4"></p>
+            <div class="flex space-x-3">
+                <button onclick="openCheckoutModal()" class="flex-grow bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Pesan Sekarang</button>
+                <button onclick="closeModal()" class="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 transition">Tutup</button>
+            </div>
+        </div>
+    </div>
 
-    // Show Toast
-    function showToast(message, type) {
-      const toast = document.getElementById('toast');
-      const toastMessage = document.getElementById('toastMessage');
-      toastMessage.innerText = message;
-      toast.classList.remove('hidden', 'bg-green-500', 'bg-red-500');
-      toast.classList.add(type === 'success' ? 'bg-green-500' : 'bg-red-500');
-      setTimeout(() => toast.classList.add('hidden'), 3000);
-    }
+    <!-- Modal Checkout -->
+    <div id="checkoutModal" class="modal">
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg max-w-lg w-full transform transition-all duration-300 scale-95 modal-active:scale-100">
+            <h3 class="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-200">Formulir Pemesanan</h3>
+            <form id="checkoutForm">
+                <div class="mb-4">
+                    <label class="block text-gray-700 dark:text-gray-300">Nama Lengkap</label>
+                    <input type="text" id="fullName" required class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 dark:text-gray-300">Alamat (RT/RW)</label>
+                    <input type="text" id="address" required class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 dark:text-gray-300">Nomor HP</label>
+                    <input type="tel" id="phoneNumber" required class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
+                </div>
+                <div class="flex space-x-3">
+                    <button type="submit" class="flex-grow bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Konfirmasi Pesanan</button>
+                    <button type="button" onclick="closeCheckoutModal()" class="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 transition">Batal</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-    // Load More Products
-    document.getElementById('loadMore').addEventListener('click', () => {
-      currentPage++;
-      fetchProducts();
-    });
+    <!-- Scroll to Top Button -->
+    <button id="scrollToTop" class="shadow-lg">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+        </svg>
+    </button>
 
-    // Scroll to Top
-    document.getElementById('scrollToTop').addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+    <script>
+        // Inisialisasi Supabase
+        const supabase = Supabase.createClient('YOUR_SUPABASE_URL', 'YOUR_SUPABASE_ANON_KEY');
+        let selectedProduct = null;
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('#slider img');
+        const dotsContainer = document.getElementById('sliderDots');
 
-    // Show Scroll to Top Button
-    window.addEventListener('scroll', () => {
-      const button = document.getElementById('scrollToTop');
-      button.classList.toggle('hidden', window.scrollY < 200);
-    });
+        // Inisialisasi slider dots
+        slides.forEach((_, index) => {
+            const dot = document.createElement('span');
+            dot.addEventListener('click', () => goToSlide(index));
+            dotsContainer.appendChild(dot);
+        });
+        updateDots();
 
-    // Lazy Loading Images
-    document.addEventListener('DOMContentLoaded', () => {
-      const images = document.querySelectorAll('img');
-      images.forEach(img => img.setAttribute('loading', 'lazy'));
-      fetchProducts();
-      fetchCategories();
-    });
+        // Auto slide
+        setInterval(nextSlide, 5000);
 
-    // Keyboard Accessibility
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        document.getElementById('productModal').classList.add('hidden');
-        document.getElementById('checkoutModal').classList.add('hidden');
-      }
-    });
-  </script>
+        // Navigasi slider
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            updateSlider();
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            updateSlider();
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateSlider();
+        }
+
+        function updateSlider() {
+            document.getElementById('slider').style.transform = `translateX(-${currentSlide * 100}%)`;
+            updateDots();
+        }
+
+        function updateDots() {
+            const dots = dotsContainer.children;
+            for (let i = 0; i < dots.length; i++) {
+                dots[i].classList.toggle('active', i === currentSlide);
+            }
+        }
+
+        // Ambil data produk dari Supabase
+        async function fetchProducts(category = '') {
+            let query = supabase.from('products').select('*');
+            if (category) query = query.eq('category', category);
+            const { data, error } = await query;
+            if (error) {
+                console.error('Error fetching products:', error);
+                return;
+            }
+            renderProducts(data);
+        }
+
+        // Ambil nomor WhatsApp operator dari Supabase
+        async function fetchWhatsAppNumbers() {
+            const { data, error } = await supabase.from('message').select('number');
+            if (error) {
+                console.error('Error fetching WhatsApp numbers:', error);
+                return [];
+            }
+            return data.map(item => item.number);
+        }
+
+        // Render produk ke halaman
+        function renderProducts(products) {
+            const productList = document.getElementById('productList');
+            productList.innerHTML = '';
+            products.forEach(product => {
+                const productCard = `
+                    <div class="product-card bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 cursor-pointer">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover rounded-lg mb-4" loading="lazy">
+                        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">${product.name}</h3>
+                        <p class="text-blue-600 dark:text-blue-400 font-medium">Rp ${product.price.toLocaleString()}</p>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm">${product.merchant_name}</p>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm">${product.category}</p>
+                    </div>
+                `;
+                productList.innerHTML += productCard;
+            });
+            // Tambahkan event listener untuk setiap kartu produk
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.addEventListener('click', () => openProductModal(products.find(p => p.name === card.querySelector('h3').textContent)));
+            });
+        }
+
+        // Filter kategori
+        document.getElementById('categoryFilter').addEventListener('change', (e) => {
+            fetchProducts(e.target.value);
+        });
+
+        // Search produk
+        document.getElementById('searchInput').addEventListener('input', async (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const { data, error } = await supabase.from('products').select('*').ilike('name', `%${searchTerm}%`);
+            if (error) {
+                console.error('Error searching products:', error);
+                return;
+            }
+            renderProducts(data);
+        });
+
+        // Buka modal produk
+        function openProductModal(product) {
+            selectedProduct = product;
+            document.getElementById('modalTitle').textContent = product.name;
+            document.getElementById('modalImage').src = product.image;
+            document.getElementById('modalDescription').textContent = product.description;
+            document.getElementById('modalPrice').textContent = `Rp ${product.price.toLocaleString()}`;
+            document.getElementById('modalMerchant').textContent = `Merchant: ${product.merchant_name}`;
+            document.getElementById('modalAddress').textContent = `Alamat: ${product.merchant_address}`;
+            document.getElementById('productModal').classList.add('active');
+        }
+
+        // Tutup modal produk
+        function closeModal() {
+            document.getElementById('productModal').classList.remove('active');
+        }
+
+        // Buka modal checkout
+        function openCheckoutModal() {
+            document.getElementById('productModal').classList.remove('active');
+            document.getElementById('checkoutModal').classList.add('active');
+        }
+
+        // Tutup modal checkout
+        function closeCheckoutModal() {
+            document.getElementById('checkoutModal').classList.remove('active');
+        }
+
+        // Proses checkout
+        document.getElementById('checkoutForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const fullName = document.getElementById('fullName').value;
+            const address = document.getElementById('address').value;
+            const phoneNumber = document.getElementById('phoneNumber').value;
+
+            // Ambil nomor WhatsApp secara bergantian
+            const whatsappNumbers = await fetchWhatsAppNumbers();
+            const selectedNumber = whatsappNumbers[Math.floor(Math.random() * whatsappNumbers.length)];
+
+            // Buat pesan WhatsApp
+            const message = `Pesanan Baru:\nNama: ${fullName}\nAlamat: ${address}\nNomor HP: ${phoneNumber}\nMerchant: ${selectedProduct.merchant_name}\nProduk: ${selectedProduct.name}\nHarga: Rp ${selectedProduct.price.toLocaleString()}`;
+            const whatsappUrl = `https://wa.me/${selectedNumber}?text=${encodeURIComponent(message)}`;
+
+            // Arahkan ke WhatsApp
+            window.location.href = whatsappUrl;
+
+            // Reset form dan tutup modal
+            document.getElementById('checkoutForm').reset();
+            closeCheckoutModal();
+        });
+
+        // Scroll to top
+        const scrollToTopBtn = document.getElementById('scrollToTop');
+        window.addEventListener('scroll', () => {
+            scrollToTopBtn.style.display = window.scrollY > 300 ? 'block' : 'none';
+        });
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Dark mode toggle
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        // Inisialisasi tema berdasarkan preferensi pengguna
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+
+        // Inisialisasi halaman
+        fetchProducts();
+    </script>
+</body>
+</html>
