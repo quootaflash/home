@@ -6,6 +6,7 @@
   <title>Pemesanan Makanan — FoodOrder</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
     body.modal-open, body.sidebar-open {
       overflow: hidden;
@@ -20,19 +21,39 @@
     #sidebar-backdrop.open {
       display: block;
     }
-    #toast.error {
-      background-color: #dc2626;
-      color: white;
-      font-weight: bold;
-      font-size: 1rem;
-      padding: 1rem 1.5rem;
-      border-radius: 0.5rem;
+    #toast {
+      position: fixed;
       top: 1rem;
       left: 50%;
       transform: translateX(-50%);
       max-width: 90%;
-      text-align: center;
+      z-index: 60;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      font-size: 1rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      opacity: 0;
+      pointer-events: none;
+    }
+    #toast.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    #toast.success {
+      background-color: #10b981;
+      color: white;
+    }
+    #toast.error {
+      background-color: #ef4444;
+      color: white;
+    }
+    #toast i {
+      font-size: 1.25rem;
     }
     #categories {
       display: flex;
@@ -407,15 +428,15 @@
       <div class="mt-3 space-y-3">
         <div>
           <label class="text-xs text-gray-600">Nama Lengkap</label>
-          <input id="input-nama" required type="text" placeholder="Nama anda" class="w-full border border-gray-200 rounded-md px-3 py-2 mt-1 text-sm" />
+          <input id="input-nama" required type="text" placeholder="Nama anda" class="w-full border border-gray-200 rounded-md px-3 py-2 mt-1 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500" />
         </div>
         <div>
           <label class="text-xs text-gray-600">Alamat (RT/RW)</label>
-          <input id="input-alamat" required type="text" placeholder="Jl. Contoh No 1, RT 01 / RW 02" class="w-full border border-gray-200 rounded-md px-3 py-2 mt-1 text-sm" />
+          <input id="input-alamat" required type="text" placeholder="Jl. Contoh No 1, RT 01 / RW 02" class="w-full border border-gray-200 rounded-md px-3 py-2 mt-1 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500" />
         </div>
         <div>
           <label class="text-xs text-gray-600">Nomor HP-WhatsApp</label>
-          <input id="input-hp" required type="tel" placeholder="0812xxxx" class="w-full border border-gray-200 rounded-md px-3 py-2 mt-1 text-sm" />
+          <input id="input-hp" required type="tel" placeholder="0812xxxx" class="w-full border border-gray-200 rounded-md px-3 py-2 mt-1 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500" />
         </div>
         <div id="checkout-summary" class="text-sm text-gray-700 bg-gray-50 p-3 rounded-md"></div>
       </div>
@@ -426,13 +447,13 @@
     </div>
   </div>
   <!-- SMALL TOAST -->
-  <div id="toast" class="fixed hidden bg-black text-white text-sm px-4 py-2 rounded-md shadow-lg z-50"></div>
+  <div id="toast" class="fixed hidden"></div>
   <!-- SCRIPT -->
   <script>
     const SUPABASE_URL = "https://dlnenwglsmfyhdysmqdc.supabase.co";
     const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRsbmVud2dsc21meWhkeXNtcWRjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYxMTM5ODIsImV4cCI6MjA3MTY4OTk4Mn0.oWKClbQFN5RDS_MkFkPFbwel-LBmD8iGJX1KxN3Db0U";
     if (!SUPABASE_URL || !SUPABASE_ANON) {
-      showErrorToast("Konfigurasi Supabase tidak lengkap. Hubungi admin.");
+      showToast("Konfigurasi Supabase tidak lengkap. Hubungi admin.", "error");
       throw new Error("Supabase credential belum diisi. Ganti SUPABASE_URL dan SUPABASE_ANON.");
     }
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
@@ -442,6 +463,7 @@
     let selectedProduk = null;
     let selectedQuantity = 1;
     const WA_INDEX_KEY = "wa_rotation_index";
+
     function getWaIndex() {
       const v = parseInt(localStorage.getItem(WA_INDEX_KEY) || "0", 10);
       return isNaN(v) ? 0 : v;
@@ -452,24 +474,24 @@
       return next;
     }
     function rupiah(num) {
-      if (num == null) {
-        showErrorToast("Harga produk tidak valid.");
-        return "";
+      if (num == null || isNaN(num)) {
+        showToast("Harga produk tidak valid.", "error");
+        return "Rp0";
       }
       return "Rp" + Number(num).toLocaleString("id-ID");
     }
-    function showToast(text, ms = 2500, isError = false) {
-      const t = document.getElementById("toast");
-      t.innerText = text;
-      t.classList.remove("hidden", "error");
-      if (isError) {
-        t.classList.add("error");
-        ms = 3500;
-      }
-      setTimeout(() => t.classList.add("hidden"), ms);
-    }
-    function showErrorToast(text) {
-      showToast(text, 3500, true);
+    function showToast(text, type = "success", duration = 3000) {
+      const toast = document.getElementById("toast");
+      const icon = type === "success" ? '<i class="fas fa-check-circle"></i>' : '<i class="fas fa-exclamation-circle"></i>';
+      toast.innerHTML = `${icon} ${text}`;
+      toast.className = `fixed ${type} show`;
+      setTimeout(() => {
+        toast.classList.remove("show");
+        setTimeout(() => {
+          toast.className = "fixed hidden";
+          toast.innerHTML = "";
+        }, 300);
+      }, duration);
     }
     // MOBILE SIDEBAR
     const sidebar = document.getElementById("mobile-sidebar");
@@ -480,7 +502,7 @@
         backdrop.classList.toggle("open");
         document.body.classList.toggle("sidebar-open");
       } catch (e) {
-        showErrorToast("Gagal membuka menu. Coba lagi.");
+        showToast("Gagal membuka menu. Coba lagi.", "error");
         console.error("Sidebar toggle failed", e);
       }
     });
@@ -490,7 +512,7 @@
         backdrop.classList.remove("open");
         document.body.classList.remove("sidebar-open");
       } catch (e) {
-        showErrorToast("Gagal menutup menu. Coba lagi.");
+        showToast("Gagal menutup menu. Coba lagi.", "error");
         console.error("Sidebar close failed", e);
       }
     });
@@ -500,7 +522,7 @@
         backdrop.classList.remove("open");
         document.body.classList.remove("sidebar-open");
       } catch (e) {
-        showErrorToast("Gagal menutup menu. Coba lagi.");
+        showToast("Gagal menutup menu. Coba lagi.", "error");
         console.error("Sidebar backdrop close failed", e);
       }
     });
@@ -508,26 +530,26 @@
     document.getElementById("increase-quantity").addEventListener("click", () => {
       try {
         if (selectedQuantity >= 99) {
-          showErrorToast("Jumlah pesanan maksimal 99.");
+          showToast("Jumlah pesanan maksimal 99.", "error");
           return;
         }
         selectedQuantity++;
         document.getElementById("modal-quantity").innerText = selectedQuantity;
       } catch (e) {
-        showErrorToast("Gagal menambah jumlah pesanan.");
+        showToast("Gagal menambah jumlah pesanan.", "error");
         console.error("Increase quantity failed", e);
       }
     });
     document.getElementById("decrease-quantity").addEventListener("click", () => {
       try {
         if (selectedQuantity <= 1) {
-          showErrorToast("Jumlah pesanan minimal 1.");
+          showToast("Jumlah pesanan minimal 1.", "error");
           return;
         }
         selectedQuantity--;
         document.getElementById("modal-quantity").innerText = selectedQuantity;
       } catch (e) {
-        showErrorToast("Gagal mengurangi jumlah pesanan.");
+        showToast("Gagal mengurangi jumlah pesanan.", "error");
         console.error("Decrease quantity failed", e);
       }
     });
@@ -566,7 +588,7 @@
           .select("id,nama,deskripsi,harga,gambar,merchant,alamat,kategori")
           .order("id", { ascending: true });
         if (err1) {
-          showErrorToast("Gagal memuat data produk. Coba lagi nanti.");
+          showToast("Gagal memuat data produk. Coba lagi nanti.", "error");
           throw new Error("Error fetch produk: " + err1.message);
         }
         const { data: msgs, error: err2 } = await supabaseClient
@@ -574,28 +596,28 @@
           .select("id,nomor")
           .order("id", { ascending: true });
         if (err2) {
-          showErrorToast("Gagal memuat data operator. Coba lagi nanti.");
+          showToast("Gagal memuat data operator. Coba lagi nanti.", "error");
           throw new Error("Error fetch message: " + err2.message);
         }
         produkData = produk || [];
         operatorData = (msgs || []).map(m => {
           const nomor = String(m.nomor).replace(/\D/g, "");
           if (!nomor) {
-            showErrorToast("Nomor operator tidak valid.");
+            showToast("Nomor operator tidak valid.", "error");
           }
           return { id: m.id, nomor };
         });
         if (!produkData.length) {
-          showErrorToast("Tidak ada produk tersedia.");
+          showToast("Tidak ada produk tersedia.", "error");
         }
         if (!operatorData.length) {
-          showErrorToast("Tidak ada operator tersedia. Hubungi admin.");
+          showToast("Tidak ada operator tersedia. Hubungi admin.", "error");
         }
         kategoriSet = new Set(produkData.map(p => p.kategori || "Umum"));
         renderCategories();
         renderProduk(produkData);
       } catch (e) {
-        showErrorToast("Gagal memuat data. Periksa koneksi Anda.");
+        showToast("Gagal memuat data. Periksa koneksi Anda.", "error");
         console.error("loadData failed", e);
       }
     }
@@ -604,7 +626,7 @@
       try {
         const wrap = document.getElementById("categories");
         if (!wrap) {
-          showErrorToast("Gagal menampilkan kategori.");
+          showToast("Gagal menampilkan kategori.", "error");
           throw new Error("Categories element not found");
         }
         wrap.innerHTML = "";
@@ -616,7 +638,7 @@
             document.getElementById("price-filter").value = "";
             renderProduk(produkData);
           } catch (e) {
-            showErrorToast("Gagal menampilkan semua produk.");
+            showToast("Gagal menampilkan semua produk.", "error");
             console.error("Render all products failed", e);
           }
         };
@@ -630,35 +652,44 @@
               const filtered = produkData.filter(p => (p.kategori || "Umum") === k);
               applyPriceFilter(filtered);
             } catch (e) {
-              showErrorToast(`Gagal menampilkan produk kategori ${k}.`);
+              showToast(`Gagal menampilkan produk kategori ${k}.`, "error");
               console.error("Render category failed", e);
             }
           };
           wrap.appendChild(btn);
         });
       } catch (e) {
-        showErrorToast("Gagal memuat kategori.");
+        showToast("Gagal memuat kategori.", "error");
         console.error("renderCategories failed", e);
       }
     }
     // PRICE FILTER
     function applyPriceFilter(data) {
-      const priceFilter = document.getElementById("price-filter").value;
-      let filtered = data;
-      if (priceFilter) {
-        const [min, max] = priceFilter.split("-").map(Number);
-        filtered = data.filter(p => {
-          if (max) return p.harga >= min && p.harga <= max;
-          return p.harga >= min;
-        });
+      try {
+        const priceFilter = document.getElementById("price-filter").value;
+        let filtered = data;
+        if (priceFilter) {
+          const [min, max] = priceFilter.split("-").map(Number);
+          filtered = data.filter(p => {
+            if (!p.harga || isNaN(p.harga)) {
+              showToast(`Harga produk ${p.nama || "tidak diketahui"} tidak valid.`, "error");
+              return false;
+            }
+            if (max) return p.harga >= min && p.harga <= max;
+            return p.harga >= min;
+          });
+        }
+        renderProduk(filtered);
+      } catch (e) {
+        showToast("Gagal menerapkan filter harga.", "error");
+        console.error("Price filter failed", e);
       }
-      renderProduk(filtered);
     }
     document.getElementById("price-filter").addEventListener("change", () => {
       try {
         applyPriceFilter(produkData);
       } catch (e) {
-        showErrorToast("Gagal menerapkan filter harga.");
+        showToast("Gagal menerapkan filter harga.", "error");
         console.error("Price filter failed", e);
       }
     });
@@ -667,7 +698,7 @@
       try {
         const grid = document.getElementById("produk-grid");
         if (!grid) {
-          showErrorToast("Gagal menampilkan produk.");
+          showToast("Gagal menampilkan produk.", "error");
           throw new Error("Produk-grid element not found");
         }
         grid.innerHTML = "";
@@ -677,15 +708,16 @@
         }
         for (const item of list) {
           if (!item || !item.id || !item.nama) {
-            showErrorToast("Data produk tidak valid.");
+            showToast("Data produk tidak valid.", "error");
             continue;
           }
           const card = document.createElement("article");
           card.className = "bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition cursor-pointer";
           const img = document.createElement("img");
-          img.src = item.gambar || "";
-          img.alt = item.nama || "";
+          img.src = item.gambar || "https://via.placeholder.com/200x150?text=No+Image";
+          img.alt = item.nama || "Produk";
           img.className = "h-40 w-full object-cover";
+          img.onerror = () => { img.src = "https://via.placeholder.com/200x150?text=No+Image"; };
           const body = document.createElement("div");
           body.className = "p-3";
           const title = document.createElement("h3");
@@ -707,7 +739,7 @@
               e.stopPropagation();
               openModal(item);
             } catch (e) {
-              showErrorToast("Gagal membuka detail produk.");
+              showToast("Gagal membuka detail produk.", "error");
               console.error("Open modal failed", e);
             }
           };
@@ -722,14 +754,14 @@
             try {
               openModal(item);
             } catch (e) {
-              showErrorToast("Gagal membuka detail produk.");
+              showToast("Gagal membuka detail produk.", "error");
               console.error("Open modal failed", e);
             }
           });
           grid.appendChild(card);
         }
       } catch (e) {
-        showErrorToast("Gagal menampilkan produk.");
+        showToast("Gagal menampilkan produk.", "error");
         console.error("renderProduk failed", e);
       }
     }
@@ -742,7 +774,7 @@
           return;
         }
         if (v.length < 2) {
-          showErrorToast("Masukkan minimal 2 karakter untuk pencarian.");
+          showToast("Masukkan minimal 2 karakter untuk pencarian.", "error");
           return;
         }
         const filtered = produkData.filter(p =>
@@ -753,7 +785,7 @@
         );
         applyPriceFilter(filtered);
       } catch (e) {
-        showErrorToast("Gagal melakukan pencarian.");
+        showToast("Gagal melakukan pencarian.", "error");
         console.error("Search failed", e);
       }
     }
@@ -763,27 +795,28 @@
     function openModal(item) {
       try {
         if (!item || !item.id || !item.nama) {
-          showErrorToast("Data produk tidak valid.");
+          showToast("Data produk tidak valid.", "error");
           return;
         }
         selectedProduk = item;
         selectedQuantity = 1;
         const modal = document.getElementById("modal-produk");
         if (!modal) {
-          showErrorToast("Gagal membuka detail produk.");
+          showToast("Gagal membuka detail produk.", "error");
           throw new Error("Modal-produk element not found");
         }
-        document.getElementById("modal-gambar").src = item.gambar || "";
-        document.getElementById("modal-nama").innerText = item.nama || "";
-        document.getElementById("modal-merchant").innerText = item.merchant || "";
-        document.getElementById("modal-deskripsi").innerText = item.deskripsi || "";
+        document.getElementById("modal-gambar").src = item.gambar || "https://via.placeholder.com/200x150?text=No+Image";
+        document.getElementById("modal-gambar").onerror = () => { document.getElementById("modal-gambar").src = "https://via.placeholder.com/200x150?text=No+Image"; };
+        document.getElementById("modal-nama").innerText = item.nama || "—";
+        document.getElementById("modal-merchant").innerText = item.merchant || "—";
+        document.getElementById("modal-deskripsi").innerText = item.deskripsi || "Tidak ada deskripsi.";
         document.getElementById("modal-harga").innerText = rupiah(item.harga);
-        document.getElementById("modal-kategori").innerText = item.kategori || "";
+        document.getElementById("modal-kategori").innerText = item.kategori || "Umum";
         document.getElementById("modal-quantity").innerText = selectedQuantity;
         modal.classList.remove("hidden");
         document.body.classList.add("modal-open");
       } catch (e) {
-        showErrorToast("Gagal membuka detail produk.");
+        showToast("Gagal membuka detail produk.", "error");
         console.error("openModal failed", e);
       }
     }
@@ -791,34 +824,34 @@
       try {
         const modal = document.getElementById("modal-produk");
         if (!modal) {
-          showErrorToast("Gagal menutup detail produk.");
+          showToast("Gagal menutup detail produk.", "error");
           throw new Error("Modal-produk element not found");
         }
         modal.classList.add("hidden");
         document.body.classList.remove("modal-open");
       } catch (e) {
-        showErrorToast("Gagal menutup detail produk.");
+        showToast("Gagal menutup detail produk.", "error");
         console.error("closeModal failed", e);
       }
     }
     function openCheckout() {
       try {
         if (!selectedProduk) {
-          showErrorToast("Pilih produk terlebih dahulu.");
+          showToast("Pilih produk terlebih dahulu.", "error");
           return;
         }
         if (selectedQuantity < 1) {
-          showErrorToast("Jumlah pesanan minimal 1.");
+          showToast("Jumlah pesanan minimal 1.", "error");
           return;
         }
         const sum = document.getElementById("checkout-summary");
         if (!sum) {
-          showErrorToast("Gagal menampilkan ringkasan pesanan.");
+          showToast("Gagal menampilkan ringkasan pesanan.", "error");
           throw new Error("Checkout-summary element not found");
         }
         sum.innerHTML = `
-          <div class="font-semibold">${selectedProduk.nama}</div>
-          <div class="text-xs text-gray-500">${selectedProduk.merchant} • ${selectedProduk.alamat || ""}</div>
+          <div class="font-semibold">${selectedProduk.nama || "—"}</div>
+          <div class="text-xs text-gray-500">${selectedProduk.merchant || "—"} • ${selectedProduk.alamat || "—"}</div>
           <div class="mt-2">Jumlah: ${selectedQuantity}</div>
           <div class="mt-2 text-rose-600 font-bold">Total: ${rupiah(selectedProduk.harga * selectedQuantity)}</div>
         `;
@@ -828,13 +861,13 @@
         closeModal();
         const modalCheckout = document.getElementById("modal-checkout");
         if (!modalCheckout) {
-          showErrorToast("Gagal membuka form checkout.");
+          showToast("Gagal membuka form checkout.", "error");
           throw new Error("Modal-checkout element not found");
         }
         modalCheckout.classList.remove("hidden");
         document.body.classList.add("modal-open");
       } catch (e) {
-        showErrorToast("Gagal membuka form checkout.");
+        showToast("Gagal membuka form checkout.", "error");
         console.error("openCheckout failed", e);
       }
     }
@@ -842,20 +875,20 @@
       try {
         const modalCheckout = document.getElementById("modal-checkout");
         if (!modalCheckout) {
-          showErrorToast("Gagal menutup form checkout.");
+          showToast("Gagal menutup form checkout.", "error");
           throw new Error("Modal-checkout element not found");
         }
         modalCheckout.classList.add("hidden");
         document.body.classList.remove("modal-open");
       } catch (e) {
-        showErrorToast("Gagal menutup form checkout.");
+        showToast("Gagal menutup form checkout.", "error");
         console.error("closeCheckout failed", e);
       }
     }
     function normalizeHp(raw) {
       try {
         if (!raw) {
-          showErrorToast("Nomor HP wajib diisi.");
+          showToast("Nomor HP wajib diisi.", "error");
           return "";
         }
         let s = String(raw).trim().replace(/\s+/g, "");
@@ -864,7 +897,7 @@
         if (s.startsWith("62")) return s;
         return s;
       } catch (e) {
-        showErrorToast("Gagal memproses nomor HP.");
+        showToast("Gagal memproses nomor HP.", "error");
         console.error("normalizeHp failed", e);
         return "";
       }
@@ -872,19 +905,19 @@
     async function insertOrderToSupabase(orderData) {
       try {
         if (!orderData || !orderData.produk_id || !orderData.nama_pelanggan) {
-          showErrorToast("Data pesanan tidak lengkap.");
+          showToast("Data pesanan tidak lengkap.", "error");
           throw new Error("Invalid order data");
         }
         const { error } = await supabaseClient
           .from("orders")
           .insert([orderData]);
         if (error) {
-          showErrorToast("Gagal menyimpan pesanan ke database. Coba lagi.");
+          showToast("Gagal menyimpan pesanan ke database. Coba lagi.", "error");
           throw new Error("Error inserting order: " + error.message);
         }
         return true;
       } catch (e) {
-        showErrorToast("Gagal menyimpan pesanan ke database.");
+        showToast("Gagal menyimpan pesanan ke database.", "error");
         console.error("insertOrderToSupabase failed", e);
         return false;
       }
@@ -895,27 +928,39 @@
         const alamat = document.getElementById("input-alamat")?.value.trim();
         const hpRaw = document.getElementById("input-hp")?.value.trim();
         if (!nama || !alamat || !hpRaw) {
-          showErrorToast("Harap lengkapi semua kolom: Nama, Alamat, dan Nomor HP.");
+          showToast("Harap lengkapi semua kolom: Nama, Alamat, dan Nomor HP.", "error");
+          return;
+        }
+        if (nama.length < 2) {
+          showToast("Nama harus minimal 2 karakter.", "error");
+          return;
+        }
+        if (!/^[a-zA-Z\s]+$/.test(nama)) {
+          showToast("Nama hanya boleh berisi huruf dan spasi.", "error");
+          return;
+        }
+        if (alamat.length < 5) {
+          showToast("Alamat harus minimal 5 karakter.", "error");
           return;
         }
         const hp = normalizeHp(hpRaw);
         if (!hp.match(/^(\+62|62|0)\d{9,12}$/)) {
-          showErrorToast("Nomor HP tidak valid. Gunakan format 0812xxxx.");
+          showToast("Nomor HP tidak valid. Gunakan format 0812xxxx.", "error");
           return;
         }
         if (!selectedProduk) {
-          showErrorToast("Produk tidak tersedia. Pilih produk terlebih dahulu.");
+          showToast("Produk tidak tersedia. Pilih produk terlebih dahulu.", "error");
           return;
         }
         if (!operatorData.length) {
-          showErrorToast("Tidak ada nomor operator. Hubungi admin.");
+          showToast("Tidak ada nomor operator. Hubungi admin.", "error");
           return;
         }
         const idx = getWaIndex() % operatorData.length;
         bumpWaIndex();
         const operator = operatorData[idx];
         if (!operator || !operator.nomor) {
-          showErrorToast("Nomor operator tidak valid. Hubungi admin.");
+          showToast("Nomor operator tidak valid. Hubungi admin.", "error");
           return;
         }
         const totalHarga = selectedProduk.harga * selectedQuantity;
@@ -949,7 +994,7 @@
         const text = encodeURIComponent(list.join("\n"));
         const waNumber = String(operator.nomor).replace(/\D/g, "");
         if (!waNumber) {
-          showErrorToast("Nomor operator tidak valid.");
+          showToast("Nomor operator tidak valid.", "error");
           return;
         }
         const url = `https://wa.me/${waNumber}?text=${text}`;
@@ -970,13 +1015,13 @@
           });
           localStorage.setItem("orders", JSON.stringify(history.slice(0, 50)));
         } catch (e) {
-          showErrorToast("Gagal menyimpan riwayat pesanan lokal.");
+          showToast("Gagal menyimpan riwayat pesanan lokal.", "error");
           console.error("Local storage save failed", e);
         }
         closeCheckout();
-        showToast("Order tersimpan dan mengarahkan ke WhatsApp operator...");
+        showToast("Pesanan berhasil diproses! Mengarahkan ke WhatsApp...", "success");
       } catch (e) {
-        showErrorToast("Gagal memproses checkout. Coba lagi.");
+        showToast("Gagal memproses checkout. Coba lagi.", "error");
         console.error("handleCheckout failed", e);
       }
     }
@@ -985,12 +1030,12 @@
       try {
         const grid = document.getElementById("produk-grid");
         if (!grid) {
-          showErrorToast("Gagal menavigasi ke daftar produk.");
+          showToast("Gagal menavigasi ke daftar produk.", "error");
           throw new Error("Produk-grid element not found");
         }
         grid.scrollIntoView({ behavior: "smooth", block: "start" });
       } catch (e) {
-        showErrorToast("Gagal menavigasi ke daftar produk.");
+        showToast("Gagal menavigasi ke daftar produk.", "error");
         console.error("Scroll to product grid failed", e);
       }
     }
@@ -1009,15 +1054,43 @@
           document.body.classList.remove("sidebar-open");
         }
       } catch (e) {
-        showErrorToast("Gagal menutup modal atau menu.");
+        showToast("Gagal menutup modal atau menu.", "error");
         console.error("Escape key handler failed", e);
+      }
+    });
+    // INPUT VALIDATION
+    document.getElementById("input-nama").addEventListener("input", (e) => {
+      const value = e.target.value.trim();
+      if (value.length > 50) {
+        e.target.value = value.slice(0, 50);
+        showToast("Nama maksimal 50 karakter.", "error");
+      }
+      if (value && !/^[a-zA-Z\s]+$/.test(value)) {
+        showToast("Nama hanya boleh berisi huruf dan spasi.", "error");
+      }
+    });
+    document.getElementById("input-alamat").addEventListener("input", (e) => {
+      const value = e.target.value.trim();
+      if (value.length > 100) {
+        e.target.value = value.slice(0, 100);
+        showToast("Alamat maksimal 100 karakter.", "error");
+      }
+    });
+    document.getElementById("input-hp").addEventListener("input", (e) => {
+      const value = e.target.value.trim();
+      if (value.length > 15) {
+        e.target.value = value.slice(0, 15);
+        showToast("Nomor HP maksimal 15 karakter.", "error");
+      }
+      if (value && !/^\+?\d*$/.test(value)) {
+        showToast("Nomor HP hanya boleh berisi angka dan tanda +.", "error");
       }
     });
     // INIT
     try {
       loadData();
     } catch (e) {
-      showErrorToast("Gagal memulai aplikasi. Periksa koneksi Anda.");
+      showToast("Gagal memulai aplikasi. Periksa koneksi Anda.", "error");
       console.error("Initialization failed", e);
     }
   </script>
