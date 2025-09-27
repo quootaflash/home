@@ -98,7 +98,7 @@
     </div>
   </main>
   <!-- PRODUCT MODAL -->
-  <div id="modal-produk" class="fixed inset-0 hidden z-50 items-center justify-center p-4">
+  <div id="modal-produk" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4">
     <div class="absolute inset-0 bg-black/40" onclick="closeModal()"></div>
     <div class="relative bg-white rounded-xl shadow-xl max-w-md w-full overflow-hidden">
       <img id="modal-gambar" class="w-full h-48 object-cover" src="" alt="gambar produk" />
@@ -130,7 +130,7 @@
     </div>
   </div>
   <!-- CHECKOUT MODAL -->
-  <div id="modal-checkout" class="fixed inset-0 hidden z-50 items-center justify-center p-4">
+  <div id="modal-checkout" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4">
     <div class="absolute inset-0 bg-black/40" onclick="closeCheckout()"></div>
     <form id="checkout-form" class="relative bg-white rounded-xl shadow-xl max-w-md w-full overflow-hidden p-4" onsubmit="event.preventDefault(); handleCheckout();">
       <h3 class="text-lg font-semibold">Form Checkout</h3>
@@ -424,8 +424,26 @@
       if (s.startsWith("62")) return s;
       return s;
     }
+    // INSERT ORDER TO SUPABASE
+    async function insertOrderToSupabase(orderData) {
+      try {
+        const { error } = await supabaseClient
+          .from("orders")
+          .insert([orderData]);
+        if (error) {
+          console.error("Error inserting order:", error);
+          showToast("Gagal menyimpan order ke database.");
+          return false;
+        }
+        return true;
+      } catch (e) {
+        console.error("insertOrderToSupabase failed", e);
+        showToast("Gagal menyimpan order ke database.");
+        return false;
+      }
+    }
     // HANDLE CHECKOUT
-    function handleCheckout() {
+    async function handleCheckout() {
       const nama = document.getElementById("input-nama").value.trim();
       const alamat = document.getElementById("input-alamat").value.trim();
       const hpRaw = document.getElementById("input-hp").value.trim();
@@ -446,6 +464,22 @@
       bumpWaIndex();
       const operator = operatorData[idx];
       const totalHarga = selectedProduk.harga * selectedQuantity;
+      // Save to Supabase
+      const orderData = {
+        produk_id: selectedProduk.id,
+        produk_nama: selectedProduk.nama,
+        harga: selectedProduk.harga,
+        jumlah: selectedQuantity,
+        total: totalHarga,
+        nama_pelanggan: nama,
+        alamat,
+        nomor_hp: hpRaw,
+        operator_nomor: operator.nomor,
+        created_at: new Date().toISOString()
+      };
+      const saved = await insertOrderToSupabase(orderData);
+      if (!saved) return; // Stop if saving to Supabase fails
+      // Proceed to WhatsApp
       const list = [
         `Halo Admin, saya ingin pesan:`,
         `Nama: ${nama}`,
@@ -481,7 +515,7 @@
         localStorage.setItem("orders", JSON.stringify(history.slice(0, 50)));
       } catch (e) { /* ignore */ }
       closeCheckout();
-      showToast("Mengarahkan ke WhatsApp operator...");
+      showToast("Order tersimpan dan mengarahkan ke WhatsApp operator...");
     }
     // INIT
     loadData();
