@@ -15,7 +15,7 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.5);
       z-index: 40;
     }
     #sidebar-backdrop.open {
@@ -62,6 +62,8 @@
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
       -ms-overflow-style: none;
+      gap: 0.75rem;
+      padding: 0.5rem 0;
     }
     #categories::-webkit-scrollbar {
       display: none;
@@ -70,31 +72,49 @@
       scroll-snap-align: start;
       flex: 0 0 auto;
       margin-right: 0.75rem;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+    #categories button:hover {
+      border-color: #10b981;
+      background-color: #e6fff6;
+    }
+    @media (min-width: 1024px) {
+      #categories {
+        overflow-x: auto;
+        justify-content: center;
+      }
+      #categories button {
+        margin-right: 1rem;
+      }
     }
     #produk-grid {
       display: flex;
       overflow-x: auto;
-      scroll-snap-type: x proximity;
+      scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
-      scrollbar-width: thin;
-      scrollbar-color: #d1d5db transparent;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      gap: 1rem;
       padding-bottom: 1rem;
+      scroll-behavior: smooth;
     }
     #produk-grid::-webkit-scrollbar {
-      height: 8px;
-    }
-    #produk-grid::-webkit-scrollbar-thumb {
-      background-color: #d1d5db;
-      border-radius: 4px;
+      display: none;
     }
     #produk-grid article {
       flex: 0 0 200px;
-      margin-right: 1rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
       scroll-snap-align: start;
+    }
+    #produk-grid article:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     }
     #hero-slider {
       position: relative;
       overflow: hidden;
+      border-radius: 1rem;
     }
     .slider-item {
       display: none;
@@ -116,11 +136,12 @@
       gap: 0.5rem;
     }
     .slider-dot {
-      width: 10px;
-      height: 10px;
+      width: 12px;
+      height: 12px;
       background: rgba(255, 255, 255, 0.5);
       border-radius: 50%;
       cursor: pointer;
+      transition: background 0.3s ease;
     }
     .slider-dot.active {
       background: white;
@@ -130,69 +151,102 @@
       -webkit-user-select: none;
       -moz-user-select: none;
       -ms-user-select: none;
+      font-family: 'Inter', sans-serif;
     }
     #search-container {
       position: sticky;
       top: 4.5rem;
       z-index: 30;
-      background: white;
-      padding: 0.5rem 0.0;
+      padding: 0.75rem 0;
     }
     #search-button {
       cursor: pointer;
+      transition: color 0.3s ease;
+    }
+    #search-button:hover {
+      color: #10b981;
     }
     #search-wrapper {
-      max-width: 600px;
+      max-width: 500px;
       width: 100%;
       margin: 0 auto;
     }
+    @media (max-width: 640px) {
+      #search-wrapper {
+        max-width: 100%;
+        padding: 0 1rem;
+      }
+      #search-container input {
+        font-size: 0.9rem;
+        padding: 0.5rem 0.5rem 0.5rem 2.5rem;
+      }
+      #search-button {
+        top: 0.75rem;
+      }
+    }
     #ads-grid {
-      display: flex;
-      overflow-x: auto;
-      scroll-snap-type: x proximity;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: thin;
-      scrollbar-color: #d1d5db transparent;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
       padding-bottom: 1rem;
     }
-    #ads-grid::-webkit-scrollbar {
-      height: 8px;
-    }
-    #ads-grid::-webkit-scrollbar-thumb {
-      background-color: #d1d5db;
-      border-radius: 4px;
-    }
     #ads-grid article {
-      flex: 0 0 200px;
-      margin-right: 1rem;
-      scroll-snap-align: start;
       position: relative;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    #ads-grid article:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     }
     .ad-label {
       position: absolute;
       top: 0.5rem;
       left: 0.5rem;
-      background: #1E40AF;
+      background: rgba(30, 64, 175, 0.1);
       color: white;
       padding: 0.25rem 0.5rem;
       border-radius: 0.25rem;
       font-size: 0.75rem;
       font-weight: 500;
     }
-    @media (min-width: 640px) {
-      #ads-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1rem;
-      }
-      #ads-grid article {
-        flex: none;
-        margin-right: 0;
-      }
+    .faq-item {
+      background: white;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    .faq-item summary {
+      padding: 1rem;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.3s ease;
+    }
+    .faq-item summary:hover {
+      background: #f9fafb;
+    }
+    .faq-item summary::after {
+      content: '\f078';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      font-size: 0.875rem;
+      color: #6b7280;
+    }
+    .faq-item[open] summary::after {
+      content: '\f077';
+    }
+    .faq-item .faq-content {
+      padding: 1rem;
+      background: #f9fafb;
+      font-size: 0.875rem;
+      color: #4b5563;
     }
   </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body class="bg-gray-100 text-gray-800">
   <script>
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.addEventListener('keydown', e => {
@@ -207,7 +261,7 @@
   </script>
   <!-- NAVBAR -->
   <header class="bg-white shadow sticky top-0 z-50">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
       <div class="flex items-center gap-3">
         <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgZ8y1qrBVlJ0dcgOvB6K4iAMdnuTZ4dscQ_1RGrBKU2HcjKoN8DvPSg7KOkMctU2JAfxjDMU3EGxVxIuHXkbmDDJ2-mza-gxYVkq35RYw4kR94iWe1Fu8rhm9g8RwSqakU8Mw5rDMFnki5urzubHh9fTiT7yxr1i6NduseMm9im4qPICXLf1_w8E11oYZN/s3264/20250927_164816.png" alt="FoodOrder Logo" class="h-10 w-auto" onerror="this.style.display='none'"/>
         <div>
@@ -215,8 +269,11 @@
           <div class="text-xs text-gray-500"></div>
         </div>
       </div>
-      <nav class="hidden md:flex items-center gap-3">
-        <button id="btn-wishlist" class="text-sm px-3 py-2 rounded-lg border border-gray-200 hover:bg-emerald-50">Halo, selamat datang</button>
+      <nav class="hidden md:flex items-center gap-4">
+        <a href="#" class="text-sm font-medium hover:text-emerald-600 transition">Beranda</a>
+        <a href="#" class="text-sm font-medium hover:text-emerald-600 transition">Menu</a>
+        <a href="#" class="text-sm font-medium hover:text-emerald-600 transition">Wishlist</a>
+        <a href="#faq" class="text-sm font-medium hover:text-emerald-600 transition">FAQ</a>
       </nav>
       <button id="mobile-menu-btn" class="md:hidden p-2">
         <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
@@ -224,13 +281,13 @@
     </div>
   </header>
   <!-- SEARCH BAR -->
-  <div id="search-container" class="max-w-6xl mx-auto px-4">
+  <div id="search-container" class="max-w-7xl mx-auto px-4">
     <div id="search-wrapper" class="relative">
       <svg id="search-button" class="absolute left-3 top-2.5 h-5 w-5 text-gray-400" viewBox="0 0 24 24" fill="none" aria-hidden>
         <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         <circle cx="11" cy="11" r="5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
-      <input id="search" type="search" placeholder="Mau cari makanan apa?" class="w-full border border-gray-200 rounded-xl py-2 pl-11 pr-4 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500" />
+      <input id="search" type="search" placeholder="Mau cari makanan apa?" class="w-full border border-gray-200 rounded-xl py-2 pl-11 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 transition" />
     </div>
   </div>
   <!-- MOBILE SIDEBAR -->
@@ -247,50 +304,50 @@
       <a href="#" class="text-sm font-medium hover:text-emerald-600">Beranda</a>
       <a href="#" class="text-sm font-medium hover:text-emerald-600">Menu</a>
       <a href="#" class="text-sm font-medium hover:text-emerald-600">Wishlist</a>
-      <a href="#" class="text-sm font-medium hover:text-emerald-600">Kontak</a>
+      <a href="#faq" class="text-sm font-medium hover:text-emerald-600">FAQ</a>
     </nav>
   </div>
   <!-- SLIDER / HERO -->
-  <section class="max-w-6xl mx-auto px-4 py-6">
+  <section class="max-w-7xl mx-auto px-4 py-6">
     <div id="hero-slider" class="relative rounded-xl overflow-hidden">
       <div class="slider-item active">
-        <div class="bg-gradient-to-r from-emerald-500 to-emerald-400 text-white h-44 flex items-center relative">
+        <div class="bg-gradient-to-r from-emerald-500 to-emerald-400 text-white h-48 md:h-56 flex items-center relative">
           <div class="absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=1600&q=80&auto=format&fit=crop')] bg-cover bg-center"></div>
-          <div class="relative z-10 max-w-4xl mx-auto px-6 flex items-center justify-between w-full">
+          <div class="relative z-10 max-w-5xl mx-auto px-6 flex items-center justify-between w-full">
             <div>
-              <h1 class="text-2xl md:text-3xl font-bold">Nikmati Makanan Favoritmu</h1>
-              <p class="mt-1 text-sm opacity-90">Pilih, pesan, dan nikmati makanan lezat dengan cepat.</p>
+              <h1 class="text-2xl md:text-4xl font-bold">Nikmati Makanan Favoritmu</h1>
+              <p class="mt-2 text-sm md:text-base opacity-90">Pilih, pesan, dan nikmati makanan lezat dengan cepat.</p>
             </div>
             <div class="hidden md:block">
-              <button id="hero-action-1" class="bg-white text-emerald-600 px-4 py-2 rounded-lg font-medium">Lihat Menu</button>
+              <button id="hero-action-1" class="bg-white text-emerald-600 px-5 py-2 rounded-lg font-medium hover:bg-emerald-50 transition">Lihat Menu</button>
             </div>
           </div>
         </div>
       </div>
       <div class="slider-item">
-        <div class="bg-gradient-to-r from-rose-500 to-rose-400 text-white h-44 flex items-center relative">
+        <div class="bg-gradient-to-r from-rose-500 to-rose-400 text-white h-48 md:h-56 flex items-center relative">
           <div class="absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1513106580091-1d82408b8f6a?w=1600&q=80&auto=format&fit=crop')] bg-cover bg-center"></div>
-          <div class="relative z-10 max-w-4xl mx-auto px-6 flex items-center justify-between w-full">
+          <div class="relative z-10 max-w-5xl mx-auto px-6 flex items-center justify-between w-full">
             <div>
-              <h1 class="text-2xl md:text-3xl font-bold">Promo Spesial Hari Ini!</h1>
-              <p class="mt-1 text-sm opacity-90">Dapatkan diskon hingga 50% untuk pesanan pertama.</p>
+              <h1 class="text-2xl md:text-4xl font-bold">Promo Spesial Hari Ini!</h1>
+              <p class="mt-2 text-sm md:text-base opacity-90">Dapatkan diskon hingga 50% untuk pesanan pertama.</p>
             </div>
             <div class="hidden md:block">
-              <button id="hero-action-2" class="bg-white text-rose-600 px-4 py-2 rounded-lg font-medium">Pesan Sekarang</button>
+              <button id="hero-action-2" class="bg-white text-rose-600 px-5 py-2 rounded-lg font-medium hover:bg-rose-50 transition">Pesan Sekarang</button>
             </div>
           </div>
         </div>
       </div>
       <div class="slider-item">
-        <div class="bg-gradient-to-r from-blue-500 to-blue-400 text-white h-44 flex items-center relative">
+        <div class="bg-gradient-to-r from-blue-500 to-blue-400 text-white h-48 md:h-56 flex items-center relative">
           <div class="absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=1600&q=80&auto=format&fit=crop')] bg-cover bg-center"></div>
-          <div class="relative z-10 max-w-4xl mx-auto px-6 flex items-center justify-between w-full">
+          <div class="relative z-10 max-w-5xl mx-auto px-6 flex items-center justify-between w-full">
             <div>
-              <h1 class="text-2xl md:text-3xl font-bold">Kuliner Nusantara</h1>
-              <p class="mt-1 text-sm opacity-90">Jelajahi cita rasa lokal dari berbagai daerah.</p>
+              <h1 class="text-2xl md:text-4xl font-bold">Kuliner Nusantara</h1>
+              <p class="mt-2 text-sm md:text-base opacity-90">Jelajahi cita rasa lokal dari berbagai daerah.</p>
             </div>
             <div class="hidden md:block">
-              <button id="hero-action-3" class="bg-white text-blue-600 px-4 py-2 rounded-lg font-medium">Eksplor Sekarang</button>
+              <button id="hero-action-3" class="bg-white text-blue-600 px-5 py-2 rounded-lg font-medium hover:bg-blue-50 transition">Eksplor Sekarang</button>
             </div>
           </div>
         </div>
@@ -299,16 +356,16 @@
     </div>
   </section>
   <!-- ADS SECTION -->
-  <section class="max-w-6xl mx-auto px-4 py-6">
-    <h2 class="text-2xl md:text-3xl font-bold mb-4">Penawaran</h2>
+  <section class="max-w-7xl mx-auto px-4 py-6">
+    <h2 class="text-2xl md:text-3xl font-bold mb-4">Penawaran Spesial</h2>
     <div id="ads-grid" class="flex gap-4"></div>
   </section>
   <!-- CATEGORY AND FILTER -->
-  <section class="max-w-6xl mx-auto px-4 py-4">
-    <div class="flex justify-between items-center mb-4">
-      <h2 class="text-xl font-semibold">Kategori</h2>
+  <section class="max-w-7xl mx-auto px-4 py-4">
+    <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4">
+      <h2 class="text-xl md:text-2xl font-bold">Kategori</h2>
       <div class="flex gap-2">
-        <select id="price-filter" class="border border-gray-200 rounded-md px-3 py-2 text-sm">
+        <select id="price-filter" class="border border-gray-200 rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transition">
           <option value="">Filter Harga</option>
           <option value="0-25000">Rp0 - Rp25.000</option>
           <option value="25001-50000">Rp25.001 - Rp50.000</option>
@@ -320,31 +377,31 @@
     <div id="categories" class="flex gap-3 py-3"></div>
   </section>
   <!-- MAIN GRID -->
-  <main class="max-w-6xl mx-auto px-4 py-6">
+  <main class="max-w-7xl mx-auto px-4 py-6">
     <h2 class="text-2xl md:text-3xl font-bold mb-6">Menu Utama</h2>
     <div id="produk-grid" class="flex gap-4"></div>
   </main>
   <!-- ADVANTAGES SECTION -->
-  <section class="max-w-6xl mx-auto px-4 py-6">
+  <section class="max-w-7xl mx-auto px-4 py-8 bg-white rounded-xl shadow-sm">
     <h2 class="text-2xl md:text-3xl font-bold text-center mb-6">Mengapa Memilih FoodOrder?</h2>
-    <p class="text-center text-gray-600 mb-8">Kami menghadirkan pengalaman kuliner terbaik dengan layanan cepat dan terpercaya.</p>
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <div class="bg-white p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition">
-        <svg class="h-12 w-12 mx-auto mb-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">Kami menghadirkan pengalaman kuliner terbaik dengan layanan cepat, aman, dan terpercaya.</p>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <div class="bg-gray-50 p-6 rounded-xl shadow-sm text-center hover:shadow-md transition">
+        <svg class="h-12 w-12 mx-auto mb-3 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
         </svg>
         <h3 class="text-lg font-semibold">Pesanan Cepat</h3>
         <p class="text-sm text-gray-600 mt-2">Proses pemesanan mudah dan pengiriman dalam hitungan menit.</p>
       </div>
-      <div class="bg-white p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition">
-        <svg class="h-12 w-12 mx-auto mb-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="bg-gray-50 p-6 rounded-xl shadow-sm text-center hover:shadow-md transition">
+        <svg class="h-12 w-12 mx-auto mb-3 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
         <h3 class="text-lg font-semibold">Layanan 24/7</h3>
         <p class="text-sm text-gray-600 mt-2">Kami siap melayani kapan saja, siang maupun malam.</p>
       </div>
-      <div class="bg-white p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition">
-        <svg class="h-12 w-12 mx-auto mb-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="bg-gray-50 p-6 rounded-xl shadow-sm text-center hover:shadow-md transition">
+        <svg class="h-12 w-12 mx-auto mb-3 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a5 5 0 00-10 0v2m-2 2v5a2 2 0 002 2h10a2 2 0 002-2v-5m-2-2H5"/>
         </svg>
         <h3 class="text-lg font-semibold">Pembayaran Aman</h3>
@@ -352,33 +409,69 @@
       </div>
     </div>
   </section>
+  <!-- FAQ SECTION -->
+  <section id="faq" class="max-w-7xl mx-auto px-4 py-8">
+    <h2 class="text-2xl md:text-3xl font-bold text-center mb-6">Pertanyaan Umum (FAQ)</h2>
+    <div class="max-w-3xl mx-auto">
+      <details class="faq-item">
+        <summary>Bagaimana cara memesan makanan di FoodOrder?</summary>
+        <div class="faq-content">
+          Untuk memesan makanan, cari menu yang diinginkan menggunakan kolom pencarian atau jelajahi kategori. Klik produk untuk melihat detail, pilih jumlah, lalu klik "Pesan Sekarang" untuk mengisi data pengiriman dan menyelesaikan pesanan melalui WhatsApp.
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Apa saja metode pembayaran yang tersedia?</summary>
+        <div class="faq-content">
+          Kami mendukung berbagai metode pembayaran aman, termasuk transfer bank, dompet digital, dan pembayaran langsung saat pengiriman (COD), tergantung pada restoran yang Anda pilih.
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Berapa lama waktu pengiriman?</summary>
+        <div class="faq-content">
+          Waktu pengiriman bervariasi tergantung lokasi dan restoran, tetapi kami berupaya mengirimkan pesanan dalam waktu 30-60 menit setelah konfirmasi.
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Bagaimana jika ada masalah dengan pesanan saya?</summary>
+        <div class="faq-content">
+          Jika ada masalah, hubungi kami melalui email di support@foodorder.com atau telepon ke +62 812-3456-7890. Tim kami akan membantu menyelesaikan masalah Anda secepat mungkin.
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Apakah FoodOrder tersedia di seluruh Indonesia?</summary>
+        <div class="faq-content">
+          Kami sedang memperluas jangkauan layanan kami. Saat ini, FoodOrder tersedia di kota-kota besar di Indonesia. Periksa ketersediaan di daerah Anda saat memesan.
+        </div>
+      </details>
+    </div>
+  </section>
   <!-- POPULAR RESTAURANTS -->
-  <section class="max-w-6xl mx-auto px-4 py-6">
+  <section class="max-w-7xl mx-auto px-4 py-8">
     <h2 class="text-2xl md:text-3xl font-bold text-center mb-6">Restoran Populer</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-      <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1517248135467-2c7ed3ab7229?w=400&q=80&auto=format&fit=crop" alt="Restoran 1" class="h-32 w-full object-cover"/>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+      <div class="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition">
+        <img src="https://images.unsplash.com/photo-1517248135467-2c7ed3ab7229?w=400&q=80&auto=format&fit=crop" alt="Restoran 1" class="h-40 w-full object-cover"/>
         <div class="p-4">
           <h3 class="text-lg font-semibold">Warung Makan Sederhana</h3>
           <p class="text-sm text-gray-600">Masakan khas Indonesia dengan cita rasa otentik.</p>
         </div>
       </div>
-      <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?w=400&q=80&auto=format&fit=crop" alt="Restoran 2" class="h-32 w-full object-cover"/>
+      <div class="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition">
+        <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?w=400&q=80&auto=format&fit=crop" alt="Restoran 2" class="h-40 w-full object-cover"/>
         <div class="p-4">
           <h3 class="text-lg font-semibold">Cafe Bintang</h3>
           <p class="text-sm text-gray-600">Nikmati kopi dan makanan ringan dalam suasana cozy.</p>
         </div>
       </div>
-      <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1578474846511-04ba529f0d64?w=400&q=80&auto=format&fit=crop" alt="Restoran 3" class="h-32 w-full object-cover"/>
+      <div class="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition">
+        <img src="https://images.unsplash.com/photo-1578474846511-04ba529f0d64?w=400&q=80&auto=format&fit=crop" alt="Restoran 3" class="h-40 w-full object-cover"/>
         <div class="p-4">
           <h3 class="text-lg font-semibold">Dapur Nusantara</h3>
           <p class="text-sm text-gray-600">Hidangan tradisional dari berbagai daerah.</p>
         </div>
       </div>
-      <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1514933651103-4d3c5e7b89f7?w=400&q=80&auto=format&fit=crop" alt="Restoran 4" class="h-32 w-full object-cover"/>
+      <div class="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition">
+        <img src="https://images.unsplash.com/photo-1514933651103-4d3c5e7b89f7?w=400&q=80&auto=format&fit=crop" alt="Restoran 4" class="h-40 w-full object-cover"/>
         <div class="p-4">
           <h3 class="text-lg font-semibold">Resto Seaside</h3>
           <p class="text-sm text-gray-600">Makanan laut segar dengan pemandangan indah.</p>
@@ -387,26 +480,26 @@
     </div>
   </section>
   <!-- CTA SECTION -->
-  <section class="max-w-6xl mx-auto px-4 py-12 text-center">
+  <section class="max-w-7xl mx-auto px-4 py-12 text-center bg-gradient-to-r from-emerald-50 to-emerald-100 rounded-xl">
     <h2 class="text-2xl md:text-3xl font-bold mb-4">Siap Menikmati Makanan Lezat?</h2>
-    <p class="text-gray-600 mb-6">Pesan sekarang dan nikmati hidangan favoritmu dengan pengiriman cepat dan aman!</p>
-    <button id="cta-button" class="bg-emerald-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-emerald-700">Pesan Sekarang</button>
+    <p class="text-gray-600 mb-6 max-w-xl mx-auto">Pesan sekarang dan nikmati hidangan favoritmu dengan pengiriman cepat dan aman!</p>
+    <button id="cta-button" class="bg-emerald-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-emerald-700 transition">Pesan Sekarang</button>
   </section>
   <!-- FOOTER -->
   <footer class="bg-gray-900 text-white py-12">
-    <div class="max-w-6xl mx-auto px-4">
+    <div class="max-w-7xl mx-auto px-4">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
         <div class="md:col-span-2">
           <img src="https://via.placeholder.com/150x50?text=FoodOrder+Logo" alt="FoodOrder Logo" class="h-10 w-auto mb-4" onerror="this.style.display='none'"/>
           <p class="text-sm text-gray-300 mb-4">FoodOrder adalah platform pemesanan makanan online yang menghubungkan Anda dengan berbagai restoran terbaik. Pesan makanan favoritmu dengan mudah dan cepat!</p>
           <div class="flex space-x-4">
-            <a href="#" aria-label="Facebook" class="text-gray-300 hover:text-emerald-400">
+            <a href="#" aria-label="Facebook" class="text-gray-300 hover:text-emerald-400 transition">
               <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
             </a>
-            <a href="#" aria-label="Twitter" class="text-gray-300 hover:text-emerald-400">
+            <a href="#" aria-label="Twitter" class="text-gray-300 hover:text-emerald-400 transition">
               <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
             </a>
-            <a href="#" aria-label="Instagram" class="text-gray-300 hover:text-emerald-400">
+            <a href="#" aria-label="Instagram" class="text-gray-300 hover:text-emerald-400 transition">
               <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
             </a>
           </div>
@@ -414,17 +507,17 @@
         <div>
           <h3 class="text-lg font-semibold mb-4">Navigasi</h3>
           <ul class="space-y-2 text-sm text-gray-300">
-            <li><a href="#" class="hover:text-emerald-400 transition-colors">Beranda</a></li>
-            <li><a href="#" class="hover:text-emerald-400 transition-colors">Menu</a></li>
-            <li><a href="#" class="hover:text-emerald-400 transition-colors">Wishlist</a></li>
-            <li><a href="#" class="hover:text-emerald-400 transition-colors">Kontak</a></li>
+            <li><a href="#" class="hover:text-emerald-400 transition">Beranda</a></li>
+            <li><a href="#" class="hover:text-emerald-400 transition">Menu</a></li>
+            <li><a href="#" class="hover:text-emerald-400 transition">Wishlist</a></li>
+            <li><a href="#faq" class="hover:text-emerald-400 transition">FAQ</a></li>
           </ul>
         </div>
         <div>
           <h3 class="text-lg font-semibold mb-4">Kontak Kami</h3>
           <ul class="space-y-2 text-sm text-gray-300">
-            <li><a href="mailto:support@foodorder.com" class="hover:text-emerald-400 transition-colors">support@foodorder.com</a></li>
-            <li><a href="tel:+6281234567890" class="hover:text-emerald-400 transition-colors">+62 812-3456-7890</a></li>
+            <li><a href="mailto:support@foodorder.com" class="hover:text-emerald-400 transition">support@foodorder.com</a></li>
+            <li><a href="tel:+6281234567890" class="hover:text-emerald-400 transition">+62 812-3456-7890</a></li>
             <li>Jl. Contoh No. 123, Jakarta, Indonesia</li>
           </ul>
         </div>
@@ -437,60 +530,60 @@
   </footer>
   <!-- PRODUCT MODAL -->
   <div id="modal-produk" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4">
-    <div class="absolute inset-0 bg-black/40" onclick="closeModal()"></div>
+    <div class="absolute inset-0 bg-black/50" onclick="closeModal()"></div>
     <div class="relative bg-white rounded-xl shadow-xl max-w-md w-full overflow-hidden">
       <img id="modal-gambar" class="w-full h-48 object-cover" src="" alt="gambar produk" />
-      <div class="p-4">
+      <div class="p-6">
         <div class="flex items-start justify-between gap-3">
           <div>
-            <h2 id="modal-nama" class="text-lg font-semibold"></h2>
-            <p id="modal-merchant" class="text-xs text-gray-500 mt-1"></p>
+            <h2 id="modal-nama" class="text-xl font-semibold"></h2>
+            <p id="modal-merchant" class="text-sm text-gray-500 mt-1"></p>
           </div>
           <div class="text-right">
-            <div id="modal-harga" class="text-lg font-bold text-rose-600"></div>
-            <div id="modal-kategori" class="text-xs text-gray-400"></div>
+            <div id="modal-harga" class="text-xl font-bold text-rose-600"></div>
+            <div id="modal-kategori" class="text-sm text-gray-400"></div>
           </div>
         </div>
-        <p id="modal-deskripsi" class="mt-3 text-sm text-gray-600"></p>
-        <div class="mt-3 flex items-center gap-2">
-          <label class="text-xs text-gray-600">Jumlah Pesanan</label>
+        <p id="modal-deskripsi" class="mt-4 text-sm text-gray-600"></p>
+        <div class="mt-4 flex items-center gap-3">
+          <label class="text-sm text-gray-600 font-medium">Jumlah Pesanan</label>
           <div class="flex items-center border border-gray-200 rounded-md">
-            <button id="decrease-quantity" class="px-3 py-1 text-gray-600 hover:bg-gray-100">-</button>
-            <span id="modal-quantity" class="px-3 py-1 text-sm">1</span>
-            <button id="increase-quantity" class="px-3 py-1 text-gray-600 hover:bg-gray-100">+</button>
+            <button id="decrease-quantity" class="px-4 py-2 text-gray-600 hover:bg-gray-100 transition">-</button>
+            <span id="modal-quantity" class="px-4 py-2 text-sm font-medium">1</span>
+            <button id="increase-quantity" class="px-4 py-2 text-gray-600 hover:bg-gray-100 transition">+</button>
           </div>
         </div>
-        <div class="mt-4 grid grid-cols-2 gap-2">
-          <button onclick="openCheckout()" class="col-span-2 bg-rose-600 text-white py-2 rounded-lg hover:bg-rose-700">Pesan Sekarang</button>
-          <button onclick="closeModal()" class="col-span-2 border border-gray-200 py-2 rounded-lg hover:bg-gray-100">Tutup</button>
+        <div class="mt-6 grid grid-cols-2 gap-3">
+          <button onclick="openCheckout()" class="col-span-2 bg-rose-600 text-white py-2 rounded-lg font-medium hover:bg-rose-700 transition">Pesan Sekarang</button>
+          <button onclick="closeModal()" class="col-span-2 border border-gray-200 py-2 rounded-lg font-medium hover:bg-gray-100 transition">Tutup</button>
         </div>
       </div>
     </div>
   </div>
   <!-- CHECKOUT MODAL -->
   <div id="modal-checkout" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4">
-    <div class="absolute inset-0 bg-black/40" onclick="closeCheckout()"></div>
-    <div class="relative bg-white rounded-xl shadow-xl max-w-md w-full overflow-hidden p-4">
-      <h3 class="text-lg font-semibold">Form Checkout</h3>
-      <p class="text-xs text-gray-500">Isi data lengkap untuk proses order via WhatsApp.</p>
-      <div class="mt-3 space-y-3">
+    <div class="absolute inset-0 bg-black/50" onclick="closeCheckout()"></div>
+    <div class="relative bg-white rounded-xl shadow-xl max-w-md w-full overflow-hidden p-6">
+      <h3 class="text-xl font-semibold">Form Checkout</h3>
+      <p class="text-sm text-gray-500 mt-1">Isi data lengkap untuk proses order via WhatsApp.</p>
+      <div class="mt-4 space-y-4">
         <div>
-          <label class="text-xs text-gray-600">Nama Lengkap</label>
-          <input id="input-nama" required type="text" placeholder="Nama anda" class="w-full border border-gray-200 rounded-md px-3 py-2 mt-1 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500" />
+          <label class="text-sm text-gray-600 font-medium">Nama Lengkap</label>
+          <input id="input-nama" required type="text" placeholder="Nama anda" class="w-full border border-gray-200 rounded-md px-3 py-2 mt-1 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 transition" />
         </div>
         <div>
-          <label class="text-xs text-gray-600">Alamat (RT/RW)</label>
-          <input id="input-alamat" required type="text" placeholder="Jl. Contoh No 1, RT 01 / RW 02" class="w-full border border-gray-200 rounded-md px-3 py-2 mt-1 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500" />
+          <label class="text-sm text-gray-600 font-medium">Alamat (RT/RW)</label>
+          <input id="input-alamat" required type="text" placeholder="Jl. Contoh No 1, RT 01 / RW 02" class="w-full border border-gray-200 rounded-md px-3 py-2 mt-1 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 transition" />
         </div>
         <div>
-          <label class="text-xs text-gray-600">Nomor HP-WhatsApp</label>
-          <input id="input-hp" required type="tel" placeholder="0812xxxx" class="w-full border border-gray-200 rounded-md px-3 py-2 mt-1 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500" />
+          <label class="text-sm text-gray-600 font-medium">Nomor HP-WhatsApp</label>
+          <input id="input-hp" required type="tel" placeholder="0812xxxx" class="w-full border border-gray-200 rounded-md px-3 py-2 mt-1 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 transition" />
         </div>
-        <div id="checkout-summary" class="text-sm text-gray-700 bg-gray-50 p-3 rounded-md"></div>
+        <div id="checkout-summary" class="text-sm text-gray-700 bg-gray-50 p-4 rounded-md"></div>
       </div>
-      <div class="mt-4 flex gap-2">
-        <button onclick="handleCheckout()" class="flex-1 bg-emerald-600 text-white py-2 rounded-md hover:bg-emerald-700">Proses</button>
-        <button onclick="closeCheckout()" class="flex-1 border border-gray-200 py-2 rounded-md hover:bg-gray-100">Batal</button>
+      <div class="mt-6 flex gap-3">
+        <button onclick="handleCheckout()" class="flex-1 bg-emerald-600 text-white py-2 rounded-md font-medium hover:bg-emerald-700 transition">Proses</button>
+        <button onclick="closeCheckout()" class="flex-1 border border-gray-200 py-2 rounded-md font-medium hover:bg-gray-100 transition">Batal</button>
       </div>
     </div>
   </div>
@@ -664,7 +757,6 @@
         kategoriSet = new Set(produkData.map(p => p.kategori || "Umum"));
         renderCategories();
         renderProduk(produkData);
-        // Load ads asynchronously
         loadAds();
       } catch (e) {
         showToast("Gagal memuat data. Periksa koneksi Anda.", "error");
@@ -711,7 +803,7 @@
             continue;
           }
           const card = document.createElement("article");
-          card.className = "bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition cursor-pointer";
+          card.className = "bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition cursor-pointer";
           const img = document.createElement("img");
           img.src = item.image || "https://via.placeholder.com/200x150?text=No+Image";
           img.alt = item.title || "Iklan";
@@ -721,17 +813,17 @@
           label.className = "ad-label";
           label.innerText = "Bersponsor";
           const body = document.createElement("div");
-          body.className = "p-3";
+          body.className = "p-4";
           const title = document.createElement("h3");
           title.className = "text-sm font-semibold";
           title.innerText = item.title || "—";
           const description = document.createElement("p");
-          description.className = "text-xs text-gray-500 mt-1";
+          description.className = "text-xs text-gray-500 mt-1 line-clamp-2";
           description.innerText = item.description || "";
           const btn = document.createElement("a");
           btn.href = item.link || "#";
           btn.target = "_blank";
-          btn.className = "text-xs bg-purple-600 text-white px-3 py-1 rounded-md hover:bg-purple-700";
+          btn.className = "text-xs bg-purple-600 text-white px-3 py-1.5 rounded-md hover:bg-purple-700 mt-2 inline-block";
           btn.innerText = "Lihat Penawaran";
           body.appendChild(label);
           body.appendChild(title);
@@ -746,7 +838,6 @@
         console.error("renderAds failed", e);
       }
     }
-    // RENDER CATEGORIES
     function renderCategories() {
       try {
         const wrap = document.getElementById("categories");
@@ -756,7 +847,7 @@
         }
         wrap.innerHTML = "";
         const btnAll = document.createElement("button");
-        btnAll.className = "px-4 py-2 bg-white border border-gray-200 rounded-full text-sm whitespace-nowrap hover:bg-emerald-50";
+        btnAll.className = "px-4 py-2 bg-white border border-gray-200 rounded-full text-sm font-medium whitespace-nowrap hover:bg-emerald-50";
         btnAll.innerText = "Semua";
         btnAll.onclick = () => {
           try {
@@ -770,7 +861,7 @@
         wrap.appendChild(btnAll);
         Array.from(kategoriSet).forEach(k => {
           const btn = document.createElement("button");
-          btn.className = "px-4 py-2 bg-white border border-gray-200 rounded-full text-sm whitespace-nowrap hover:bg-emerald-50";
+          btn.className = "px-4 py-2 bg-white border border-gray-200 rounded-full text-sm font-medium whitespace-nowrap hover:bg-emerald-50";
           btn.innerText = k;
           btn.onclick = () => {
             try {
@@ -788,7 +879,6 @@
         console.error("renderCategories failed", e);
       }
     }
-    // PRICE FILTER
     function applyPriceFilter(data) {
       try {
         const priceFilter = document.getElementById("price-filter").value;
@@ -818,7 +908,6 @@
         console.error("Price filter failed", e);
       }
     });
-    // RENDER PRODUCT GRID
     function renderProduk(list) {
       try {
         const grid = document.getElementById("produk-grid");
@@ -837,19 +926,19 @@
             continue;
           }
           const card = document.createElement("article");
-          card.className = "bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition cursor-pointer";
+          card.className = "bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition cursor-pointer";
           const img = document.createElement("img");
           img.src = item.gambar || "https://via.placeholder.com/200x150?text=No+Image";
           img.alt = item.nama || "Produk";
           img.className = "h-40 w-full object-cover";
           img.onerror = () => { img.src = "https://via.placeholder.com/200x150?text=No+Image"; };
           const body = document.createElement("div");
-          body.className = "p-3";
+          body.className = "p-4";
           const title = document.createElement("h3");
-          title.className = "text-sm font-semibold";
+          title.className = "text-sm font-semibold line-clamp-1";
           title.innerText = item.nama || "—";
           const merchant = document.createElement("p");
-          merchant.className = "text-xs text-gray-500 mt-1";
+          merchant.className = "text-xs text-gray-500 mt-1 line-clamp-1";
           merchant.innerText = item.merchant || "";
           const row = document.createElement("div");
           row.className = "mt-3 flex items-center justify-between gap-2";
@@ -857,7 +946,7 @@
           price.className = "text-sm font-bold text-rose-600";
           price.innerText = rupiah(item.harga);
           const btn = document.createElement("button");
-          btn.className = "text-xs bg-emerald-600 text-white px-3 py-1 rounded-md hover:bg-emerald-700";
+          btn.className = "text-xs bg-emerald-600 text-white px-3 py-1.5 rounded-md hover:bg-emerald-700";
           btn.innerText = "Pesan";
           btn.onclick = (e) => {
             try {
@@ -890,7 +979,6 @@
         console.error("renderProduk failed", e);
       }
     }
-    // SEARCH
     function performSearch() {
       try {
         const v = document.getElementById("search").value.trim().toLowerCase();
@@ -916,7 +1004,6 @@
     }
     document.getElementById("search").addEventListener("input", performSearch);
     document.getElementById("search-button").addEventListener("click", performSearch);
-    // MODAL CONTROLS
     function openModal(item) {
       try {
         if (!item || !item.id || !item.nama) {
@@ -1150,7 +1237,6 @@
         console.error("handleCheckout failed", e);
       }
     }
-    // HERO AND CTA ACTION SCROLL
     function scrollToProductGrid() {
       try {
         const grid = document.getElementById("produk-grid");
@@ -1168,7 +1254,6 @@
     document.getElementById("hero-action-2")?.addEventListener("click", scrollToProductGrid);
     document.getElementById("hero-action-3")?.addEventListener("click", scrollToProductGrid);
     document.getElementById("cta-button")?.addEventListener("click", scrollToProductGrid);
-    // ACCESSIBILITY
     document.addEventListener("keydown", (e) => {
       try {
         if (e.key === "Escape") {
@@ -1183,7 +1268,6 @@
         console.error("Escape key handler failed", e);
       }
     });
-    // INPUT VALIDATION
     document.getElementById("input-nama").addEventListener("input", (e) => {
       const value = e.target.value.trim();
       if (value.length > 50) {
@@ -1211,7 +1295,6 @@
         showToast("Nomor HP hanya boleh berisi angka dan tanda +.", "error");
       }
     });
-    // INIT
     try {
       loadData();
     } catch (e) {
