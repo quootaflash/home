@@ -529,9 +529,19 @@
         </div>
       </div>
 <style>
+  .certification-container {
+    display: flex;
+    justify-content: flex-end; /* Rata kanan */
+    gap: 1rem; /* Jarak antar ikon */
+    padding: 1rem;
+  }
   .icon-hover {
     filter: grayscale(100%) brightness(70%); /* Simulasi text-gray-300 */
     transition: filter 0.3s ease;
+    width: 2.5rem; /* Ukuran default */
+    height: 2.5rem;
+    max-width: 32px; /* Batas maksimum untuk desktop */
+    max-height: 32px;
   }
   .icon-hover:hover {
     filter: grayscale(0%) brightness(100%) sepia(100%) hue-rotate(140deg); /* Simulasi text-emerald-400 */
@@ -540,19 +550,30 @@
     outline: none;
     box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.5); /* Simulasi focus:ring-emerald-500 */
   }
+  /* Responsif untuk layar kecil */
+  @media (max-width: 640px) {
+    .icon-hover {
+      width: 1.5rem; /* Ukuran lebih kecil untuk mobile */
+      height: 1.5rem;
+    }
+    .certification-container {
+      gap: 0.5rem; /* Jarak lebih kecil di mobile */
+      padding: 0.5rem;
+    }
+  }
 </style>
-<div class="flex space-x-4">
+<div class="certification-container">
   <!-- ISO Certified Badge -->
   <a href="#" aria-label="ISO Certified" class="focus:ring-2 focus:ring-emerald-500">
-    <img src="https://cdn-icons-png.flaticon.com/512/2913/2913168.png" alt="ISO Certified" class="h-6 w-6 icon-hover">
+    <img src="https://cdn-icons-png.flaticon.com/512/2913/2913168.png" alt="ISO Certified" class="icon-hover">
   </a>
   <!-- SSL Secured Badge -->
   <a href="#" aria-label="SSL Secured" class="focus:ring-2 focus:ring-emerald-500">
-    <img src="https://cdn-icons-png.flaticon.com/512/2089/2089779.png" alt="SSL Secured" class="h-6 w-6 icon-hover">
+    <img src="https://cdn-icons-png.flaticon.com/512/2089/2089779.png" alt="SSL Secured" class="icon-hover">
   </a>
   <!-- Trusted Site Badge -->
   <a href="#" aria-label="Trusted Site" class="focus:ring-2 focus:ring-emerald-500">
-    <img src="https://cdn-icons-png.flaticon.com/512/814/814398.png" alt="Trusted Site" class="h-6 w-6 icon-hover">
+    <img src="https://cdn-icons-png.flaticon.com/512/814/814398.png" alt="Trusted Site" class="icon-hover">
   </a>
 </div>
       <div class="mt-8 border-t border-gray-700 pt-6 text-center text-sm text-gray-400">
