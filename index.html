@@ -478,7 +478,7 @@
     <p class="text-gray-600 mb-6">Pesan sekarang dan nikmati hidangan favoritmu dengan pengiriman cepat dan aman!</p>
     <button id="cta-button" class="bg-emerald-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-emerald-700 focus:ring-2 focus:ring-emerald-500">Pesan Sekarang</button>
   </section>
-  ```html
+```html
 <!-- Add these CDN links to your existing <head> -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/4.1.5/css/flag-icons.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/23.15.1/i18next.min.js"></script>
@@ -569,9 +569,10 @@
         contact_address: "Jl. Raya Gununglangit - Kalibening",
         footer_copyright: "&copy; 2025 PT. Mobilitas Karya Kita. All rights reserved.",
         footer_tagline: "Dunnak<span class='text-red-500'>&hearts;</span>Indonesia",
-        // Add other site-wide translation keys here
+        // Add your site’s other translation keys here
         title: "Welcome to Dunnak",
-        description: "Explore a variety of delicious foods from top restaurants.",
+        hero_title: "Explore Delicious Foods",
+        hero_description: "Discover a variety of food options from the best restaurants in your city. Order now and enjoy an unforgettable culinary experience!",
         cta: "Order Now"
       }
     },
@@ -588,9 +589,10 @@
         contact_address: "Jl. Raya Gununglangit - Kalibening",
         footer_copyright: "&copy; 2025 PT. Mobilitas Karya Kita. Semua hak dilindungi.",
         footer_tagline: "Dunnak<span class='text-red-500'>&hearts;</span>Indonesia",
-        // Add other site-wide translation keys here
+        // Add your site’s other translation keys here
         title: "Selamat Datang di Dunnak",
-        description: "Jelajahi berbagai makanan lezat dari restoran-restoran terbaik.",
+        hero_title: "Jelajahi Makanan Lezat",
+        hero_description: "Temukan berbagai pilihan makanan dari restoran terbaik di kota Anda. Pesan sekarang dan nikmati pengalaman kuliner yang tak terlupakan!",
         cta: "Pesan Sekarang"
       }
     }
@@ -621,6 +623,7 @@
     });
   });
 </script>
+```
   <!-- PRODUCT MODAL -->
   <div id="modal-produk" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4" role="dialog" aria-labelledby="modal-nama">
     <div class="absolute inset-0 bg-black/40" onclick="closeModal()"></div>
