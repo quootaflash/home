@@ -528,6 +528,33 @@
           </ul>
         </div>
       </div>
+<style>
+  .icon-hover {
+    filter: grayscale(100%) brightness(70%); /* Simulasi text-gray-300 */
+    transition: filter 0.3s ease;
+  }
+  .icon-hover:hover {
+    filter: grayscale(0%) brightness(100%) sepia(100%) hue-rotate(140deg); /* Simulasi text-emerald-400 */
+  }
+  .icon-hover:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.5); /* Simulasi focus:ring-emerald-500 */
+  }
+</style>
+<div class="flex space-x-4">
+  <!-- ISO Certified Badge -->
+  <a href="#" aria-label="ISO Certified" class="focus:ring-2 focus:ring-emerald-500">
+    <img src="https://cdn-icons-png.flaticon.com/512/2913/2913168.png" alt="ISO Certified" class="h-6 w-6 icon-hover">
+  </a>
+  <!-- SSL Secured Badge -->
+  <a href="#" aria-label="SSL Secured" class="focus:ring-2 focus:ring-emerald-500">
+    <img src="https://cdn-icons-png.flaticon.com/512/2089/2089779.png" alt="SSL Secured" class="h-6 w-6 icon-hover">
+  </a>
+  <!-- Trusted Site Badge -->
+  <a href="#" aria-label="Trusted Site" class="focus:ring-2 focus:ring-emerald-500">
+    <img src="https://cdn-icons-png.flaticon.com/512/814/814398.png" alt="Trusted Site" class="h-6 w-6 icon-hover">
+  </a>
+</div>
       <div class="mt-8 border-t border-gray-700 pt-6 text-center text-sm text-gray-400">
         <p>&copy; 2025 PT. Mobilitas Karya Kita. All rights reserved.</p>
         <p class="mt-2">Dunnak<span class="text-red-500">&hearts;</span>Indonesia</p>
