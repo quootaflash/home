@@ -726,7 +726,7 @@
           console.error("Error fetch ads:", error.message);
           return;
         }
-        adsData = shuffleArray(ads || []);
+        adsData = ads || [];
         if (!adsData.length) {
           document.getElementById("ads-grid").parentElement.style.display = 'none';
           return;
