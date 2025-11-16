@@ -518,9 +518,9 @@
   <div id="modal-checkout" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4">
     <div class="absolute inset-0 bg-black/40" onclick="closeCheckout()"></div>
     <div class="relative bg-white rounded-xl shadow-xl max-w-md w-full overflow-hidden p-4">
-      <h3 class="text-lg font-semibold">PESANAN ANDA</h3>
+      <h3 class="text-lg font-semibold">PESANAN SAYA</h3>
       <p class="text-xs text-gray-500">Isi data lengkap untuk proses order</p>
-       <b class="text-xs text-orange-700">Belum termasuk ongkir!</b>
+       <b class="text-xs text-orange-600">Belum termasuk ongkir!</b>
       <div class="mt-3 space-y-3">
         <div>
           <label class="text-xs text-gray-600">Nama Lengkap</label>
@@ -625,8 +625,8 @@
     // QUANTITY CONTROLS
     document.getElementById("increase-quantity").addEventListener("click", () => {
       try {
-        if (selectedQuantity >= 99) {
-          showToast("Jumlah pesanan maksimal 99.", "error");
+        if (selectedQuantity >= 100) {
+          showToast("Jumlah pesanan maksimal 100.", "error");
           return;
         }
         selectedQuantity++;
@@ -1093,7 +1093,7 @@
           .from("orders")
           .insert([orderData]);
         if (error) {
-          showToast("Gagal menyimpan pesanan ke database. Coba lagi.", "error");
+          showToast("Gagal memproses pesanan", "error");
           throw new Error("Error inserting order: " + error.message);
         }
         return true;
@@ -1109,7 +1109,7 @@
         const alamat = document.getElementById("input-alamat")?.value.trim();
         const hpRaw = document.getElementById("input-hp")?.value.trim();
         if (!nama || !alamat || !hpRaw) {
-          showToast("Harap lengkapi semua kolom: Nama, Alamat, dan Nomor HP.", "error");
+          showToast("Error, harap isi semua", "error");
           return;
         }
         if (nama.length < 2) {
