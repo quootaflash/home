@@ -460,16 +460,7 @@
         </div>
         <div>
           <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEioCgC6JQ-pd6mvQ1OvlJSOGqd8-45q7P9K0ejBvIt-XEXcayAs6zpFN6c1D2ejDgR72xdGDZL9yt2yLWl7oRDHQ8Gf2L3Q35VNFlimqORpaOgBDiqJMBGfTLHokc0dFwezZ85HLBx7_rGveEOMDI78CG81kg_mpczYMHdYapbijiLVpqPj2Ep_QrPJwx6H/s3264/20250927_164837.png" alt="FoodOrder Logo" class="h-10 w-auto mb-4" onerror="this.style.display='none'"/>
-          <h3 class="text-lg font-semibold mb-4">LINK</h3>
-          <ul class="space-y-2 text-sm text-gray-300">
-            <li><a href="#" class="hover:text-emerald-400 transition-colors">Beranda</a></li>
-            <li><a href="#" class="hover:text-emerald-400 transition-colors">Menu</a></li>
-            <li><a href="#" class="hover:text-emerald-400 transition-colors">Wishlist</a></li>
-            <li><a href="#" class="hover:text-emerald-400 transition-colors">Kontak</a></li>
-          </ul>
-        </div>
-        <div>
-          <h3 class="text-lg font-semibold mb-4">NAVIGASI</h3>
+          <h3 class="text-lg font-semibold mb-4">Link</h3>
           <ul class="space-y-2 text-sm text-gray-300">
             <li><a href="#" class="hover:text-emerald-400 transition-colors">Beranda</a></li>
             <li><a href="#" class="hover:text-emerald-400 transition-colors">Menu</a></li>
@@ -528,7 +519,7 @@
     <div class="absolute inset-0 bg-black/40" onclick="closeCheckout()"></div>
     <div class="relative bg-white rounded-xl shadow-xl max-w-md w-full overflow-hidden p-4">
       <h3 class="text-lg font-semibold">Form Checkout</h3>
-      <p class="text-xs text-gray-500">Isi data lengkap untuk proses order via WhatsApp.</p>
+      <p class="text-xs text-gray-500">Isi data lengkap untuk proses order</p>
       <div class="mt-3 space-y-3">
         <div>
           <label class="text-xs text-gray-600">Nama Lengkap</label>
@@ -1168,7 +1159,7 @@
         const saved = await insertOrderToSupabase(orderData);
         if (!saved) return;
         const list = [
-          `Halo Admin, saya ingin pesan:`,
+          `Halo kak, saya ingin pesan produk:`,
           `Nama: ${nama}`,
           `Alamat: ${alamat}`,
           `HP: ${hpRaw}`,
@@ -1178,7 +1169,7 @@
           `Harga Satuan: ${rupiah(selectedProduk.harga)}`,
           `Total Harga: ${rupiah(totalHarga)}`,
           `---`,
-          `*Catatan:*`
+          `*Catatan: tulis catatan kamu disini*`
         ];
         const text = encodeURIComponent(list.join("\n"));
         const waNumber = String(operator.nomor).replace(/\D/g, "");
@@ -1208,7 +1199,7 @@
           console.error("Local storage save failed", e);
         }
         closeCheckout();
-        showToast("Pesanan berhasil diproses! Mengarahkan ke WhatsApp...", "success");
+        showToast("Pesanan berhasil diproses! Mengarahkan ke WhatsApp admin", "success");
       } catch (e) {
         showToast("Gagal memproses checkout. Coba lagi.", "error");
         console.error("handleCheckout failed", e);
