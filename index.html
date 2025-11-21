@@ -572,7 +572,7 @@
         showToast("Harga produk tidak valid.", "error");
         return "Rp0";
       }
-      return "Harga Rp" + Number(num).toLocaleString("id-ID");
+      return "Rp" + Number(num).toLocaleString("id-ID");
     }
     function showToast(text, type = "success", duration = 3000) {
       const toast = document.getElementById("toast");
