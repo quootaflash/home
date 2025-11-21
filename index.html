@@ -421,61 +421,24 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   </script>
-<!-- NAVBAR DUNNAK.COM – SAPAAN WAKTU MUNCUL DI MOBILE & DESKTOP -->
-<header class="bg-white/95 backdrop-blur-xl shadow-md sticky top-0 z-50 border-b border-gray-100">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-16 lg:h-20">
-
-      <!-- Logo & Brand -->
-      <div class="flex items-center">
-        <a href="#" class="flex items-center gap-3 group">
-          <div class="relative">
-            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi6-JhY6g9H4ggtXPHCO7pTjErtprKfSRlgttoFgT4LcX-O2ROw-oxj7Ntr3r7cY6TdN5AMrwDJ7hyfyU1DI4ASMZ_Mw2chnMaXIDiWHZ-8X3H1Lhz-PjI7KIh2716aY_g4FIxL2Fe4OxBsIEAyE52WrLYS-p1La1U_mMHuVcQvFK-Np9l-ZixakqnZjx44/s3264/20251120_174337.png" 
-                 alt="Dunnak.com" 
-                 class="h-10 lg:h-12 w-auto transition-all duration-300 group-hover:scale-110" 
-                 onerror="this.style.display='none'">
-            <div class="absolute -inset-2 bg-emerald-500/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-          </div>
-          <div class="hidden sm:block">
-            <h1 class="text-xl lg:text-2xl font-black text-emerald-700 tracking-tight">Dunnak</h1>
-            <p class="text-xs lg:text-sm text-emerald-600 font-semibold -mt-1">Kalibening & Sekitarnya</p>
-          </div>
-        </a>
-      </div>
-
-      <!-- Desktop Menu -->
-      <nav class="hidden lg:flex items-center gap-8">
-        <a href="#" class="text-gray-700 font-medium hover:text-emerald-600 hover:font-bold transition">Beranda</a>
-        <a href="#produk-grid" class="text-gray-700 font-medium hover:text-emerald-600 hover:font-bold transition">Menu</a>
-        <a href="#faq" class="text-gray-700 font-medium hover:text-emerald-600 hover:font-bold transition">FAQ</a>
-        <a href="#testimoni" class="text-gray-700 font-medium hover:text-emerald-600 hover:font-bold transition">Testimoni</a>
-      </nav>
-
-      <!-- SAPAAN WAKTU – MUNCUL DI MOBILE & DESKTOP -->
-      <div class="flex items-center">
-        <div id="greeting-text" class="text-right">
-          <!-- Mobile: kecil & ringkas -->
-          <p class="text-sm sm:text-base font-bold text-emerald-700 block sm:hidden">
-            Selamat <span id="waktu-sapa-mobile"></span>!
-          </p>
-          <!-- Desktop: besar & lengkap -->
-          <div class="hidden sm:block">
-            <p class="text-lg font-bold text-emerald-700">Selamat <span id="waktu-sapa"></span>!</p>
-            <p class="text-sm text-gray-600">Senang bertemu kembali 😊</p>
-          </div>
+<!-- NAVBAR -->
+  <header class="bg-white shadow sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi6-JhY6g9H4ggtXPHCO7pTjErtprKfSRlgttoFgT4LcX-O2ROw-oxj7Ntr3r7cY6TdN5AMrwDJ7hyfyU1DI4ASMZ_Mw2chnMaXIDiWHZ-8X3H1Lhz-PjI7KIh2716aY_g4FIxL2Fe4OxBsIEAyE52WrLYS-p1La1U_mMHuVcQvFK-Np9l-ZixakqnZjx44/s3264/20251120_174337.png" alt="Logo dunak" class="h-10 w-auto" onerror="this.style.display='none'"/>
+        <div>
+          <div class="text-lg font-semibold"></div>
+          <div class="text-xs text-gray-500"></div>
         </div>
-
-        <!-- Mobile Menu Button -->
-        <button id="mobile-menu-btn" class="lg:hidden ml-4 p-3 rounded-xl hover:bg-gray-100 transition">
-          <svg class="h-7 w-7 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"/>
-          </svg>
-        </button>
       </div>
+      <nav class="hidden md:flex items-center gap-3">
+        <button id="btn-wishlist" class="text-sm px-3 py-2 rounded-lg border border-gray-200 hover:bg-emerald-50">Suggeng rawuh</button>
+      </nav>
+      <button id="mobile-menu-btn" class="md:hidden p-2">
+        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
     </div>
-  </div>
-</header>
-
+  </header>
 <script>
 // === SAPAAN WAKTU OTOMATIS – MOBILE & DESKTOP ===
 function updateGreeting() {
