@@ -481,92 +481,16 @@ document.addEventListener("DOMContentLoaded", () => {
   </div>
 </div>
 <script>
-// === VOICE SEARCH + ANIMASI GELOMBANG SUARA KEREN ===
-const voiceBtn = document.getElementById("voice-search-btn");
-const micIcon = document.getElementById("mic-icon");
-const voiceWave = document.getElementById("voice-wave");
-let recognition = null;
-let isListening = false;
-
-if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  recognition = new SpeechRecognition();
-  recognition.lang = "id-ID";
-  recognition.continuous = false;
-  recognition.interimResults = false;
-
-  voiceBtn.addEventListener("click", () => {
-    if (isListening) {
-      recognition.stop();
-      return;
-    }
-
-    recognition.start();
-    isListening = true;
-
-    // Aktifkan animasi gelombang suara
-    micIcon.classList.add("opacity-0");
-    voiceWave.classList.remove("opacity-0");
-    voiceWave.classList.add("opacity-100");
-
-    showToast("🎤 Sedang mendengarkan... bicara sekarang!", "success");
-  });
-
-  recognition.onresult = (event) => {
-    const result = event.results[0][0].transcript;
-    document.getElementById("search").value = result;
-    document.getElementById("search").focus();
-    performSearch();
-    showToast(` Terdeteksi: "${result}"`, "success");
-  };
-
-  recognition.onend = () => {
-    isListening = false;
-    micIcon.classList.remove("opacity-0");
-    voiceWave.classList.remove("opacity-100");
-    voiceWave.classList.add("opacity-0");
-  };
-
-  recognition.onerror = () => {
-    isListening = false;
-    micIcon.classList.remove("opacity-0");
-    voiceWave.classList.remove("opacity-100");
-    voiceWave.classList.add("opacity-0");
-    showToast("❌ Gagal mendengar", "error");
-  };
-} else {
-  voiceBtn.style.display = "none";
-}
-</script>
-<style>
-  /* Animasi Gelombang Suara – Super Keren */
-  .voice-bar {
-    width: 4px;
-    height: 4px;
-    border-radius: 2px;
-    animation: voiceWave 1.5s ease-in-out infinite;
-  }
-
-  @keyframes voiceWave {
-    0%, 100% { height: 4px; transform: translateY(0); }
-    50% { height: 24px; transform: translateY(-10px); }
-  }
-
-  .animation-delay-100 { animation-delay: 0.1s; }
-  .animation-delay-200 { animation-delay: 0.2s; }
-  .animation-delay-300 { animation-delay: 0.3s; }
-  .animation-delay-400 { animation-delay: 0.4s; }
-
-  /* Responsif di HP kecil */
-  @media (max-width: 480px) {
-    #voice-search-btn svg { width: 1.6rem !important; height: 1.6rem !important; }
-    .voice-bar { width: 3px; }
-    @keyframes voiceWave {
-      0%, 100% { height: 3px; }
-      50% { height: 20px; transform: translateY(-8px); }
-    }
-  }
-</style>
+<!-- SEARCH BAR -->
+  <div id="search-container" class="max-w-6xl mx-auto px-4">
+    <div id="search-wrapper" class="relative">
+      <svg id="search-button" class="absolute left-3 top-2.5 h-5 w-5 text-gray-400" viewBox="0 0 24 24" fill="none" aria-hidden>
+        <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="11" cy="11" r="5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <input id="search" type="search" placeholder="Cari makanan favoritmu..." class="w-full border border-gray-200 rounded-xl py-2 pl-11 pr-4 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500" />
+    </div>
+  </div>
   <!-- MOBILE SIDEBAR -->
   <div id="sidebar-backdrop"></div>
   <div id="mobile-sidebar" class="fixed inset-y-0 right-0 z-50 w-64 bg-white shadow-lg translate-x-full transition duration-300 ease-in-out md:hidden">
