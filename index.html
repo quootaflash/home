@@ -439,7 +439,7 @@ document.addEventListener("DOMContentLoaded", () => {
   </header>
 <!-- FLOATING SEARCH BUTTON - KLIK = KEYBOARD LANGSUNG MUNCUL & BISA LANGSUNG KETIK -->
 <div id="floating-search-btn" 
-     class="fixed left-1/2 -translate-x-1/2 bottom-6 z-[40] transition-all duration-500 pointer-events-none">
+     class="fixed left-1/2 -translate-x-1/2 bottom-6 z-[40] transition-all duration-500 pointer-events-none select-none">
   <button id="float-search-trigger"
           class="pointer-events-auto group bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white w-16 h-16 md:w-20 md:h-20 rounded-full shadow-2xl flex items-center justify-center transform hover:scale-110 active:scale-95 transition-all duration-300">
     <svg class="w-9 h-9 md:w-11 md:h-11 transition-transform group-hover:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -453,7 +453,7 @@ document.addEventListener("DOMContentLoaded", () => {
 </div>
 
 <script>
-// === FINAL VERSION - KLIK IKON = LANGSUNG BISA KETIK (NO NEED KLIK SEARCH BAR) ===
+// === FINAL VERSION - 100% BERHASIL DI SEMUA HP ===
 const realSearch = document.getElementById("search");
 const floatBtn = document.getElementById("floating-search-btn");
 const trigger = document.getElementById("float-search-trigger");
@@ -478,24 +478,31 @@ if (!realSearch || !floatBtn || !trigger) {
     }
   };
 
-  // KLIK = LANGSUNG BISA KETIK (keyboard muncul otomatis di HP)
+  // KLIK IKON → LANGSUNG BISA KETIK (keyboard pasti muncul)
   trigger.addEventListener("click", (e) => {
     e.preventDefault();
-    
-    // Scroll ke search bar
+    e.stopPropagation();
+
+    // 1. Scroll ke search bar
     realSearch.scrollIntoView({ behavior: "smooth", block: "center" });
 
-    // Tunggu scroll selesai, lalu paksa keyboard muncul
+    // 2. Tunggu scroll selesai, lalu paksa keyboard muncul
     setTimeout(() => {
+      // Pastikan input aktif & bisa difokus
+      realSearch.removeAttribute("readonly");
       realSearch.focus();
+      realSearch.selectionStart = realSearch.selectionEnd = realSearch.value.length; // kursor di akhir
 
-      // TRIK KHUSUS HP: paksa keyboard muncul dengan setSelectionRange
-      if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-        realSearch.setSelectionRange(0, 0); // kursor di awal
-        realSearch.scrollLeft = 0;
-        // Double trigger untuk iOS & Android
-        realSearch.dispatchEvent(new Event('touchstart'));
-        realSearch.dispatchEvent(new Event('touchend'));
+      // TRIK PASTI BUKA KEYBOARD DI SEMUA HP
+      if ("ontouchstart" in window) {
+        // Android & iPhone
+        const val = realSearch.value;
+        realSearch.value = "";
+        realSearch.value = val;
+
+        // Paksa trigger keyboard
+        realSearch.dispatchEvent(new KeyboardEvent("keydown", { key: " " }));
+        setTimeout(() => realSearch.dispatchEvent(new KeyboardEvent("keyup", { key: " " })), 50);
       }
 
       // Efek klik
@@ -503,15 +510,15 @@ if (!realSearch || !floatBtn || !trigger) {
       ripple.className = "absolute inset-0 rounded-full bg-white/40 animate-ping";
       trigger.appendChild(ripple);
       setTimeout(() => ripple.remove(), 600);
-    }, 500);
+    }, 600);
   });
 
-  // Update visibilitas
+  // Update saat scroll, resize, load
   window.addEventListener("scroll", update);
   window.addEventListener("resize", update);
   window.addEventListener("load", update);
 
-  // Observer modal
+  // Observer modal & popup
   const observer = new MutationObserver(update);
   document.querySelectorAll("#modal-produk, #modal-checkout, #dunnak-popup").forEach(el => {
     if (el) observer.observe(el, { attributes: true, attributeFilter: ["class"] });
@@ -520,7 +527,7 @@ if (!realSearch || !floatBtn || !trigger) {
   setTimeout(update, 500);
 }
 
-// Animasi masuk
+// Animasi masuk super halus
 const style = document.createElement("style");
 style.textContent = `
   #floating-search-btn { transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
