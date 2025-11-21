@@ -108,7 +108,7 @@
       to { opacity: 1; }
     }
     .slider-dots {
-      position: fixed;
+      position: absolute;
       bottom: 1rem;
       left: 50%;
       transform: translateX(-50%);
@@ -119,7 +119,7 @@
       width: 10px;
       height: 10px;
       background: rgba(255, 255, 255, 0.5);
-      border-radius: 0%;
+      border-radius: 20%;
       cursor: pointer;
     }
     .slider-dot.active {
@@ -572,7 +572,7 @@
         showToast("Harga produk tidak valid.", "error");
         return "Rp0";
       }
-      return "Rp" + Number(num).toLocaleString("id-ID");
+      return "Harga Rp" + Number(num).toLocaleString("id-ID");
     }
     function showToast(text, type = "success", duration = 3000) {
       const toast = document.getElementById("toast");
