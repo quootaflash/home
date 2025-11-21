@@ -567,6 +567,106 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
     }
   }
 </style>
+  // === ACCESSIBILITY TOOLS – SUPER CANGGIH & NYAMAN UNTUK SEMUA PENGUNJUNG ===
+const toggleBtn = document.getElementById("accessibility-toggle");
+const panel = document.getElementById("accessibility-panel");
+
+// Buka/Tutup panel
+toggleBtn.addEventListener("click", () => {
+  panel.classList.toggle("scale-0");
+  panel.classList.toggle("scale-100");
+});
+
+// Ukuran Teks
+document.querySelectorAll("[data-size]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const size = btn.dataset.size;
+    document.body.classList.remove("text-small", "text-medium", "text-large");
+    document.body.classList.add(`text-${size}`);
+    
+    document.querySelectorAll("[data-size]").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    
+    localStorage.setItem("dunnak_text_size", size);
+  });
+});
+
+// Kontras Tinggi
+document.getElementById("high-contrast").addEventListener("click", () => {
+  document.body.classList.toggle("high-contrast");
+  const isOn = document.body.classList.contains("high-contrast");
+  const toggle = document.querySelector("#high-contrast span");
+  toggle.style.left = isOn ? "calc(100% - 28px)" : "4px";
+  toggle.parentElement.style.background = isOn ? "#10b981" : "#d1d5db";
+  localStorage.setItem("dunnak_high_contrast", isOn);
+});
+
+// Mode Baca (font lebih mudah dibaca)
+document.getElementById("readable-mode").addEventListener("click", () => {
+  document.body.classList.toggle("readable-mode");
+  const isOn = document.body.classList.contains("readable-mode");
+  const toggle = document.querySelector("#readable-mode span");
+  toggle.style.left = isOn ? "calc(100% - 28px)" : "4px";
+  toggle.parentElement.style.background = isOn ? "#10b981" : "#d1d5db";
+  localStorage.setItem("dunnak_readable", isOn);
+});
+
+// Reset
+document.getElementById("accessibility-reset").addEventListener("click", () => {
+  document.body.classList.remove("text-small", "text-medium", "text-large", "high-contrast", "readable-mode");
+  localStorage.removeItem("dunnak_text_size");
+  localStorage.removeItem("dunnak_high_contrast");
+  localStorage.removeItem("dunnak_readable");
+  
+  // Reset toggle
+  document.querySelectorAll("#high-contrast span, #readable-mode span").forEach(s => {
+    s.style.left = "4px";
+    s.parentElement.style.background = "#d1d5db";
+  });
+  document.querySelectorAll("[data-size]").forEach(b => b.classList.remove("active"));
+  document.querySelector("[data-size='medium']").classList.add("active");
+});
+
+// Load pengaturan sebelumnya
+window.addEventListener("load", () => {
+  const size = localStorage.getItem("dunnak_text_size") || "medium";
+  document.body.classList.add(`text-${size}`);
+  document.querySelector(`[data-size='${size}']`).classList.add("active");
+
+  if (localStorage.getItem("dunnak_high_contrast") === "true") document.getElementById("high-contrast").click();
+  if (localStorage.getItem("dunnak_readable") === "true") document.getElementById("readable-mode").click();
+});
+</script>
+
+<style>
+  .text-small { font-size: 0.875rem !important; }
+  .text-medium { font-size: 1rem !important; }
+  .text-large { font-size: 1.125rem !important; line-height: 1.7 !important; }
+
+  .high-contrast {
+    background: #000 !important;
+    color: #fff !important;
+  }
+  .high-contrast * { color: #fff !important; background: #000 !important; border-color: #fff !important; }
+  .high-contrast .bg-white { background: #000 !important; }
+  .high-contrast .text-gray-600 { color: #ccc !important; }
+
+  .readable-mode {
+    font-family: 'Comic Sans MS', 'Arial Rounded MT Bold', sans-serif !important;
+    line-height: 1.8 !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  .text-btn {
+    @apply w-10 h-10 rounded-lg border-2 border-emerald-600 text-emerald-600 font-bold flex items-center justify-center transition;
+  }
+  .text-btn.active {
+    @apply bg-emerald-600 text-white border-emerald-600;
+  }
+  .text-btn:nth-child(1) { font-size: 0.875rem; }
+  .text-btn:nth-child(2) { font-size: 1rem; }
+  .text-btn:nth-child(3) { font-size: 1.25rem; }
+</style>
   <!-- MOBILE SIDEBAR -->
   <div id="sidebar-backdrop"></div>
   <div id="mobile-sidebar" class="fixed inset-y-0 right-0 z-50 w-64 bg-white shadow-lg translate-x-full transition duration-300 ease-in-out md:hidden">
