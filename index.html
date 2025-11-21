@@ -319,63 +319,82 @@
 </head>
 <body class="bg-gray-50 text-gray-800">
 <script>
-// === BUKA/TUTUP SILENT MODE - DUNNAK.COM (TIDAK ADA BANNER) ===
-// UBAH 2 ANGKA INI SAJA UNTUK GANTI JAM OPERASIONAL
-let JAM_BUKA = 15;   // contoh: 15 = jam 15:00 WIB
-let JAM_TUTUP = 16;  // contoh: 21 = jam 21:00 WIB
+// === BUKA/TUTUP SILENT + HALAMAN TUTUP SUPER PROFESIONAL ===
+let JAM_BUKA = 15;   // Ubah angka ini saja untuk jam buka (15 = 15:00 WIB)
+let JAM_TUTUP = 21;  // Ubah angka ini saja untuk jam tutup (21 = 21:00 WIB)
 
 document.addEventListener("DOMContentLoaded", () => {
   function getWIB() {
     const n = new Date();
     const utc = n.getTime() + (n.getTimezoneOffset() * 60000);
-    return new Date(utc + 3600000*7); // GMT+7
+    return new Date(utc + 3600000*7); // WIB
   }
 
   const now = getWIB();
   const h = now.getHours();
 
   if (h >= JAM_TUTUP || h < JAM_BUKA) {
-    // HITUNG COUNTDOWN BUKA BERIKUTNYA
+    // WAKTU BUKA BERIKUTNYA
     let next = new Date(now);
     next.setHours(JAM_BUKA, 0, 0, 0);
-    if (h >= JAM_TUTUP || (h === JAM_TUTUP)) next.setDate(next.getDate() + 1);
+    if (h >= JAM_TUTUP) next.setDate(next.getDate() + 1);
 
-    const update = () => {
+    const updateCountdown = () => {
       const diff = next - getWIB();
       if (diff <= 0) location.reload();
-      const hh = Math.floor(diff / 3600000);
-      const mm = Math.floor((diff % 3600000) / 60000);
-      const ss = Math.floor((diff % 60000) / 1000);
-      document.getElementById("cd").innerText = `${hh}j ${mm}m ${ss}d lagi`;
+      const hh = String(Math.floor(diff / 3600000)).padStart(2, '0');
+      const mm = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+      const ss = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+      document.getElementById("timer").innerText = `${hh}:${mm}:${ss}`;
     };
 
     document.body.innerHTML = `
-      <div style="min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e293b);color:#fff;display:flex;align-items:center;justify-content:center;text-align:center;padding:1.5rem;font-family:system-ui,sans-serif;">
-        <div>
-          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi6-JhY6g9H4ggtXPHCO7pTjErtprKfSRlgttoFgT4LcX-O2ROw-oxj7Ntr3r7cY6TdN5AMrwDJ7hyfyU1DI4ASMZ_Mw2chnMaXIDiWHZ-8X3H1Lhz-PjI7KIh2716aY_g4FIxL2Fe4OxBsIEAyE52WrLYS-p1La1U_mMHuVcQvFK-Np9l-ZixakqnZjx44/s320/20251120_174337.png" width="120" style="border-radius:50%;box-shadow:0 10px 30px rgba(0,0,0,.6);margin-bottom:1.5rem">
-          <h2 style="font-size:2.5rem;margin:0;color:#fca5a5">🚫 Sedang Tutup</h2>
-          <p style="font-size:1.8rem;margin:1rem 0;color:#34d399">Buka ${JAM_BUKA}:00 - ${JAM_TUTUP}:00 WIB</p>
-          <p id="cd" style="font-size:2rem;font-weight:bold;color:#fbbf24;background:rgba(0,0,0,.4);padding:.8rem 1.5rem;border-radius:1rem;display:inline-block"></p>
-          <p style="margin-top:1.5rem;font-size:1rem;opacity:.8">
-            Follow <a href="https://instagram.com/dunnakindonesia" style="color:#e879f9">@dunnakindonesia</a> untuk menu harian
-          </p>
+      <div style="min-height:100vh;background:#0f172a;color:#e2e8f0;display:grid;place-items:center;padding:2rem;font-family:'Segoe UI',system-ui,sans-serif;">
+        <div style="max-width:420px;width:100%;text-align:center;background:rgba(255,255,255,0.05);backdrop-filter:blur(12px);border-radius:24px;padding:3rem 2rem;box-shadow:0 25px 50px rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.1);">
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi6-JhY6g9H4ggtXPHCO7pTjErtprKfSRlgttoFgT4LcX-O2ROw-oxj7Ntr3r7cY6TdN5AMrwDJ7hyfyU1DI4ASMZ_Mw2chnMaXIDiWHZ-8X3H1Lhz-PjI7KIh2716aY_g4FIxL2Fe4OxBsIEAyE52WrLYS-p1La1U_mMHuVcQvFK-Np9l-ZixakqnZjx44/s640/20251120_174337.png" alt="Dunnak.com" style="width:100px;height:100px;border-radius:50%;margin:0 auto 1.5rem;box-shadow:0 10px 30px rgba(16,185,129,0.3);object-fit:cover;">
+          
+          <h1 style="font-size:2.2rem;font-weight:800;color:#f8fafc;margin:0 0 0.5rem;">Kami Sedang Istirahat</h1>
+          <p style="font-size:1.1rem;color:#94a3b8;margin-bottom:2rem;">Saat ini Dunnak sedang tidak menerima pesanan</p>
+          
+          <div style="background:#1e293b;border-radius:16px;padding:1.5rem;margin:1.5rem 0;">
+            <p style="font-size:0.95rem;color:#94a3b8;margin:0 0 0.5rem;">Jam Operasional</p>
+            <p style="font-size:2rem;font-weight:700;color:#10b981;margin:0;">${JAM_BUKA.toString().padStart(2,'0')}:00 — ${JAM_TUTUP.toString().padStart(2,'0')}:00 WIB</p>
+          </div>
+          
+          <div style="margin:2rem 0;">
+            <p style="font-size:1rem;color:#cbd5e1;margin:0 0 0.5rem;">Buka kembali dalam</p>
+            <div id="timer" style="font-size:3.5rem;font-weight:900;color:#34d399;letter-spacing:4px;background:#0f172a;padding:0.8rem 1rem;border-radius:12px;display:inline-block;min-width:280px;box-shadow:0 8px 25px rgba(0,0,0,0.3);">00:00:00</div>
+          </div>
+          
+          <div style="margin-top:2.5rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.1);">
+            <p style="font-size:0.95rem;color:#94a3b8;margin:0 0 1rem;">Ikuti kami untuk menu & promo terbaru</p>
+            <div style="display:flex;gap:1rem;justify-content:center;">
+              <a href="https://instagram.com/dunnakindonesia" style="width:44px;height:44px;background:#e11d48;border-radius:50%;display:grid;place-items:center;color:white;font-size:1.4rem;box-shadow:0 8px 20px rgba(225,29,72,0.4);">📷</a>
+              <a href="https://tiktok.com/@dunnakindonesia" style="width:44px;height:44px;background:#000;border-radius:50%;display:grid;place-items:center;color:white;font-size:1.4rem;box-shadow:0 8px 20px rgba(0,0,0,0.5);">♪</a>
+            </div>
+          </div>
+          
+          <footer style="margin-top:3rem;font-size:0.8rem;color:#64748b;">
+            © 2025 Dunnak.com • Kalibening & Sekitarnya
+          </footer>
         </div>
       </div>
     `;
-    update();
-    setInterval(update, 1000);
 
-    // Anti-bypass
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    // Anti-bypass tetap aktif
     ["contextmenu","selectstart","dragstart"].forEach(e=>document.addEventListener(e,ev=>ev.preventDefault()));
     document.onkeydown = e => {
       if(e.key=="F12"||e.ctrlKey&&(e.shiftKey||e.key.toLowerCase()=="u")) e.preventDefault();
     };
-    
-    throw "Tutup otomatis"; // hentikan semua script lain
+
+    throw "Dunnak tutup otomatis";
   }
-  // Jika buka → TIDAK ADA BANNER APA PUN, website jalan normal 100%
+  // Jika BUKA → website jalan normal 100%, tanpa banner apa pun
 });
-  
+
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.addEventListener('keydown', e => {
       if (
