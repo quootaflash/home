@@ -996,76 +996,76 @@ if (popupCard) {
       </div>
     </div>
   </div>
-<!-- CHECKOUT MODAL FINAL – SUPER RESPONSIF DI SEMUA DEVICE -->
-<div id="modal-checkout" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4 md:p-6 lg:p-8 overflow-y-auto">
+<!-- CHECKOUT MODAL FINAL – 100% RESPONSIF, TIDAK TERPOTONG DI LAYAR KECIL -->
+<div id="modal-checkout" class="fixed inset-0 hidden z-50 flex items-center justify-center p-3 md:p-6 overflow-y-auto">
   <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeCheckout()"></div>
   
-  <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-md mx-auto my-8 overflow-hidden">
+  <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-md mx-4 my-8 overflow-hidden">
     <!-- Header Emerald -->
-    <div class="bg-gradient-to-r from-emerald-500 to-emerald-600 px-6 py-8 text-center text-white">
-      <h3 class="text-2xl sm:text-3xl font-black leading-tight">Pesanan Saya</h3>
-      <p class="mt-2 text-sm sm:text-base opacity-95">Lengkapi data untuk pengiriman cepat</p>
-      <button onclick="closeCheckout()" class="absolute top-4 right-4 bg-white/20 hover:bg-white/40 text-white w-10 h-10 rounded-full flex items-center justify-center transition">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div class="bg-gradient-to-r from-emerald-500 to-emerald-600 px-5 py-7 text-center text-white">
+      <h3 class="text-2xl font-black leading-tight">Pesanan Saya</h3>
+      <p class="mt-1.5 text-sm opacity-95">Lengkapi data untuk pengiriman cepat</p>
+      <button onclick="closeCheckout()" class="absolute top-3 right-3 bg-white/20 hover:bg-white/40 text-white w-9 h-9 rounded-full flex items-center justify-center transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"/>
         </svg>
       </button>
     </div>
 
-    <!-- Body -->
+    <!-- Body – Padding lebih kecil di HP -->
     <div class="p-5 sm:p-6 md:p-8">
       <!-- Peringatan Ongkir -->
-      <div class="bg-orange-50 border-2 border-orange-300 rounded-2xl p-4 mb-6">
-        <p class="text-sm font-bold text-orange-700 text-center flex items-center justify-center gap-2">
-          <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+      <div class="bg-orange-50 border-2 border-orange-300 rounded-2xl p-3.5 mb-5 text-center">
+        <p class="text-xs sm:text-sm font-bold text-orange-700 flex items-center justify-center gap-2">
+          <svg class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
             <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"/>
           </svg>
           Belum termasuk ongkir! (Akan dikonfirmasi admin)
         </p>
       </div>
 
-      <div class="space-y-5">
+      <div class="space-y-4.5">
         <!-- Nama -->
         <div>
-          <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Lengkap</label>
+          <label class="block text-sm font-semibold text-gray-700 mb-1.5">Nama Lengkap</label>
           <input id="input-nama" type="text" required placeholder="Contoh: Hafis Aditya" 
                  class="w-full px-4 py-3.5 text-base border border-gray-300 rounded-2xl focus:ring-4 focus:ring-emerald-500/30 focus:border-emerald-500 transition">
         </div>
 
         <!-- Alamat -->
         <div>
-          <label class="block text-sm font-semibold text-gray-700 mb-2">Alamat Lengkap (RT/RW/Dusun)</label>
-          <input id="input-alamat" type="text" required placeholder="Jl. Raya Kalibening No. 123, RT 04 RW 02" 
+          <label class="block text-sm font-semibold text-gray-700 mb-1.5">Alamat Lengkap (RT/RW)</label>
+          <input id="input-alamat" type="text" required placeholder="Jl. Raya Kalibening, RT 04 RW 02" 
                  class="w-full px-4 py-3.5 text-base border border-gray-300 rounded-2xl focus:ring-4 focus:ring-emerald-500/30 focus:border-emerald-500 transition">
         </div>
 
         <!-- WhatsApp -->
         <div>
-          <label class="block text-sm font-semibold text-gray-700 mb-2">Nomor WhatsApp (Aktif)</label>
+          <label class="block text-sm font-semibold text-gray-700 mb-1.5">Nomor WhatsApp</label>
           <input id="input-hp" type="tel" required placeholder="0812-3456-7890" 
                  class="w-full px-4 py-3.5 text-base border border-gray-300 rounded-2xl focus:ring-4 focus:ring-emerald-500/30 focus:border-emerald-500 transition">
         </div>
 
-        <!-- Ringkasan Pesanan -->
-        <div id="checkout-summary" class="bg-gradient-to-br from-emerald-50 to-green-50 border-2 border-emerald-200 rounded-2xl p-5 text-left text-sm md:text-base">
+        <!-- Ringkasan -->
+        <div id="checkout-summary" class="bg-gradient-to-br from-emerald-50 to-green-50 border-2 border-emerald-200 rounded-2xl p-4 text-left text-sm">
           <p class="text-gray-600">Ringkasan pesanan akan muncul di sini...</p>
         </div>
       </div>
 
-      <!-- Tombol Aksi -->
-      <div class="mt-8 flex flex-col sm:flex-row gap-3">
+      <!-- Tombol – Vertical di HP kecil -->
+      <div class="mt-7 flex flex-col gap-3">
         <button onclick="handleCheckout()" 
-                class="order-2 sm:order-1 flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-lg py-4 rounded-2xl shadow-xl transform hover:scale-105 transition duration-300">
+                class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-lg py-4 rounded-2xl shadow-xl transform hover:scale-105 transition duration-300">
           Proses Pesanan 🚀
         </button>
         <button onclick="closeCheckout()" 
-                class="order-1 sm:order-2 flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold text-lg py-4 rounded-2xl transition">
+                class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold text-lg py-4 rounded-2xl transition">
           Batal
         </button>
       </div>
 
-      <p class="text-center text-xs text-gray-500 mt-6">
-        Admin akan hubungi kamu via WhatsApp untuk konfirmasi & ongkir
+      <p class="text-center text-xs text-gray-500 mt-5">
+        Admin akan hubungi kamu via WhatsApp
       </p>
     </div>
   </div>
