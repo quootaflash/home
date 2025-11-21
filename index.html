@@ -437,50 +437,6 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>
   </header>
 <script>
-<!-- SEARCH BAR + ANIMASI LOADING SUARA KEREN -->
-<div id="search-container" class="max-w-5xl mx-auto px-4 py-8">
-  <div class="relative group">
-    <!-- Glow Effect Saat Fokus -->
-    <div class="absolute -inset-1 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-3xl blur-xl opacity-0 group-focus-within:opacity-50 transition duration-500 pointer-events-none"></div>
-    
-    <!-- Search Box -->
-    <div class="relative bg-white rounded-3xl shadow-lg border border-gray-200 overflow-hidden transition-all duration-300 group-focus-within:border-emerald-500 group-focus-within:shadow-2xl">
-      <div class="flex items-center">
-        <!-- Ikon Kaca Pembesar -->
-        <div class="pl-5 pr-3">
-          <svg id="search-button" class="w-6 h-6 text-emerald-600 transition-transform duration-300 group-focus-within:scale-110" 
-               fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" 
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-          </svg>
-        </div>
-        <!-- Input Field -->
-        <input id="search" type="search" placeholder="Cari makanan favoritmu..." autocomplete="off"
-               class="w-full py-4 pr-4 pl-2 text-base md:text-lg font-medium text-gray-800 placeholder-gray-400 focus:outline-none bg-transparent">
-
-        <!-- Tombol Mikrofon + Animasi Gelombang Suara -->
-        <button id="voice-search-btn" class="relative mr-5 flex items-center justify-center">
-          <!-- Mikrofon Icon -->
-          <svg id="mic-icon" class="w-7 h-7 text-gray-500 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" 
-                  d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
-          </svg>
-          <!-- Animasi Gelombang Suara (hanya muncul saat aktif) -->
-          <div id="voice-wave" class="absolute inset-0 flex items-center justify-center opacity-0 pointer-events-none">
-            <div class="flex gap-1">
-              <span class="voice-bar bg-emerald-600"></span>
-              <span class="voice-bar bg-emerald-600 animation-delay-100"></span>
-              <span class="voice-bar bg-emerald-600 animation-delay-200"></span>
-              <span class="voice-bar bg-emerald-600 animation-delay-300"></span>
-              <span class="voice-bar bg-emerald-600 animation-delay-400"></span>
-            </div>
-          </div>
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-<script>
 <!-- SEARCH BAR -->
   <div id="search-container" class="max-w-6xl mx-auto px-4">
     <div id="search-wrapper" class="relative">
