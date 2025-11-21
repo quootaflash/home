@@ -319,80 +319,88 @@
 </head>
 <body class="bg-gray-50 text-gray-800">
 <script>
-// === BUKA/TUTUP SILENT + HALAMAN TUTUP SUPER PROFESIONAL ===
-let JAM_BUKA = 15;   // Ubah angka ini saja untuk jam buka (15 = 15:00 WIB)
-let JAM_TUTUP = 16;  // Ubah angka ini saja untuk jam tutup (21 = 21:00 WIB)
+// === BUKA/TUTUP SILENT + HALAMAN TUTUP RINGKAS & PROFESIONAL ===
+let JAM_BUKA = 15;   // Ubah di sini saja (15 = 15:00 WIB)
+let JAM_TUTUP = 21;  // Ubah di sini saja (21 = 21:00 WIB)
 
 document.addEventListener("DOMContentLoaded", () => {
-  function getWIB() {
+  const getWIB = () => {
     const n = new Date();
     const utc = n.getTime() + (n.getTimezoneOffset() * 60000);
     return new Date(utc + 3600000*7); // WIB
-  }
+  };
 
   const now = getWIB();
   const h = now.getHours();
 
   if (h >= JAM_TUTUP || h < JAM_BUKA) {
-    // WAKTU BUKA BERIKUTNYA
+    // Hitung waktu buka berikutnya
     let next = new Date(now);
     next.setHours(JAM_BUKA, 0, 0, 0);
     if (h >= JAM_TUTUP) next.setDate(next.getDate() + 1);
 
-    const updateCountdown = () => {
+    const update = () => {
       const diff = next - getWIB();
       if (diff <= 0) location.reload();
-      const hh = String(Math.floor(diff / 3600000)).padStart(2, '0');
-      const mm = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
-      const ss = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
-      document.getElementById("timer").innerText = `${hh}:${mm}:${ss}`;
+      const hh = String(Math.floor(diff / 3600000)).padStart(2,'0');
+      const mm = String(Math.floor((diff % 3600000) / 60000)).padStart(2,'0');
+      const ss = String(Math.floor((diff % 60000) / 1000)).padStart(2,'0');
+      document.getElementById("timer").textContent = `${hh}:${mm}:${ss}`;
     };
 
     document.body.innerHTML = `
-      <div style="min-height:100vh;background:#0f172a;color:#e2e8f0;display:grid;place-items:center;padding:2rem;font-family:'Segoe UI',system-ui,sans-serif;">
-        <div style="max-width:420px;width:100%;text-align:center;background:rgba(255,255,255,0.05);backdrop-filter:blur(12px);border-radius:24px;padding:3rem 2rem;box-shadow:0 25px 50px rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.1);">
-          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi6-JhY6g9H4ggtXPHCO7pTjErtprKfSRlgttoFgT4LcX-O2ROw-oxj7Ntr3r7cY6TdN5AMrwDJ7hyfyU1DI4ASMZ_Mw2chnMaXIDiWHZ-8X3H1Lhz-PjI7KIh2716aY_g4FIxL2Fe4OxBsIEAyE52WrLYS-p1La1U_mMHuVcQvFK-Np9l-ZixakqnZjx44/s640/20251120_174337.png" alt="Dunnak.com" style="width:100px;height:100px;border-radius:50%;margin:0 auto 1.5rem;box-shadow:0 10px 30px rgba(16,185,129,0.3);object-fit:cover;">
+      <div style="min-height:100dvh;background:#0f172a;color:#f1f5f9;display:grid;place-items:center;padding:1.5rem;font-family:system-ui,-apple-system,sans-serif;">
+        <div style="width:100%;max-width:420px;background:rgba(255,255,255,0.04);backdrop-filter:blur(16px);border-radius:20px;padding:2.5rem 2rem;box-shadow:0 20px 40px rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.08);text-align:center;">
           
-          <h1 style="font-size:2.2rem;font-weight:800;color:#f8fafc;margin:0 0 0.5rem;">Kami Sedang Istirahat</h1>
-          <p style="font-size:1.1rem;color:#94a3b8;margin-bottom:2rem;">Saat ini Dunnak sedang tidak menerima pesanan</p>
+          <!-- Logo -->
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi6-JhY6g9H4ggtXPHCO7pTjErtprKfSRlgttoFgT4LcX-O2ROw-oxj7Ntr3r7cY6TdN5AMrwDJ7hyfyU1DI4ASMZ_Mw2chnMaXIDiWHZ-8X3H1Lhz-PjI7KIh2716aY_g4FIxL2Fe4OxBsIEAyE52WrLYS-p1La1U_mMHuVcQvFK-Np9l-ZixakqnZjx44/s640/20251120_174337.png" 
+               alt="Dunnak.com" 
+               style="width:80px;height:80px;border-radius:50%;margin:0 auto 1.5rem;object-fit:cover;box-shadow:0 8px 25px rgba(16,185,129,0.3);">
           
-          <div style="background:#1e293b;border-radius:16px;padding:1.5rem;margin:1.5rem 0;">
-            <p style="font-size:0.95rem;color:#94a3b8;margin:0 0 0.5rem;">Jam Operasional</p>
-            <p style="font-size:2rem;font-weight:700;color:#10b981;margin:0;">${JAM_BUKA.toString().padStart(2,'0')}:00 — ${JAM_TUTUP.toString().padStart(2,'0')}:00 WIB</p>
+          <!-- Judul -->
+          <h1 style="font-size:1.8rem;font-weight:700;margin:0 0 0.5rem;color:#e2e8f0;">Sedang Tutup</h1>
+          <p style="font-size:1rem;color:#94a3b8;margin:0 0 2rem;line-height:1.5;">Kami hanya menerima pesanan pada jam operasional</p>
+          
+          <!-- Jam Operasional -->
+          <div style="background:#1e293b;border-radius:14px;padding:1.2rem;margin:1.5rem 0;">
+            <p style="font-size:0.9rem;color:#94a3b8;margin:0 0 0.4rem;">Jam Buka</p>
+            <p style="font-size:2rem;font-weight:800;color:#10b981;margin:0;">
+              ${JAM_BUKA.toString().padStart(2,'0')}:00 – ${JAM_TUTUP.toString().padStart(2,'0')}:00 WIB
+            </p>
           </div>
           
-          <div style="margin:2rem 0;">
-            <p style="font-size:1rem;color:#cbd5e1;margin:0 0 0.5rem;">Buka kembali dalam</p>
-            <div id="timer" style="font-size:3.5rem;font-weight:900;color:#34d399;letter-spacing:4px;background:#0f172a;padding:0.8rem 1rem;border-radius:12px;display:inline-block;min-width:280px;box-shadow:0 8px 25px rgba(0,0,0,0.3);">00:00:00</div>
+          <!-- Countdown -->
+          <p style="font-size:0.95rem;color:#cbd5e1;margin:1.5rem 0 0.5rem;">Buka kembali dalam</p>
+          <div id="timer" style="font-size:3rem;font-weight:900;color:#34d399;letter-spacing:3px;background:#0f172a;padding:0.6rem 1rem;border-radius:12px;display:inline-block;min-width:260px;box-shadow:0 6px 20px rgba(0,0,0,0.4);">
+            00:00:00
           </div>
           
-          <div style="margin-top:2.5rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.1);">
-            <p style="font-size:0.95rem;color:#94a3b8;margin:0 0 1rem;">Ikuti kami untuk menu & promo terbaru</p>
-            <div style="display:flex;gap:1rem;justify-content:center;">
-              <a href="https://instagram.com/dunnakindonesia" style="width:44px;height:44px;background:#e11d48;border-radius:50%;display:grid;place-items:center;color:white;font-size:1.4rem;box-shadow:0 8px 20px rgba(225,29,72,0.4);">📷</a>
-              <a href="https://tiktok.com/@dunnakindonesia" style="width:44px;height:44px;background:#000;border-radius:50%;display:grid;place-items:center;color:white;font-size:1.4rem;box-shadow:0 8px 20px rgba(0,0,0,0.5);">♪</a>
-            </div>
+          <!-- Sosial Media -->
+          <div style="margin-top:2.5rem;display:flex;gap:1rem;justify-content:center;">
+            <a href="https://instagram.com/dunnakindonesia" style="width:48px;height:48px;background:#e11d48;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:1.5rem;box-shadow:0 8px 20px rgba(225,29,72,0.4);text-decoration:none;">IG</a>
+            <a href="https://tiktok.com/@dunnakindonesia" style="width:48px;height:48px;background:#000;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:1.5rem;box-shadow:0 8px 20px rgba(0,0,0,0.6);text-decoration:none;">TT</a>
           </div>
           
-          <footer style="margin-top:3rem;font-size:0.8rem;color:#64748b;">
+          <!-- Footer -->
+          <p style="margin-top:2rem;font-size:0.8rem;color:#64748b;">
             © 2025 Dunnak.com • Kalibening & Sekitarnya
-          </footer>
+          </p>
         </div>
       </div>
     `;
 
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
+    update();
+    setInterval(update, 1000);
 
-    // Anti-bypass tetap aktif
+    // Anti-bypass
     ["contextmenu","selectstart","dragstart"].forEach(e=>document.addEventListener(e,ev=>ev.preventDefault()));
     document.onkeydown = e => {
       if(e.key=="F12"||e.ctrlKey&&(e.shiftKey||e.key.toLowerCase()=="u")) e.preventDefault();
     };
 
-    throw "Dunnak tutup otomatis";
+    throw "Tutup otomatis";
   }
-  // Jika BUKA → website jalan normal 100%, tanpa banner apa pun
+  // Jika buka → website normal 100%, tanpa banner
 });
 
     document.addEventListener('contextmenu', e => e.preventDefault());
