@@ -465,69 +465,94 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>
   </button>
 </div>
+<!-- FLOATING SEARCH BUTTON - KLIK LANGSUNG BUKA KEYBOARD & FOKUS -->
+<div id="floating-search-btn" 
+     class="fixed left-1/2 -translate-x-1/2 bottom-6 z-[40] transition-all duration-500 pointer-events-none">
+  <button id="float-search-trigger"
+          class="pointer-events-auto group bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white w-16 h-16 md:w-20 md:h-20 rounded-full shadow-2xl flex items-center justify-center transform hover:scale-110 active:scale-95 transition-all duration-300">
+    <svg class="w-9 h-9 md:w-11 md:h-11 transition-transform group-hover:rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.8" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+    </svg>
+    <div class="absolute -top-12 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs md:text-sm font-medium px-4 py-2 rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap">
+      Cari menu favoritmu...
+      <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full border-8 border-transparent border-t-gray-900"></div>
+    </div>
+  </button>
+</div>
 
 <script>
-// === FLOATING SEARCH BUTTON - 100% BEKERJA & SUPER RESPONSIF ===
+// === FLOATING SEARCH BUTTON - KLIK = KEYBOARD OTOMATIS MUNCUL + FOKUS ===
 const searchInput = document.getElementById("search"); // pastikan ID search kamu "search"
 const floatBtn = document.getElementById("floating-search-btn");
 const trigger = document.getElementById("float-search-trigger");
 
 if (!searchInput || !floatBtn || !trigger) {
-  console.error("Floating search button: element tidak ditemukan! Pastikan ID #search ada.");
+  console.error("Floating search error: #search atau button tidak ditemukan!");
 } else {
-  // Muncul setelah scroll 400px
-  const showAt = 400;
+  const showAt = 400; // muncul setelah scroll 400px
 
-  const checkVisibility = () => {
+  const updateVisibility = ()  => {
     const scrolled = window.scrollY;
-    const modalProdukOpen = document.getElementById("modal-produk")?.classList.contains("hidden") === false;
-    const modalCheckoutOpen = document.getElementById("modal-checkout")?.classList.contains("hidden") === false;
-    const popupOpen = document.getElementById("dunnak-popup")?.classList.contains("hidden") === false;
+    const modalOpen = document.getElementById("modal-produk")?.classList.contains("hidden") === false ||
+                      document.getElementById("modal-checkout")?.classList.contains("hidden") === false ||
+                      document.getElementById("dunnak-popup")?.classList.contains("hidden") === false;
 
-    if (scrolled > showAt && !modalProdukOpen && !modalCheckoutOpen && !popupOpen) {
-      floatBtn.classList.remove("opacity-0", "translate-y-10", "pointer-events-none");
+    if (scrolled > showAt && !modalOpen) {
+      floatBtn.classList.remove("opacity-0", "translate-y-16", "pointer-events-none");
       floatBtn.classList.add("opacity-100", "translate-y-0", "pointer-events-auto");
     } else {
-      floatBtn.classList.add("opacity-0", "translate-y-10", "pointer-events-none");
+      floatBtn.classList.add("opacity-0", "translate-y-16", "pointer-events-none");
       floatBtn.classList.remove("opacity-100", "translate-y-0", "pointer-events-auto");
     }
   };
 
-  // Klik → langsung fokus & scroll ke search bar
+  // KLIK → FOKUS + KEYBOARD MUNCUL DI HP + SCROLL HALUS
   trigger.addEventListener("click", () => {
-    searchInput.focus();
+    // Scroll dulu ke search bar
     searchInput.scrollIntoView({ behavior: "smooth", block: "center" });
-    
-    // Efek ripple keren
-    const ripple = document.createElement("span");
-    ripple.className = "absolute inset-0 rounded-full bg-white/40 animate-ping";
-    trigger.appendChild(ripple);
-    setTimeout(() => ripple.remove(), 600);
+
+    // Tunggu scroll selesai, lalu fokus & buka keyboard
+    setTimeout(() => {
+      searchInput.focus();
+      
+      // Khusus HP: paksa buka keyboard (bekerja di Android & iPhone)
+      if (/Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        searchInput.setAttribute("type", "text"); // pastikan type text
+        searchInput.click(); // double trigger untuk keyboard
+      }
+
+      // Efek ripple
+      const ripple = document.createElement("span");
+      ripple.className = "absolute inset-0 rounded-full bg-white/40 animate-ping";
+      trigger.appendChild(ripple);
+      setTimeout(() => ripple.remove(), 600);
+    }, 400); // sesuaikan dengan durasi scroll smooth
   });
 
-  // Jalankan saat scroll, resize, load, dan modal berubah
-  window.addEventListener("scroll", checkVisibility);
-  window.addEventListener("resize", checkVisibility);
-  window.addEventListener("load", checkVisibility);
+  // Update visibilitas
+  window.addEventListener("scroll", updateVisibility);
+  window.addEventListener("resize", updateVisibility);
+  window.addEventListener("load", updateVisibility);
 
-  // Observer untuk modal & popup (paling akurat)
-  const observer = new MutationObserver(checkVisibility);
+  // Observer modal & popup
+  const observer = new MutationObserver(updateVisibility);
   document.querySelectorAll("#modal-produk, #modal-checkout, #dunnak-popup").forEach(el => {
     if (el) observer.observe(el, { attributes: true, attributeFilter: ["class"] });
   });
 
-  // Pertama kali cek
-  setTimeout(checkVisibility, 500);
+  // Cek pertama kali
+  setTimeout(updateVisibility, 500);
 }
 
-// Tambah animasi masuk halus (Tailwind-style)
+// Animasi masuk halus
 const style = document.createElement("style");
 style.textContent = `
-  #floating-search-btn { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-  #floating-search-btn.opacity-0 { transform: translate(-50%, 20px) !important; }
+  #floating-search-btn { transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  #floating-search-btn.opacity-0 { transform: translateX(-50%) translateY(40px) !important; }
 `;
 document.head.appendChild(style);
 </script>
+
   <!-- SEARCH BAR -->
   <div id="search-container" class="max-w-6xl mx-auto px-4">
     <div id="search-wrapper" class="relative">
