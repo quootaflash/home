@@ -319,63 +319,63 @@
 </head>
 <body class="bg-gray-50 text-gray-800">
 <script>
-// === FITUR BUKA/TUTUP OTOMATIS DUNNAK.COM (15:00 - 21:00 WIB) ===
-document.addEventListener("DOMContentLoaded", function() {
-  // Waktu operasional (WIB = GMT+7)
-  const jamBuka = 15;  // jam 15:00
-  const jamTutup = 21; // jam 21:00
+// === BUKA/TUTUP SILENT MODE - DUNNAK.COM (TIDAK ADA BANNER) ===
+// UBAH 2 ANGKA INI SAJA UNTUK GANTI JAM OPERASIONAL
+let JAM_BUKA = 15;   // contoh: 15 = jam 15:00 WIB
+let JAM_TUTUP = 21;  // contoh: 21 = jam 21:00 WIB
 
-  // Dapatkan waktu sekarang di zona WIB
-  const sekarang = new Date();
-  const offsetWIB = 7 * 60; // +7 jam dari UTC
-  const waktuWIB = new Date(sekarang.getTime() + offsetWIB * 60 * 1000);
-  const jamSekarang = waktuWIB.getUTCHours(); // jam dalam format 0-23
+document.addEventListener("DOMContentLoaded", () => {
+  function getWIB() {
+    const n = new Date();
+    const utc = n.getTime() + (n.getTimezoneOffset() * 60000);
+    return new Date(utc + 3600000*7); // GMT+7
+  }
 
-  // Cek apakah sedang buka
-  const sedangBuka = (jamSekarang >= jamBuka && jamSekarang < jamTutup);
+  const now = getWIB();
+  const h = now.getHours();
 
-  if (!sedangBuka) {
-    // Sembunyikan seluruh isi website
+  if (h >= JAM_TUTUP || h < JAM_BUKA) {
+    // HITUNG COUNTDOWN BUKA BERIKUTNYA
+    let next = new Date(now);
+    next.setHours(JAM_BUKA, 0, 0, 0);
+    if (h >= JAM_TUTUP || (h === JAM_TUTUP)) next.setDate(next.getDate() + 1);
+
+    const update = () => {
+      const diff = next - getWIB();
+      if (diff <= 0) location.reload();
+      const hh = Math.floor(diff / 3600000);
+      const mm = Math.floor((diff % 3600000) / 60000);
+      const ss = Math.floor((diff % 60000) / 1000);
+      document.getElementById("cd").innerText = `${hh}j ${mm}m ${ss}d lagi`;
+    };
+
     document.body.innerHTML = `
-      <div style="min-height:100vh; background:linear-gradient(135deg,#1e293b,#0f172a); color:white; display:flex; align-items:center; justify-content:center; text-align:center; padding:2rem; font-family:system-ui,Arial,sans-serif;">
+      <div style="min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e293b);color:#fff;display:flex;align-items:center;justify-content:center;text-align:center;padding:1.5rem;font-family:system-ui,sans-serif;">
         <div>
-          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi6-JhY6g9H4ggtXPHCO7pTjErtprKfSRlgttoFgT4LcX-O2ROw-oxj7Ntr3r7cY6TdN5AMrwDJ7hyfyU1DI4ASMZ_Mw2chnMaXIDiWHZ-8X3H1Lhz-PjI7KIh2716aY_g4FIxL2Fe4OxBsIEAyE52WrLYS-p1La1U_mMHuVcQvFK-Np9l-ZixakqnZjx44/s320/20251120_174337.png" alt="Dunnak.com" style="width:120px; margin-bottom:2rem; border-radius:50%; box-shadow:0 10px 30px rgba(0,0,0,0.5);">
-          <h1 style="font-size:2.5rem; margin-bottom:1rem; color:#f87171;">🚫 Maaf, Dunnak Sedang Tutup</h1>
-          <p style="font-size:1.3rem; margin-bottom:1rem; opacity:0.9;">Jam operasional kami:</p>
-          <p style="font-size:2.8rem; font-weight:bold; color:#34d399;">15:00 - 21:00 WIB</p>
-          <p style="font-size:1.2rem; margin:2rem 0; opacity:0.8;">Setiap hari (Senin - Minggu)</p>
-          <div style="background:#22c55e; color:white; padding:1rem 2rem; border-radius:50px; font-size:1.1rem; display:inline-block; margin-top:1rem;">
-            ⏰ Buka lagi jam <strong>15:00 WIB</strong>
-          </div>
-          <p style="margin-top:2rem; font-size:1rem; opacity:0.7;">
-            Follow Instagram kami <a href="https://instagram.com/dunnakindonesia" style="color:#c084fc; text-decoration:underline;">@dunnakindonesia</a> biar nggak ketinggalan promo!
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi6-JhY6g9H4ggtXPHCO7pTjErtprKfSRlgttoFgT4LcX-O2ROw-oxj7Ntr3r7cY6TdN5AMrwDJ7hyfyU1DI4ASMZ_Mw2chnMaXIDiWHZ-8X3H1Lhz-PjI7KIh2716aY_g4FIxL2Fe4OxBsIEAyE52WrLYS-p1La1U_mMHuVcQvFK-Np9l-ZixakqnZjx44/s320/20251120_174337.png" width="120" style="border-radius:50%;box-shadow:0 10px 30px rgba(0,0,0,.6);margin-bottom:1.5rem">
+          <h2 style="font-size:2.5rem;margin:0;color:#fca5a5">🚫 Sedang Tutup</h2>
+          <p style="font-size:1.8rem;margin:1rem 0;color:#34d399">Buka ${JAM_BUKA}:00 - ${JAM_TUTUP}:00 WIB</p>
+          <p id="cd" style="font-size:2rem;font-weight:bold;color:#fbbf24;background:rgba(0,0,0,.4);padding:.8rem 1.5rem;border-radius:1rem;display:inline-block"></p>
+          <p style="margin-top:1.5rem;font-size:1rem;opacity:.8">
+            Follow <a href="https://instagram.com/dunnakindonesia" style="color:#e879f9">@dunnakindonesia</a> untuk menu harian
           </p>
         </div>
       </div>
     `;
+    update();
+    setInterval(update, 1000);
 
-    // Blokir semua interaksi (biar nggak bisa inspect element & buka paksa)
-    document.addEventListener("contextmenu", e => e.preventDefault());
-    document.addEventListener("keydown", e => {
-      if (e.key === "F12" || (e.ctrlKey && e.shiftKey && "IJC".includes(e.key)) || (e.ctrlKey && e.key === "U")) {
-        e.preventDefault();
-      }
-    });
-
-    // Hentikan semua script lain
-    throw new Error("Dunnak.com sedang tutup - jam operasional 15:00 - 21:00 WIB");
-  } else {
-    // Jika BUKA → tampilkan banner kecil di atas
-    const banner = document.createElement("div");
-    banner.innerHTML = `
-      <div style="background:#22c55e; color:white; text-align:center; padding:0.75rem; font-weight:bold; font-size:0.95rem; position:sticky; top:0; z-index:9999; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
-        🟢 SEDANG BUKA! Pesan sekarang, cepet sampai rumahmu di Kalibening! ⏰ Tutup jam 21:00 WIB
-      </div>
-    `;
-    document.body.insertBefore(banner, document.body.firstChild);
+    // Anti-bypass
+    ["contextmenu","selectstart","dragstart"].forEach(e=>document.addEventListener(e,ev=>ev.preventDefault()));
+    document.onkeydown = e => {
+      if(e.key=="F12"||e.ctrlKey&&(e.shiftKey||e.key.toLowerCase()=="u")) e.preventDefault();
+    };
+    
+    throw "Tutup otomatis"; // hentikan semua script lain
   }
+  // Jika buka → TIDAK ADA BANNER APA PUN, website jalan normal 100%
 });
-
+  
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.addEventListener('keydown', e => {
       if (
