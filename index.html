@@ -512,94 +512,130 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="slider-dots"></div>
     </div>
   </section>
-<!-- POPUP PROMO CANGGIH DUNNAK.COM - GAMBAR DUMMY UNTUK SIMULASI -->
-<div id="promo-popup" class="fixed inset-0 z-50 hidden">
-  <!-- Backdrop blur -->
-  <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="popup-backdrop"></div>
+<!-- POPUP PROMO PROFESIONAL DUNNAK.COM - FULL CUSTOM SCHEDULE -->
+<div id="dunnak-popup" class="fixed inset-0 z-[9999] hidden items-center justify-center px-4">
+  <!-- Backdrop -->
+  <div id="popup-overlay" class="absolute inset-0 bg-black/60 backdrop-blur-md"></div>
   
   <!-- Popup Card -->
-  <div class="absolute inset-4 flex items-center justify-center">
-    <div class="relative bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden animate__animated animate__zoomIn animate__faster">
-      <!-- Header Hijau -->
-      <div class="bg-gradient-to-r from-emerald-500 to-emerald-600 p-6 text-center text-white">
-        <h2 class="text-2xl md:text-3xl font-bold">🔥 PROMO SPESIAL HARI INI!</h2>
-        <p class="text-sm md:text-base mt-1 opacity-90">Khusus kamu yang buka Dunnak sekarang</p>
-      </div>
-
-      <!-- Konten -->
-      <div class="p-6 text-center">
-        <!-- GAMBAR DUMMY CANTIK (langsung muncul, no loading) -->
-        <div class="bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl shadow-2xl mx-auto -mt-12 border-8 border-white relative overflow-hidden" style="width:280px; height:180px;">
-          <div class="absolute inset-0 flex items-center justify-center">
-            <div class="text-white text-center">
-              <p class="text-5xl font-black">20%</p>
-              <p class="text-2xl font-bold -mt-2">OFF</p>
-              <p class="text-sm mt-2 opacity-90">Pesanan Pertama</p>
-            </div>
-          </div>
-          <!-- Efek kilau dummy -->
-          <div class="absolute top-0 left-0 w-32 h-32 bg-white opacity-20 transform -rotate-45 -translate-x-16 translate-y-16"></div>
-        </div>
-
-        <h3 class="text-2xl font-bold text-emerald-700 mt-6">Diskon 20% Order Pertama!</h3>
-        <p class="text-gray-600 mt-3 leading-relaxed text-base">
-          Gunakan kode:<br>
-          <span class="inline-block bg-emerald-100 text-emerald-800 font-bold text-xl px-4 py-2 rounded-lg mt-2">DUNNAK20</span>
-        </p>
-        <p class="text-xs text-gray-500 mt-3">Min. order Rp30.000 • Hari ini saja</p>
-
-        <!-- Tombol Promo (ganti link sesuai keinginan) -->
-        <a href="https://wa.me/628123456789?text=Halo+kak%2C+saya+mau+order+dengan+kode+DUNNAK20+%F0%9F%98%8D" 
-           target="_blank"
-           class="inline-block mt-7 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-lg px-10 py-4 rounded-full shadow-xl transform hover:scale-105 transition duration-300">
-          Klaim Sekarang via WhatsApp 🚀
-        </a>
-
-        <p class="text-xs text-gray-500 mt-6">Promo ini hanya muncul sekali sehari</p>
-      </div>
-
-      <!-- Tombol Close -->
-      <button id="close-popup" class="absolute top-4 right-4 bg-white/20 hover:bg-white/40 text-white rounded-full w-10 h-10 flex items-center justify-center backdrop-blur-sm transition">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"/>
-        </svg>
-      </button>
+  <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden animate__animated animate__fadeInUp animate__faster">
+    
+    <!-- Header Gradient Emerald -->
+    <div class="bg-gradient-to-r from-emerald-500 to-emerald-600 px-6 py-8 text-center text-white relative overflow-hidden">
+      <div class="absolute inset-0 bg-white/10"></div>
+      <h2 class="relative text-2xl md:text-3xl font-black tracking-tight">🔥 PROMO HARI INI!</h2>
+      <p class="relative mt-2 text-sm md:text-base opacity-95">Khusus pelanggan setia Dunnak.com</p>
     </div>
+
+    <!-- Body -->
+    <div class="p-6 md:p-8 text-center -mt-6">
+      <!-- Dummy Image Premium (100% responsif & no loading) -->
+      <div class="relative mx-auto w-64 h-48 md:w-80 md:h-56 bg-gradient-to-br from-orange-400 via-red-500 to-pink-500 rounded-2xl shadow-2xl overflow-hidden border-8 border-white">
+        <div class="absolute inset-0 flex flex-col items-center justify-center text-white">
+          <p class="text-6xl md:text-8xl font-black leading-none">20%</p>
+          <p class="text-3xl md:text-5xl font-bold -mt-3">OFF</p>
+          <p class="text-sm md:text-lg font-medium mt-2 bg-black/30 px-4 py-1 rounded-full">Pesanan Pertama</p>
+        </div>
+        <!-- Sparkle effect -->
+        <div class="absolute top-0 right-0 w-32 h-32 bg-white/20 rounded-full blur-3xl -translate-y-16 translate-x-16"></div>
+        <div class="absolute bottom-0 left-0 w-40 h-40 bg-white/10 rounded-full blur-3xl translate-y-20 -translate-x-20"></div>
+      </div>
+
+      <h3 class="text-2xl md:text-3xl font-bold text-emerald-700 mt-8">Diskon Spesial 20%</h3>
+      <p class="text-gray-600 mt-3 text-base md:text-lg leading-relaxed">
+        Gunakan kode promo:<br>
+        <span class="inline-block bg-emerald-100 text-emerald-800 font-black text-2xl md:text-3xl px-6 py-3 rounded-2xl mt-3 shadow-lg">DUNNAK20</span>
+      </p>
+      <p class="text-sm text-gray-500 mt-4">Min. order Rp35.000 • Berlaku hari ini saja</p>
+
+      <!-- Tombol CTA -->
+      <a href="https://wa.me/628123456789?text=Halo+Dunnak%21+Saya+mau+order+dengan+kode+DUNNAK20+%F0%9F%8E%89" 
+         target="_blank"
+         class="inline-block mt-8 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-lg md:text-xl px-12 py-5 rounded-full shadow-2xl transform hover:scale-105 transition-all duration-300">
+        Klaim Promo via WhatsApp 🚀
+      </a>
+
+      <p class="text-xs text-gray-400 mt-6">Promo otomatis muncul setiap hari selama periode berlangsung</p>
+    </div>
+
+    <!-- Close Button -->
+    <button id="popup-close" class="absolute top-4 right-4 bg-white/20 hover:bg-white/40 text-white w-12 h-12 rounded-full flex items-center justify-center backdrop-blur-sm transition">
+      <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
   </div>
 </div>
 
-<!-- Script Popup (tetap sama - hanya muncul 1x sehari) -->
+<!-- SCRIPT POPUP CANGGIH DENGAN CUSTOM SCHEDULE -->
 <script>
-const POPUP_KEY = "dunnak_promo_nov2025";
-const shouldShow = () => {
-  const seen = localStorage.getItem(POPUP_KEY);
-  if (!seen) return true;
-  const date = new Date(seen);
-  const today = new Date();
-  return date.toDateString() !== today.toDateString();
-};
+// ================== PENGATURAN SCHEDULE (UBAH DI SINI SAJA) ==================
+// Format: YYYY-MM-DD atau biarkan kosong "" agar selalu muncul setiap hari
+const TANGGAL_MULAI = "2025-11-21";        // Contoh: "2025-11-21" → mulai 21 Nov 2025
+const TANGGAL_SELESAI = "2025-11-30";      // Contoh: "2025-11-30" → selesai 30 Nov 2025
 
+// Jam muncul (24 jam format) - kosongkan untuk selalu muncul
+const JAM_MULAI = 15;   // Contoh: 15 → mulai jam 15:00 WIB
+const JAM_SELESAI = 21; // Contoh: 21 → sampai jam 20:59 WIB
+
+// Jika ingin selalu muncul setiap kali buka halaman (tanpa batas hari/jam), biarkan semua "" dan JAM = null
+// =============================================================================
+
+function getWIB() {
+  const n = new Date();
+  return new Date(n.getTime() + n.getTimezoneOffset()*60000 + 3600000*7);
+}
+
+function isWithinSchedule() {
+  const now = getWIB();
+  const today = now.toISOString().split('T')[0];
+  const hour = now.getHours();
+
+  // Cek tanggal
+  if (TANGGAL_MULAI && today < TANGGAL_MULAI) return false;
+  if (TANGGAL_SELESAI && today > TANGGAL_SELESAI) return false;
+
+  // Cek jam (jika di-set)
+  if (JAM_MULAI !== null && JAM_SELESAI !== null) {
+    if (hour < JAM_MULAI || hour >= JAM_SELESAI) return false;
+  }
+
+  return true;
+}
+
+// Tampilkan popup jika sesuai jadwal
 setTimeout(() => {
-  if (shouldShow()) {
-    document.getElementById("promo-popup").classList.remove("hidden");
-    localStorage.setItem(POPUP_KEY, new Date().toISOString());
+  if (isWithinSchedule()) {
+    document.getElementById("dunnak-popup").classList.remove("hidden");
   }
 }, 1200);
 
-// Close events
-document.getElementById("close-popup").onclick = () => document.getElementById("promo-popup").classList.add("hidden");
-document.getElementById("popup-backdrop").onclick = () => document.getElementById("close-popup").click();
+// Close event
+document.getElementById("popup-close").onclick = () => {
+  document.getElementById("dunnak-popup").classList.add("hidden");
+};
+document.getElementById("popup-overlay").onclick = () => {
+  document.getElementById("popup-close").click();
+};
 
-// Animasi masuk halus
+// Responsif & animasi halus
 const style = document.createElement("style");
 style.textContent = `
-  @keyframes slideUp { from { transform: translateY(80px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-  #promo-popup .relative > div { animation: slideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(50px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate__fadeInUp { animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+  @media (max-width: 480px) {
+    #dunnak-popup .max-w-lg { max-width: 95%; }
+    #dunnak-popup h2 { font-size: 1.6rem !important; }
+    #dunnak-popup .text-3xl { font-size: 2rem !important; }
+  }
 `;
 document.head.appendChild(style);
 </script>
 
-<!-- Animate.css (ringan banget) -->
+<!-- Animate.css untuk animasi masuk -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
   
   <!-- ADS SECTION -->
