@@ -318,8 +318,8 @@
 <body class="bg-gray-50 text-gray-800">
 <script>
 // === BUKA/TUTUP SILENT + HALAMAN TUTUP WARNA CERAH SESUAI TEMA DUNNAK ===
-let JAM_BUKA = 00;   // Ubah angka ini saja (15 = 15:00 WIB)
-let JAM_TUTUP = 01;  // Ubah angka ini saja (21 = 21:00 WIB)
+let JAM_BUKA = 06.00;   // Ubah angka ini saja (15 = 15:00 WIB)
+let JAM_TUTUP = 00.00;  // Ubah angka ini saja (21 = 21:00 WIB)
 
 document.addEventListener("DOMContentLoaded", () => {
   const getWIB = () => new Date(new Date().getTime() + new Date().getTimezoneOffset() * 60000 + 3600000*7);
