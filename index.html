@@ -567,7 +567,80 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
     }
   }
 </style>
-  // === ACCESSIBILITY TOOLS – SUPER CANGGIH & NYAMAN UNTUK SEMUA PENGUNJUNG ===
+  <!-- MOBILE SIDEBAR -->
+  <div id="sidebar-backdrop"></div>
+  <div id="mobile-sidebar" class="fixed inset-y-0 right-0 z-50 w-64 bg-white shadow-lg translate-x-full transition duration-300 ease-in-out md:hidden">
+    <div class="flex justify-end p-4">
+      <button id="close-sidebar" class="p-2">
+        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none">
+          <path d="M6 18L18 6M6 6l12 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+    <nav class="flex flex-col p-4 space-y-4">
+      <a href="#" class="text-sm font-medium hover:text-emerald-600">Beranda</a>
+      <a href="#" class="text-sm font-medium hover:text-emerald-600">Menu</a>
+      <a href="#" class="text-sm font-medium hover:text-emerald-600">Wishlist</a>
+      <a href="#" class="text-sm font-medium hover:text-emerald-600">Kontak</a>
+    </nav>
+  </div>
+<!-- HERO SLIDER FINAL – PERGANTIAN HALUS, TANPA BAYANGAN, SUPER BERSIH -->
+<section class="w-full px-4 py-6">
+  <div class="relative max-w-full mx-auto overflow-hidden rounded-3xl">
+    <div id="hero-slider" class="relative w-full">
+
+      <!-- Slide 1 -->
+      <div class="slider-item active">
+        <div class="relative w-full pt-[56.25%] sm:pt-[50%] md:pt-[45%] lg:pt-[40%] xl:pt-[35%] overflow-hidden">
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjQBQCELtF3l2cvUL_5GMk-bjvDRB0_naRR53fqY9lLgrjVSOf1uh1cVQspa5fd0fLnLGpYUN_23IUMLjeuCAZjnYjB78BM8lhDe05t2aTMXcU9Fl3P7VNTJh2TmwbuCczQVMfQCxVBEEdadjCIzZ546blJRtHkahyphenhyphenoj7wBKPHTsf3XQx7JM3Qp9zxMlbAE/s1920/20251120_194346.png" 
+               alt="Dunnak.com"
+               class="absolute inset-0 w-full h-full object-cover object-center"
+               loading="lazy">
+        </div>
+      </div>
+
+      <!-- Slide 2 -->
+      <div class="slider-item">
+        <div class="relative w-full pt-[56.25%] sm:pt-[50%] md:pt-[45%] lg:pt-[40%] xl:pt-[35%] overflow-hidden">
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjQBQCELtF3l2cvUL_5GMk-bjvDRB0_naRR53fqY9lLgrjVSOf1uh1cVQspa5fd0fLnLGpYUN_23IUMLjeuCAZjnYjB78BM8lhDe05t2aTMXcU9Fl3P7VNTJh2TmwbuCczQVMfQCxVBEEdadjCIzZ546blJRtHkahyphenhyphenoj7wBKPHTsf3XQx7JM3Qp9zxMlbAE/s1920/20251120_194346.png" 
+               alt="Dunnak.com"
+               class="absolute inset-0 w-full h-full object-cover object-center"
+               loading="lazy">
+        </div>
+      </div>
+
+      <!-- Slide 3 -->
+      <div class="slider-item">
+        <div class="relative w-full pt-[56.25%] sm:pt-[50%] md:pt-[45%] lg:pt-[40%] xl:pt-[35%] overflow-hidden">
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgsk84Gkrgw4y_4bAZkHguOEg3fXoc9kfaV-vkMPY_VOLZgeJBjhtveCFPAVS4dDyjpQ-nC6akVgcxUtnTglMVJpyDfQmF035rS4HvbI3dQIOViG1l6DV5nM3T1Acl8C4aY6KwlF5UPv0kRQU7qe3fc4FX4c04znYL2MPdDQkMYSC1eGFXJcHCQFkmNudVE/s1920/20251120_204805.png" 
+               alt="Dunnak.com"
+               class="absolute inset-0 w-full h-full object-cover object-center"
+               loading="lazy">
+        </div>
+      </div>
+
+      <!-- Slide 4 -->
+      <div class="slider-item">
+        <div class="relative w-full pt-[56.25%] sm:pt-[50%] md:pt-[45%] lg:pt-[40%] xl:pt-[35%] overflow-hidden">
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi6-JhY6g9H4ggtXPHCO7pTjErtprKfSRlgttoFgT4LcX-O2ROw-oxj7Ntr3r7cY6TdN5AMrwDJ7hyfyU1DI4ASMZ_Mw2chnMaXIDiWHZ-8X3H1Lhz-PjI7KIh2716aY_g4FIxL2Fe4OxBsIEAyE52WrLYS-p1La1U_mMHuVcQvFK-Np9l-ZixakqnZjx44/s1920/20251120_174337.png" 
+               alt="Dunnak.com"
+               class="absolute inset-0 w-full h-full object-cover object-center"
+               loading="lazy">
+        </div>
+      </div>
+      <!-- DOTS MINIMAL DI TENGAH BAWAH – TIDAK MENGGANGGU -->
+      <div class="slider-dots absolute inset-x-0 bottom-4 flex justify-center z-10 pointer-events-none">
+        <div class="flex gap-3">
+          <span class="dot w-1.5 h-1.5 bg-white/70 rounded-full cursor-pointer transition-all duration-300 hover:bg-white"></span>
+          <span class="dot w-1.5 h-1.5 bg-white/50 rounded-full cursor-pointer transition-all duration-300 hover:bg-white/80"></span>
+          <span class="dot w-1.5 h-1.5 bg-white/50 rounded-full cursor-pointer transition-all duration-300 hover:bg-white/80"></span>
+          <span class="dot w-1.5 h-1.5 bg-white/50 rounded-full cursor-pointer transition-all duration-300 hover:bg-white/80"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+    // === ACCESSIBILITY TOOLS – SUPER CANGGIH & NYAMAN UNTUK SEMUA PENGUNJUNG ===
 const toggleBtn = document.getElementById("accessibility-toggle");
 const panel = document.getElementById("accessibility-panel");
 
@@ -667,79 +740,6 @@ window.addEventListener("load", () => {
   .text-btn:nth-child(2) { font-size: 1rem; }
   .text-btn:nth-child(3) { font-size: 1.25rem; }
 </style>
-  <!-- MOBILE SIDEBAR -->
-  <div id="sidebar-backdrop"></div>
-  <div id="mobile-sidebar" class="fixed inset-y-0 right-0 z-50 w-64 bg-white shadow-lg translate-x-full transition duration-300 ease-in-out md:hidden">
-    <div class="flex justify-end p-4">
-      <button id="close-sidebar" class="p-2">
-        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none">
-          <path d="M6 18L18 6M6 6l12 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-        </svg>
-      </button>
-    </div>
-    <nav class="flex flex-col p-4 space-y-4">
-      <a href="#" class="text-sm font-medium hover:text-emerald-600">Beranda</a>
-      <a href="#" class="text-sm font-medium hover:text-emerald-600">Menu</a>
-      <a href="#" class="text-sm font-medium hover:text-emerald-600">Wishlist</a>
-      <a href="#" class="text-sm font-medium hover:text-emerald-600">Kontak</a>
-    </nav>
-  </div>
-<!-- HERO SLIDER FINAL – PERGANTIAN HALUS, TANPA BAYANGAN, SUPER BERSIH -->
-<section class="w-full px-4 py-6">
-  <div class="relative max-w-full mx-auto overflow-hidden rounded-3xl">
-    <div id="hero-slider" class="relative w-full">
-
-      <!-- Slide 1 -->
-      <div class="slider-item active">
-        <div class="relative w-full pt-[56.25%] sm:pt-[50%] md:pt-[45%] lg:pt-[40%] xl:pt-[35%] overflow-hidden">
-          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjQBQCELtF3l2cvUL_5GMk-bjvDRB0_naRR53fqY9lLgrjVSOf1uh1cVQspa5fd0fLnLGpYUN_23IUMLjeuCAZjnYjB78BM8lhDe05t2aTMXcU9Fl3P7VNTJh2TmwbuCczQVMfQCxVBEEdadjCIzZ546blJRtHkahyphenhyphenoj7wBKPHTsf3XQx7JM3Qp9zxMlbAE/s1920/20251120_194346.png" 
-               alt="Dunnak.com"
-               class="absolute inset-0 w-full h-full object-cover object-center"
-               loading="lazy">
-        </div>
-      </div>
-
-      <!-- Slide 2 -->
-      <div class="slider-item">
-        <div class="relative w-full pt-[56.25%] sm:pt-[50%] md:pt-[45%] lg:pt-[40%] xl:pt-[35%] overflow-hidden">
-          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjQBQCELtF3l2cvUL_5GMk-bjvDRB0_naRR53fqY9lLgrjVSOf1uh1cVQspa5fd0fLnLGpYUN_23IUMLjeuCAZjnYjB78BM8lhDe05t2aTMXcU9Fl3P7VNTJh2TmwbuCczQVMfQCxVBEEdadjCIzZ546blJRtHkahyphenhyphenoj7wBKPHTsf3XQx7JM3Qp9zxMlbAE/s1920/20251120_194346.png" 
-               alt="Dunnak.com"
-               class="absolute inset-0 w-full h-full object-cover object-center"
-               loading="lazy">
-        </div>
-      </div>
-
-      <!-- Slide 3 -->
-      <div class="slider-item">
-        <div class="relative w-full pt-[56.25%] sm:pt-[50%] md:pt-[45%] lg:pt-[40%] xl:pt-[35%] overflow-hidden">
-          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgsk84Gkrgw4y_4bAZkHguOEg3fXoc9kfaV-vkMPY_VOLZgeJBjhtveCFPAVS4dDyjpQ-nC6akVgcxUtnTglMVJpyDfQmF035rS4HvbI3dQIOViG1l6DV5nM3T1Acl8C4aY6KwlF5UPv0kRQU7qe3fc4FX4c04znYL2MPdDQkMYSC1eGFXJcHCQFkmNudVE/s1920/20251120_204805.png" 
-               alt="Dunnak.com"
-               class="absolute inset-0 w-full h-full object-cover object-center"
-               loading="lazy">
-        </div>
-      </div>
-
-      <!-- Slide 4 -->
-      <div class="slider-item">
-        <div class="relative w-full pt-[56.25%] sm:pt-[50%] md:pt-[45%] lg:pt-[40%] xl:pt-[35%] overflow-hidden">
-          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi6-JhY6g9H4ggtXPHCO7pTjErtprKfSRlgttoFgT4LcX-O2ROw-oxj7Ntr3r7cY6TdN5AMrwDJ7hyfyU1DI4ASMZ_Mw2chnMaXIDiWHZ-8X3H1Lhz-PjI7KIh2716aY_g4FIxL2Fe4OxBsIEAyE52WrLYS-p1La1U_mMHuVcQvFK-Np9l-ZixakqnZjx44/s1920/20251120_174337.png" 
-               alt="Dunnak.com"
-               class="absolute inset-0 w-full h-full object-cover object-center"
-               loading="lazy">
-        </div>
-      </div>
-      <!-- DOTS MINIMAL DI TENGAH BAWAH – TIDAK MENGGANGGU -->
-      <div class="slider-dots absolute inset-x-0 bottom-4 flex justify-center z-10 pointer-events-none">
-        <div class="flex gap-3">
-          <span class="dot w-1.5 h-1.5 bg-white/70 rounded-full cursor-pointer transition-all duration-300 hover:bg-white"></span>
-          <span class="dot w-1.5 h-1.5 bg-white/50 rounded-full cursor-pointer transition-all duration-300 hover:bg-white/80"></span>
-          <span class="dot w-1.5 h-1.5 bg-white/50 rounded-full cursor-pointer transition-all duration-300 hover:bg-white/80"></span>
-          <span class="dot w-1.5 h-1.5 bg-white/50 rounded-full cursor-pointer transition-all duration-300 hover:bg-white/80"></span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
      <!-- ADS SECTION -->
   <section class="max-w-6xl mx-auto px-4 py-6">
     <h2 class="text-1xl md:text-1xl font-bold mb-4">Penawaran terkini</h2>
