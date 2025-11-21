@@ -437,85 +437,155 @@ document.addEventListener("DOMContentLoaded", () => {
       </button>
     </div>
   </header>
-<!-- FLOATING BUTTON - KLIK = SCROLL HALUS KE MENU UTAMA PRODUK -->
-<div id="floating-scroll-btn" 
-     class="fixed left-1/2 -translate-x-1/2 bottom-6 z-[40] transition-all duration-500 pointer-events-none">
-  <button id="scroll-to-menu"
-          class="pointer-events-auto group bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white w-16 h-16 md:w-20 md:h-20 rounded-full shadow-2xl flex items-center justify-center transform hover:scale-110 active:scale-95 transition-all duration-300">
-    <!-- Ikon Panah Bawah + Makanan (super keren & sesuai fungsi) -->
-    <svg class="w-10 h-10 md:w-12 md:h-12 transition-transform group-hover:translate-y-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
-      <circle cx="12" cy="8" r="3" fill="currentColor" opacity="0.3"/>
-      <path d="M8 8h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+<!-- ACCESSIBILITY TOOLS – KHUSUS DIFABEL & LANSIA -->
+<div id="accessibility-tools" class="fixed left-4 bottom-4 z-[50] transition-all duration-500">
+  <button id="accessibility-toggle" 
+          class="bg-emerald-600 hover:bg-emerald-700 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center transform hover:scale-110 transition-all duration-300">
+    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
     </svg>
-    <!-- Tooltip -->
-    <div class="absolute -top-12 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs md:text-sm font-medium px-4 py-2 rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap">
-      Lihat semua menu
-      <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full border-8 border-transparent border-t-gray-900"></div>
-    </div>
   </button>
+
+  <!-- Panel Tools -->
+  <div id="accessibility-panel" class="absolute bottom-20 left-0 bg-white rounded-2xl shadow-2xl p-4 w-64 transform scale-0 origin-bottom-left transition-transform duration-300">
+    <h3 class="font-bold text-emerald-700 text-lg mb-3">Pengaturan Kenyamanan</h3>
+    
+    <div class="space-y-3">
+      <!-- Ukuran Teks -->
+      <div class="flex items-center justify-between">
+        <span class="text-sm font-medium text-gray-700">Ukuran Teks</span>
+        <div class="flex gap-2">
+          <button data-size="small" class="text-btn active">A</button>
+          <button data-size="medium" class="text-btn">A</button>
+          <button data-size="large" class="text-btn">A</button>
+        </div>
+      </div>
+
+      <!-- Kontras Tinggi -->
+      <div class="flex items-center justify-between">
+        <span class="text-sm font-medium text-gray-700">Kontras Tinggi</span>
+        <button id="high-contrast" class="w-12 h-7 rounded-full bg-gray-300 relative transition">
+          <span class="absolute left-1 top-1 w-5 h-5 bg-white rounded-full transition"></span>
+        </button>
+      </div>
+
+      <!-- Mode Baca (Readable Font) -->
+      <div class="flex items-center justify-between">
+        <span class="text-sm font-medium text-gray-700">Mode Baca</span>
+        <button id="readable-mode" class="w-12 h-7 rounded-full bg-gray-300 relative transition">
+          <span class="absolute left-1 top-1 w-5 h-5 bg-white rounded-full transition"></span>
+        </button>
+      </div>
+
+      <!-- Reset -->
+      <button id="accessibility-reset" class="w-full mt-4 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 rounded-lg transition">
+        Reset Semua
+      </button>
+    </div>
+  </div>
 </div>
 
 <script>
-// === FLOATING BUTTON - KLIK = SCROLL HALUS KE MENU UTAMA PRODUK ===
-const floatBtn = document.getElementById("floating-scroll-btn");
-const trigger = document.getElementById("scroll-to-menu");
-const targetMenu = document.getElementById("produk-grid") || document.querySelector("main"); // fallback ke main kalau produk-grid tidak ada
+// === ACCESSIBILITY TOOLS – SUPER CANGGIH & NYAMAN UNTUK SEMUA PENGUNJUNG ===
+const toggleBtn = document.getElementById("accessibility-toggle");
+const panel = document.getElementById("accessibility-panel");
 
-if (!floatBtn || !trigger || !targetMenu) {
-  console.error("Floating scroll button: element tidak ditemukan!");
-} else {
-  const showAt = 300;
+// Buka/Tutup panel
+toggleBtn.addEventListener("click", () => {
+  panel.classList.toggle("scale-0");
+  panel.classList.toggle("scale-100");
+});
 
-  const update = () => {
-    const scrolled = window.scrollY;
-    const modalOpen = document.getElementById("modal-produk")?.classList.contains("hidden") === false ||
-                      document.getElementById("modal-checkout")?.classList.contains("hidden") === false ||
-                      document.getElementById("dunnak-popup")?.classList.contains("hidden") === false;
-
-    if (scrolled > showAt && !modalOpen) {
-      floatBtn.classList.remove("opacity-0", "translate-y-16", "pointer-events-none");
-      floatBtn.classList.add("opacity-100", "translate-y-0", "pointer-events-auto");
-    } else {
-      floatBtn.classList.add("opacity-0", "translate-y-16", "pointer-events-none");
-      floatBtn.classList.remove("opacity-100", "translate-y-0", "pointer-events-auto");
-    }
-  };
-
-  // KLIK = SCROLL HALUS KE MENU UTAMA PRODUK
-  trigger.addEventListener("click", () => {
-    targetMenu.scrollIntoView({ 
-      behavior: "smooth", 
-      block: "start" 
-    });
-
-    // Efek klik keren
-    const ripple = document.createElement("span");
-    ripple.className = "absolute inset-0 rounded-full bg-white/40 animate-ping";
-    trigger.appendChild(ripple);
-    setTimeout(() => ripple.remove(), 600);
+// Ukuran Teks
+document.querySelectorAll("[data-size]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const size = btn.dataset.size;
+    document.body.classList.remove("text-small", "text-medium", "text-large");
+    document.body.classList.add(`text-${size}`);
+    
+    document.querySelectorAll("[data-size]").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    
+    localStorage.setItem("dunnak_text_size", size);
   });
+});
 
-  // Update visibilitas
-  ["scroll", "resize", "load"].forEach(ev => window.addEventListener(ev, update));
+// Kontras Tinggi
+document.getElementById("high-contrast").addEventListener("click", () => {
+  document.body.classList.toggle("high-contrast");
+  const isOn = document.body.classList.contains("high-contrast");
+  const toggle = document.querySelector("#high-contrast span");
+  toggle.style.left = isOn ? "calc(100% - 28px)" : "4px";
+  toggle.parentElement.style.background = isOn ? "#10b981" : "#d1d5db";
+  localStorage.setItem("dunnak_high_contrast", isOn);
+});
 
-  // Observer modal & popup
-  const observer = new MutationObserver(update);
-  document.querySelectorAll("#modal-produk, #modal-checkout, #dunnak-popup").forEach(el => {
-    if (el) observer.observe(el, { attributes: true, attributeFilter: ["class"] });
+// Mode Baca (font lebih mudah dibaca)
+document.getElementById("readable-mode").addEventListener("click", () => {
+  document.body.classList.toggle("readable-mode");
+  const isOn = document.body.classList.contains("readable-mode");
+  const toggle = document.querySelector("#readable-mode span");
+  toggle.style.left = isOn ? "calc(100% - 28px)" : "4px";
+  toggle.parentElement.style.background = isOn ? "#10b981" : "#d1d5db";
+  localStorage.setItem("dunnak_readable", isOn);
+});
+
+// Reset
+document.getElementById("accessibility-reset").addEventListener("click", () => {
+  document.body.classList.remove("text-small", "text-medium", "text-large", "high-contrast", "readable-mode");
+  localStorage.removeItem("dunnak_text_size");
+  localStorage.removeItem("dunnak_high_contrast");
+  localStorage.removeItem("dunnak_readable");
+  
+  // Reset toggle
+  document.querySelectorAll("#high-contrast span, #readable-mode span").forEach(s => {
+    s.style.left = "4px";
+    s.parentElement.style.background = "#d1d5db";
   });
+  document.querySelectorAll("[data-size]").forEach(b => b.classList.remove("active"));
+  document.querySelector("[data-size='medium']").classList.add("active");
+});
 
-  setTimeout(update, 500);
-}
+// Load pengaturan sebelumnya
+window.addEventListener("load", () => {
+  const size = localStorage.getItem("dunnak_text_size") || "medium";
+  document.body.classList.add(`text-${size}`);
+  document.querySelector(`[data-size='${size}']`).classList.add("active");
 
-// Animasi masuk super halus
-const style = document.createElement("style");
-style.textContent = `
-  #floating-scroll-btn { transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
-  #floating-scroll-btn.opacity-0 { transform: translateX(-50%) translateY(40px) !important; }
-`;
-document.head.appendChild(style);
+  if (localStorage.getItem("dunnak_high_contrast") === "true") document.getElementById("high-contrast").click();
+  if (localStorage.getItem("dunnak_readable") === "true") document.getElementById("readable-mode").click();
+});
 </script>
+
+<style>
+  .text-small { font-size: 0.875rem !important; }
+  .text-medium { font-size: 1rem !important; }
+  .text-large { font-size: 1.125rem !important; line-height: 1.7 !important; }
+
+  .high-contrast {
+    background: #000 !important;
+    color: #fff !important;
+  }
+  .high-contrast * { color: #fff !important; background: #000 !important; border-color: #fff !important; }
+  .high-contrast .bg-white { background: #000 !important; }
+  .high-contrast .text-gray-600 { color: #ccc !important; }
+
+  .readable-mode {
+    font-family: 'Comic Sans MS', 'Arial Rounded MT Bold', sans-serif !important;
+    line-height: 1.8 !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  .text-btn {
+    @apply w-10 h-10 rounded-lg border-2 border-emerald-600 text-emerald-600 font-bold flex items-center justify-center transition;
+  }
+  .text-btn.active {
+    @apply bg-emerald-600 text-white border-emerald-600;
+  }
+  .text-btn:nth-child(1) { font-size: 0.875rem; }
+  .text-btn:nth-child(2) { font-size: 1rem; }
+  .text-btn:nth-child(3) { font-size: 1.25rem; }
+</style>
   <!-- SEARCH BAR -->
   <div id="search-container" class="max-w-6xl mx-auto px-4">
     <div id="search-wrapper" class="relative">
