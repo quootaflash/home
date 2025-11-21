@@ -588,16 +588,98 @@ window.addEventListener("load", () => {
   .text-btn:nth-child(2) { font-size: 1rem; }
   .text-btn:nth-child(3) { font-size: 1.25rem; }
 </style>
-  <!-- SEARCH BAR -->
-  <div id="search-container" class="max-w-6xl mx-auto px-4">
-    <div id="search-wrapper" class="relative">
-      <svg id="search-button" class="absolute left-3 top-2.5 h-5 w-5 text-gray-400" viewBox="0 0 24 24" fill="none" aria-hidden>
-        <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="11" cy="11" r="5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <input id="search" type="search" placeholder="Cari makanan favoritmu..." class="w-full border border-gray-200 rounded-xl py-2 pl-11 pr-4 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500" />
+ <!-- SEARCH BAR PROFESIONAL & FRESH 2025 -->
+<div id="search-container" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="relative group">
+    <!-- Background Glow Effect -->
+    <div class="absolute -inset-1 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-3xl blur-xl opacity-0 group-focus-within:opacity-70 transition duration-500"></div>
+    
+    <!-- Search Box -->
+    <div class="relative bg-white rounded-3xl shadow-xl border-2 border-gray-100 overflow-hidden transition-all duration-300 group-focus-within:border-emerald-500 group-focus-within:shadow-2xl">
+      <div class="flex items-center">
+        <!-- Icon Kaca Pembesar dengan Animasi -->
+        <div class="pl-6 pr-4">
+          <svg id="search-button" class="w-7 h-7 text-emerald-600 transition-all duration-300 group-focus-within:scale-110 group-focus-within:text-emerald-700" 
+               fill="none" stroke="currentColor" viewBox="0 0 24 24">
+             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" 
+                   d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+        </div>
+
+        <!-- Input Field -->
+        <input id="search" 
+               type="search" 
+               placeholder="Cari makanan favoritmu di Kalibening..." 
+               autocomplete="off"
+               class="w-full py-5 pr-6 pl-2 text-lg font-medium text-gray-800 placeholder-gray-400 focus:outline-none bg-transparent"
+               style="caret-color: #10b981;">
+
+        <!-- Clear Button (muncul saat ada teks) -->
+        <button id="clear-search" class="hidden mr-4 text-gray-400 hover:text-gray-600 transition">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Hint Text di Bawah Input (opsional, hapus kalau tidak suka) -->
+      <div class="px-6 pb-4 hidden sm:block">
+        <p class="text-xs text-gray-500">Coba ketik: nasi box, gorengan, es teh, martabak...</p>
+      </div>
     </div>
   </div>
+</div>
+
+<script>
+// === SEARCH BAR FRESH & INTERAKTIF ===
+const searchInput = document.getElementById("search");
+const clearBtn = document.getElementById("clear-search");
+
+// Tampilkan tombol clear saat ada teks
+searchInput.addEventListener("input", () => {
+  clearBtn.classList.toggle("hidden", searchInput.value.length === 0);
+});
+
+// Klik tombol clear
+clearBtn.addEventListener("click", () => {
+  searchInput.value = "";
+  searchInput.focus();
+  clearBtn.classList.add("hidden");
+  performSearch(); // trigger pencarian kosong = tampilkan semua
+});
+
+// Enter = langsung cari
+searchInput.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") {
+    performSearch();
+  }
+});
+</script>
+
+<style>
+  /* Efek glow saat fokus */
+  #search-container:focus-within .bg-gradient-to-r {
+    opacity: 0.7 !important;
+  }
+
+  /* Animasi placeholder */
+  #search::placeholder {
+    transition: all 0.3s ease;
+  }
+  #search:focus::placeholder {
+    color: #6ee7b7;
+    transform: translateX(4px);
+  }
+
+  /* Responsif font di HP kecil */
+  @media (max-width: 480px) {
+    #search {
+      font-size: 1.05rem !important;
+      padding-top: 1.25rem !important;
+      padding-bottom: 1.25rem !important;
+    }
+  }
+</style>
   <!-- MOBILE SIDEBAR -->
   <div id="sidebar-backdrop"></div>
   <div id="mobile-sidebar" class="fixed inset-y-0 right-0 z-50 w-64 bg-white shadow-lg translate-x-full transition duration-300 ease-in-out md:hidden">
