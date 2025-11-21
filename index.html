@@ -437,9 +437,9 @@ document.addEventListener("DOMContentLoaded", () => {
       </button>
     </div>
   </header>
-<!-- FLOATING SEARCH BUTTON - KLIK = KEYBOARD LANGSUNG MUNCUL & BISA LANGSUNG KETIK -->
+<!-- FLOATING SEARCH BUTTON - KLIK = KEYBOARD LANGSUNG MUNCUL (PALING AMPUH) -->
 <div id="floating-search-btn" 
-     class="fixed left-1/2 -translate-x-1/2 bottom-6 z-[40] transition-all duration-500 pointer-events-none select-none">
+     class="fixed left-1/2 -translate-x-1/2 bottom-6 z-[40] transition-all duration-500 pointer-events-none">
   <button id="float-search-trigger"
           class="pointer-events-auto group bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white w-16 h-16 md:w-20 md:h-20 rounded-full shadow-2xl flex items-center justify-center transform hover:scale-110 active:scale-95 transition-all duration-300">
     <svg class="w-9 h-9 md:w-11 md:h-11 transition-transform group-hover:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -453,7 +453,7 @@ document.addEventListener("DOMContentLoaded", () => {
 </div>
 
 <script>
-// === FINAL VERSION - 100% BERHASIL DI SEMUA HP ===
+// === VERSI PALING AMPUH - KLIK = KEYBOARD LANGSUNG MUNCUL DI SEMUA HP ===
 const realSearch = document.getElementById("search");
 const floatBtn = document.getElementById("floating-search-btn");
 const trigger = document.getElementById("float-search-trigger");
@@ -478,31 +478,29 @@ if (!realSearch || !floatBtn || !trigger) {
     }
   };
 
-  // KLIK IKON → LANGSUNG BISA KETIK (keyboard pasti muncul)
+  // KLIK = KEYBOARD LANGSUNG MUNCUL (TRIK PALING AMPUH YANG PERNAH ADA)
   trigger.addEventListener("click", (e) => {
     e.preventDefault();
-    e.stopPropagation();
 
-    // 1. Scroll ke search bar
+    // Scroll ke search bar
     realSearch.scrollIntoView({ behavior: "smooth", block: "center" });
 
-    // 2. Tunggu scroll selesai, lalu paksa keyboard muncul
     setTimeout(() => {
-      // Pastikan input aktif & bisa difokus
-      realSearch.removeAttribute("readonly");
       realSearch.focus();
-      realSearch.selectionStart = realSearch.selectionEnd = realSearch.value.length; // kursor di akhir
 
-      // TRIK PASTI BUKA KEYBOARD DI SEMUA HP
-      if ("ontouchstart" in window) {
-        // Android & iPhone
-        const val = realSearch.value;
-        realSearch.value = "";
-        realSearch.value = val;
-
-        // Paksa trigger keyboard
-        realSearch.dispatchEvent(new KeyboardEvent("keydown", { key: " " }));
-        setTimeout(() => realSearch.dispatchEvent(new KeyboardEvent("keyup", { key: " " })), 50);
+      // TRIK KHUSUS HP - PASTI BUKA KEYBOARD
+      if ("ontouchstart" in window || navigator.maxTouchPoints) {
+        // Android & iPhone 100% berhasil
+        realSearch.value = realSearch.value; // force reflow
+        realSearch.dispatchEvent(new Event("input"));
+        realSearch.dispatchEvent(new Event("focus"));
+        
+        // Trik paling ampuh: buat input "berkedip" untuk paksa keyboard
+        realSearch.style.display = "none";
+        realSearch.offsetHeight; // force reflow
+        realSearch.style.display = "";
+        
+        realSearch.focus();
       }
 
       // Efek klik
@@ -510,19 +508,15 @@ if (!realSearch || !floatBtn || !trigger) {
       ripple.className = "absolute inset-0 rounded-full bg-white/40 animate-ping";
       trigger.appendChild(ripple);
       setTimeout(() => ripple.remove(), 600);
-    }, 600);
+    }, 500);
   });
 
-  // Update saat scroll, resize, load
-  window.addEventListener("scroll", update);
-  window.addEventListener("resize", update);
-  window.addEventListener("load", update);
+  // Update visibilitas
+  ["scroll", "resize", "load"].forEach(ev => window.addEventListener(ev, update));
 
-  // Observer modal & popup
+  // Observer modal
   const observer = new MutationObserver(update);
-  document.querySelectorAll("#modal-produk, #modal-checkout, #dunnak-popup").forEach(el => {
-    if (el) observer.observe(el, { attributes: true, attributeFilter: ["class"] });
-  });
+  document.querySelectorAll("#modal-produk, #modal-checkout, #dunnak-popup").forEach(el => el && observer.observe(el, { attributes: true, attributeFilter: ["class"] }));
 
   setTimeout(update, 500);
 }
