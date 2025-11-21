@@ -996,31 +996,31 @@ if (popupCard) {
       </div>
     </div>
   </div>
-<!-- CHECKOUT MODAL FINAL – ZOOM-PROOF & AUTO-ADJUST 100% -->
-<div id="modal-checkout" class="fixed inset-0 hidden z-50 flex items-center justify-center px-4 py-8 overflow-y-auto">
+<!-- CHECKOUT MODAL FINAL – CONTAINER & ELEMENT 100% RESPONSIF + ZOOM-PROOF -->
+<div id="modal-checkout" class="fixed inset-0 hidden z-50 flex items-center justify-center px-4 py-6 overflow-y-auto">
   <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeCheckout()"></div>
   
-  <!-- Card dengan scale otomatis saat zoom -->
+  <!-- Container Card – Auto-scale & Zoom-proof -->
   <div id="checkout-card" class="relative bg-white rounded-3xl shadow-2xl w-full max-w-md mx-auto overflow-hidden"
-       style="transform-origin: center; max-height: 95dvh;">
+       style="transform-origin:center top; max-height:95dvh;">
     
-    <!-- Header -->
-    <div class="bg-gradient-to-r from-emerald-500 to-emerald-600 px-6 py-8 text-center text-white">
-      <h3 class="text-2xl md:text-3xl font-black leading-tight">Pesanan Saya</h3>
-      <p class="mt-2 text-sm md:text-base opacity-95">Lengkapi data untuk pengiriman cepat</p>
-      <button onclick="closeCheckout()" class="absolute top-3 right-3 md:top-4 md:right-4 bg-white/20 hover:bg-white/40 text-white w-10 h-10 rounded-full flex items-center justify-center transition">
+    <!-- Header Emerald – Responsif Font -->
+    <div class="bg-gradient-to-r from-emerald-500 to-emerald-600 px-5 py-7 sm:py-8 text-center text-white">
+      <h3 class="text-2xl sm:text-3xl font-black leading-tight">Pesanan Saya</h3>
+      <p class="mt-2 text-sm sm:text-base opacity-95">Lengkapi data untuk pengiriman cepat</p>
+      <button onclick="closeCheckout()" class="absolute top-3 right-3 sm:top-4 sm:right-4 bg-white/20 hover:bg-white/40 text-white w-10 h-10 rounded-full flex items-center justify-center transition">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"/>
         </svg>
       </button>
     </div>
 
-    <!-- Body -->
-    <div class="p-5 md:p-7">
+    <!-- Body – Padding & Font Auto-adjust -->
+    <div class="p-5 sm:p-6 md:p-8">
       <!-- Ongkir Warning -->
       <div class="bg-orange-50 border-2 border-orange-300 rounded-2xl p-4 mb-5 text-center">
-        <p class="text-sm font-bold text-orange-700 flex items-center justify-center gap-2">
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+        <p class="text-xs sm:text-sm font-bold text-orange-700 flex items-center justify-center gap-2">
+          <svg class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
             <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"/>
           </svg>
           Belum termasuk ongkir! (Dikonfirmasi admin)
@@ -1049,6 +1049,7 @@ if (popupCard) {
         </div>
       </div>
 
+      <!-- Tombol – Vertical di HP kecil -->
       <div class="mt-8 flex flex-col gap-3">
         <button onclick="handleCheckout()" 
                 class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-lg py-4 rounded-2xl shadow-xl transform hover:scale-105 transition">
@@ -1068,24 +1069,35 @@ if (popupCard) {
 </div>
 
 <script>
-// === ZOOM-PROOF AUTO-SCALE UNTUK MODAL CHECKOUT ===
+// === ZOOM-PROOF AUTO-SCALE UNTUK CONTAINER CHECKOUT CARD ===
 const checkoutCard = document.getElementById("checkout-card");
 
 if (checkoutCard) {
-  const resizeObserver = new ResizeObserver(() => {
+  const adjustScale = () => {
     const viewportHeight = window.innerHeight;
+    const viewportWidth = window.innerWidth;
     const cardHeight = checkoutCard.offsetHeight;
-    
-    if (cardHeight > viewportHeight * 0.92) {
-      const scale = viewportHeight * 0.88 / cardHeight;
-      checkoutCard.style.transform = `scale(${scale})`;
-    } else {
-      checkoutCard.style.transform = "scale(1)";
-    }
-  });
+    const cardWidth = checkoutCard.offsetWidth;
 
-  resizeObserver.observe(document.body);
-  window.addEventListener("resize", () => resizeObserver.observe(document.body));
+    let scale = 1;
+
+    if (cardHeight > viewportHeight * 0.92 || cardWidth > viewportWidth * 0.92) {
+      const scaleH = viewportHeight * 0.88 / cardHeight;
+      const scaleW = viewportWidth * 0.88 / cardWidth;
+      scale = Math.min(scaleH, scaleW, 1);
+    }
+
+    checkoutCard.style.transform = `scale(${scale})`;
+  };
+
+  // Jalankan saat load, resize, zoom
+  window.addEventListener("load", adjustScale);
+  window.addEventListener("resize", adjustScale);
+  document.addEventListener("DOMContentLoaded", adjustScale);
+
+  // Observer untuk perubahan konten (ringkasan pesanan)
+  const observer = new MutationObserver(adjustScale);
+  observer.observe(checkoutCard, { childList: true, subtree: true, characterData: true });
 }
 </script>
   <!-- SMALL TOAST -->
