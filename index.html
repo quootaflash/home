@@ -437,61 +437,37 @@ document.addEventListener("DOMContentLoaded", () => {
       </button>
     </div>
   </header>
-<!-- FLOATING SEARCH BUTTON - SUPER CANGGIH & RESPONSIF -->
-<div id="floating-search-btn" class="fixed left-1/2 -translate-x-1/2 bottom-6 z-40 hidden md:bottom-8">
-  <button id="float-search-trigger" 
-          class="group bg-emerald-600 hover:bg-emerald-700 text-white w-16 h-16 md:w-20 md:h-20 rounded-full shadow-2xl flex items-center justify-center transform hover:scale-110 transition-all duration-300">
-    <svg class="w-9 h-9 md:w-11 md:h-11 group-hover:scale-110 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+<!-- FLOATING SEARCH BUTTON - KLIK = LANGSUNG KETIK (NO NEED KLIK SEARCH BAR) -->
+<div id="floating-search-btn" 
+     class="fixed left-1/2 -translate-x-1/2 bottom-6 z-[40] transition-all duration-500 pointer-events-none">
+  <button id="float-search-trigger"
+          class="pointer-events-auto group bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white w-16 h-16 md:w-20 md:h-20 rounded-full shadow-2xl flex items-center justify-center transform hover:scale-110 active:scale-95 transition-all duration-300">
+    <svg class="w-9 h-9 md:w-11 md:h-11 transition-transform group-hover:rotate-90 group-active:scale-125" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.8" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
     </svg>
-    <span class="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs md:text-sm px-3 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none">
-      Cari menu favoritmu...
-    </span>
+    <div class="absolute -top-12 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs md:text-sm font-medium px-4 py-2 rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap">
+      Klik untuk langsung cari menu...
+      <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full border-8 border-transparent border-t-gray-900"></div>
+    </div>
   </button>
 </div>
 
-<!-- FLOATING SEARCH BUTTON - VERSI FINAL 100% BEKERJA SEMBURNA -->
-<div id="floating-search-btn" 
-     class="fixed left-1/2 -translate-x-1/2 bottom-6 z-[40] transition-all duration-500 pointer-events-none">
-  <button id="float-search-trigger"
-          class="pointer-events-auto group bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white w-16 h-16 md:w-20 md:h-20 rounded-full shadow-2xl flex items-center justify-center transform hover:scale-110 active:scale-95 transition-all duration-300">
-    <svg class="w-9 h-9 md:w-11 md:h-11 transition-transform group-hover:rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.8" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-    </svg>
-    <!-- Tooltip -->
-    <div class="absolute -top-12 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs md:text-sm font-medium px-4 py-2 rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap">
-      Cari menu favoritmu...
-      <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full border-8 border-transparent border-t-gray-900"></div>
-    </div>
-  </button>
-</div>
-<!-- FLOATING SEARCH BUTTON - KLIK LANGSUNG BUKA KEYBOARD & FOKUS -->
-<div id="floating-search-btn" 
-     class="fixed left-1/2 -translate-x-1/2 bottom-6 z-[40] transition-all duration-500 pointer-events-none">
-  <button id="float-search-trigger"
-          class="pointer-events-auto group bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white w-16 h-16 md:w-20 md:h-20 rounded-full shadow-2xl flex items-center justify-center transform hover:scale-110 active:scale-95 transition-all duration-300">
-    <svg class="w-9 h-9 md:w-11 md:h-11 transition-transform group-hover:rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.8" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-    </svg>
-    <div class="absolute -top-12 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs md:text-sm font-medium px-4 py-2 rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap">
-      Cari menu favoritmu...
-      <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full border-8 border-transparent border-t-gray-900"></div>
-    </div>
-  </button>
-</div>
+<!-- SEARCH BAR OVERLAY (INVISIBLE) UNTUK TRIK BUKA KEYBOARD LANGSUNG -->
+<input type="text" id="invisible-search-trigger" class="fixed opacity-0 pointer-events-none -top-96 left-0" autocomplete="off">
 
 <script>
-// === FLOATING SEARCH BUTTON - KLIK = KEYBOARD OTOMATIS MUNCUL + FOKUS ===
-const searchInput = document.getElementById("search"); // pastikan ID search kamu "search"
+// === FLOATING SEARCH - KLIK = LANGSUNG BISA KETIK (TANPA KLIK SEARCH BAR) ===
+const realSearchInput = document.getElementById("search"); // search bar asli kamu
+const invisibleTrigger = document.getElementById("invisible-search-trigger");
 const floatBtn = document.getElementById("floating-search-btn");
 const trigger = document.getElementById("float-search-trigger");
 
-if (!searchInput || !floatBtn || !trigger) {
-  console.error("Floating search error: #search atau button tidak ditemukan!");
+if (!realSearchInput || !invisibleTrigger || !floatBtn || !trigger) {
+  console.error("Floating search error: element tidak ditemukan!");
 } else {
-  const showAt = 400; // muncul setelah scroll 400px
+  const showAt = 400;
 
-  const updateVisibility = ()  => {
+  const updateVisibility = () => {
     const scrolled = window.scrollY;
     const modalOpen = document.getElementById("modal-produk")?.classList.contains("hidden") === false ||
                       document.getElementById("modal-checkout")?.classList.contains("hidden") === false ||
@@ -506,27 +482,37 @@ if (!searchInput || !floatBtn || !trigger) {
     }
   };
 
-  // KLIK → FOKUS + KEYBOARD MUNCUL DI HP + SCROLL HALUS
+  // KLIK IKON → LANGSUNG BISA KETIK (keyboard muncul otomatis)
   trigger.addEventListener("click", () => {
-    // Scroll dulu ke search bar
-    searchInput.scrollIntoView({ behavior: "smooth", block: "center" });
+    // 1. Scroll ke search bar
+    realSearchInput.scrollIntoView({ behavior: "smooth", block: "center" });
 
-    // Tunggu scroll selesai, lalu fokus & buka keyboard
+    // 2. Tunggu scroll selesai, lalu pakai trik invisible input untuk buka keyboard
     setTimeout(() => {
-      searchInput.focus();
+      // Pindahkan nilai dari invisible ke real search
+      invisibleTrigger.value = realSearchInput.value;
       
-      // Khusus HP: paksa buka keyboard (bekerja di Android & iPhone)
-      if (/Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-        searchInput.setAttribute("type", "text"); // pastikan type text
-        searchInput.click(); // double trigger untuk keyboard
-      }
+      // Fokus ke invisible input (ini yang buka keyboard di HP)
+      invisibleTrigger.focus();
+      
+      // Setelah keyboard muncul, langsung pindah fokus ke real search bar
+      setTimeout(() => {
+        realSearchInput.focus();
+        realSearchInput.value = invisibleTrigger.value; // sync kembali
+        realSearchInput.dispatchEvent(new Event("input")); // trigger pencarian otomatis kalau ada
+      }, 100);
 
-      // Efek ripple
+      // Efek klik keren
       const ripple = document.createElement("span");
       ripple.className = "absolute inset-0 rounded-full bg-white/40 animate-ping";
       trigger.appendChild(ripple);
       setTimeout(() => ripple.remove(), 600);
-    }, 400); // sesuaikan dengan durasi scroll smooth
+    }, 500);
+  });
+
+  // Sync nilai kalau user ketik di real search (biar tetap sinkron)
+  realSearchInput.addEventListener("input", () => {
+    invisibleTrigger.value = realSearchInput.value;
   });
 
   // Update visibilitas
@@ -534,17 +520,16 @@ if (!searchInput || !floatBtn || !trigger) {
   window.addEventListener("resize", updateVisibility);
   window.addEventListener("load", updateVisibility);
 
-  // Observer modal & popup
+  // Observer modal
   const observer = new MutationObserver(updateVisibility);
   document.querySelectorAll("#modal-produk, #modal-checkout, #dunnak-popup").forEach(el => {
     if (el) observer.observe(el, { attributes: true, attributeFilter: ["class"] });
   });
 
-  // Cek pertama kali
   setTimeout(updateVisibility, 500);
 }
 
-// Animasi masuk halus
+// Animasi masuk
 const style = document.createElement("style");
 style.textContent = `
   #floating-search-btn { transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
@@ -552,7 +537,6 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 </script>
-
   <!-- SEARCH BAR -->
   <div id="search-container" class="max-w-6xl mx-auto px-4">
     <div id="search-wrapper" class="relative">
