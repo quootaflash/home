@@ -588,65 +588,82 @@ window.addEventListener("load", () => {
   .text-btn:nth-child(2) { font-size: 1rem; }
   .text-btn:nth-child(3) { font-size: 1.25rem; }
 </style>
- <!-- SEARCH BAR PROFESIONAL & FRESH 2025 -->
-<div id="search-container" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<!-- SEARCH BAR FINAL – UKURAN PAS + VOICE SEARCH (TANPA CLEAR BUTTON) -->
+<div id="search-container" class="max-w-4xl mx-auto px-4 py-8">
   <div class="relative group">
-    <!-- Background Glow Effect -->
-    <div class="absolute -inset-1 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-3xl blur-xl opacity-0 group-focus-within:opacity-70 transition duration-500"></div>
+    <!-- Glow Effect Saat Fokus -->
+    <div class="absolute -inset-0.5 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl blur-lg opacity-0 group-focus-within:opacity-60 transition duration-500"></div>
     
     <!-- Search Box -->
-    <div class="relative bg-white rounded-3xl shadow-xl border-2 border-gray-100 overflow-hidden transition-all duration-300 group-focus-within:border-emerald-500 group-focus-within:shadow-2xl">
+    <div class="relative bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden transition-all duration-300 group-focus-within:border-emerald-500 group-focus-within:shadow-2xl">
       <div class="flex items-center">
-        <!-- Icon Kaca Pembesar dengan Animasi -->
-        <div class="pl-6 pr-4">
-          <svg id="search-button" class="w-7 h-7 text-emerald-600 transition-all duration-300 group-focus-within:scale-110 group-focus-within:text-emerald-700" 
+        <!-- Ikon Kaca Pembesar -->
+        <div class="pl-5 pr-3">
+          <svg id="search-button" class="w-6 h-6 text-emerald-600 transition-transform duration-300 group-focus-within:scale-110" 
                fill="none" stroke="currentColor" viewBox="0 0 24 24">
-             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" 
-                   d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" 
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
           </svg>
         </div>
 
         <!-- Input Field -->
         <input id="search" 
                type="search" 
-               placeholder="Cari makanan favoritmu di Kalibening..." 
+               placeholder="Cari makanan favoritmu..." 
                autocomplete="off"
-               class="w-full py-5 pr-6 pl-2 text-lg font-medium text-gray-800 placeholder-gray-400 focus:outline-none bg-transparent"
+               class="w-full py-4 pr-5 pl-2 text-base md:text-lg font-medium text-gray-800 placeholder-gray-400 focus:outline-none bg-transparent"
                style="caret-color: #10b981;">
 
-        <!-- Clear Button (muncul saat ada teks) -->
-        <button id="clear-search" class="hidden mr-4 text-gray-400 hover:text-gray-600 transition">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+        <!-- Tombol Voice Search (Mikrofon) -->
+        <button id="voice-search-btn" 
+                class="mr-5 text-gray-500 hover:text-emerald-600 transition">
+          <svg class="w-6 h-6 md:w-7 md:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                  d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
           </svg>
         </button>
-      </div>
-
-      <!-- Hint Text di Bawah Input (opsional, hapus kalau tidak suka) -->
-      <div class="px-6 pb-4 hidden sm:block">
-        <p class="text-xs text-gray-500">Coba ketik: nasi box, gorengan, es teh, martabak...</p>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-// === SEARCH BAR FRESH & INTERAKTIF ===
+// === VOICE SEARCH + SEARCH BAR PAS & FRESH ===
 const searchInput = document.getElementById("search");
-const clearBtn = document.getElementById("clear-search");
+const voiceBtn = document.getElementById("voice-search-btn");
 
-// Tampilkan tombol clear saat ada teks
-searchInput.addEventListener("input", () => {
-  clearBtn.classList.toggle("hidden", searchInput.value.length === 0);
-});
+// Voice Search (Web Speech API – bekerja di Chrome Android & Desktop)
+if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const recognition = new SpeechRecognition();
+  recognition.lang = "id-ID";
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
 
-// Klik tombol clear
-clearBtn.addEventListener("click", () => {
-  searchInput.value = "";
-  searchInput.focus();
-  clearBtn.classList.add("hidden");
-  performSearch(); // trigger pencarian kosong = tampilkan semua
-});
+  voiceBtn.addEventListener("click", () => {
+    recognition.start();
+    voiceBtn.classList.add("text-emerald-600", "animate-pulse");
+  });
+
+  recognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript;
+    searchInput.value = transcript;
+    searchInput.focus();
+    performSearch(); // langsung cari
+  };
+
+  recognition.onend = () => {
+    voiceBtn.classList.remove("animate-pulse");
+  };
+
+  recognition.onerror = () => {
+    showToast("Maaf, voice search gagal. Coba lagi.", "error");
+    voiceBtn.classList.remove("animate-pulse");
+  };
+} else {
+  // Sembunyikan tombol kalau browser tidak support
+  voiceBtn.style.display = "none";
+}
 
 // Enter = langsung cari
 searchInput.addEventListener("keypress", (e) => {
@@ -657,26 +674,25 @@ searchInput.addEventListener("keypress", (e) => {
 </script>
 
 <style>
-  /* Efek glow saat fokus */
+  /* Glow lebih halus */
   #search-container:focus-within .bg-gradient-to-r {
-    opacity: 0.7 !important;
+    opacity: 0.6 !important;
   }
 
-  /* Animasi placeholder */
+  /* Placeholder animasi halus */
   #search::placeholder {
-    transition: all 0.3s ease;
+    transition: color 0.3s ease;
   }
   #search:focus::placeholder {
     color: #6ee7b7;
-    transform: translateX(4px);
   }
 
-  /* Responsif font di HP kecil */
+  /* Responsif ukuran di HP kecil */
   @media (max-width: 480px) {
     #search {
-      font-size: 1.05rem !important;
-      padding-top: 1.25rem !important;
-      padding-bottom: 1.25rem !important;
+      font-size: 1rem !important;
+      padding-top: 1rem !important;
+      padding-bottom: 1rem !important;
     }
   }
 </style>
