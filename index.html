@@ -319,22 +319,17 @@
 </head>
 <body class="bg-gray-50 text-gray-800">
 <script>
-// === BUKA/TUTUP SILENT + HALAMAN TUTUP RINGKAS & PROFESIONAL ===
-let JAM_BUKA = 15;   // Ubah di sini saja (15 = 15:00 WIB)
-let JAM_TUTUP = 16;  // Ubah di sini saja (21 = 21:00 WIB)
+// === BUKA/TUTUP SILENT + HALAMAN TUTUP PROFESIONAL (IKON ASLI) ===
+let JAM_BUKA = 15;   // Ubah angka ini saja (15 = 15:00 WIB)
+let JAM_TUTUP = 16;  // Ubah angka ini saja (21 = 21:00 WIB)
 
 document.addEventListener("DOMContentLoaded", () => {
-  const getWIB = () => {
-    const n = new Date();
-    const utc = n.getTime() + (n.getTimezoneOffset() * 60000);
-    return new Date(utc + 3600000*7); // WIB
-  };
+  const getWIB = () => new Date(new Date().getTime() + new Date().getTimezoneOffset() * 60000 + 3600000*7);
 
   const now = getWIB();
   const h = now.getHours();
 
   if (h >= JAM_TUTUP || h < JAM_BUKA) {
-    // Hitung waktu buka berikutnya
     let next = new Date(now);
     next.setHours(JAM_BUKA, 0, 0, 0);
     if (h >= JAM_TUTUP) next.setDate(next.getDate() + 1);
@@ -349,18 +344,19 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     document.body.innerHTML = `
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
       <div style="min-height:100dvh;background:#0f172a;color:#f1f5f9;display:grid;place-items:center;padding:1.5rem;font-family:system-ui,-apple-system,sans-serif;">
         <div style="width:100%;max-width:420px;background:rgba(255,255,255,0.04);backdrop-filter:blur(16px);border-radius:20px;padding:2.5rem 2rem;box-shadow:0 20px 40px rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.08);text-align:center;">
-          
+
           <!-- Logo -->
           <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi6-JhY6g9H4ggtXPHCO7pTjErtprKfSRlgttoFgT4LcX-O2ROw-oxj7Ntr3r7cY6TdN5AMrwDJ7hyfyU1DI4ASMZ_Mw2chnMaXIDiWHZ-8X3H1Lhz-PjI7KIh2716aY_g4FIxL2Fe4OxBsIEAyE52WrLYS-p1La1U_mMHuVcQvFK-Np9l-ZixakqnZjx44/s640/20251120_174337.png" 
                alt="Dunnak.com" 
                style="width:80px;height:80px;border-radius:50%;margin:0 auto 1.5rem;object-fit:cover;box-shadow:0 8px 25px rgba(16,185,129,0.3);">
-          
-          <!-- Judul -->
+
           <h1 style="font-size:1.8rem;font-weight:700;margin:0 0 0.5rem;color:#e2e8f0;">Sedang Tutup</h1>
           <p style="font-size:1rem;color:#94a3b8;margin:0 0 2rem;line-height:1.5;">Kami hanya menerima pesanan pada jam operasional</p>
-          
+
           <!-- Jam Operasional -->
           <div style="background:#1e293b;border-radius:14px;padding:1.2rem;margin:1.5rem 0;">
             <p style="font-size:0.9rem;color:#94a3b8;margin:0 0 0.4rem;">Jam Buka</p>
@@ -368,20 +364,26 @@ document.addEventListener("DOMContentLoaded", () => {
               ${JAM_BUKA.toString().padStart(2,'0')}:00 – ${JAM_TUTUP.toString().padStart(2,'0')}:00 WIB
             </p>
           </div>
-          
+
           <!-- Countdown -->
           <p style="font-size:0.95rem;color:#cbd5e1;margin:1.5rem 0 0.5rem;">Buka kembali dalam</p>
           <div id="timer" style="font-size:3rem;font-weight:900;color:#34d399;letter-spacing:3px;background:#0f172a;padding:0.6rem 1rem;border-radius:12px;display:inline-block;min-width:260px;box-shadow:0 6px 20px rgba(0,0,0,0.4);">
             00:00:00
           </div>
-          
-          <!-- Sosial Media -->
-          <div style="margin-top:2.5rem;display:flex;gap:1rem;justify-content:center;">
-            <a href="https://instagram.com/dunnakindonesia" style="width:48px;height:48px;background:#e11d48;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:1.5rem;box-shadow:0 8px 20px rgba(225,29,72,0.4);text-decoration:none;">IG</a>
-            <a href="https://tiktok.com/@dunnakindonesia" style="width:48px;height:48px;background:#000;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:1.5rem;box-shadow:0 8px 20px rgba(0,0,0,0.6);text-decoration:none;">TT</a>
+
+          <!-- Ikon Media Sosial ASLI (Font Awesome) -->
+          <div style="margin-top:2.5rem;display:flex;gap:1.5rem;justify-content:center;">
+            <a href="https://instagram.com/dunnakindonesia" target="_blank" style="color:#E4405F;font-size:2rem;transition:transform .2s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://tiktok.com/@dunnakindonesia" target="_blank" style="color:#000;font-size:2rem;transition:transform .2s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
+              <i class="fab fa-tiktok"></i>
+            </a>
+            <a href="https://youtube.com/channel/UCUfAjAXXnZHz8GM7u8JOq8w" target="_blank" style="color:#FF0000;font-size:2rem;transition:transform .2s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
+              <i class="fab fa-youtube"></i>
+            </a>
           </div>
-          
-          <!-- Footer -->
+
           <p style="margin-top:2rem;font-size:0.8rem;color:#64748b;">
             © 2025 Dunnak.com • Kalibening & Sekitarnya
           </p>
@@ -392,7 +394,7 @@ document.addEventListener("DOMContentLoaded", () => {
     update();
     setInterval(update, 1000);
 
-    // Anti-bypass
+    // Anti-bypass tetap aktif
     ["contextmenu","selectstart","dragstart"].forEach(e=>document.addEventListener(e,ev=>ev.preventDefault()));
     document.onkeydown = e => {
       if(e.key=="F12"||e.ctrlKey&&(e.shiftKey||e.key.toLowerCase()=="u")) e.preventDefault();
@@ -400,9 +402,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     throw "Tutup otomatis";
   }
-  // Jika buka → website normal 100%, tanpa banner
+  // Saat buka → tetap 100% bersih, tanpa banner
 });
-
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.addEventListener('keydown', e => {
       if (
