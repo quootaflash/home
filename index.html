@@ -319,6 +319,63 @@
 </head>
 <body class="bg-gray-50 text-gray-800">
   <script>
+// === FITUR BUKA/TUTUP OTOMATIS DUNNAK.COM (15:00 - 21:00 WIB) ===
+document.addEventListener("DOMContentLoaded", function() {
+  // Waktu operasional (WIB = GMT+7)
+  const jamBuka = 15;  // jam 15:00
+  const jamTutup = 21; // jam 21:00
+
+  // Dapatkan waktu sekarang di zona WIB
+  const sekarang = new Date();
+  const offsetWIB = 7 * 60; // +7 jam dari UTC
+  const waktuWIB = new Date(sekarang.getTime() + offsetWIB * 60 * 1000);
+  const jamSekarang = waktuWIB.getUTCHours(); // jam dalam format 0-23
+
+  // Cek apakah sedang buka
+  const sedangBuka = (jamSekarang >= jamBuka && jamSekarang < jamTutup);
+
+  if (!sedangBuka) {
+    // Sembunyikan seluruh isi website
+    document.body.innerHTML = `
+      <div style="min-height:100vh; background:linear-gradient(135deg,#1e293b,#0f172a); color:white; display:flex; align-items:center; justify-content:center; text-align:center; padding:2rem; font-family:system-ui,Arial,sans-serif;">
+        <div>
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi6-JhY6g9H4ggtXPHCO7pTjErtprKfSRlgttoFgT4LcX-O2ROw-oxj7Ntr3r7cY6TdN5AMrwDJ7hyfyU1DI4ASMZ_Mw2chnMaXIDiWHZ-8X3H1Lhz-PjI7KIh2716aY_g4FIxL2Fe4OxBsIEAyE52WrLYS-p1La1U_mMHuVcQvFK-Np9l-ZixakqnZjx44/s320/20251120_174337.png" alt="Dunnak.com" style="width:120px; margin-bottom:2rem; border-radius:50%; box-shadow:0 10px 30px rgba(0,0,0,0.5);">
+          <h1 style="font-size:2.5rem; margin-bottom:1rem; color:#f87171;">🚫 Maaf, Dunnak Sedang Tutup</h1>
+          <p style="font-size:1.3rem; margin-bottom:1rem; opacity:0.9;">Jam operasional kami:</p>
+          <p style="font-size:2.8rem; font-weight:bold; color:#34d399;">15:00 - 21:00 WIB</p>
+          <p style="font-size:1.2rem; margin:2rem 0; opacity:0.8;">Setiap hari (Senin - Minggu)</p>
+          <div style="background:#22c55e; color:white; padding:1rem 2rem; border-radius:50px; font-size:1.1rem; display:inline-block; margin-top:1rem;">
+            ⏰ Buka lagi jam <strong>15:00 WIB</strong>
+          </div>
+          <p style="margin-top:2rem; font-size:1rem; opacity:0.7;">
+            Follow Instagram kami <a href="https://instagram.com/dunnakindonesia" style="color:#c084fc; text-decoration:underline;">@dunnakindonesia</a> biar nggak ketinggalan promo!
+          </p>
+        </div>
+      </div>
+    `;
+
+    // Blokir semua interaksi (biar nggak bisa inspect element & buka paksa)
+    document.addEventListener("contextmenu", e => e.preventDefault());
+    document.addEventListener("keydown", e => {
+      if (e.key === "F12" || (e.ctrlKey && e.shiftKey && "IJC".includes(e.key)) || (e.ctrlKey && e.key === "U")) {
+        e.preventDefault();
+      }
+    });
+
+    // Hentikan semua script lain
+    throw new Error("Dunnak.com sedang tutup - jam operasional 15:00 - 21:00 WIB");
+  } else {
+    // Jika BUKA → tampilkan banner kecil di atas
+    const banner = document.createElement("div");
+    banner.innerHTML = `
+      <div style="background:#22c55e; color:white; text-align:center; padding:0.75rem; font-weight:bold; font-size:0.95rem; position:sticky; top:0; z-index:9999; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
+        🟢 SEDANG BUKA! Pesan sekarang, cepet sampai rumahmu di Kalibening! ⏰ Tutup jam 21:00 WIB
+      </div>
+    `;
+    document.body.insertBefore(banner, document.body.firstChild);
+  }
+});
+    
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.addEventListener('keydown', e => {
       if (
