@@ -996,34 +996,85 @@ if (popupCard) {
       </div>
     </div>
   </div>
-  <!-- CHECKOUT MODAL -->
-  <div id="modal-checkout" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4">
-    <div class="absolute inset-0 bg-black/40" onclick="closeCheckout()"></div>
-    <div class="relative bg-white rounded-xl shadow-xl max-w-md w-full overflow-hidden p-4">
-      <h3 class="text-lg font-semibold">Pesanan Saya</h3>
-      <p class="text-xs text-gray-500">Isi data lengkap untuk proses order</p>
-       <b class="text-xs text-orange-600">Belum termasuk ongkir!</b>
-      <div class="mt-3 space-y-3">
-        <div>
-          <label class="text-xs text-gray-600">Nama Lengkap</label>
-          <input id="input-nama" required type="text" placeholder="contoh hafis" class="w-full border border-gray-200 rounded-md px-3 py-2 mt-1 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500" />
-        </div>
-        <div>
-          <label class="text-xs text-gray-600">Alamat (RT/RW)</label>
-          <input id="input-alamat" required type="text" placeholder="Jl. contoh No 1, RT 04 / RW 02" class="w-full border border-gray-200 rounded-md px-3 py-2 mt-1 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500" />
-        </div>
-        <div>
-          <label class="text-xs text-gray-600">Nomor WhatsApp</label>
-          <input id="input-hp" required type="tel" placeholder="0812xxxx" class="w-full border border-gray-200 rounded-md px-3 py-2 mt-1 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500" />
-        </div>
-        <div id="checkout-summary" class="text-sm text-gray-700 bg-gray-50 p-3 rounded-md"></div>
+<!-- CHECKOUT MODAL BARU – PROFESSIONAL & CANTIK -->
+<div id="modal-checkout" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4 md:p-8 overflow-y-auto">
+  <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeCheckout()"></div>
+  
+  <div class="relative bg-white rounded-3xl shadow-2xl max-w-md w-full mx-auto my-8 overflow-hidden animate__animated animate__fadeInUp animate__faster">
+    <!-- Header Hijau Emerald -->
+    <div class="bg-gradient-to-r from-emerald-500 to-emerald-600 px-6 py-8 text-center text-white relative">
+      <h3 class="text-2xl md:text-3xl font-black">Pesanan Saya</h3>
+      <p class="mt-2 text-sm md:text-base opacity-95">Lengkapi data untuk proses order cepat</p>
+      <button onclick="closeCheckout()" class="absolute top-4 right-4 bg-white/20 hover:bg-white/40 text-white w-10 h-10 rounded-full flex items-center justify-center transition">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="p-6 md:p-8 -mt-4">
+      <div class="bg-orange-50 border border-orange-200 rounded-xl p-4 mb-6">
+        <p class="text-sm font-bold text-orange-700 flex items-center gap-2">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"/>
+          </svg>
+          Belum termasuk ongkir! (Akan dikonfirmasi admin)
+        </p>
       </div>
-      <div class="mt-4 flex gap-2">
-        <button onclick="handleCheckout()" class="flex-1 bg-rose-500 text-white py-2 rounded-md hover:bg-rose-500">Proses</button>
-        <button onclick="closeCheckout()" class="flex-1 border border-gray-200 py-2 rounded-md hover:bg-gray-100">Batal</button>
+
+      <div class="space-y-5">
+        <!-- Nama Lengkap -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">
+            Nama Lengkap
+          </label>
+          <input id="input-nama" type="text" required placeholder="Contoh: Hafis Aditya" 
+                 class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition">
+        </div>
+
+        <!-- Alamat -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">
+            Alamat Lengkap (RT/RW/Dusun)
+          </label>
+          <input id="input-alamat" type="text" required placeholder="Jl. Raya Kalibening No. 123, RT 04 RW 02" 
+                 class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition">
+        </div>
+
+        <!-- Nomor WhatsApp -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">
+            Nomor WhatsApp (Aktif)
+          </label>
+          <input id="input-hp" type="tel" required placeholder="0812-3456-7890" 
+                 class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition">
+        </div>
+
+        <!-- Ringkasan Pesanan -->
+        <div id="checkout-summary" class="bg-gradient-to-r from-emerald-50 to-green-50 border-2 border-emerald-200 rounded-2xl p-5 text-left">
+          <p class="text-sm font-medium text-gray-600">Ringkasan akan muncul di sini...</p>
+        </div>
       </div>
+
+      <!-- Tombol Aksi -->
+      <div class="mt-8 flex gap-3">
+        <button onclick="handleCheckout()" 
+                class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-lg py-4 rounded-2xl shadow-lg transform hover:scale-105 transition duration-300">
+          Proses Pesanan 🚀
+        </button>
+        <button onclick="closeCheckout()" 
+                class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold text-lg py-4 rounded-2xl transition">
+          Batal
+        </button>
+      </div>
+
+      <p class="text-center text-xs text-gray-500 mt-6">
+        Admin akan hubungi kamu via WhatsApp untuk konfirmasi & ongkir
+      </p>
     </div>
   </div>
+</div>
   <!-- SMALL TOAST -->
   <div id="toast" class="fixed hidden"></div>
   <!-- SCRIPT -->
