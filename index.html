@@ -437,155 +437,207 @@ document.addEventListener("DOMContentLoaded", () => {
       </button>
     </div>
   </header>
-<!-- ACCESSIBILITY TOOLS – KHUSUS DIFABEL & LANSIA -->
-<div id="accessibility-tools" class="fixed left-4 bottom-4 z-[50] transition-all duration-500">
-  <button id="accessibility-toggle" 
-          class="bg-emerald-600 hover:bg-emerald-700 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center transform hover:scale-110 transition-all duration-300">
+<!-- ACCESSIBILITY TOOLS SUPER LENGKAP – DUNNAK.COM -->
+<div id="accessibility-widget" class="fixed left-4 bottom-4 z-[999] flex flex-col items-end gap-4">
+  <!-- Tombol Utama -->
+  <button id="acc-toggle" 
+          class="bg-emerald-600 hover:bg-emerald-700 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 hover:scale-110">
     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
     </svg>
   </button>
 
-  <!-- Panel Tools -->
-  <div id="accessibility-panel" class="absolute bottom-20 left-0 bg-white rounded-2xl shadow-2xl p-4 w-64 transform scale-0 origin-bottom-left transition-transform duration-300">
-    <h3 class="font-bold text-emerald-700 text-lg mb-3">Pengaturan Kenyamanan</h3>
+  <!-- Panel Tools (muncul saat diklik) -->
+  <div id="acc-panel" class="bg-white rounded-2xl shadow-2xl p-5 w-72 max-h-96 overflow-y-auto opacity-0 scale-95 pointer-events-none transition-all duration-300">
+    <h3 class="font-bold text-emerald-700 text-lg mb-4 text-center">Pengaturan Kenyamanan</h3>
     
-    <div class="space-y-3">
-      <!-- Ukuran Teks -->
-      <div class="flex items-center justify-between">
-        <span class="text-sm font-medium text-gray-700">Ukuran Teks</span>
-        <div class="flex gap-2">
-          <button data-size="small" class="text-btn active">A</button>
-          <button data-size="medium" class="text-btn">A</button>
-          <button data-size="large" class="text-btn">A</button>
+    <div class="grid grid-cols-2 gap-4 text-sm">
+      <!-- 1. Ukuran Teks -->
+      <div class="col-span-2">
+        <label class="block font-medium text-gray-700 mb-2">Ukuran Teks</label>
+        <div class="flex gap-2 justify-center">
+          <button data-font="small" class="acc-btn">A</button>
+          <button data-font="medium" class="acc-btn active">A</button>
+          <button data-font="large" class="acc-btn">A</button>
+          <button data-font="xlarge" class="acc-btn">A</button>
         </div>
       </div>
 
-      <!-- Kontras Tinggi -->
-      <div class="flex items-center justify-between">
-        <span class="text-sm font-medium text-gray-700">Kontras Tinggi</span>
-        <button id="high-contrast" class="w-12 h-7 rounded-full bg-gray-300 relative transition">
-          <span class="absolute left-1 top-1 w-5 h-5 bg-white rounded-full transition"></span>
-        </button>
-      </div>
+      <!-- 2. Kontras Tinggi -->
+      <button id="high-contrast" class="acc-toggle">
+        <i class="fas fa-adjust mr-3"></i> Kontras Tinggi
+      </button>
 
-      <!-- Mode Baca (Readable Font) -->
-      <div class="flex items-center justify-between">
-        <span class="text-sm font-medium text-gray-700">Mode Baca</span>
-        <button id="readable-mode" class="w-12 h-7 rounded-full bg-gray-300 relative transition">
-          <span class="absolute left-1 top-1 w-5 h-5 bg-white rounded-full transition"></span>
-        </button>
-      </div>
+      <!-- 3. Mode Disleksia -->
+      <button id="dyslexia-font" class="acc-toggle">
+        <i class="fas fa-book-reader mr-3"></i> Font Disleksia
+      </button>
+
+      <!-- 4. Mode Buta Warna -->
+      <button id="colorblind-mode" class="acc-toggle">
+        <i class="fas fa-eye mr-3"></i> Buta Warna
+      </button>
+
+      <!-- 5. Cursor Besar -->
+      <button id="big-cursor" class="acc-toggle">
+        <i class="fas fa-mouse-pointer mr-3"></i> Cursor Besar
+      </button>
+
+      <!-- 6. Highlight Link -->
+      <button id="highlight-links" class="acc-toggle">
+        <i class="fas fa-link mr-3"></i> Sorot Link
+      </button>
+
+      <!-- 7. Text to Speech (Baca Keras) -->
+      <button id="text-to-speech" class="acc-toggle">
+        <i class="fas fa-volume-up mr-3"></i> Baca Teks Keras
+      </button>
+
+      <!-- 8. Pause Animasi -->
+      <button id="pause-animation" class="acc-toggle">
+        <i class="fas fa-pause-circle mr-3"></i> Hentikan Animasi
+      </button>
+
+      <!-- 9. Mode Malam -->
+      <button id="dark-mode" class="acc-toggle">
+        <i class="fas fa-moon mr-3"></i> Mode Malam
+      </button>
 
       <!-- Reset -->
-      <button id="accessibility-reset" class="w-full mt-4 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 rounded-lg transition">
-        Reset Semua
+      <button id="acc-reset" class="col-span-2 bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-xl mt-4 transition">
+        🔄 Reset Semua
       </button>
     </div>
   </div>
 </div>
 
+<!-- Font Awesome untuk ikon -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
+
 <script>
-// === ACCESSIBILITY TOOLS – SUPER CANGGIH & NYAMAN UNTUK SEMUA PENGUNJUNG ===
-const toggleBtn = document.getElementById("accessibility-toggle");
-const panel = document.getElementById("accessibility-panel");
+// === ACCESSIBILITY TOOLS SUPER LENGKAP – DUNNAK.COM ===
+const toggle = document.getElementById("acc-toggle");
+const panel = document.getElementById("acc-panel");
 
-// Buka/Tutup panel
-toggleBtn.addEventListener("click", () => {
-  panel.classList.toggle("scale-0");
-  panel.classList.toggle("scale-100");
+toggle.addEventListener("click", () => {
+  const isOpen = panel.classList.contains("opacity-100");
+  panel.classList.toggle("opacity-100", !isOpen);
+  panel.classList.toggle("scale-100", !isOpen);
+  panel.classList.toggle("pointer-events-auto", !isOpen);
+  panel.classList.toggle("opacity-0", isOpen);
+  panel.classList.toggle("scale-95", isOpen);
+  panel.classList.toggle("pointer-events-none", isOpen);
 });
 
-// Ukuran Teks
-document.querySelectorAll("[data-size]").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const size = btn.dataset.size;
-    document.body.classList.remove("text-small", "text-medium", "text-large");
-    document.body.classList.add(`text-${size}`);
-    
-    document.querySelectorAll("[data-size]").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-    
-    localStorage.setItem("dunnak_text_size", size);
+// Simpan & load pengaturan
+const save = (key, value) => localStorage.setItem("dunnak_acc_" + key, value);
+const load = (key, defaultValue) => localStorage.getItem("dunnak_acc_" + key) || defaultValue;
+
+// Fungsi toggle umum
+const createToggle = (id, className, storageKey) => {
+  document.getElementById(id).addEventListener("click", () => {
+    document.body.classList.toggle(className);
+    const active = document.body.classList.contains(className);
+    save(storageKey, active);
+    document.getElementById(id).classList.toggle("bg-emerald-600", active);
+    document.getElementById(id).classList.toggle("text-white", active);
   });
+};
+
+// Daftar fitur
+createToggle("high-contrast", "high-contrast", "contrast");
+createToggle("dyslexia-font", "dyslexia-font", "dyslexia");
+createToggle("colorblind-mode", "colorblind", "colorblind");
+createToggle("big-cursor", "big-cursor", "cursor");
+createToggle("highlight-links", "highlight-links", "links");
+createToggle("pause-animation", "no-animation", "animation");
+createToggle("dark-mode", "dark-mode", "dark");
+
+// Text to Speech sederhana
+document.getElementById("text-to-speech").addEventListener("click", () => {
+  document.body.classList.toggle("tts-active");
+  if ("speechSynthesis" in window && document.body.classList.contains("tts-active")) {
+    const utter = new SpeechSynthesisUtterance("Fitur baca keras aktif. Klik teks untuk dibacakan.");
+    window.speechSynthesis.speak(utter);
+  }
+});
+document.addEventListener("dblclick", (e) => {
+  if (document.body.classList.contains("tts-active") && e.target.innerText) {
+    const utter = new SpeechSynthesisUtterance(e.target.innerText);
+    utter.lang = "id-ID";
+    window.speechSynthesis.speak(utter);
+  }
 });
 
-// Kontras Tinggi
-document.getElementById("high-contrast").addEventListener("click", () => {
-  document.body.classList.toggle("high-contrast");
-  const isOn = document.body.classList.contains("high-contrast");
-  const toggle = document.querySelector("#high-contrast span");
-  toggle.style.left = isOn ? "calc(100% - 28px)" : "4px";
-  toggle.parentElement.style.background = isOn ? "#10b981" : "#d1d5db";
-  localStorage.setItem("dunnak_high_contrast", isOn);
-});
-
-// Mode Baca (font lebih mudah dibaca)
-document.getElementById("readable-mode").addEventListener("click", () => {
-  document.body.classList.toggle("readable-mode");
-  const isOn = document.body.classList.contains("readable-mode");
-  const toggle = document.querySelector("#readable-mode span");
-  toggle.style.left = isOn ? "calc(100% - 28px)" : "4px";
-  toggle.parentElement.style.background = isOn ? "#10b981" : "#d1d5db";
-  localStorage.setItem("dunnak_readable", isOn);
+// Ukuran font
+document.querySelectorAll("[data-font]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.body.classList.remove("font-small", "font-medium", "font-large", "font-xlarge");
+    const size = btn.dataset.font;
+    document.body.classList.add(`font-${size}`);
+    save("fontsize", size);
+    document.querySelectorAll("[data-font]").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+  });
 });
 
 // Reset
-document.getElementById("accessibility-reset").addEventListener("click", () => {
-  document.body.classList.remove("text-small", "text-medium", "text-large", "high-contrast", "readable-mode");
-  localStorage.removeItem("dunnak_text_size");
-  localStorage.removeItem("dunnak_high_contrast");
-  localStorage.removeItem("dunnak_readable");
-  
-  // Reset toggle
-  document.querySelectorAll("#high-contrast span, #readable-mode span").forEach(s => {
-    s.style.left = "4px";
-    s.parentElement.style.background = "#d1d5db";
-  });
-  document.querySelectorAll("[data-size]").forEach(b => b.classList.remove("active"));
-  document.querySelector("[data-size='medium']").classList.add("active");
+document.getElementById("acc-reset").addEventListener("click", () => {
+  document.body.classList.remove("high-contrast", "dyslexia-font", "colorblind", "big-cursor", "highlight-links", "no-animation", "dark-mode", "tts-active", "font-small", "font-medium", "font-large", "font-xlarge");
+  localStorage.clear();
+  location.reload();
 });
 
-// Load pengaturan sebelumnya
+// Load pengaturan saat buka
 window.addEventListener("load", () => {
-  const size = localStorage.getItem("dunnak_text_size") || "medium";
-  document.body.classList.add(`text-${size}`);
-  document.querySelector(`[data-size='${size}']`).classList.add("active");
+  const size = load("fontsize", "medium");
+  document.body.classList.add(`font-${size}`);
+  document.querySelector(`[data-font="${size}"]`).classList.add("active");
 
-  if (localStorage.getItem("dunnak_high_contrast") === "true") document.getElementById("high-contrast").click();
-  if (localStorage.getItem("dunnak_readable") === "true") document.getElementById("readable-mode").click();
+  ["contrast", "dyslexia", "colorblind", "cursor", "links", "animation", "dark"].forEach(key => {
+    if (load(key, "false") === "true") {
+      document.body.classList.add(key === "contrast" ? "high-contrast" : 
+                                  key === "dyslexia" ? "dyslexia-font" :
+                                  key === "colorblind" ? "colorblind" :
+                                  key === "cursor" ? "big-cursor" :
+                                  key === "links" ? "highlight-links" :
+                                  key === "animation" ? "no-animation" : "dark-mode");
+    }
+  });
 });
 </script>
 
 <style>
-  .text-small { font-size: 0.875rem !important; }
-  .text-medium { font-size: 1rem !important; }
-  .text-large { font-size: 1.125rem !important; line-height: 1.7 !important; }
+  .acc-toggle { @apply w-full bg-gray-100 hover:bg-emerald-100 text-gray-700 font-medium py-3 px-4 rounded-xl flex items-center transition; }
+  .acc-toggle.bg-emerald-600 { @apply bg-emerald-600 text-white; }
+  .acc-btn { @apply w-12 h-12 rounded-xl border-2 border-emerald-600 font-bold flex items-center justify-center transition; }
+  .acc-btn.active { @apply bg-emerald-600 text-white; }
+  .acc-btn:nth-child(1) { font-size: 0.8rem; }
+  .acc-btn:nth-child(2) { font-size: 1rem; }
+  .acc-btn:nth-child(3) { font-size: 1.3rem; }
+  .acc-btn:nth-child(4) { font-size: 1.6rem; }
 
-  .high-contrast {
-    background: #000 !important;
-    color: #fff !important;
-  }
-  .high-contrast * { color: #fff !important; background: #000 !important; border-color: #fff !important; }
-  .high-contrast .bg-white { background: #000 !important; }
-  .high-contrast .text-gray-600 { color: #ccc !important; }
+  /* Fitur CSS */
+  .font-small { font-size: 0.8rem !important; }
+  .font-medium { font-size: 1rem !important; }
+  .font-large { font-size: 1.2rem !important; }
+  .font-xlarge { font-size: 1.4rem !important; line-height: 1.8 !important; }
 
-  .readable-mode {
-    font-family: 'Comic Sans MS', 'Arial Rounded MT Bold', sans-serif !important;
-    line-height: 1.8 !important;
-    letter-spacing: 0.5px !important;
-  }
+  .high-contrast { background: #000 !important; color: #fff !important; }
+  .high-contrast * { color: #fff !important; background: #000 !important; }
 
-  .text-btn {
-    @apply w-10 h-10 rounded-lg border-2 border-emerald-600 text-emerald-600 font-bold flex items-center justify-center transition;
-  }
-  .text-btn.active {
-    @apply bg-emerald-600 text-white border-emerald-600;
-  }
-  .text-btn:nth-child(1) { font-size: 0.875rem; }
-  .text-btn:nth-child(2) { font-size: 1rem; }
-  .text-btn:nth-child(3) { font-size: 1.25rem; }
+  .dyslexia-font { font-family: 'OpenDyslexic', Arial, sans-serif !important; }
+  .colorblind { filter: grayscale(100%) contrast(1.5); }
+  .big-cursor { cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="black"><path d="M3 3l18 18m0-18L3 21"/></svg>') 24 24, auto !important; }
+  .highlight-links a { background: yellow !important; color: black !important; padding: 2px !important; }
+  .no-animation * { animation: none !important; transition: none !important; }
+  .dark-mode { filter: invert(1) hue-rotate(180deg); }
+  .dark-mode img { filter: invert(1) hue-rotate(180deg); }
 </style>
+
+<!-- Font Disleksia (gratis) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=OpenDyslexic&display=swap" rel="stylesheet">
   <!-- SEARCH BAR -->
   <div id="search-container" class="max-w-6xl mx-auto px-4">
     <div id="search-wrapper" class="relative">
