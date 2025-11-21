@@ -421,7 +421,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   </script>
-<!-- NAVBAR DUNNAK.COM – SAPAAN WAKTU OTOMATIS (PAGI/SIANG/SORE/MALAM) -->
+<!-- NAVBAR DUNNAK.COM – SAPAAN WAKTU MUNCUL DI MOBILE & DESKTOP -->
 <header class="bg-white/95 backdrop-blur-xl shadow-md sticky top-0 z-50 border-b border-gray-100">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16 lg:h-20">
@@ -451,15 +451,22 @@ document.addEventListener("DOMContentLoaded", () => {
         <a href="#testimoni" class="text-gray-700 font-medium hover:text-emerald-600 hover:font-bold transition">Testimoni</a>
       </nav>
 
-      <!-- Sapaan Waktu Otomatis (Pagi/Siang/Sore/Malam) -->
-      <div class="flex items-center gap-4">
-        <div id="greeting-text" class="hidden lg:block text-right">
-          <p class="text-lg font-bold text-emerald-700">Selamat <span id="waktu-sapa"></span>!</p>
-          <p class="text-sm text-gray-600">Senang bertemu kembali 😊</p>
+      <!-- SAPAAN WAKTU – MUNCUL DI MOBILE & DESKTOP -->
+      <div class="flex items-center">
+        <div id="greeting-text" class="text-right">
+          <!-- Mobile: kecil & ringkas -->
+          <p class="text-sm sm:text-base font-bold text-emerald-700 block sm:hidden">
+            Selamat <span id="waktu-sapa-mobile"></span>!
+          </p>
+          <!-- Desktop: besar & lengkap -->
+          <div class="hidden sm:block">
+            <p class="text-lg font-bold text-emerald-700">Selamat <span id="waktu-sapa"></span>!</p>
+            <p class="text-sm text-gray-600">Senang bertemu kembali 😊</p>
+          </div>
         </div>
 
         <!-- Mobile Menu Button -->
-        <button id="mobile-menu-btn" class="lg:hidden p-3 rounded-xl hover:bg-gray-100 transition">
+        <button id="mobile-menu-btn" class="lg:hidden ml-4 p-3 rounded-xl hover:bg-gray-100 transition">
           <svg class="h-7 w-7 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"/>
           </svg>
@@ -470,7 +477,7 @@ document.addEventListener("DOMContentLoaded", () => {
 </header>
 
 <script>
-// === SAPAAN WAKTU OTOMATIS (PAGI / SIANG / SORE / MALAM) ===
+// === SAPAAN WAKTU OTOMATIS – MOBILE & DESKTOP ===
 function updateGreeting() {
   const hour = new Date().getHours();
   let greeting = "";
@@ -480,12 +487,18 @@ function updateGreeting() {
   else if (hour >= 15 && hour < 18) greeting = "Sore";
   else greeting = "Malam";
 
-  document.getElementById("waktu-sapa").textContent = greeting;
+  // Update untuk desktop
+  const desktop = document.getElementById("waktu-sapa");
+  if (desktop) desktop.textContent = greeting;
+
+  // Update untuk mobile
+  const mobile = document.getElementById("waktu-sapa-mobile");
+  if (mobile) mobile.textContent = greeting;
 }
 
 // Jalankan saat load & setiap jam
 updateGreeting();
-setInterval(updateGreeting, 3600000); // update setiap jam
+setInterval(updateGreeting, 3600000);
 </script>
 <!-- ACCESSIBILITY TOOLS – KHUSUS DIFABEL & LANSIA -->
 <div id="accessibility-tools" class="fixed left-4 bottom-4 z-[50] transition-all duration-500">
