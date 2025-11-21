@@ -437,6 +437,90 @@ document.addEventListener("DOMContentLoaded", () => {
       </button>
     </div>
   </header>
+<!-- FLOATING SEARCH BUTTON - SUPER CANGGIH & RESPONSIF -->
+<div id="floating-search-btn" class="fixed left-1/2 -translate-x-1/2 bottom-6 z-40 hidden md:bottom-8">
+  <button id="float-search-trigger" 
+          class="group bg-emerald-600 hover:bg-emerald-700 text-white w-16 h-16 md:w-20 md:h-20 rounded-full shadow-2xl flex items-center justify-center transform hover:scale-110 transition-all duration-300">
+    <svg class="w-9 h-9 md:w-11 md:h-11 group-hover:scale-110 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+    </svg>
+    <span class="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs md:text-sm px-3 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none">
+      Cari menu favoritmu...
+    </span>
+  </button>
+</div>
+
+<script>
+// === FLOATING SEARCH BUTTON - KERJA 100% DI SEMUA DEVICE ===
+const searchInput = document.getElementById("search");
+const floatBtn = document.getElementById("floating-search-btn");
+const floatTrigger = document.getElementById("float-search-trigger");
+
+// Tampilkan tombol hanya jika search bar ada & user sudah scroll sedikit
+function toggleFloatButton() {
+  if (!searchInput) return;
+
+  const scrollY = window.scrollY;
+  const showAt = 500; // muncul setelah scroll 500px (ubah sesuka hati)
+
+  if (scrollY > showAt) {
+    floatBtn.classList.remove("hidden");
+    floatBtn.classList.add("animate__animated", "animate__bounceInUp");
+  } else {
+    floatBtn.classList.add("hidden");
+  }
+}
+
+// Klik tombol → langsung fokus ke search bar + scroll halus
+floatTrigger?.addEventListener("click", () => {
+  searchInput.focus();
+  searchInput.scrollIntoView({ behavior: "smooth", block: "center" });
+  
+  // Efek ripple keren
+  const ripple = document.createElement("span");
+  ripple.classList.add("absolute", "inset-0", "rounded-full", "bg-white/30", "animate-ping");
+  floatTrigger.appendChild(ripple);
+  setTimeout(() => ripple.remove(), 600);
+});
+
+// Hilangkan tombol saat modal produk atau checkout terbuka
+function hideFloatOnModal() {
+  const modalsOpen = document.getElementById("modal-produk")?.classList.contains("hidden") === false ||
+                     document.getElementById("modal-checkout")?.classList.contains("hidden") === false;
+  
+  if (modalsOpen) {
+    floatBtn.classList.add("opacity-0", "pointer-events-none");
+  } else {
+    floatBtn.classList.remove("opacity-0", "pointer-events-none");
+  }
+}
+
+// Observer untuk deteksi modal terbuka/tutup
+const observer = new MutationObserver(hideFloatOnModal);
+document.querySelectorAll("#modal-produk, #modal-checkout").forEach(modal => {
+  if (modal) observer.observe(modal, { attributes: true, attributeFilter: ["class"] });
+});
+
+// Jalankan saat scroll & load
+window.addEventListener("scroll", toggleFloatButton);
+window.addEventListener("load", () => {
+  toggleFloatButton();
+  hideFloatOnModal();
+});
+
+// Responsif: tetap di tengah meski layar di-zoom atau resize
+window.addEventListener("resize", () => {
+  floatBtn.style.left = "50%";
+  floatBtn.style.transform = "translateX(-50%)";
+});
+
+// Animate.css untuk masuk halus
+const link = document.createElement("link");
+link.rel = "stylesheet";
+link.href = "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css";
+document.head.appendChild(link);
+</script>
+  
   <!-- SEARCH BAR -->
   <div id="search-container" class="max-w-6xl mx-auto px-4">
     <div id="search-wrapper" class="relative">
