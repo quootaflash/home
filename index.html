@@ -421,15 +421,14 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   </script>
-<!-- NAVBAR DUNNAK.COM – LEVEL GOFOOD 2025 (100% RESPONSIF) -->
+<!-- NAVBAR DUNNAK.COM – SAPAAN WAKTU OTOMATIS (PAGI/SIANG/SORE/MALAM) -->
 <header class="bg-white/95 backdrop-blur-xl shadow-md sticky top-0 z-50 border-b border-gray-100">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16 lg:h-20">
 
-      <!-- Logo & Brand – Kiri -->
+      <!-- Logo & Brand -->
       <div class="flex items-center">
         <a href="#" class="flex items-center gap-3 group">
-          <!-- Logo dengan efek glow halus -->
           <div class="relative">
             <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi6-JhY6g9H4ggtXPHCO7pTjErtprKfSRlgttoFgT4LcX-O2ROw-oxj7Ntr3r7cY6TdN5AMrwDJ7hyfyU1DI4ASMZ_Mw2chnMaXIDiWHZ-8X3H1Lhz-PjI7KIh2716aY_g4FIxL2Fe4OxBsIEAyE52WrLYS-p1La1U_mMHuVcQvFK-Np9l-ZixakqnZjx44/s3264/20251120_174337.png" 
                  alt="Dunnak.com" 
@@ -444,7 +443,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </a>
       </div>
 
-      <!-- Desktop Menu – Tengah (hanya muncul di layar besar) -->
+      <!-- Desktop Menu -->
       <nav class="hidden lg:flex items-center gap-8">
         <a href="#" class="text-gray-700 font-medium hover:text-emerald-600 hover:font-bold transition">Beranda</a>
         <a href="#produk-grid" class="text-gray-700 font-medium hover:text-emerald-600 hover:font-bold transition">Menu</a>
@@ -452,15 +451,12 @@ document.addEventListener("DOMContentLoaded", () => {
         <a href="#testimoni" class="text-gray-700 font-medium hover:text-emerald-600 hover:font-bold transition">Testimoni</a>
       </nav>
 
-      <!-- Right Side – Tombol Suggeng Rawuh + Mobile Menu -->
-      <div class="flex items-center gap-3 lg:gap-4">
-        <!-- Tombol Suggeng Rawuh (Desktop & Mobile) -->
-        <button id="btn-wishlist" class="hidden sm:flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-3 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-          </svg>
-          Suggeng Rawuh
-        </button>
+      <!-- Sapaan Waktu Otomatis (Pagi/Siang/Sore/Malam) -->
+      <div class="flex items-center gap-4">
+        <div id="greeting-text" class="hidden lg:block text-right">
+          <p class="text-lg font-bold text-emerald-700">Selamat <span id="waktu-sapa"></span>!</p>
+          <p class="text-sm text-gray-600">Senang bertemu kembali 😊</p>
+        </div>
 
         <!-- Mobile Menu Button -->
         <button id="mobile-menu-btn" class="lg:hidden p-3 rounded-xl hover:bg-gray-100 transition">
@@ -473,8 +469,24 @@ document.addEventListener("DOMContentLoaded", () => {
   </div>
 </header>
 
-<!-- Mobile Menu Overlay (jika kamu sudah punya sidebar, abaikan ini) -->
-<div id="mobile-menu-overlay" class="fixed inset-0 bg-black/50 z-40 hidden" onclick="closeMobileMenu()"></div>
+<script>
+// === SAPAAN WAKTU OTOMATIS (PAGI / SIANG / SORE / MALAM) ===
+function updateGreeting() {
+  const hour = new Date().getHours();
+  let greeting = "";
+
+  if (hour >= 4 && hour < 11) greeting = "Pagi";
+  else if (hour >= 11 && hour < 15) greeting = "Siang";
+  else if (hour >= 15 && hour < 18) greeting = "Sore";
+  else greeting = "Malam";
+
+  document.getElementById("waktu-sapa").textContent = greeting;
+}
+
+// Jalankan saat load & setiap jam
+updateGreeting();
+setInterval(updateGreeting, 3600000); // update setiap jam
+</script>
 <!-- ACCESSIBILITY TOOLS – KHUSUS DIFABEL & LANSIA -->
 <div id="accessibility-tools" class="fixed left-4 bottom-4 z-[50] transition-all duration-500">
   <button id="accessibility-toggle" 
