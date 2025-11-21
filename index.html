@@ -437,31 +437,35 @@ document.addEventListener("DOMContentLoaded", () => {
       </button>
     </div>
   </header>
-<!-- FLOATING SEARCH BUTTON - KLIK = KEYBOARD LANGSUNG MUNCUL (PALING AMPUH) -->
-<div id="floating-search-btn" 
+<!-- FLOATING BUTTON - KLIK = SCROLL HALUS KE MENU UTAMA PRODUK -->
+<div id="floating-scroll-btn" 
      class="fixed left-1/2 -translate-x-1/2 bottom-6 z-[40] transition-all duration-500 pointer-events-none">
-  <button id="float-search-trigger"
+  <button id="scroll-to-menu"
           class="pointer-events-auto group bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white w-16 h-16 md:w-20 md:h-20 rounded-full shadow-2xl flex items-center justify-center transform hover:scale-110 active:scale-95 transition-all duration-300">
-    <svg class="w-9 h-9 md:w-11 md:h-11 transition-transform group-hover:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.8" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+    <!-- Ikon Panah Bawah + Makanan (super keren & sesuai fungsi) -->
+    <svg class="w-10 h-10 md:w-12 md:h-12 transition-transform group-hover:translate-y-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+      <circle cx="12" cy="8" r="3" fill="currentColor" opacity="0.3"/>
+      <path d="M8 8h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
     </svg>
+    <!-- Tooltip -->
     <div class="absolute -top-12 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs md:text-sm font-medium px-4 py-2 rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap">
-      Klik untuk langsung cari menu
+      Lihat semua menu
       <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full border-8 border-transparent border-t-gray-900"></div>
     </div>
   </button>
 </div>
 
 <script>
-// === VERSI PALING AMPUH - KLIK = KEYBOARD LANGSUNG MUNCUL DI SEMUA HP ===
-const realSearch = document.getElementById("search");
-const floatBtn = document.getElementById("floating-search-btn");
-const trigger = document.getElementById("float-search-trigger");
+// === FLOATING BUTTON - KLIK = SCROLL HALUS KE MENU UTAMA PRODUK ===
+const floatBtn = document.getElementById("floating-scroll-btn");
+const trigger = document.getElementById("scroll-to-menu");
+const targetMenu = document.getElementById("produk-grid") || document.querySelector("main"); // fallback ke main kalau produk-grid tidak ada
 
-if (!realSearch || !floatBtn || !trigger) {
-  console.error("Floating search: element tidak ditemukan!");
+if (!floatBtn || !trigger || !targetMenu) {
+  console.error("Floating scroll button: element tidak ditemukan!");
 } else {
-  const showAt = 400;
+  const showAt = 300;
 
   const update = () => {
     const scrolled = window.scrollY;
@@ -478,45 +482,28 @@ if (!realSearch || !floatBtn || !trigger) {
     }
   };
 
-  // KLIK = KEYBOARD LANGSUNG MUNCUL (TRIK PALING AMPUH YANG PERNAH ADA)
-  trigger.addEventListener("click", (e) => {
-    e.preventDefault();
+  // KLIK = SCROLL HALUS KE MENU UTAMA PRODUK
+  trigger.addEventListener("click", () => {
+    targetMenu.scrollIntoView({ 
+      behavior: "smooth", 
+      block: "start" 
+    });
 
-    // Scroll ke search bar
-    realSearch.scrollIntoView({ behavior: "smooth", block: "center" });
-
-    setTimeout(() => {
-      realSearch.focus();
-
-      // TRIK KHUSUS HP - PASTI BUKA KEYBOARD
-      if ("ontouchstart" in window || navigator.maxTouchPoints) {
-        // Android & iPhone 100% berhasil
-        realSearch.value = realSearch.value; // force reflow
-        realSearch.dispatchEvent(new Event("input"));
-        realSearch.dispatchEvent(new Event("focus"));
-        
-        // Trik paling ampuh: buat input "berkedip" untuk paksa keyboard
-        realSearch.style.display = "none";
-        realSearch.offsetHeight; // force reflow
-        realSearch.style.display = "";
-        
-        realSearch.focus();
-      }
-
-      // Efek klik
-      const ripple = document.createElement("span");
-      ripple.className = "absolute inset-0 rounded-full bg-white/40 animate-ping";
-      trigger.appendChild(ripple);
-      setTimeout(() => ripple.remove(), 600);
-    }, 500);
+    // Efek klik keren
+    const ripple = document.createElement("span");
+    ripple.className = "absolute inset-0 rounded-full bg-white/40 animate-ping";
+    trigger.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 600);
   });
 
   // Update visibilitas
   ["scroll", "resize", "load"].forEach(ev => window.addEventListener(ev, update));
 
-  // Observer modal
+  // Observer modal & popup
   const observer = new MutationObserver(update);
-  document.querySelectorAll("#modal-produk, #modal-checkout, #dunnak-popup").forEach(el => el && observer.observe(el, { attributes: true, attributeFilter: ["class"] }));
+  document.querySelectorAll("#modal-produk, #modal-checkout, #dunnak-popup").forEach(el => {
+    if (el) observer.observe(el, { attributes: true, attributeFilter: ["class"] });
+  });
 
   setTimeout(update, 500);
 }
@@ -524,8 +511,8 @@ if (!realSearch || !floatBtn || !trigger) {
 // Animasi masuk super halus
 const style = document.createElement("style");
 style.textContent = `
-  #floating-search-btn { transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
-  #floating-search-btn.opacity-0 { transform: translateX(-50%) translateY(40px) !important; }
+  #floating-scroll-btn { transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  #floating-scroll-btn.opacity-0 { transform: translateX(-50%) translateY(40px) !important; }
 `;
 document.head.appendChild(style);
 </script>
