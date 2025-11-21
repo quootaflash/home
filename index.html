@@ -828,147 +828,158 @@ if (popupCard) {
       </div>
     </div>
   </section>
-<!-- TESTIMONI WARGA KALIBENING – MIRIP GOOGLE REVIEWS + AUTO SLIDE -->
-<section class="bg-gradient-to-b from-emerald-50 to-white py-16 overflow-hidden">
+<!-- TESTIMONI WARGA KALIBENING – AUTO FADE TRANSISI + AVATAR SISTEM -->
+<section class="bg-gradient-to-b from-emerald-50 to-white py-16">
   <div class="max-w-7xl mx-auto px-4">
-    <h2 class="text-3xl md:text-4xl font-black text-center text-emerald-800 mb-4">Apa Kata Warga Kalibening?</h2>
-    <p class="text-center text-gray-600 mb-12 text-lg">Ribuan pelanggan puas dengan layanan Dunnak</p>
+    <h2 class="text-3xl md:text-4xl font-black text-center text-emerald-800 mb-4">
+      Apa Kata Warga Kalibening?
+    </h2>
+    <p class="text-center text-gray-600 mb-12 text-lg">
+      Ribuan pelanggan puas dengan layanan Dunnak
+    </p>
 
-    <!-- Testimoni Carousel -->
-    <div class="relative">
-      <div id="testimoni-slider" class="flex transition-transform duration-500 ease-in-out" style="transform: translateX(0);">
+    <!-- Slider Container -->
+    <div class="relative overflow-hidden rounded-3xl">
+      <div id="testimoni-auto" class="relative">
         
         <!-- Testimoni 1 -->
-        <div class="w-full md:w-1/3 flex-shrink-0 px-4">
-          <div class="bg-white rounded-2xl shadow-xl p-6 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-gray-100">
-            <div class="flex items-center gap-4 mb-4">
-              <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Mbak Rina" class="w-14 h-14 rounded-full object-cover ring-4 ring-emerald-100">
-              <div>
-                <p class="font-bold text-gray-800">Mbak Rina</p>
-                <p class="text-sm text-gray-500">RT 03 Kalibening</p>
-              </div>
+        <div class="testi-slide active opacity-100">
+          <div class="bg-white rounded-2xl shadow-xl p-8 text-center max-w-2xl mx-auto">
+            <div class="w-20 h-20 mx-auto mb-5 bg-emerald-100 rounded-full flex items-center justify-center">
+              <svg class="w-12 h-12 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+              </svg>
             </div>
-            <div class="flex mb-3">
-              <span class="text-yellow-400 text-xl">★★★★★</span>
+            <div class="flex justify-center mb-4">
+              <span class="text-yellow-400 text-2xl">★★★★★</span>
             </div>
-            <p class="text-gray-700 italic leading-relaxed">"Cepet banget antarannya! Gorengan masih panas, maknyus!"</p>
-            <p class="text-xs text-gray-400 mt-4">2 hari lalu</p>
+            <p class="text-gray-700 text-lg italic leading-relaxed mb-6">
+              "Cepet banget antarannya! Gorengan masih panas, maknyus!"
+            </p>
+            <p class="font-bold text-gray-800">Mbak Rina</p>
+            <p class="text-sm text-gray-500">RT 03 Kalibening • 2 hari lalu</p>
           </div>
         </div>
 
         <!-- Testimoni 2 -->
-        <div class="w-full md:w-1/3 flex-shrink-0 px-4">
-          <div class="bg-white rounded-2xl shadow-xl p-6 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-gray-100">
-            <div class="flex items-center gap-4 mb-4">
-              <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Pak Slamet" class="w-14 h-14 rounded-full object-cover ring-4 ring-emerald-100">
-              <div>
-                <p class="font-bold text-gray-800">Pak Slamet</p>
-                <p class="text-sm text-gray-500">Dukuh Gunung Langit</p>
-              </div>
+        <div class="testi-slide opacity-0">
+          <div class="bg-white rounded-2xl shadow-xl p-8 text-center max-w-2xl mx-auto">
+            <div class="w-20 h-20 mx-auto mb-5 bg-emerald-100 rounded-full flex items-center justify-center">
+              <svg class="w-12 h-12 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+              </svg>
             </div>
-            <div class="flex mb-3">
-              <span class="text-yellow-400 text-xl">★★★★★</span>
+            <div class="flex justify-center mb-4">
+              <span class="text-yellow-400 text-2xl">★★★★★</span>
             </div>
-            <p class="text-gray-700 italic leading-relaxed">"Nasi box buat arisan kemarin enak semua, harganya murah lagi!"</p>
-            <p class="text-xs text-gray-400 mt-4">5 hari lalu</p>
+            <p class="text-gray-700 text-lg italic leading-relaxed mb-6">
+              "Nasi box buat arisan kemarin enak semua, harganya murah lagi!"
+            </p>
+            <p class="font-bold text-gray-800">Pak Slamet</p>
+            <p class="text-sm text-gray-500">Dukuh Gunung Langit • 5 hari lalu</p>
           </div>
         </div>
 
         <!-- Testimoni 3 -->
-        <div class="w-full md:w-1/3 flex-shrink-0 px-4">
-          <div class="bg-white rounded-2xl shadow-xl p-6 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-gray-100">
-            <div class="flex items-center gap-4 mb-4">
-              <img src="https://randomuser.me/api/portraits/men/46.jpg" alt="Adit Keren" class="w-14 h-14 rounded-full object-cover ring-4 ring-emerald-100">
-              <div>
-                <p class="font-bold text-gray-800">Adit Keren</p>
-                <p class="text-sm text-gray-500">Anak Kos Kalibening</p>
-              </div>
+        <div class="testi-slide opacity-0">
+          <div class="bg-white rounded-2xl shadow-xl p-8 text-center max-w-2xl mx-auto">
+            <div class="w-20 h-20 mx-auto mb-5 bg-emerald-100 rounded-full flex items-center justify-center">
+              <svg class="w-12 h-12 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+              </svg>
             </div>
-            <div class="flex mb-3">
-              <span class="text-yellow-400 text-xl">★★★★★</span>
+            <div class="flex justify-center mb-4">
+              <span class="text-yellow-400 text-2xl">★★★★★</span>
             </div>
-            <p class="text-gray-700 italic leading-relaxed">"Tengah malam laper tinggal WA, 20 menit sampai. Mantap Dunnak!"</p>
-            <p class="text-xs text-gray-400 mt-4">1 minggu lalu</p>
+            <p class="text-gray-700 text-lg italic leading-relaxed mb-6">
+              "Tengah malam laper tinggal WA, 20 menit sampai. Mantap Dunnak!"
+            </p>
+            <p class="font-bold text-gray-800">Adit Keren</p>
+            <p class="text-sm text-gray-500">Anak Kos Kalibening • 1 minggu lalu</p>
           </div>
         </div>
 
-        <!-- Testimoni 4 (tambahan agar auto slide lebih smooth) -->
-        <div class="w-full md:w-1/3 flex-shrink-0 px-4">
-          <div class="bg-white rounded-2xl shadow-xl p-6 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-gray-100">
-            <div class="flex items-center gap-4 mb-4">
-              <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Bu Siti" class="w-14 h-14 rounded-full object-cover ring-4 ring-emerald-100">
-              <div>
-                <p class="font-bold text-gray-800">Bu Siti</p>
-                <p class="text-sm text-gray-500">Pasar Kalibening</p>
-              </div>
+        <!-- Testimoni 4 -->
+        <div class="testi-slide opacity-0">
+          <div class="bg-white rounded-2xl shadow-xl p-8 text-center max-w-2xl mx-auto">
+            <div class="w-20 h-20 mx-auto mb-5 bg-emerald-100 rounded-full flex items-center justify-center">
+              <svg class="w-12 h-12 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+              </svg>
             </div>
-            <div class="flex mb-3">
-              <span class="text-yellow-400 text-xl">★★★★★</span>
+            <div class="flex justify-center mb-4">
+              <span class="text-yellow-400 text-2xl">★★★★★</span>
             </div>
-            <p class="text-gray-700 italic leading-relaxed">"Minuman dinginnya seger banget, cocok buat cuaca panas Kalibening!"</p>
-            <p class="text-xs text-gray-400 mt-4">3 hari lalu</p>
+            <p class="text-gray-700 text-lg italic leading-relaxed mb-6">
+              "Minuman dinginnya seger banget, cocok buat cuaca panas Kalibening!"
+            </p>
+            <p class="font-bold text-gray-800">Bu Siti</p>
+            <p class="text-sm text-gray-500">Pasar Kalibening • 3 hari lalu</p>
           </div>
         </div>
       </div>
 
-      <!-- Dots -->
-      <div class="flex justify-center mt-8 gap-2">
-        <span class="dot w-3 h-3 bg-emerald-600 rounded-full cursor-pointer transition-all active"></span>
-        <span class="dot w-3 h-3 bg-emerald-300 rounded-full cursor-pointer transition-all"></span>
-        <span class="dot w-3 h-3 bg-emerald-300 rounded-full cursor-pointer transition-all"></span>
-        <span class="dot w-3 h-3 bg-emerald-300 rounded-full cursor-pointer transition-all"></span>
+      <!-- Dots Minimal di Tengah Bawah -->
+      <div class="flex justify-center mt-8 gap-3">
+        <span class="testi-dot w-2 h-2 bg-emerald-600 rounded-full cursor-pointer transition-all duration-300 active"></span>
+        <span class="testi-dot w-2 h-2 bg-emerald-300 rounded-full cursor-pointer transition-all duration-300"></span>
+        <span class="testi-dot w-2 h-2 bg-emerald-300 rounded-full cursor-pointer transition-all duration-300"></span>
+        <span class="testi-dot w-2 h-2 bg-emerald-300 rounded-full cursor-pointer transition-all duration-300"></span>
       </div>
     </div>
   </div>
 </section>
 
 <script>
-// === TESTIMONI AUTO SLIDE MIRIP GOOGLE REVIEWS (SUPER HALUS) ===
-const slider = document.getElementById("testimoni-slider");
-const dots = document.querySelectorAll("#testimoni-slider + div .dot");
+// === TESTIMONI AUTO FADE TRANSISI HALUS + AVATAR SISTEM ===
+const slides = document.querySelectorAll(".testi-slide");
+const dots = document.querySelectorAll(".testi-dot");
 let current = 0;
-const total = 4;
+const total = slides.length;
 
-function goToSlide(index) {
-  current = index;
-  slider.style.transform = `translateX(-${current * 100}%)`;
+function showSlide(n) {
+  slides.forEach((slide, i) => {
+    slide.classList.toggle("active", i === n);
+    slide.classList.toggle("opacity-100", i === n);
+    slide.classList.toggle("opacity-0", i !== n);
+  });
+
   dots.forEach((dot, i) => {
-    dot.classList.toggle("bg-emerald-600", i === current);
-    dot.classList.toggle("bg-emerald-300", i !== current);
-    dot.classList.toggle("w-8", i === current);
-    dot.classList.toggle("w-3", i !== current);
+    dot.classList.toggle("bg-emerald-600", i === n);
+    dot.classList.toggle("bg-emerald-300", i !== n);
+    dot.classList.toggle("w-8", i === n);
+    dot.classList.toggle("w-2", i !== n);
   });
 }
 
-// Auto slide setiap 5 detik
+// Auto slide setiap 6 detik
 setInterval(() => {
   current = (current + 1) % total;
-  goToSlide(current);
-}, 5000);
+  showSlide(current);
+}, 6000);
 
 // Klik dot
 dots.forEach((dot, i) => {
-  dot.addEventListener("click", () => goToSlide(i));
+  dot.addEventListener("click", () => {
+    current = i;
+    showSlide(current);
+  });
 });
 
 // Init
-goToSlide(0);
-
-// Responsif: di HP jadi 1 kolom, otomatis slide
-if (window.innerWidth < 768) {
-  slider.style.width = `${total * 100}%`;
-  slider.querySelectorAll("div[class*='w-full md:w-1/3']").forEach(el => {
-    el.style.width = `${100 / total}%`;
-  });
-}
+showSlide(0);
 </script>
 
 <style>
-  #testimoni-slider > div > div { transition: transform 0.4s ease-in-out; }
-  .dot { transition: all 0.4s ease; }
-  @media (max-width: 767px) {
-    #testimoni-slider { width: 400% !important; }
-    #testimoni-slider > div > div { width: 100% !important; }
+  .testi-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    transition: opacity 1s ease-in-out;
+  }
+  .testi-dot {
+    transition: all 0.4s ease;
   }
 </style>
    <!-- FAQ SECTION -->
