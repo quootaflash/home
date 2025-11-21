@@ -1,8 +1,10 @@
+
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <!-- ====== SEO UTAMA - WAJIB 100% ====== -->
   <title>Dunnak.com - Pesan Makanan & Jajanan Online Kalibening, Banjarnegara | Antar Cepat, Bayar di Tempat (COD)</title>
   <meta name="description" content="Pesan makanan enak di Kalibening & sekitarnya: nasi box, gorengan, minuman dingin, kue basah, camilan. Pengiriman cepat, bayar pas sampai (COD). Buka 24 jam!" />
@@ -320,7 +322,7 @@
 <script>
 // === BUKA/TUTUP SILENT + HALAMAN TUTUP WARNA CERAH SESUAI TEMA DUNNAK ===
 let JAM_BUKA = 15;   // Ubah angka ini saja (15 = 15:00 WIB)
-let JAM_TUTUP = 23;  // Ubah angka ini saja (21 = 21:00 WIB)
+let JAM_TUTUP = 21;  // Ubah angka ini saja (21 = 21:00 WIB)
 
 document.addEventListener("DOMContentLoaded", () => {
   const getWIB = () => new Date(new Date().getTime() + new Date().getTimezoneOffset() * 60000 + 3600000*7);
@@ -418,7 +420,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   </script>
-<!-- NAVBAR -->
+  <!-- NAVBAR -->
   <header class="bg-white shadow sticky top-0 z-50">
     <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
       <div class="flex items-center gap-3">
@@ -436,8 +438,156 @@ document.addEventListener("DOMContentLoaded", () => {
       </button>
     </div>
   </header>
+<!-- ACCESSIBILITY TOOLS – KHUSUS DIFABEL & LANSIA -->
+<div id="accessibility-tools" class="fixed left-4 bottom-4 z-[50] transition-all duration-500">
+  <button id="accessibility-toggle" 
+          class="bg-emerald-600 hover:bg-emerald-700 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center transform hover:scale-110 transition-all duration-300">
+    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+    </svg>
+  </button>
+
+  <!-- Panel Tools -->
+  <div id="accessibility-panel" class="absolute bottom-20 left-0 bg-white rounded-2xl shadow-2xl p-4 w-64 transform scale-0 origin-bottom-left transition-transform duration-300">
+    <h3 class="font-bold text-emerald-700 text-lg mb-3">Pengaturan Kenyamanan</h3>
+    
+    <div class="space-y-3">
+      <!-- Ukuran Teks -->
+      <div class="flex items-center justify-between">
+        <span class="text-sm font-medium text-gray-700">Ukuran Teks</span>
+        <div class="flex gap-2">
+          <button data-size="small" class="text-btn active">A</button>
+          <button data-size="medium" class="text-btn">A</button>
+          <button data-size="large" class="text-btn">A</button>
+        </div>
+      </div>
+
+      <!-- Kontras Tinggi -->
+      <div class="flex items-center justify-between">
+        <span class="text-sm font-medium text-gray-700">Kontras Tinggi</span>
+        <button id="high-contrast" class="w-12 h-7 rounded-full bg-gray-300 relative transition">
+          <span class="absolute left-1 top-1 w-5 h-5 bg-white rounded-full transition"></span>
+        </button>
+      </div>
+
+      <!-- Mode Baca (Readable Font) -->
+      <div class="flex items-center justify-between">
+        <span class="text-sm font-medium text-gray-700">Mode Baca</span>
+        <button id="readable-mode" class="w-12 h-7 rounded-full bg-gray-300 relative transition">
+          <span class="absolute left-1 top-1 w-5 h-5 bg-white rounded-full transition"></span>
+        </button>
+      </div>
+
+      <!-- Reset -->
+      <button id="accessibility-reset" class="w-full mt-4 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 rounded-lg transition">
+        Reset Semua
+      </button>
+    </div>
+  </div>
+</div>
+
 <script>
-<!-- SEARCH BAR -->
+// === ACCESSIBILITY TOOLS – SUPER CANGGIH & NYAMAN UNTUK SEMUA PENGUNJUNG ===
+const toggleBtn = document.getElementById("accessibility-toggle");
+const panel = document.getElementById("accessibility-panel");
+
+// Buka/Tutup panel
+toggleBtn.addEventListener("click", () => {
+  panel.classList.toggle("scale-0");
+  panel.classList.toggle("scale-100");
+});
+
+// Ukuran Teks
+document.querySelectorAll("[data-size]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const size = btn.dataset.size;
+    document.body.classList.remove("text-small", "text-medium", "text-large");
+    document.body.classList.add(`text-${size}`);
+    
+    document.querySelectorAll("[data-size]").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    
+    localStorage.setItem("dunnak_text_size", size);
+  });
+});
+
+// Kontras Tinggi
+document.getElementById("high-contrast").addEventListener("click", () => {
+  document.body.classList.toggle("high-contrast");
+  const isOn = document.body.classList.contains("high-contrast");
+  const toggle = document.querySelector("#high-contrast span");
+  toggle.style.left = isOn ? "calc(100% - 28px)" : "4px";
+  toggle.parentElement.style.background = isOn ? "#10b981" : "#d1d5db";
+  localStorage.setItem("dunnak_high_contrast", isOn);
+});
+
+// Mode Baca (font lebih mudah dibaca)
+document.getElementById("readable-mode").addEventListener("click", () => {
+  document.body.classList.toggle("readable-mode");
+  const isOn = document.body.classList.contains("readable-mode");
+  const toggle = document.querySelector("#readable-mode span");
+  toggle.style.left = isOn ? "calc(100% - 28px)" : "4px";
+  toggle.parentElement.style.background = isOn ? "#10b981" : "#d1d5db";
+  localStorage.setItem("dunnak_readable", isOn);
+});
+
+// Reset
+document.getElementById("accessibility-reset").addEventListener("click", () => {
+  document.body.classList.remove("text-small", "text-medium", "text-large", "high-contrast", "readable-mode");
+  localStorage.removeItem("dunnak_text_size");
+  localStorage.removeItem("dunnak_high_contrast");
+  localStorage.removeItem("dunnak_readable");
+  
+  // Reset toggle
+  document.querySelectorAll("#high-contrast span, #readable-mode span").forEach(s => {
+    s.style.left = "4px";
+    s.parentElement.style.background = "#d1d5db";
+  });
+  document.querySelectorAll("[data-size]").forEach(b => b.classList.remove("active"));
+  document.querySelector("[data-size='medium']").classList.add("active");
+});
+
+// Load pengaturan sebelumnya
+window.addEventListener("load", () => {
+  const size = localStorage.getItem("dunnak_text_size") || "medium";
+  document.body.classList.add(`text-${size}`);
+  document.querySelector(`[data-size='${size}']`).classList.add("active");
+
+  if (localStorage.getItem("dunnak_high_contrast") === "true") document.getElementById("high-contrast").click();
+  if (localStorage.getItem("dunnak_readable") === "true") document.getElementById("readable-mode").click();
+});
+</script>
+
+<style>
+  .text-small { font-size: 0.875rem !important; }
+  .text-medium { font-size: 1rem !important; }
+  .text-large { font-size: 1.125rem !important; line-height: 1.7 !important; }
+
+  .high-contrast {
+    background: #000 !important;
+    color: #fff !important;
+  }
+  .high-contrast * { color: #fff !important; background: #000 !important; border-color: #fff !important; }
+  .high-contrast .bg-white { background: #000 !important; }
+  .high-contrast .text-gray-600 { color: #ccc !important; }
+
+  .readable-mode {
+    font-family: 'Comic Sans MS', 'Arial Rounded MT Bold', sans-serif !important;
+    line-height: 1.8 !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  .text-btn {
+    @apply w-10 h-10 rounded-lg border-2 border-emerald-600 text-emerald-600 font-bold flex items-center justify-center transition;
+  }
+  .text-btn.active {
+    @apply bg-emerald-600 text-white border-emerald-600;
+  }
+  .text-btn:nth-child(1) { font-size: 0.875rem; }
+  .text-btn:nth-child(2) { font-size: 1rem; }
+  .text-btn:nth-child(3) { font-size: 1.25rem; }
+</style>
+  <!-- SEARCH BAR -->
   <div id="search-container" class="max-w-6xl mx-auto px-4">
     <div id="search-wrapper" class="relative">
       <svg id="search-button" class="absolute left-3 top-2.5 h-5 w-5 text-gray-400" viewBox="0 0 24 24" fill="none" aria-hidden>
@@ -520,12 +670,114 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>
   </div>
 </section>
-     <!-- ADS SECTION -->
+<!-- POPUP PROMO DUNNAK.COM - MENGGUNAKAN GAMBAR SRC ASLI -->
+<div id="dunnak-popup" class="fixed inset-0 z-[9999] hidden grid place-items-center px-4 md:px-8 overflow-y-auto">
+  <!-- Backdrop -->
+  <div id="popup-overlay" class="absolute inset-0 bg-black/70 backdrop-blur-xl"></div>
+  
+  <!-- Popup Card -->
+  <div class="relative bg-white rounded-3xl shadow-3xl w-full max-w-lg mx-auto my-8 overflow-hidden"
+       style="transform-origin:center; max-height:95dvh;">
+    
+    <!-- Header Emerald -->
+    <div class="bg-gradient-to-r from-emerald-500 to-emerald-600 px-6 py-9 md:py-12 text-center text-white">
+      <h2 class="text-2xl md:text-4xl font-black tracking-tight leading-tight">🔥 PROMO HARI INI!</h2>
+      <p class="mt-2 text-sm md:text-lg opacity-95 font-medium">Khusus pelanggan setia Dunnak.com</p>
+    </div>
+
+    <!-- Body -->
+    <div class="p-5 md:p-10 text-center -mt-8 md:-mt-12">
+      <!-- GAMBAR ASLI DENGAN SRC (ganti link ini dengan gambar promo kamu) -->
+      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjQBQCELtF3l2cvUL_5GMk-bjvDRB0_naRR53fqY9lLgrjVSOf1uh1cVQspa5fd0fLnLGpYUN_23IUMLjeuCAZjnYjB78BM8lhDe05t2aTMXcU9Fl3P7VNTJh2TmwbuCczQVMfQCxVBEEdadjCIzZ546blJRtHkahyphenhyphenoj7wBKPHTsf3XQx7JM3Qp9zxMlbAE/s800/promo-dunnak-real.jpg" 
+           alt="Promo Dunnak.com - Diskon 20%"
+           class="mx-auto w-full max-w-xs md:max-w-sm rounded-3xl shadow-2xl border-[10px] md:border-[14px] border-white object-cover"
+           loading="lazy">
+
+      <h3 class="text-2xl md:text-4xl font-black text-emerald-700 mt-8 md:mt-12 leading-tight">Diskon Spesial 20%</h3>
+      <p class="text-gray-600 mt-4 text-base md:text-xl leading-relaxed px-4">
+        Gunakan kode promo:
+      </p>
+      <div class="inline-block bg-emerald-100 text-emerald-800 font-black text-2xl md:text-4xl px-8 py-4 md:py-6 rounded-3xl mt-4 shadow-2xl">
+        DUNNAK20
+      </div>
+      <p class="text-sm md:text-base text-gray-500 mt-4">Min. order Rp35.000 • Berlaku hari ini saja</p>
+
+      <!-- Tombol CTA -->
+      <a href="https://wa.me/628123456789?text=Halo+Dunnak%21+Saya+mau+order+dengan+kode+DUNNAK20+%F0%9F%8E%89" 
+         target="_blank"
+         class="inline-block mt-8 md:mt-10 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-lg md:text-2xl px-10 md:px-16 py-5 md:py-7 rounded-full shadow-2xl transform hover:scale-105 transition-all duration-300">
+        Klaim Promo via WhatsApp 🚀
+      </a>
+
+      <p class="text-xs md:text-sm text-gray-400 mt-6">Promo otomatis muncul setiap hari selama periode berlangsung</p>
+    </div>
+
+    <!-- Close Button -->
+    <button id="popup-close" class="absolute top-3 right-3 md:top-5 md:right-5 bg-white/30 hover:bg-white/50 text-white w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center backdrop-blur-md transition-all shadow-lg">
+      <svg class="w-7 h-7 md:w-9 md:h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<!-- SCRIPT POPUP (tetap sama + zoom-proof) -->
+<script>
+// ================== SETTING SCHEDULE ==================
+const TANGGAL_MULAI = "2025-11-21";        // "2025-11-21" atau kosongkan
+const TANGGAL_SELESAI = "2025-11-30";      // "2025-11-30" atau kosongkan
+const JAM_MULAI = 15;            // null = selalu muncul
+const JAM_SELESAI = 21;          // null = selalu muncul
+
+function getWIB() {
+  const n = new Date();
+  return new Date(n.getTime() + n.getTimezoneOffset()*60000 + 3600000*7);
+}
+
+function isWithinSchedule() {
+  const now = getWIB();
+  const today = now.toISOString().split('T')[0];
+  const hour = now.getHours();
+
+  if (TANGGAL_MULAI && today < TANGGAL_MULAI) return false;
+  if (TANGGAL_SELESAI && today > TANGGAL_SELESAI) return false;
+  if (JAM_MULAI !== null && JAM_SELESAI !== null) {
+    if (hour < JAM_MULAI || hour >= JAM_SELESAI) return false;
+  }
+  return true;
+}
+
+setTimeout(() => {
+  if (isWithinSchedule()) {
+    document.getElementById("dunnak-popup").classList.remove("hidden");
+  }
+}, 1000);
+
+// Close
+document.getElementById("popup-close").onclick = () => document.getElementById("dunnak-popup").classList.add("hidden");
+document.getElementById("popup-overlay").onclick = () => document.getElementById("popup-close").click();
+
+// ZOOM-PROOF: Otomatis scale kalau terlalu besar saat zoom
+const popupCard = document.querySelector("#dunnak-popup > div.relative");
+if (popupCard) {
+  const resizeObserver = new ResizeObserver(() => {
+    const viewportHeight = window.innerHeight;
+    const cardHeight = popupCard.offsetHeight + 100; // margin safety
+    if (cardHeight > viewportHeight * 0.95) {
+      popupCard.style.transform = `scale(${viewportHeight * 0.9 / cardHeight})`;
+    } else {
+      popupCard.style.transform = "scale(1)";
+    }
+  });
+  resizeObserver.observe(document.body);
+}
+</script>  
+  <!-- ADS SECTION -->
   <section class="max-w-6xl mx-auto px-4 py-6">
     <h2 class="text-1xl md:text-1xl font-bold mb-4">Penawaran terkini</h2>
     <div id="ads-grid" class="flex gap-4"></div>
   </section>
-<!-- CATEGORY AND FILTER -->
+  <!-- CATEGORY AND FILTER -->
   <section class="max-w-6xl mx-auto px-4 py-4">
     <div class="flex justify-between items-center mb-4">
       <h2 class="text-xl font-semibold">Kategori</h2>
@@ -546,6 +798,77 @@ document.addEventListener("DOMContentLoaded", () => {
     <h2 class="text-2xl md:text-2xl font-bold mb-6">Menu Utama</h2>
     <div id="produk-grid" class="flex gap-4"></div>
   </main>
+  <!-- ADVANTAGES SECTION -->
+  <section class="max-w-6xl mx-auto px-4 py-6">
+    <h2 class="text-2xl md:text-3xl font-bold text-center mb-6">Kenapa harus dunnak.com?</h2>
+    <p class="text-center text-gray-600 mb-8">Kami menghadirkan pengalaman kuliner terbaik dengan layanan cepat dan terpercaya.</p>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div class="bg-white p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition">
+        <svg class="h-12 w-12 mx-auto mb-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+        </svg>
+        <h3 class="text-lg font-semibold">Mudah</h3>
+        <p class="text-sm text-gray-600 mt-2">Layanan kami didesain untuk lebih mudah digunakan oleh semua orang</p>
+      </div>
+      <div class="bg-white p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition">
+        <svg class="h-12 w-12 mx-auto mb-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        <h3 class="text-lg font-semibold">Cepat</h3>
+        <p class="text-sm text-gray-600 mt-2">Kami siap melayani kapan saja, siang maupun malam pada saat dibutuhkan</p>
+      </div>
+      <div class="bg-white p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition">
+        <svg class="h-12 w-12 mx-auto mb-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a5 5 0 00-10 0v2m-2 2v5a2 2 0 002 2h10a2 2 0 002-2v-5m-2-2H5"/>
+        </svg>
+        <h3 class="text-lg font-semibold">Aman</h3>
+        <p class="text-sm text-gray-600 mt-2">Transaksi terjamin aman dengan sistem COD</p>
+      </div>
+    </div>
+  </section>
+
+<!-- TESTIMONI WARGA KALIBENING -->
+<section class="bg-gradient-to-b from-emerald-50 to-white py-16">
+  <div class="max-w-6xl mx-auto px-4">
+    <h2 class="text-3xl font-bold text-center mb-12">Apa Kata Warga Kalibening?</h2>
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="bg-white p-6 rounded-2xl shadow-xl">
+        <p class="italic text-gray-700">"Cepet banget antarannya! Gorengan masih panas, maknyus!"</p>
+        <div class="mt-4 flex items-center gap-3">
+          <div class="w-12 h-12 bg-gray-300 rounded-full"></div>
+          <div>
+            <p class="font-bold">Mbak Rina</p>
+            <p class="text-sm text-gray-500">RT 03 Kalibening</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="bg-white p-6 rounded-2xl shadow-xl">
+        <p class="italic text-gray-700">"Nasi box buat arisan kemarin enak semua, harganya murah lagi!"</p>
+        <div class="mt-4 flex items-center gap-3">
+          <div class="w-12 h-12 bg-gray-300 rounded-full"></div>
+          <div>
+            <p class="font-bold">Pak Slamet</p>
+            <p class="text-sm text-gray-500">Dukuh Gunung Langit</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="bg-white p-6 rounded-2xl shadow-xl">
+        <p class="italic text-gray-700">"Tengah malam laper tinggal WA, 20 menit sampai. Mantap Dunnak!"</p>
+        <div class="mt-4 flex items-center gap-3">
+          <div class="w-12 h-12 bg-gray-300 rounded-full"></div>
+          <div>
+            <p class="font-bold">Adit Keren</p>
+            <p class="text-sm text-gray-500">Anak Kos Kalibening</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+  
    <!-- FAQ SECTION -->
   <section id="faq" class="max-w-7xl mx-auto px-4 py-8">
     <h2 class="text-1xl md:text-1xl font-bold text-center mb-6">Pertanyaan yang sering diajukan</h2>
@@ -588,90 +911,57 @@ document.addEventListener("DOMContentLoaded", () => {
     <p class="text-gray-600 mb-6">Pesan sekarang dan nikmati hidangan favoritmu dengan pengiriman cepat dan aman!</p>
     <button id="cta-button" class="bg-rose-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-emerald-700">Pesan Sekarang</button>
   </section>
-<!-- FOOTER PROFESIONAL DUNNAK.COM 2025 -->
-<footer class="bg-gray-900 text-gray-300 py-16">
-  <div class="max-w-7xl mx-auto px-6">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
-
-      <!-- Kolom 1 – Logo & Deskripsi -->
-      <div class="lg:col-span-2">
-        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEioCgC6JQ-pd6mvQ1OvlJSOGqd8-45q7P9K0ejBvIt-XEXcayAs6zpFN6c1D2ejDgR72xdGDZL9yt2yLWl7oRDHQ8Gf2L3Q35VNFlimqORpaOgBDiqJMBGfTLHokc0dFwezZ85HLBx7_rGveEOMDI78CG81kg_mpczYMHdYapbijiLVpqPj2Ep_QrPJwx6H/s3264/20250927_164837.png" 
-             alt="Dunnak.com Logo" class="h-12 w-auto mb-6" onerror="this.style.display='none'"/>
-        <p class="text-gray-400 leading-relaxed mb-6 max-w-lg">
-          dunnak.com — Penyedia layanan pemesanan makanan & jajanan <span class="font-semibold text-emerald-400">No.1 di Kalibening dan sekitarnya</span>. Antar cepat, bayar di tempat, buka sampai malam.
-        </p>
-
-        <!-- Sosial Media dengan Ikon Resmi -->
-        <div class="flex gap-5">
-          <a href="https://facebook.com/dunnakindonesia" target="_blank" class="text-gray-400 hover:text-white transition">
-            <i class="fab fa-facebook-f text-2xl"></i>
-          </a>
-          <a href="mailto:halo@dunnak.com" class="text-gray-400 hover:text-white transition">
-            <i class="fas fa-envelope text-2xl"></i>
-          </a>
-          <a href="https://youtube.com/channel/UCUfAjAXXnZHz8GM7u8JOq8w" target="_blank" class="text-gray-400 hover:text-white transition">
-            <i class="fab fa-youtube text-2xl"></i>
-          </a>
-          <a href="https://tiktok.com/@dunnakindonesia" target="_blank" class="text-gray-400 hover:text-white transition">
-            <i class="fab fa-tiktok text-2xl"></i>
-          </a>
-          <a href="https://instagram.com/dunnakindonesia" target="_blank" class="text-gray-400 hover:text-white transition">
-            <i class="fab fa-instagram text-2xl"></i>
-          </a>
+  <!-- FOOTER -->
+  <footer class="bg-gray-900 text-white py-12">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div class="md:col-span-2">
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEioCgC6JQ-pd6mvQ1OvlJSOGqd8-45q7P9K0ejBvIt-XEXcayAs6zpFN6c1D2ejDgR72xdGDZL9yt2yLWl7oRDHQ8Gf2L3Q35VNFlimqORpaOgBDiqJMBGfTLHokc0dFwezZ85HLBx7_rGveEOMDI78CG81kg_mpczYMHdYapbijiLVpqPj2Ep_QrPJwx6H/s3264/20250927_164837.png" alt="FoodOrder Logo" class="h-10 w-auto mb-4" onerror="this.style.display='none'"/>
+          <p class="text-sm text-gray-300 mb-4">dunnak.com adalah penyedia layanan pemesanan makanan no.1 di kalibening dan sekitarnya</p>
+          <div class="flex space-x-4">
+            <a href="#" aria-label="Facebook" class="text-gray-300 hover:text-emerald-400">
+              <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
+            </a>
+            <a href="mailto:halo@dunnak.com" aria-label="Send email" class="text-gray-300 hover:text-emerald-400">
+  <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+  </svg>
+</a>
+            <a href="https://www.youtube.com/channel/UCUfAjAXXnZHz8GM7u8JOq8w" aria-label="Twitter" class="text-gray-300 hover:text-emerald-400">
+              <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M23.5 6.25a2.75 2.75 0 0 0-1.95-1.95C19.85 3.5 12 3.5 12 3.5s-7.85 0-9.55.8a2.75 2.75 0 0 0-1.95 1.95C0 8.9 0 12 0 12s0 3.1.5 5.75a2.75 2.75 0 0 0 1.95 1.95c1.7.8 9.55.8 9.55.8s7.85 0 9.55-.8a2.75 2.75 0 0 0 1.95-1.95C24 15.1 24 12 24 12s0-3.1-.5-5.75z M15.75 12 9.75 15.3V8.7z"/></svg>
+            </a>
+            <a href="https://www.tiktok.com/@dunnakindonesia" aria-label="TikTok" class="text-gray-300 hover:text-emerald-400">
+  <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 512 512">
+    <path d="M412.19,118.66a109.27,109.27,0,0,1-9.45-5.5,132.87,132.87,0,0,1-24.27-20.62c-18.1-20.71-24.86-41.72-27.35-56.43h.1C349.14,23.9,350,16,350.13,16H267.69V334.78c0,4.28,0,8.51-.18,12.69,0,.52-.05,1-.08,1.56,0,.23,0,.47-.05.71,0,.06,0,.12,0,.18a70,70,0,0,1-35.22,55.56,68.8,68.8,0,0,1-34.11,9c-38.41,0-69.54-31.32-69.54-70s31.13-70,69.54-70a68.9,68.9,0,0,1,21.41,3.39l.1-83.94a153.14,153.14,0,0,0-118,34.52,161.79,161.79,0,0,0-35.3,43.53c-3.48,6-16.61,30.11-18.2,69.24-1,22.21,5.67,45.22,8.85,54.73v.2c2,5.6,9.75,24.71,22.38,40.82A167.53,167.53,0,0,0,115,470.66v-.2l.2.2C155.11,497.78,199.36,496,199.36,496c7.66-.31,33.32,0,62.46-13.81,32.32-15.31,50.72-38.12,50.72-38.12a158.46,158.46,0,0,0,27.64-45.93c7.46-19.61,9.95-43.13,9.95-52.53V176.49c1,.6,14.32,9.41,14.32,9.41s19.19,12.3,49.13,20.31c21.48,5.7,50.42,6.9,50.42,6.9V131.27C453.86,132.37,433.27,129.17,412.19,118.66Z"/>
+  </svg>
+</a>
+            <a href="https://www.instagram.com/dunnakindonesia?igsh=YzljYTk1ODg3Zg==" aria-label="Instagram" class="text-gray-300 hover:text-emerald-400">
+              <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+          </div>
+        </div>
+        <div>
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgmg03GvwvCcOiTxxuQH236KL1qZ4vW55lVPXuFVgj-S5FLyCjRUD73ylhYczFYp_-3C1OjB9jobjONdwepR0igNU1BT1ZQA5w-gcQKMOaXRqLA7kvbaTiBFfH5Ff2ErjIFR37YWRjhkWYFVTmOwj4o3TcSik3e70yUCyw03nin4RF96JEfGw2eFO4MbJIT/s3264/20251117_185752.png" alt="dunnak.com" class="h-10 w-auto mb-4" onerror="this.style.display='none'"/>
+          <h3 class="text-lg font-semibold mb-4">Link</h3>
+          <ul class="space-y-2 text-sm text-gray-300">
+            <li><a href="dunnak.com" class="hover:text-emerald-400 transition-colors">Beranda</a></li>
+            <li><a href="https://m.dunnak.com" class="hover:text-emerald-400 transition-colors">masuk</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Kontak Kami</h3>
+          <ul class="space-y-2 text-sm text-gray-300">
+            <li><a href="mailto:halo@dunnak.com" class="hover:text-emerald-400 transition-colors">halo@dunnak.com</a></li>
+            <h5><b>DUNNAK OUTPOST</b>. JL raya Gununglangit - kalibening</h5>
+          </ul>
         </div>
       </div>
-
-      <!-- Kolom 2 – Quick Links -->
-      <div>
-        <h3 class="text-xl font-bold text-white mb-5">Link Cepat</h3>
-        <ul class="space-y-3 text-gray-400">
-          <li><a href="https://dunnak.com" class="hover:text-emerald-400 transition">Beranda</a></li>
-          <li><a href="#produk-grid" class="hover:text-emerald-400 transition">Menu Makanan</a></li>
-          <li><a href="#faq" class="hover:text-emerald-400 transition">FAQ</a></li>
-          <li><a href="https://m.dunnak.com" class="hover:text-emerald-400 transition">Login Admin</a></li>
-        </ul>
-      </div>
-
-      <!-- Kolom 3 – Kontak & Call Center -->
-      <div>
-        <h3 class="text-xl font-bold text-white mb-5">Hubungi Kami</h3>
-        <ul class="space-y-4 text-gray-400">
-          <li class="flex items-center gap-3">
-            <i class="fas fa-phone-alt text-emerald-400"></i>
-            <div>
-              <p class="font-semibold text-white">Call Center / WhatsApp</p>
-              <a href="tel:+6281234567890" class="text-lg hover:text-emerald-400 transition">0812-3456-7890</a>
-            </div>
-          </li>
-          <li class="flex items-center gap-3">
-            <i class="fas fa-envelope text-emerald-400"></i>
-            <a href="mailto:halo@dunnak.com" class="hover:text-emerald-400 transition">halo@dunnak.com</a>
-          </li>
-          <li class="flex items-start gap-3">
-            <i class="fas fa-map-marker-alt text-emerald-400 mt-1"></i>
-            <div>
-              <p class="font-semibold text-white">Dunnak Outpost</p>
-              <p class="text-sm">Jl. Raya Gununglangit – Kalibening<br>Banjarnegara, Jawa Tengah</p>
-            </div>
-          </li>
-        </ul>
+      <div class="mt-8 border-t border-gray-700 pt-6 text-center text-sm text-gray-400">
+        <p>© 2025</p><b>DERVO DIGITAL NIAGA</b><p>All rights reserved.</p>
+        <p class="mt-2">Dibuat dengan <span class="text-red-500">♥</span> untuk pecinta kuliner.</p>
       </div>
     </div>
-
-    <!-- Copyright Bar -->
-    <div class="mt-12 pt-8 border-t border-gray-800 text-center">
-      <p class="text-gray-500 text-sm">
-        © 2025 <span class="font-bold text-emerald-400">DERVO DIGITAL NIAGA</span>. All rights reserved.
-      </p>
-      <p class="text-gray-600 text-xs mt-2">
-        Dibuat dengan <span class="text-red-500">♥</span> untuk pecinta kuliner Kalibening
-      </p>
-    </div>
-  </div>
-</footer>
-
-<!-- Font Awesome untuk ikon resmi (sudah ada di head, tapi aman ditambahkan lagi) -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  </footer>
   <!-- PRODUCT MODAL -->
   <div id="modal-produk" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4">
     <div class="absolute inset-0 bg-black/40" onclick="closeModal()"></div>
@@ -704,7 +994,7 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     </div>
   </div>
-<!-- CHECKOUT MODAL -->
+  <!-- CHECKOUT MODAL -->
   <div id="modal-checkout" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4">
     <div class="absolute inset-0 bg-black/40" onclick="closeCheckout()"></div>
     <div class="relative bg-white rounded-xl shadow-xl max-w-md w-full overflow-hidden p-4">
@@ -1467,4 +1757,3 @@ document.addEventListener("DOMContentLoaded", () => {
   </script>
 </body>
 </html>
-
