@@ -588,41 +588,37 @@ window.addEventListener("load", () => {
   .text-btn:nth-child(2) { font-size: 1rem; }
   .text-btn:nth-child(3) { font-size: 1.25rem; }
 </style>
-<!-- MESIN PENCARI MINI PROFESIONAL – BEKERJA SEMPURNA DI HP & MONITOR -->
-<div id="search-container" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<!-- SEARCH BAR + ANIMASI LOADING SUARA KEREN -->
+<div id="search-container" class="max-w-5xl mx-auto px-4 py-8">
   <div class="relative group">
     <!-- Glow Effect Saat Fokus -->
-    <div class="absolute -inset-1 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-3xl blur-xl opacity-0 group-focus-within:opacity-60 transition duration-500 pointer-events-none"></div>
+    <div class="absolute -inset-1 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-3xl blur-xl opacity-0 group-focus-within:opacity-50 transition duration-500 pointer-events-none"></div>
     
-    <!-- Search Box – Ukuran pas di semua device -->
+    <!-- Search Box -->
     <div class="relative bg-white rounded-3xl shadow-lg border border-gray-200 overflow-hidden transition-all duration-300 group-focus-within:border-emerald-500 group-focus-within:shadow-2xl">
       <div class="flex items-center">
         <!-- Ikon Kaca Pembesar -->
         <div class="pl-5 pr-3">
-          <svg id="search-button" class="w-6 h-6 lg:w-7 lg:h-7 text-emerald-600 transition-transform duration-300 group-focus-within:scale-110" 
+          <svg id="search-button" class="w-6 h-6 text-emerald-600 transition-transform duration-300 group-focus-within:scale-110" 
                fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" 
                   d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
           </svg>
         </div>
 
-        <!-- Input Field – Lebar penuh & nyaman -->
-        <input id 
-               id="search" 
-               type="search" 
-               placeholder="Cari makanan favoritmu di Kalibening..." 
-               autocomplete="off"
-               class="w-full py-4 pr-4 pl-2 text-base lg:text-lg font-medium text-gray-800 placeholder-gray-400 focus:outline-none bg-transparent"
-               style="caret-color: #10b981;">
+        <!-- Input Field -->
+        <input id="search" type="search" placeholder="Cari makanan favoritmu..." autocomplete="off"
+               class="w-full py-4 pr-4 pl-2 text-base md:text-lg font-medium text-gray-800 placeholder-gray-400 focus:outline-none bg-transparent">
 
         <!-- Tombol Mikrofon + Animasi Gelombang Suara -->
         <button id="voice-search-btn" class="relative mr-5 flex items-center justify-center">
-          <svg id="mic-icon" class="w-7 h-7 lg:w-8 lg:h-8 text-gray-500 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <!-- Mikrofon Icon -->
+          <svg id="mic-icon" class="w-7 h-7 text-gray-500 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" 
                   d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
           </svg>
 
-          <!-- Gelombang Suara Saat Aktif -->
+          <!-- Animasi Gelombang Suara (hanya muncul saat aktif) -->
           <div id="voice-wave" class="absolute inset-0 flex items-center justify-center opacity-0 pointer-events-none">
             <div class="flex gap-1">
               <span class="voice-bar bg-emerald-600"></span>
@@ -639,16 +635,16 @@ window.addEventListener("load", () => {
 </div>
 
 <script>
-// === MESIN PENCARI MINI + VOICE SEARCH + ANIMASI GELOMBANG (KERJA DI SEMUA DEVICE) ===
-const searchInput = document.getElementById("search");
+// === VOICE SEARCH + ANIMASI GELOMBANG SUARA KEREN ===
 const voiceBtn = document.getElementById("voice-search-btn");
 const micIcon = document.getElementById("mic-icon");
 const voiceWave = document.getElementById("voice-wave");
+let recognition = null;
 let isListening = false;
 
 if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  const recognition = new SpeechRecognition();
+  recognition = new SpeechRecognition();
   recognition.lang = "id-ID";
   recognition.continuous = false;
   recognition.interimResults = false;
@@ -662,15 +658,18 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
     recognition.start();
     isListening = true;
 
+    // Aktifkan animasi gelombang suara
     micIcon.classList.add("opacity-0");
     voiceWave.classList.remove("opacity-0");
     voiceWave.classList.add("opacity-100");
+
+    showToast("🎤 Sedang mendengarkan... bicara sekarang!", "success");
   });
 
   recognition.onresult = (event) => {
     const result = event.results[0][0].transcript;
-    searchInput.value = result;
-    searchInput.focus();
+    document.getElementById("search").value = result;
+    document.getElementById("search").focus();
     performSearch();
     showToast(`✅ Terdeteksi: "${result}"`, "success");
   };
@@ -692,20 +691,10 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
 } else {
   voiceBtn.style.display = "none";
 }
-
-// Enter = langsung cari
-searchInput.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") performSearch();
-});
 </script>
 
 <style>
-  /* Glow & shadow halus */
-  #search-container:focus-within .bg-gradient-to-r {
-    opacity: 0.6 !important;
-  }
-
-  /* Animasi Gelombang Suara */
+  /* Animasi Gelombang Suara – Super Keren */
   .voice-bar {
     width: 4px;
     height: 4px;
@@ -715,7 +704,7 @@ searchInput.addEventListener("keypress", (e) => {
 
   @keyframes voiceWave {
     0%, 100% { height: 4px; transform: translateY(0); }
-    50% { height: 28px; transform: translateY(-12px); }
+    50% { height: 24px; transform: translateY(-10px); }
   }
 
   .animation-delay-100 { animation-delay: 0.1s; }
@@ -723,16 +712,14 @@ searchInput.addEventListener("keypress", (e) => {
   .animation-delay-300 { animation-delay: 0.3s; }
   .animation-delay-400 { animation-delay: 0.4s; }
 
-  /* Responsif di HP kecil & monitor besar */
+  /* Responsif di HP kecil */
   @media (max-width: 480px) {
-    #search { font-size: 1rem !important; padding-top: 1rem !important; padding-bottom: 1rem !important; }
     #voice-search-btn svg { width: 1.6rem !important; height: 1.6rem !important; }
     .voice-bar { width: 3px; }
-    @keyframes voiceWave { 50% { height: 20px; transform: translateY(-8px); } }
-  }
-
-  @media (min-width: 1024px) {
-    #search { font-size: 1.25rem !important; }
+    @keyframes voiceWave {
+      0%, 100% { height: 3px; }
+      50% { height: 20px; transform: translateY(-8px); }
+    }
   }
 </style>
   <!-- MOBILE SIDEBAR -->
