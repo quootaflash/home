@@ -319,91 +319,100 @@
 </head>
 <body class="bg-gray-50 text-gray-800">
 <script>
-// === FITUR BUKA/TUTUP OTOMATIS PROFESIONAL (15:00 - 21:00 WIB) ===
+// === FITUR BUKA/TUTUP DUNNAK.COM V2 - 100% NYATA & REAL-TIME (15:00 - 21:00 WIB) ===
 document.addEventListener("DOMContentLoaded", function () {
-  // Heroicons CDN (ringan & resmi)
-  const heroicons = document.createElement("script");
-  heroicons.src = "https://cdnjs.cloudflare.com/ajax/libs/heroicons/2.1.1/heroicons.min.js";
-  document.head.appendChild(heroicons);
+  const JAM_BUKA = 15;  // 15:00 WIB
+  const JAM_TUTUP = 21; // 21:00 WIB
 
-  const jamBuka = 15;   // 15:00 WIB
-  const jamTutup = 21;  // 21:00 WIB
-
-  // Waktu WIB (GMT+7)
-  const sekarang = new Date();
-  const waktuWIB = new Date(sekarang.getTime() + 7 * 60 * 60 * 1000);
-  const jamSekarang = waktuWIB.getUTCHours();
-
-  const sedangBuka = jamSekarang >= jamBuka && jamSekarang < jamTutup;
-
-  if (!sedangBuka) {
-    // HALAMAN TUTUP - DESAIN PROFESIONAL
-    document.documentElement.innerHTML = `
-<!DOCTYPE html>
-<html lang="id" class="h-full">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dunnak.com - Sedang Tutup</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>body{font-family:'Inter',sans-serif;}</style>
-</head>
-<body class="h-full bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
-  <div class="max-w-md w-full bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 text-center p-10">
-    <!-- Logo -->
-    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi6-JhY6g9H4ggtXPHCO7pTjErtprKfSRlgttoFgT4LcX-O2ROw-oxj7Ntr3r7cY6TdN5AMrwDJ7hyfyU1DI4ASMZ_Mw2chnMaXIDiWHZ-8X3H1Lhz-PjI7KIh2716aY_g4FIxL2Fe4OxBsIEAyE52WrLYS-p1La1U_mMHuVcQvFK-Np9l-ZixakqnZjx44/s640/20251120_174337.png" alt="Dunnak.com" class="w-28 h-28 mx-auto rounded-full shadow-xl border-4 border-white/30">
-
-    <h1 class="text-4xl md:text-5xl font-extrabold text-white mt-8">
-      <svg class="w-16 h-16 mx-auto mb-4 text-red-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-      Saat Ini Sedang Tutup
-    </h1>
-
-    <p class="text-lg text-gray-200 mt-4">Kami melayani pesanan setiap hari pada jam:</p>
-    
-    <div class="bg-white/20 rounded-2xl py-6 px-8 mt-6 inline-block">
-      <div class="flex items-center justify-center gap-3 text-4xl font-bold text-emerald-400">
-        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        15:00 — 21:00 WIB
-      </div>
-    </div>
-
-    <p class="text-gray-300 mt-8 text-sm leading-relaxed">
-      Kami akan kembali melayani Anda pada pukul <strong class="text-emerald-400">15:00 WIB</strong>.<br>
-      Pantau terus Instagram kami untuk update menu harian & promo spesial!
-    </p>
-
-    <div class="flex justify-center gap-6 mt-10">
-      <a href="https://instagram.com/dunnakindonesia" target="_blank" class="text-white hover:text-pink-300 transition">
-        <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-      </a>
-      <a href="https://tiktok.com/@dunnakindonesia" target="_blank" class="text-white hover:text-pink-300 transition">
-        <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M19.69 7.08a5.58 5.58 0 01-3.24-1.05c-1.58 0-3.06.59-4.11 1.63v6.76a4.52 4.52 0 11-4.52-4.52c0 .25.02.5.06.74a5.48 5.48 0 00-.8-.06 5.52 5.52 0 100 11.04 5.52 5.52 0 005.52-5.52V9.62a8.74 8.74 0 005.13 1.68V7.98a5.6 5.6 0 01-2.04-.9z"/></svg>
-      </a>
-    </div>
-
-    <p class="text-gray-400 text-xs mt-10">© 2025 Dunnak.com — Layanan Pesan Antar No.1 Kalibening</p>
-  </div>
-</body>
-</html>
-    `;
-
-    // Blokir inspect element & shortcut
-    document.onkeydown = e => e.preventDefault();
-    document.addEventListener("contextmenu", e => e.preventDefault());
-
-  } else {
-    // SEDANG BUKA → Banner profesional di atas
-    const banner = document.createElement("div");
-    banner.className = "bg-gradient-to-r from-emerald-600 to-green-600 text-white py-3 px-6 flex items-center justify-center gap-3 font-semibold text-sm md:text-base shadow-lg sticky top-0 z-50";
-    banner.innerHTML = `
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-      SEDANG BUKA • Pesan sekarang sebelum jam 21:00 WIB • Pengiriman cepat ke seluruh Kalibening
-    `;
-    document.body.insertBefore(banner, document.body.firstChild);
+  function getWIBTime() {
+    const now = new Date();
+    const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+    const wib = new Date(utc + (3600000 * 7)); // GMT+7
+    return wib;
   }
+
+  function updateStatus() {
+    const now = getWIBTime();
+    const hour = now.getHours();
+    const minute = now.getMinutes();
+    const second = now.getSeconds();
+    const isOpen = (hour >= JAM_BUKA && hour < JAM_TUTUP) || (hour === JAM_TUTUP && minute === 0 && second === 0);
+
+    if (!isOpen) {
+      // HITUNG DOWN COUNTDOWN BUKA BERIKUTNYA
+      let nextOpen = new Date(now);
+      nextOpen.setHours(JAM_BUKA, 0, 0, 0);
+      if (now > nextOpen) nextOpen.setDate(nextOpen.getDate() + 1);
+
+      const diff = nextOpen - now;
+      const h = Math.floor(diff / (1000 * 60 * 60));
+      const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+      document.body.innerHTML = `
+        <div style="min-height:100vh; background:linear-gradient(135deg,#0f172a,#1e293b); color:white; display:flex; align-items:center; justify-content:center; text-align:center; padding:2rem; font-family:system-ui,-apple-system,Arial,sans-serif;">
+          <div>
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi6-JhY6g9H4ggtXPHCO7pTjErtprKfSRlgttoFgT4LcX-O2ROw-oxj7Ntr3r7cY6TdN5AMrwDJ7hyfyU1DI4ASMZ_Mw2chnMaXIDiWHZ-8X3H1Lhz-PjI7KIh2716aY_g4FIxL2Fe4OxBsIEAyE52WrLYS-p1La1U_mMHuVcQvFK-Np9l-ZixakqnZjx44/s320/20251120_174337.png" alt="Dunnak.com" style="width:140px; border-radius:50%; box-shadow:0 20px 40px rgba(0,0,0,0.6); margin-bottom:2rem;">
+            <h1 style="font-size:2.8rem; font-weight:900; margin-bottom:1rem; color:#fca5a5;">🚫 Dunnak Sedang Tutup</h1>
+            <p style="font-size:1.4rem; opacity:0.9;">Kami buka setiap hari pukul</p>
+            <p style="font-size:3.5rem; font-weight:900; color:#34d399; margin:1rem 0;">15:00 - 21:00 WIB</p>
+            <div id="countdown" style="font-size:2.5rem; font-weight:bold; color:#fbbf24; margin:2rem 0;">
+              Buka lagi dalam ${h} jam ${m} menit ${s} detik
+            </div>
+            <p style="font-size:1.1rem; opacity:0.8; margin-top:2rem;">
+              Follow Instagram kami untuk promo & update menu harian!<br>
+              <a href="https://instagram.com/dunnakindonesia" style="color:#e879f9; text-decoration:underline;">@dunnakindonesia</a>
+            </p>
+          </div>
+        </div>
+      `;
+
+      // Update countdown tiap detik
+      setInterval(() => {
+        const diff2 = nextOpen - new Date();
+        if (diff2 <= 0) location.reload();
+        const h2 = Math.floor(diff2 / (1000*60*60));
+        const m2 = Math.floor((diff2 % (1000*60*60)) / (1000*60));
+        const s2 = Math.floor((diff2 % (1000*60)) / 1000);
+        document.getElementById('countdown').innerText = `Buka lagi dalam ${h2} jam ${m2} menit ${s2} detik`;
+      }, 1000);
+
+      // Anti-bypass saat tutup
+      document.addEventListener("contextmenu", e => e.preventDefault());
+      document.addEventListener("keydown", e => {
+        if (e.key === "F12" || (e.ctrlKey && (e.key === "u" || e.key === "U")) || (e.ctrlKey && e.shiftKey && "IJC".includes(e.key.toUpperCase()))) {
+          e.preventDefault();
+        }
+      });
+
+      throw new Error("Dunnak tutup otomatis");
+    } else {
+      // SEDANG BUKA → tambah banner + countdown sisa waktu
+      const banner = document.createElement("div");
+      banner.id = "open-banner";
+      banner.style.cssText = "background:linear-gradient(90deg,#22c55e,#16a34a); color:white; text-align:center; padding:0.75rem; font-weight:bold; font-size:1rem; position:sticky; top:0; z-index:9999; box-shadow:0 4px 20px rgba(0,0,0,0.2);";
+      
+      function updateOpenBanner() {
+        const now = getWIBTime();
+        const closeTime = new Date(now);
+        closeTime.setHours(JAM_TUTUP, 0, 0, 0);
+        const diff = closeTime - now;
+        if (diff <= 0) {
+          location.reload();
+          return;
+        }
+        const h = Math.floor(diff / (1000*60*60));
+        const m = Math.floor((diff % (1000*60*60)) / (1000*60));
+        banner.innerHTML = `🟢 SEDANG BUKA • Tutup dalam ${h} jam ${m} menit • Pesan sekarang sebelum kehabisan! ⏰`;
+      }
+      updateOpenBanner();
+      setInterval(updateOpenBanner, 60000); // update tiap menit
+
+      document.body.insertBefore(banner, document.body.firstChild);
+    }
+  }
+
+  updateStatus();
 });
 
     document.addEventListener('contextmenu', e => e.preventDefault());
