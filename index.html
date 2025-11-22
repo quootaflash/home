@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -85,6 +87,7 @@
     ]
   }
   </script>
+
   <!-- Preconnect untuk kecepatan loading (Google suka situs cepat) -->
   <link rel="preconnect" href="https://dlnenwglsmfyhdysmqdc.supabase.co" />
   <link rel="preconnect" href="https://blogger.googleusercontent.com" />
@@ -318,8 +321,8 @@
 <body class="bg-gray-50 text-gray-800">
 <script>
 // === BUKA/TUTUP SILENT + HALAMAN TUTUP WARNA CERAH SESUAI TEMA DUNNAK ===
-let JAM_BUKA = 06;   // Ubah angka ini saja (15 = 15:00 WIB)
-let JAM_TUTUP = 23;  // Ubah angka ini saja (21 = 21:00 WIB)
+let JAM_BUKA = 15;   // Ubah angka ini saja (15 = 15:00 WIB)
+let JAM_TUTUP = 21;  // Ubah angka ini saja (21 = 21:00 WIB)
 
 document.addEventListener("DOMContentLoaded", () => {
   const getWIB = () => new Date(new Date().getTime() + new Date().getTimezoneOffset() * 60000 + 3600000*7);
@@ -355,7 +358,7 @@ document.addEventListener("DOMContentLoaded", () => {
                alt="Dunnak.com" 
                style="width:88px;height:88px;border-radius:50%;margin:0 auto 1.5rem;border:4px solid #ecfdf5;box-shadow:0 10px 30px rgba(16,185,129,0.25);object-fit:cover;">
 
-          <h1 style="font-size:2rem;font-weight:800;margin:0 0 0.5rem;color:#065f46;">Sedang Tutup</h1>
+          <h1 style="font-size:2rem;font-weight:800;margin:0 0 0.5rem;color:#065f46;">Sedang Istirahat</h1>
           <p style="font-size:1.05rem;color:#4b5563;margin:0 0 2rem;line-height:1.6;">Kami akan kembali melayani pesanan pada jam operasional berikut</p>
 
           <!-- Jam Operasional -->
@@ -435,6 +438,155 @@ document.addEventListener("DOMContentLoaded", () => {
       </button>
     </div>
   </header>
+<!-- ACCESSIBILITY TOOLS – KHUSUS DIFABEL & LANSIA -->
+<div id="accessibility-tools" class="fixed left-4 bottom-4 z-[50] transition-all duration-500">
+  <button id="accessibility-toggle" 
+          class="bg-emerald-600 hover:bg-emerald-700 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center transform hover:scale-110 transition-all duration-300">
+    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+    </svg>
+  </button>
+
+  <!-- Panel Tools -->
+  <div id="accessibility-panel" class="absolute bottom-20 left-0 bg-white rounded-2xl shadow-2xl p-4 w-64 transform scale-0 origin-bottom-left transition-transform duration-300">
+    <h3 class="font-bold text-emerald-700 text-lg mb-3">Pengaturan Kenyamanan</h3>
+    
+    <div class="space-y-3">
+      <!-- Ukuran Teks -->
+      <div class="flex items-center justify-between">
+        <span class="text-sm font-medium text-gray-700">Ukuran Teks</span>
+        <div class="flex gap-2">
+          <button data-size="small" class="text-btn active">A</button>
+          <button data-size="medium" class="text-btn">A</button>
+          <button data-size="large" class="text-btn">A</button>
+        </div>
+      </div>
+
+      <!-- Kontras Tinggi -->
+      <div class="flex items-center justify-between">
+        <span class="text-sm font-medium text-gray-700">Kontras Tinggi</span>
+        <button id="high-contrast" class="w-12 h-7 rounded-full bg-gray-300 relative transition">
+          <span class="absolute left-1 top-1 w-5 h-5 bg-white rounded-full transition"></span>
+        </button>
+      </div>
+
+      <!-- Mode Baca (Readable Font) -->
+      <div class="flex items-center justify-between">
+        <span class="text-sm font-medium text-gray-700">Mode Baca</span>
+        <button id="readable-mode" class="w-12 h-7 rounded-full bg-gray-300 relative transition">
+          <span class="absolute left-1 top-1 w-5 h-5 bg-white rounded-full transition"></span>
+        </button>
+      </div>
+
+      <!-- Reset -->
+      <button id="accessibility-reset" class="w-full mt-4 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 rounded-lg transition">
+        Reset Semua
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// === ACCESSIBILITY TOOLS – SUPER CANGGIH & NYAMAN UNTUK SEMUA PENGUNJUNG ===
+const toggleBtn = document.getElementById("accessibility-toggle");
+const panel = document.getElementById("accessibility-panel");
+
+// Buka/Tutup panel
+toggleBtn.addEventListener("click", () => {
+  panel.classList.toggle("scale-0");
+  panel.classList.toggle("scale-100");
+});
+
+// Ukuran Teks
+document.querySelectorAll("[data-size]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const size = btn.dataset.size;
+    document.body.classList.remove("text-small", "text-medium", "text-large");
+    document.body.classList.add(`text-${size}`);
+    
+    document.querySelectorAll("[data-size]").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    
+    localStorage.setItem("dunnak_text_size", size);
+  });
+});
+
+// Kontras Tinggi
+document.getElementById("high-contrast").addEventListener("click", () => {
+  document.body.classList.toggle("high-contrast");
+  const isOn = document.body.classList.contains("high-contrast");
+  const toggle = document.querySelector("#high-contrast span");
+  toggle.style.left = isOn ? "calc(100% - 28px)" : "4px";
+  toggle.parentElement.style.background = isOn ? "#10b981" : "#d1d5db";
+  localStorage.setItem("dunnak_high_contrast", isOn);
+});
+
+// Mode Baca (font lebih mudah dibaca)
+document.getElementById("readable-mode").addEventListener("click", () => {
+  document.body.classList.toggle("readable-mode");
+  const isOn = document.body.classList.contains("readable-mode");
+  const toggle = document.querySelector("#readable-mode span");
+  toggle.style.left = isOn ? "calc(100% - 28px)" : "4px";
+  toggle.parentElement.style.background = isOn ? "#10b981" : "#d1d5db";
+  localStorage.setItem("dunnak_readable", isOn);
+});
+
+// Reset
+document.getElementById("accessibility-reset").addEventListener("click", () => {
+  document.body.classList.remove("text-small", "text-medium", "text-large", "high-contrast", "readable-mode");
+  localStorage.removeItem("dunnak_text_size");
+  localStorage.removeItem("dunnak_high_contrast");
+  localStorage.removeItem("dunnak_readable");
+  
+  // Reset toggle
+  document.querySelectorAll("#high-contrast span, #readable-mode span").forEach(s => {
+    s.style.left = "4px";
+    s.parentElement.style.background = "#d1d5db";
+  });
+  document.querySelectorAll("[data-size]").forEach(b => b.classList.remove("active"));
+  document.querySelector("[data-size='medium']").classList.add("active");
+});
+
+// Load pengaturan sebelumnya
+window.addEventListener("load", () => {
+  const size = localStorage.getItem("dunnak_text_size") || "medium";
+  document.body.classList.add(`text-${size}`);
+  document.querySelector(`[data-size='${size}']`).classList.add("active");
+
+  if (localStorage.getItem("dunnak_high_contrast") === "true") document.getElementById("high-contrast").click();
+  if (localStorage.getItem("dunnak_readable") === "true") document.getElementById("readable-mode").click();
+});
+</script>
+
+<style>
+  .text-small { font-size: 0.875rem !important; }
+  .text-medium { font-size: 1rem !important; }
+  .text-large { font-size: 1.125rem !important; line-height: 1.7 !important; }
+
+  .high-contrast {
+    background: #000 !important;
+    color: #fff !important;
+  }
+  .high-contrast * { color: #fff !important; background: #000 !important; border-color: #fff !important; }
+  .high-contrast .bg-white { background: #000 !important; }
+  .high-contrast .text-gray-600 { color: #ccc !important; }
+
+  .readable-mode {
+    font-family: 'Comic Sans MS', 'Arial Rounded MT Bold', sans-serif !important;
+    line-height: 1.8 !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  .text-btn {
+    @apply w-10 h-10 rounded-lg border-2 border-emerald-600 text-emerald-600 font-bold flex items-center justify-center transition;
+  }
+  .text-btn.active {
+    @apply bg-emerald-600 text-white border-emerald-600;
+  }
+  .text-btn:nth-child(1) { font-size: 0.875rem; }
+  .text-btn:nth-child(2) { font-size: 1rem; }
+  .text-btn:nth-child(3) { font-size: 1.25rem; }
+</style>
   <!-- SEARCH BAR -->
   <div id="search-container" class="max-w-6xl mx-auto px-4">
     <div id="search-wrapper" class="relative">
@@ -462,16 +614,16 @@ document.addEventListener("DOMContentLoaded", () => {
       <a href="#" class="text-sm font-medium hover:text-emerald-600">Kontak</a>
     </nav>
   </div>
-<!-- HERO SLIDER FINAL – PERGANTIAN HALUS, TANPA BAYANGAN, SUPER BERSIH -->
+<!-- HERO SLIDER FINAL – DOTS MINIMAL & TIDAK MENGGANGGU -->
 <section class="w-full px-4 py-6">
-  <div class="relative max-w-full mx-auto overflow-hidden rounded-3xl">
+  <div class="relative max-w-full mx-auto overflow-hidden rounded-3xl shadow-2xl">
     <div id="hero-slider" class="relative w-full">
 
       <!-- Slide 1 -->
       <div class="slider-item active">
         <div class="relative w-full pt-[56.25%] sm:pt-[50%] md:pt-[45%] lg:pt-[40%] xl:pt-[35%] overflow-hidden">
           <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjQBQCELtF3l2cvUL_5GMk-bjvDRB0_naRR53fqY9lLgrjVSOf1uh1cVQspa5fd0fLnLGpYUN_23IUMLjeuCAZjnYjB78BM8lhDe05t2aTMXcU9Fl3P7VNTJh2TmwbuCczQVMfQCxVBEEdadjCIzZ546blJRtHkahyphenhyphenoj7wBKPHTsf3XQx7JM3Qp9zxMlbAE/s1920/20251120_194346.png" 
-               alt="Dunnak.com"
+               alt="Dunnak.com Slide 1"
                class="absolute inset-0 w-full h-full object-cover object-center"
                loading="lazy">
         </div>
@@ -480,8 +632,8 @@ document.addEventListener("DOMContentLoaded", () => {
       <!-- Slide 2 -->
       <div class="slider-item">
         <div class="relative w-full pt-[56.25%] sm:pt-[50%] md:pt-[45%] lg:pt-[40%] xl:pt-[35%] overflow-hidden">
-          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjQBQCELtF3l2cvUL_5GMk-bjvDRB0_naRR53fqY9lLgrjVSOf1uh1cVQspa5fd0fLnLGpYUN_23IUMLjeuCAZjnYjB78BM8lhDe05t2aTMXcU9Fl3P7VNTJh2TmwbuCczQVMfQCxVBEEdadjCIzZ546blJRtHkahyphenhyphenoj7wBKPHTsf3XQx7JM3Qp9zxMlbAE/s1920/20251120_194346.png" 
-               alt="Dunnak.com"
+          <img src="https://images.unsplash.com/photo-1513106580091-1d82408b8f6a?w=1920&q=80&auto=format&fit=crop" 
+               alt="Dunnak.com Slide 2"
                class="absolute inset-0 w-full h-full object-cover object-center"
                loading="lazy">
         </div>
@@ -491,7 +643,7 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="slider-item">
         <div class="relative w-full pt-[56.25%] sm:pt-[50%] md:pt-[45%] lg:pt-[40%] xl:pt-[35%] overflow-hidden">
           <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgsk84Gkrgw4y_4bAZkHguOEg3fXoc9kfaV-vkMPY_VOLZgeJBjhtveCFPAVS4dDyjpQ-nC6akVgcxUtnTglMVJpyDfQmF035rS4HvbI3dQIOViG1l6DV5nM3T1Acl8C4aY6KwlF5UPv0kRQU7qe3fc4FX4c04znYL2MPdDQkMYSC1eGFXJcHCQFkmNudVE/s1920/20251120_204805.png" 
-               alt="Dunnak.com"
+               alt="Dunnak.com Slide 3"
                class="absolute inset-0 w-full h-full object-cover object-center"
                loading="lazy">
         </div>
@@ -501,11 +653,23 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="slider-item">
         <div class="relative w-full pt-[56.25%] sm:pt-[50%] md:pt-[45%] lg:pt-[40%] xl:pt-[35%] overflow-hidden">
           <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi6-JhY6g9H4ggtXPHCO7pTjErtprKfSRlgttoFgT4LcX-O2ROw-oxj7Ntr3r7cY6TdN5AMrwDJ7hyfyU1DI4ASMZ_Mw2chnMaXIDiWHZ-8X3H1Lhz-PjI7KIh2716aY_g4FIxL2Fe4OxBsIEAyE52WrLYS-p1La1U_mMHuVcQvFK-Np9l-ZixakqnZjx44/s1920/20251120_174337.png" 
-               alt="Dunnak.com"
+               alt="Dunnak.com Slide 4"
                class="absolute inset-0 w-full h-full object-cover object-center"
                loading="lazy">
         </div>
       </div>
+
+      <!-- 4 DOTS MINIMAL – TENGAH BAWAH, TIDAK MENGGANGGU GAMBAR SAMA SEKALI -->
+      <div class="absolute inset-x-0 bottom-4 flex justify-center z-10 pointer-events-none">
+        <div class="flex gap-3">
+          <span class="dot w-1.5 h-1.5 md:w-2 md:h-2 bg-white/70 rounded-full cursor-pointer transition-all duration-300 active hover:bg-white"></span>
+          <span class="dot w-1.5 h-1.5 md:w-2 md:h-2 bg-white/50 rounded-full cursor-pointer transition-all duration-300 hover:bg-white/80"></span>
+          <span class="dot w-1.5 h-1.5 md:w-2 md:h-2 bg-white/50 rounded-full cursor-pointer transition-all duration-300 hover:bg-white/80"></span>
+          <span class="dot w-1.5 h-1.5 md:w-2 md:h-2 bg-white/50 rounded-full cursor-pointer transition-all duration-300 hover:bg-white/80"></span>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 <!-- POPUP PROMO DUNNAK.COM - MENGGUNAKAN GAMBAR SRC ASLI -->
 <div id="dunnak-popup" class="fixed inset-0 z-[9999] hidden grid place-items-center px-4 md:px-8 overflow-y-auto">
@@ -608,7 +772,7 @@ if (popupCard) {
   });
   resizeObserver.observe(document.body);
 }
-</script> 
+</script>  
   <!-- ADS SECTION -->
   <section class="max-w-6xl mx-auto px-4 py-6">
     <h2 class="text-1xl md:text-1xl font-bold mb-4">Penawaran terkini</h2>
@@ -635,7 +799,78 @@ if (popupCard) {
     <h2 class="text-2xl md:text-2xl font-bold mb-6">Menu Utama</h2>
     <div id="produk-grid" class="flex gap-4"></div>
   </main>
- <!-- FAQ SECTION -->
+  <!-- ADVANTAGES SECTION -->
+  <section class="max-w-6xl mx-auto px-4 py-6">
+    <h2 class="text-2xl md:text-3xl font-bold text-center mb-6">Kenapa harus dunnak.com?</h2>
+    <p class="text-center text-gray-600 mb-8">Kami menghadirkan pengalaman kuliner terbaik dengan layanan cepat dan terpercaya.</p>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div class="bg-white p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition">
+        <svg class="h-12 w-12 mx-auto mb-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+        </svg>
+        <h3 class="text-lg font-semibold">Mudah</h3>
+        <p class="text-sm text-gray-600 mt-2">Layanan kami didesain untuk lebih mudah digunakan oleh semua orang</p>
+      </div>
+      <div class="bg-white p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition">
+        <svg class="h-12 w-12 mx-auto mb-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        <h3 class="text-lg font-semibold">Cepat</h3>
+        <p class="text-sm text-gray-600 mt-2">Kami siap melayani kapan saja, siang maupun malam pada saat dibutuhkan</p>
+      </div>
+      <div class="bg-white p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition">
+        <svg class="h-12 w-12 mx-auto mb-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a5 5 0 00-10 0v2m-2 2v5a2 2 0 002 2h10a2 2 0 002-2v-5m-2-2H5"/>
+        </svg>
+        <h3 class="text-lg font-semibold">Aman</h3>
+        <p class="text-sm text-gray-600 mt-2">Transaksi terjamin aman dengan sistem COD</p>
+      </div>
+    </div>
+  </section>
+
+<!-- TESTIMONI WARGA KALIBENING -->
+<section class="bg-gradient-to-b from-emerald-50 to-white py-16">
+  <div class="max-w-6xl mx-auto px-4">
+    <h2 class="text-3xl font-bold text-center mb-12">Apa Kata Warga Kalibening?</h2>
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="bg-white p-6 rounded-2xl shadow-xl">
+        <p class="italic text-gray-700">"Cepet banget antarannya! Gorengan masih panas, maknyus!"</p>
+        <div class="mt-4 flex items-center gap-3">
+          <div class="w-12 h-12 bg-gray-300 rounded-full"></div>
+          <div>
+            <p class="font-bold">Mbak Rina</p>
+            <p class="text-sm text-gray-500">RT 03 Kalibening</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="bg-white p-6 rounded-2xl shadow-xl">
+        <p class="italic text-gray-700">"Nasi box buat arisan kemarin enak semua, harganya murah lagi!"</p>
+        <div class="mt-4 flex items-center gap-3">
+          <div class="w-12 h-12 bg-gray-300 rounded-full"></div>
+          <div>
+            <p class="font-bold">Pak Slamet</p>
+            <p class="text-sm text-gray-500">Dukuh Gunung Langit</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="bg-white p-6 rounded-2xl shadow-xl">
+        <p class="italic text-gray-700">"Tengah malam laper tinggal WA, 20 menit sampai. Mantap Dunnak!"</p>
+        <div class="mt-4 flex items-center gap-3">
+          <div class="w-12 h-12 bg-gray-300 rounded-full"></div>
+          <div>
+            <p class="font-bold">Adit Keren</p>
+            <p class="text-sm text-gray-500">Anak Kos Kalibening</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+  
+   <!-- FAQ SECTION -->
   <section id="faq" class="max-w-7xl mx-auto px-4 py-8">
     <h2 class="text-1xl md:text-1xl font-bold text-center mb-6">Pertanyaan yang sering diajukan</h2>
     <div class="max-w-3xl mx-auto">
