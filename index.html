@@ -496,106 +496,23 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>
   </div>
 </header>
-
-<!-- MOBILE SIDEBAR + AUTH DIRECT LINK -->
-<div id="sidebar-backdrop" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 hidden" onclick="closeMobileMenu()"></div>
-
-<div id="mobile-sidebar" class="fixed inset-y-0 right-0 z-50 w-80 bg-white shadow-2xl transform translate-x-full transition-transform duration-400 ease-in-out">
-  <div class="bg-gradient-to-br from-emerald-600 to-emerald-700 px-6 py-8 text-white">
-    <div class="flex items-center justify-between">
-      <div class="flex items-center gap-4">
-        <div class="w-14 h-14 bg-white/20 backdrop-blur rounded-full flex items-center justify-center">
-          <svg class="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-          </svg>
-        </div>
-        <div>
-          <p class="text-sm opacity-90">Selamat datang</p>
-          <p class="text-xl font-bold">Pengunjung Dunnak</p>
-        </div>
-      </div>
-      <button id="close-sidebar" class="p-2 hover:bg-white/20 rounded-full transition">
-        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"/>
+<!-- MOBILE SIDEBAR -->
+  <div id="sidebar-backdrop"></div>
+  <div id="mobile-sidebar" class="fixed inset-y-0 right-0 z-50 w-64 bg-white shadow-lg translate-x-full transition duration-300 ease-in-out md:hidden">
+    <div class="flex justify-end p-4">
+      <button id="close-sidebar" class="p-2">
+        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none">
+          <path d="M6 18L18 6M6 6l12 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
         </svg>
       </button>
     </div>
+    <nav class="flex flex-col p-4 space-y-4">
+      <a href="#" class="text-sm font-medium hover:text-emerald-600">Beranda</a>
+      <a href="#" class="text-sm font-medium hover:text-emerald-600">Menu</a>
+      <a href="#" class="text-sm font-medium hover:text-emerald-600">Wishlist</a>
+      <a href="#" class="text-sm font-medium hover:text-emerald-600">Kontak</a>
+    </nav>
   </div>
-
-  <nav class="px-6 py-6 space-y-1">
-    <a href="#" class="flex items-center gap-4 px-5 py-4 rounded-2xl hover:bg-emerald-50 text-gray-800 font-medium transition">
-      <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-      </svg>
-      Beranda
-    </a>
-    <a href="#produk-grid" class="flex items-center gap-4 px-5 py-4 rounded-2xl hover:bg-emerald-50 text-gray-800 font-medium transition">
-      <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-      </svg>
-      Menu Makanan
-    </a>
-    <a href="#faq" class="flex items-center gap-4 px-5 py-4 rounded-2xl hover:bg-emerald-50 text-gray-800 font-medium transition">
-      <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-      </svg>
-      Bantuan & FAQ
-    </a>
-  </nav>
-
-  <div class="border-t border-gray-200 mx-6"></div>
-
-  <!-- AUTH DIRECT LINK (Mobile) -->
-  <div class="px-6 py-6 space-y-4">
-    <a href="https://m.dunnak.com/login" target="_blank" 
-       class="w-full block text-center bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-lg py-4 rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-300">
-      Masuk
-    </a>
-    <a href="https://m.dunnak.com/register" target="_blank" 
-       class="w-full block text-center bg-gray-100 hover:bg-gray-200 text-emerald-700 font-bold text-lg py-4 rounded-2xl shadow-md hover:shadow-lg transition">
-      Daftar Akun Baru
-    </a>
-  </div>
-</div>
-
-<script>
-// === MOBILE SIDEBAR + PASTIKAN PRODUK MUNCUL ===
-const mobileBtn = document.getElementById("mobile-menu-btn");
-const sidebar = document.getElementById("mobile-sidebar");
-const backdrop = document.getElementById("sidebar-backdrop");
-const closeBtn = document.getElementById("close-sidebar");
-
-const openMobileMenu = () => {
-  backdrop.classList.remove("hidden");
-  setTimeout(() => backdrop.classList.add("opacity-100"), 10);
-  sidebar.classList.remove("translate-x-full");
-};
-
-const closeMobileMenu = () => {
-  backdrop.classList.remove("opacity-100");
-  setTimeout(() => backdrop.classList.add("hidden"), 300);
-  sidebar.classList.add("translate-x-full");
-};
-
-mobileBtn?.addEventListener("click", openMobileMenu);
-closeBtn?.addEventListener("click", closeMobileMenu);
-backdrop?.addEventListener("click", closeMobileMenu);
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && !sidebar.classList.contains("translate-x-full")) closeMobileMenu();
-});
-
-// === PASTIKAN loadData() DIPANGGIL – PRODUK AKAN MUNCUL! ===
-document.addEventListener("DOMContentLoaded", () => {
-  if (typeof loadData === "function") {
-    loadData();
-  }
-});
-</script>
-
-<style>
-  #sidebar-backdrop { transition: opacity 0.4s ease; }
-  #sidebar-backdrop.opacity-100 { opacity: 1; }
-</style>
 <!-- POPUP PROMO DUNNAK.COM - MENGGUNAKAN GAMBAR SRC ASLI -->
 <div id="dunnak-popup" class="fixed inset-0 z-[9999] hidden grid place-items-center px-4 md:px-8 overflow-y-auto">
   <!-- Backdrop -->
