@@ -789,6 +789,85 @@ if (popupCard) {
     <h2 class="text-1xl md:text-1xl font-bold mb-4">Penawaran terkini</h2>
     <div id="ads-grid" class="flex gap-4"></div>
   </section>
+  <script>
+// === DETEKSI LOKASI OTOMATIS + REKOMENDASI PRODUK (100% FRONTEND) ===
+let userInKalibeningArea = false;
+
+function cekLokasiDanRekomendasi() {
+  if (!navigator.geolocation) {
+    console.log("Geolocation tidak didukung browser ini");
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    async (position) => {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+
+      try {
+        // Reverse geocoding pakai OpenStreetMap (gratis & cepat)
+        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=16&addressdetails=1`);
+        const data = await res.json();
+
+        if (data && data.address) {
+          const kecamatan = (data.address.suburb || data.address.town || data.address.village || data.address.city_district || "").toLowerCase();
+          const kabupaten = (data.address.county || "").toLowerCase();
+
+          // Deteksi apakah di Kalibening / Banjarnegara
+          userInKalibeningArea = kecamatan.includes("kalibening") || 
+                                 kabupaten.includes("banjarnegara") || 
+                                 kecamatan.includes("klb");
+
+          if (userInKalibeningArea) {
+            // Tampilkan banner rekomendasi
+            document.getElementById("lokasi-banner")?.classList.remove("hidden");
+            document.getElementById("lokasi-nama") && (document.getElementById("lokasi-nama").textContent = data.address.suburb || "Kalibening");
+
+            // Prioritaskan produk lokal (contoh: jika ada kategori "Lokal" atau merchant dari Kalibening)
+            // Script ini akan mengurutkan produk dari merchant terdekat jika ada data alamat
+            // Untuk saat ini: beri tanda khusus di produk yang relevan
+            document.querySelectorAll("#produk-grid article").forEach(card => {
+              const merchant = card.querySelector("p")?.textContent.toLowerCase() || "";
+              if (merchant.includes("kalibening") || merchant.includes("banjarnegara") || merchant.includes("lokal")) {
+                card.classList.add("border-2", "border-emerald-500", "ring-4", "ring-emerald-100");
+                card.style.transform = "translateY(-4px)";
+              }
+            });
+
+            showToast("Selamat datang di Kalibening! Produk lokal kami ditandai untukmu 📍", "success");
+          } else {
+            showToast(`Kamu di ${kecamatan || "luar wilayah"}. Saat ini hanya melayani Kalibening & sekitarnya.`, "error");
+          }
+        }
+      } catch (err) {
+        console.log("Gagal reverse geocoding", err);
+      }
+    },
+    (error) => {
+      // Jika user tolak atau error
+      if (error.code === 1) {
+        showToast("Izin lokasi ditolak. Tetap menampilkan semua menu.", "error");
+      }
+    },
+    { timeout: 10000, maximumAge: 600000, enableHighAccuracy: true }
+  );
+}
+
+// Jalankan otomatis setelah load data selesai
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(cekLokasiDanRekomendasi, 2000); // delay 2 detik biar tidak ganggu loading
+});
+</script>
+
+<!-- BANNER REKOMENDASI LOKASI (MUNcul hanya jika terdeteksi di Kalibening) -->
+<div id="lokasi-banner" class="hidden bg-emerald-600 text-white text-center py-3.5 font-bold text-sm sm:text-base shadow-lg z-30">
+  <div class="max-w-7xl mx-auto px-4 flex items-center justify-center gap-3">
+    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+      <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+    </svg>
+    Lokasi kamu terdeteksi: <span id="lokasi-nama">Kalibening</span> — Menampilkan rekomendasi produk terdekat!
+  </div>
+</div>
   <!-- CATEGORY AND FILTER -->
   <section class="max-w-6xl mx-auto px-4 py-4">
     <div class="flex justify-between items-center mb-4">
