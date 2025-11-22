@@ -356,7 +356,7 @@ document.addEventListener("DOMContentLoaded", () => {
                alt="Dunnak.com" 
                style="width:88px;height:88px;border-radius:50%;margin:0 auto 1.5rem;border:4px solid #ecfdf5;box-shadow:0 10px 30px rgba(16,185,129,0.25);object-fit:cover;">
 
-          <h1 style="font-size:2rem;font-weight:800;margin:0 0 0.5rem;color:#065f46;">Sedang Istirahat</h1>
+          <h2 style="font-size:2rem;font-weight:800;margin:0 0 0.5rem;color:#065f46;">Sedang Tutup</h2>
           <p style="font-size:1.05rem;color:#4b5563;margin:0 0 2rem;line-height:1.6;">Kami akan kembali melayani pesanan pada jam operasional berikut</p>
 
           <!-- Jam Operasional -->
@@ -387,7 +387,7 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
 
           <p style="margin-top:2.5rem;font-size:0.85rem;color:#6b7280;">
-            © 2025 Dunnak.com • Makan & Jajan Kalibening
+            © 2025 Dunnak.com
           </p>
         </div>
       </div>
@@ -457,7 +457,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <!-- Input Field -->
         <input id="search" 
                type="search" 
-               placeholder="Cari makanan favoritmu di Kalibening..." 
+               placeholder="Cari makanan atau jajan" 
                autocomplete="off"
                class="w-full py-4 pr-4 pl-2 text-base md:text-lg font-medium text-gray-800 placeholder-gray-400 focus:outline-none bg-transparent"
                style="caret-color: #10b981;">
@@ -516,7 +516,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
     voiceWave.classList.remove("opacity-0");
     voiceWave.classList.add("opacity-100");
 
-    showToast("Sedang mendengarkan... bicara sekarang!", "success");
+    showToast("bicara sekarang!", "success");
   });
 
   recognition.onresult = (event) => {
@@ -524,7 +524,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
     searchInput.value = result;
     searchInput.focus();
     performSearch(); // langsung cari
-    showToast(`Terdeteksi: "${result}"`, "success");
+    showToast(`Mencari..: "${result}"`, "success");
   };
 
   recognition.onend = () => {
