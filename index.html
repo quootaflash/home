@@ -901,7 +901,75 @@ if (popupCard) {
 
 <!-- Heroicons CDN (gratis & resmi) -->
 <script src="https://unpkg.com/heroicons@2.1.1/dist/heroicons.min.js"></script>
-  
+  <!-- BANNER PROMOSI OTOMATIS – MIRIP IKLAN (MUNcul SETIAP KALI BUKA SITUS) -->
+<div id="promo-banner" class="fixed bottom-0 left-0 right-0 z-[9998] translate-y-full transition-transform duration-700 ease-out">
+  <div class="relative bg-gradient-to-r from-emerald-600 via-emerald-700 to-teal-700 text-white shadow-2xl">
+    
+    <!-- Close Button -->
+    <button id="close-banner" class="absolute top-3 right-3 md:top-4 md:right-4 text-white/80 hover:text-white transition">
+      <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+
+    <!-- Konten Banner -->
+    <div class="max-w-7xl mx-auto px-6 py-6 md:py-8 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="text-center md:text-left">
+        <h3 class="text-2xl md:text-3xl font-black leading-tight">
+          🔥 PROMO SPESIAL HARI INI!
+        </h3>
+        <p class="mt-2 text-base md:text-lg opacity-95">
+          Diskon <strong class="text-yellow-300 text-3xl">20%</strong> untuk pesanan pertama!
+          <br class="hidden md:block">
+          Gunakan kode: <span class="bg-white/20 px-4 py-2 rounded-full font-bold">DUNNAK20</span>
+        </p>
+      </div>
+
+      <!-- Tombol CTA -->
+      <a href="https://wa.me/6281234567890?text=Halo%20saya%20mau%20order%20pakai%20kode%20DUNNAK20" 
+         target="_blank"
+         class="inline-flex items-center gap-3 bg-white text-emerald-700 font-black text-lg md:text-xl px-8 py-5 rounded-full shadow-2xl hover:shadow-3xl transform hover:scale-105 transition duration-300 whitespace-nowrap">
+        Klaim Sekarang
+        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+// === BANNER PROMO OTOMATIS – MUNCUL SETIAP KALI BUKA SITUS ===
+const banner = document.getElementById("promo-banner");
+const closeBtn = document.getElementById("close-banner");
+
+// Muncul otomatis setelah 1 detik
+setTimeout(() => {
+  banner.classList.remove("translate-y-full");
+}, 1000);
+
+// Tutup banner
+closeBtn.addEventListener("click", () => {
+  banner.classList.add("translate-y-full");
+  setTimeout(() => banner.style.display = "none", 700);
+});
+
+// Opsional: Tutup otomatis setelah 15 detik
+setTimeout(() => {
+  if (!banner.classList.contains("translate-y-full")) {
+    banner.classList.add("translate-y-full");
+  }
+}, 15000);
+</script>
+
+<style>
+  /* Responsif di HP kecil */
+  @media (max-width: 640px) {
+    #promo-banner h3 { font-size: 1.5rem !important; }
+    #promo-banner p { font-size: 0.9rem !important; }
+    #promo-banner a { font-size: 1rem !important; padding: 1rem 1.5rem !important; }
+  }
+</style>
    <!-- FAQ SECTION -->
   <section id="faq" class="max-w-7xl mx-auto px-4 py-8">
     <h2 class="text-1xl md:text-1xl font-bold text-center mb-6">Pertanyaan yang sering diajukan</h2>
