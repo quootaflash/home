@@ -901,40 +901,40 @@ if (popupCard) {
 
 <!-- Heroicons CDN (gratis & resmi) -->
 <script src="https://unpkg.com/heroicons@2.1.1/dist/heroicons.min.js"></script>
-<!-- IKLAN GAMBAR CANGGIH – VERSI 2025 (BISA GANTI GAMBAR SRC SESUKA HATI) -->
+<!-- IKLAN GAMBAR CANGGIH – BISA DIJADWALKAN TANGGAL + RESPONSIF SEMUA DEVICE -->
 <div id="ad-banner" class="fixed inset-x-0 bottom-0 z-[9998] translate-y-full transition-all duration-800 ease-out">
   <div class="relative bg-black/80 backdrop-blur-xl shadow-2xl overflow-hidden">
     
     <!-- Tombol Close -->
-    <button id="close-ad" class="absolute top-3 right-3 z-10 bg-white/20 hover:bg-white/40 text-white w-10 h-10 rounded-full flex items-center justify-center transition backdrop-blur-sm">
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <button id="close-ad" class="absolute top-3 right-3 z-10 text-white/80 hover:text-white transition">
+      <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"/>
       </svg>
     </button>
 
-    <!-- Label "Iklan" Kecil -->
-    <div class="absolute top-3 left-3 z-10 bg-black/50 text-white text-xs font-bold px-3 py-1 rounded-full backdrop-blur">
+    <!-- Label "Iklan" -->
+    <div class="absolute top-3 left-3 z-10 bg-black/60 text-white text-xs font-bold px-3 py-1 rounded-full backdrop-blur">
       Iklan
     </div>
 
-    <!-- Konten Iklan Gambar -->
-    <div class="flex flex-col md:flex-row items-center justify-between max-w-7xl mx-auto">
-      <!-- Gambar Iklan – GANTI SRC DI SINI SAJA -->
-      <a href="https://wa.me/6281234567890?text=Halo%20saya%20dari%20iklan%20Dunnak" target="_blank" class="block w-full md:w-auto">
+    <!-- Konten Iklan -->
+    <div class="flex flex-col lg:flex-row items-center justify-between max-w-7xl mx-auto">
+      <!-- GAMBAR IKLAN – GANTI SRC DI SINI -->
+      <a href="https://wa.me/6281234567890?text=Saya%20dari%20iklan%20Dunnak" target="_blank" class="block w-full lg:w-auto">
         <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi6-JhY6g9H4ggtXPHCO7pTjErtprKfSRlgttoFgT4LcX-O2ROw-oxj7Ntr3r7cY6TdN5AMrwDJ7hyfyU1DI4ASMZ_Mw2chnMaXIDiWHZ-8X3H1Lhz-PjI7KIh2716aY_g4FIxL2Fe4OxBsIEAyE52WrLYS-p1La1U_mMHuVcQvFK-Np9l-ZixakqnZjx44/s1600/iklan-dunnak-2025.jpg" 
              alt="Iklan Dunnak.com" 
-             class="w-full h-auto max-h-96 object-cover object-center transition-transform duration-700 hover:scale-105">
+             class="w-full h-auto object-cover object-center transition-transform duration-700 hover:scale-105">
       </a>
 
-      <!-- Teks Pendukung + CTA (opsional, bisa dihapus kalau pure gambar) -->
-      <div class="p-6 md:p-10 text-white text-center md:text-left max-w-md">
-        <h3 class="text-2xl md:text-3xl font-black mb-3">Dapatkan Diskon Spesial!</h3>
-        <p class="text-base md:text-lg opacity-90 mb-6">
-          Promo terbatas untuk pengguna baru — klik gambar untuk klaim sekarang!
+      <!-- Teks + CTA (opsional) -->
+      <div class="p-6 lg:p-10 text-white text-center lg:text-left max-w-lg">
+        <h3 class="text-2xl lg:text-3xl font-black mb-3">Promo Spesial dari Sponsor</h3>
+        <p class="text-base lg:text-lg opacity-90 mb-6">
+          Dapatkan penawaran eksklusif hanya untuk pengguna Dunnak!
         </p>
-        <a href="https://wa.me/6281234567890?text=Halo%20saya%20dari%20iklan%20Dunnak" target="_blank"
+        <a href="https://wa.me/6281234567890?text=Saya%20dari%20iklan%20Dunnak" target="_blank"
            class="inline-flex items-center gap-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-8 py-4 rounded-full shadow-2xl hover:shadow-3xl transform hover:scale-110 transition">
-          Klaim Sekarang
+          Hubungi Sekarang
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
           </svg>
@@ -945,42 +945,64 @@ if (popupCard) {
 </div>
 
 <script>
-// === IKLAN GAMBAR CANGGIH – MUNCUL SETIAP KALI BUKA SITUS ===
-const adBanner = document.getElementById("ad-banner");
-const closeAd = document.getElementById("close-ad");
+// === IKLAN GAMBAR CANGGIH – BISA DIJADWALKAN TANGGAL + RESPONSIF MAKSIMAL ===
+// UBAH TANGGAL DI SINI SAJA (format: "YYYY-MM-DD")
+const IKLAN_MULAI = "2025-11-23";  // Tanggal mulai muncul (kosongkan = selalu)
+const IKLAN_SELESAI = "2025-11-30"; // Tanggal selesai (kosongkan = selamanya)
 
-// Muncul otomatis setelah 1.2 detik
-setTimeout(() => {
-  adBanner.classList.remove("translate-y-full");
-}, 1200);
+function isWithinAdSchedule() {
+  const today = new Date().toISOString().split("T")[0];
+  
+  if (IKLAN_MULAI && today < IKLAN_MULAI) return false;
+  if (IKLAN_SELESAI && today > IKLAN_SELESAI) return false;
+  
+  return true;
+}
 
-// Tutup iklan
-closeAd.addEventListener("click", () => {
-  adBanner.classList.add("translate-y-full");
-  setTimeout(() => adBanner.style.display = "none", 800);
+function showAdBanner() {
+  const banner = document.getElementById("ad-banner");
+  if (banner && isWithinAdSchedule()) {
+    setTimeout(() => {
+      banner.classList.remove("translate-y-full");
+    }, 1200);
+
+    // Tutup otomatis setelah 18 detik
+    setTimeout(() => {
+      if (!banner.classList.contains("translate-y-full")) {
+        banner.classList.add("translate-y-full");
+      }
+    }, 18000);
+  }
+}
+
+// Close manual
+document.getElementById("close-ad")?.addEventListener("click", () => {
+  document.getElementById("ad-banner").classList.add("translate-y-full");
 });
 
-// Tutup otomatis setelah 20 detik (biar tidak mengganggu terlalu lama)
-setTimeout(() => {
-  if (!adBanner.classList.contains("translate-y-full")) {
-    adBanner.classList.add("translate-y-full");
-  }
-}, 20000);
+// Jalankan saat halaman selesai dimuat
+window.addEventListener("load", showAdBanner);
 </script>
 
 <style>
   /* Responsif gambar iklan */
   #ad-banner img {
-    max-height: 80vh;
+    max-height: 80dvh;
     width: auto;
     max-width: 100%;
   }
 
+  /* HP kecil – layout vertikal */
   @media (max-width: 768px) {
     #ad-banner .p-6 { padding: 1.5rem !important; }
     #ad-banner h3 { font-size: 1.5rem !important; }
     #ad-banner p { font-size: 0.95rem !important; }
     #ad-banner a { padding: 1rem 2rem !important; font-size: 1rem !important; }
+  }
+
+  /* Monitor besar – gambar lebih besar */
+  @media (min-width: 1536px) {
+    #ad-banner img { max-height: 85dvh; }
   }
 </style>
    <!-- FAQ SECTION -->
@@ -1019,7 +1041,7 @@ setTimeout(() => {
       </details>
     </div>
   </section>
- <!-- CTA SECTION – FINAL 2025 (SUDAH DIPERBAIKI TOTAL, TIDAK RUSAK LAGI) -->
+ <!-- CTA SECTION – FINAL 2025) -->
 <section class="bg-gradient-to-br from-emerald-600 via-emerald-700 to-teal-800 py-24 lg:py-32 overflow-hidden relative">
   <!-- Background Pattern Halus -->
   <div class="absolute inset-0 opacity-20">
