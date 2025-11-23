@@ -1517,7 +1517,7 @@ document.getElementById("cta-button")?.addEventListener("click", () => {
           const btn = document.createElement("a");
           btn.href = item.link || "#";
           btn.target = "_blank";
-          btn.className = "text-xs bg-orange-500 text-white px-3 py-1 rounded-md hover:bg-green-500";
+          btn.className = "text-xs bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-500";
           btn.innerText = "Detail";
           body.appendChild(label);
           body.appendChild(title);
@@ -1643,7 +1643,7 @@ document.getElementById("cta-button")?.addEventListener("click", () => {
           price.className = "text-sm font-bold text-rose-600";
           price.innerText = rupiah(item.harga);
           const btn = document.createElement("button");
-          btn.className = "text-xs bg-rose-500 text-white px-3 py-1 rounded-md hover:bg-orange-500";
+          btn.className = "text-xs bg-orange-500 text-white px-3 py-1 rounded-md hover:bg-orange-500";
           btn.innerText = "Beli";
           btn.onclick = (e) => {
             try {
