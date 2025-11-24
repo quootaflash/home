@@ -1921,7 +1921,7 @@ document.getElementById("cta-button")?.addEventListener("click", () => {
           console.error("Local storage save failed", e);
         }
         closeCheckout();
-        showToast("Pesanan berhasil diproses! Mengarahkan ke WhatsApp admin", "success");
+        showToast("Proses..", "success");
       } catch (e) {
         showToast("Gagal memproses checkout. Coba lagi.", "error");
         console.error("handleCheckout failed", e);
