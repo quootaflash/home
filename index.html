@@ -1,67 +1,149 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-  <title>Reaction Test</title>
-  <style>
-    body {
-      text-align: center;
-      font-family: sans-serif;
-      background: #222;
-      color: white;
-    }
-    #box {
-      width: 300px;
-      height: 300px;
-      margin: 50px auto;
-      background: gray;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tap & Match Game</title>
+
+<style>
+  body {
+    font-family: sans-serif;
+    text-align: center;
+    background: #121212;
+    color: white;
+  }
+
+  h1 {
+    margin-top: 20px;
+  }
+
+  #grid {
+    display: grid;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .cell {
+    width: 70px;
+    height: 70px;
+    background: #333;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .active {
+    background: #00c853;
+  }
+
+  button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: none;
+    background: #00c853;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+</style>
 </head>
+
 <body>
 
-<h1>Reaction Speed Test</h1>
-<div id="box">Klik untuk mulai</div>
-<p id="result"></p>
+<h1>Tap & Match</h1>
+<p id="info">Klik mulai untuk bermain</p>
+
+<div id="grid"></div>
+
+<button onclick="startGame()">Mulai</button>
 
 <script>
-let startTime, timeout;
-let state = "idle";
+let level = 1;
+let gridSize = 3;
+let pattern = [];
+let userClicks = [];
 
-const box = document.getElementById("box");
-const result = document.getElementById("result");
+const grid = document.getElementById("grid");
+const info = document.getElementById("info");
 
-box.onclick = () => {
-  if (state === "idle") {
-    box.style.background = "red";
-    box.innerHTML = "Tunggu...";
-    state = "waiting";
+function createGrid(size) {
+  grid.innerHTML = "";
+  grid.style.gridTemplateColumns = `repeat(${size}, 70px)`;
 
-    timeout = setTimeout(() => {
-      box.style.background = "green";
-      box.innerHTML = "KLIK SEKARANG!";
-      startTime = new Date().getTime();
-      state = "ready";
-    }, Math.random() * 3000 + 2000);
+  for (let i = 0; i < size * size; i++) {
+    const cell = document.createElement("div");
+    cell.classList.add("cell");
+    cell.dataset.index = i;
 
-  } else if (state === "ready") {
-    let reactionTime = new Date().getTime() - startTime;
-    result.innerHTML = "Waktu reaksi: " + reactionTime + " ms";
-    box.style.background = "gray";
-    box.innerHTML = "Main lagi";
-    state = "idle";
+    cell.onclick = () => handleClick(i);
 
-  } else if (state === "waiting") {
-    clearTimeout(timeout);
-    result.innerHTML = "Terlalu cepat! 😅";
-    box.style.background = "gray";
-    box.innerHTML = "Coba lagi";
-    state = "idle";
+    grid.appendChild(cell);
   }
-};
+}
+
+function startGame() {
+  level = 1;
+  gridSize = 3;
+  nextLevel();
+}
+
+function nextLevel() {
+  userClicks = [];
+  pattern = [];
+
+  info.innerText = "Level " + level;
+
+  createGrid(gridSize);
+
+  let total = gridSize * gridSize;
+  let count = Math.min(2 + level, total);
+
+  while (pattern.length < count) {
+    let rand = Math.floor(Math.random() * total);
+    if (!pattern.includes(rand)) pattern.push(rand);
+  }
+
+  showPattern();
+}
+
+function showPattern() {
+  const cells = document.querySelectorAll(".cell");
+
+  pattern.forEach(i => {
+    cells[i].classList.add("active");
+  });
+
+  setTimeout(() => {
+    cells.forEach(c => c.classList.remove("active"));
+    info.innerText = "Sekarang giliran kamu!";
+  }, 1000 + level * 200);
+}
+
+function handleClick(index) {
+  userClicks.push(index);
+
+  const current = userClicks.length - 1;
+
+  if (userClicks[current] !== pattern[current]) {
+    gameOver();
+    return;
+  }
+
+  if (userClicks.length === pattern.length) {
+    level++;
+
+    if (level % 3 === 0) {
+      gridSize++;
+    }
+
+    setTimeout(nextLevel, 800);
+  }
+}
+
+function gameOver() {
+  info.innerText = "Game Over 😢 Level kamu: " + level;
+}
 </script>
 
 </body>
