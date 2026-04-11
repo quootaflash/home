@@ -3,146 +3,159 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tap & Match Game</title>
+<title>Tap & Match Multiplayer</title>
 
 <style>
-  body {
-    font-family: sans-serif;
-    text-align: center;
-    background: #121212;
-    color: white;
-  }
+body {
+  font-family: sans-serif;
+  text-align: center;
+  background: #121212;
+  color: white;
+}
 
-  h1 {
-    margin-top: 20px;
-  }
+#grid {
+  display: grid;
+  grid-template-columns: repeat(3, 80px);
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
 
-  #grid {
-    display: grid;
-    gap: 10px;
-    justify-content: center;
-    margin-top: 20px;
-  }
+.cell {
+  width: 80px;
+  height: 80px;
+  background: #333;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
 
-  .cell {
-    width: 70px;
-    height: 70px;
-    background: #333;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 0.2s;
-  }
+.active {
+  background: #00c853;
+}
 
-  .active {
-    background: #00c853;
-  }
-
-  button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    border: none;
-    background: #00c853;
-    color: white;
-    border-radius: 8px;
-    cursor: pointer;
-  }
+button {
+  margin: 10px;
+  padding: 10px 15px;
+  border: none;
+  background: #00c853;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}
 </style>
 </head>
 
 <body>
 
-<h1>Tap & Match</h1>
-<p id="info">Klik mulai untuk bermain</p>
+<h2>Tap & Match Multiplayer</h2>
+<p id="info">Masukkan jumlah pemain (1-4)</p>
 
+<input type="number" id="playerCount" min="1" max="4">
+<button onclick="setupPlayers()">Start</button>
+
+<div id="players"></div>
 <div id="grid"></div>
 
-<button onclick="startGame()">Mulai</button>
-
 <script>
-let level = 1;
-let gridSize = 3;
-let pattern = [];
-let userClicks = [];
+let players = [];
+let currentPlayer = 0;
+let sequence = [];
+let userIndex = 0;
+let state = "idle";
 
 const grid = document.getElementById("grid");
 const info = document.getElementById("info");
 
-function createGrid(size) {
-  grid.innerHTML = "";
-  grid.style.gridTemplateColumns = `repeat(${size}, 70px)`;
+function setupPlayers() {
+  const count = parseInt(document.getElementById("playerCount").value);
+  if (!count || count < 1 || count > 4) return alert("1-4 pemain");
 
-  for (let i = 0; i < size * size; i++) {
-    const cell = document.createElement("div");
+  players = [];
+  for (let i = 0; i < count; i++) {
+    let name = prompt("Nama pemain " + (i+1));
+    players.push({ name: name || "P"+(i+1), score: 0 });
+  }
+
+  createGrid();
+  startTurn();
+}
+
+function createGrid() {
+  grid.innerHTML = "";
+  for (let i = 0; i < 9; i++) {
+    let cell = document.createElement("div");
     cell.classList.add("cell");
     cell.dataset.index = i;
-
     cell.onclick = () => handleClick(i);
-
     grid.appendChild(cell);
   }
 }
 
-function startGame() {
-  level = 1;
-  gridSize = 3;
-  nextLevel();
+function startTurn() {
+  sequence = [];
+  userIndex = 0;
+  info.innerText = players[currentPlayer].name + " mulai!";
+  nextRound();
 }
 
-function nextLevel() {
-  userClicks = [];
-  pattern = [];
-
-  info.innerText = "Level " + level;
-
-  createGrid(gridSize);
-
-  let total = gridSize * gridSize;
-  let count = Math.min(2 + level, total);
-
-  while (pattern.length < count) {
-    let rand = Math.floor(Math.random() * total);
-    if (!pattern.includes(rand)) pattern.push(rand);
-  }
-
-  showPattern();
+function nextRound() {
+  state = "showing";
+  sequence.push(Math.floor(Math.random() * 9));
+  showSequence();
 }
 
-function showPattern() {
+function showSequence() {
   const cells = document.querySelectorAll(".cell");
+  let i = 0;
 
-  pattern.forEach(i => {
-    cells[i].classList.add("active");
-  });
+  let interval = setInterval(() => {
+    let idx = sequence[i];
+    cells[idx].classList.add("active");
 
-  setTimeout(() => {
-    cells.forEach(c => c.classList.remove("active"));
-    info.innerText = "Sekarang giliran kamu!";
-  }, 1000 + level * 200);
+    setTimeout(() => cells[idx].classList.remove("active"), 400);
+
+    i++;
+    if (i >= sequence.length) {
+      clearInterval(interval);
+      state = "input";
+      userIndex = 0;
+      info.innerText = "Giliran klik!";
+    }
+  }, 700);
 }
 
 function handleClick(index) {
-  userClicks.push(index);
+  if (state !== "input") return;
 
-  const current = userClicks.length - 1;
-
-  if (userClicks[current] !== pattern[current]) {
-    gameOver();
+  if (index !== sequence[userIndex]) {
+    endTurn();
     return;
   }
 
-  if (userClicks.length === pattern.length) {
-    level++;
+  userIndex++;
 
-    if (level % 3 === 0) {
-      gridSize++;
-    }
-
-    setTimeout(nextLevel, 800);
+  if (userIndex === sequence.length) {
+    players[currentPlayer].score++;
+    setTimeout(nextRound, 600);
   }
 }
 
-function gameOver() {
-  info.innerText = "Game Over 😢 Level kamu: " + level;
+function endTurn() {
+  alert(players[currentPlayer].name + " selesai! Skor: " + players[currentPlayer].score);
+
+  currentPlayer++;
+
+  if (currentPlayer >= players.length) {
+    showWinner();
+  } else {
+    startTurn();
+  }
+}
+
+function showWinner() {
+  let winner = players.sort((a,b)=>b.score-a.score)[0];
+  info.innerText = "Pemenang: " + winner.name + " 🏆";
 }
 </script>
 
