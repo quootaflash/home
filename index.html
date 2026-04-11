@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Reaction Test</title>
+  <style>
+    body {
+      text-align: center;
+      font-family: sans-serif;
+      background: #222;
+      color: white;
+    }
+    #box {
+      width: 300px;
+      height: 300px;
+      margin: 50px auto;
+      background: gray;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Reaction Speed Test</h1>
+<div id="box">Klik untuk mulai</div>
+<p id="result"></p>
+
+<script>
+let startTime, timeout;
+let state = "idle";
+
+const box = document.getElementById("box");
+const result = document.getElementById("result");
+
+box.onclick = () => {
+  if (state === "idle") {
+    box.style.background = "red";
+    box.innerHTML = "Tunggu...";
+    state = "waiting";
+
+    timeout = setTimeout(() => {
+      box.style.background = "green";
+      box.innerHTML = "KLIK SEKARANG!";
+      startTime = new Date().getTime();
+      state = "ready";
+    }, Math.random() * 3000 + 2000);
+
+  } else if (state === "ready") {
+    let reactionTime = new Date().getTime() - startTime;
+    result.innerHTML = "Waktu reaksi: " + reactionTime + " ms";
+    box.style.background = "gray";
+    box.innerHTML = "Main lagi";
+    state = "idle";
+
+  } else if (state === "waiting") {
+    clearTimeout(timeout);
+    result.innerHTML = "Terlalu cepat! 😅";
+    box.style.background = "gray";
+    box.innerHTML = "Coba lagi";
+    state = "idle";
+  }
+};
+</script>
+
+</body>
+</html>
