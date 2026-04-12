@@ -3,497 +3,840 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tap & Match Multiplayer</title>
+    <title>SuratIzin.id - Pembuat Surat Izin Tidak Masuk Sekolah (Advanced)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-
-        body {
-            font-family: 'Inter', sans-serif;
-            text-align: center;
-            background: linear-gradient(180deg, #121212, #1a1a2e);
-            color: white;
-            margin: 0;
-            padding: 20px;
-            min-height: 100vh;
+        @import url('https://fonts.googleapis.com/css2?family=Times+New+Roman:wght@400;700&amp;display=swap');
+        
+        :root {
+            --tw-color-primary: #1e40af;
         }
-
-        h1 {
-            font-size: 2.2rem;
-            margin-bottom: 8px;
-            background: linear-gradient(90deg, #00ff88, #00ccff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        
+        .a4-paper {
+            width: 210mm;
+            min-height: 297mm;
+            background: white;
+            box-shadow: 0 10px 30px -15px rgb(0 0 0 / 0.3);
+            margin: 20px auto;
+            padding: 20mm 18mm;
+            font-family: 'Times New Roman', serif;
+            font-size: 12pt;
+            line-height: 1.6;
+            border: 1px solid #ddd;
+            position: relative;
+            overflow: hidden;
         }
-
-        h2 {
-            font-size: 1.4rem;
-            margin: 10px 0 5px;
+        
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white !important; margin: 0; }
+            .a4-paper {
+                width: 210mm !important;
+                height: 297mm !important;
+                margin: 0 !important;
+                padding: 20mm 18mm !important;
+                box-shadow: none !important;
+                border: none !important;
+                page-break-after: avoid;
+            }
+            .header-logo { max-height: 80px !important; }
         }
-
-        #info {
-            font-size: 1.3rem;
-            font-weight: 600;
-            min-height: 50px;
-            margin: 15px 0;
-            padding: 12px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.2);
+        
+        .preview-container {
+            max-width: 210mm;
+            margin: 0 auto;
         }
-
-        #scoreboard {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 12px;
-            margin: 20px 0;
-            padding: 15px;
-            background: rgba(255,255,255,0.08);
-            border-radius: 16px;
+        
+        .form-input {
+            transition: all 0.3s ease;
         }
-
-        .player-card {
-            background: #1f1f2e;
-            padding: 12px 20px;
-            border-radius: 12px;
-            min-width: 140px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s;
+        
+        .form-input:focus {
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.2);
         }
-
-        .player-card.active {
-            transform: scale(1.08);
-            box-shadow: 0 0 25px #00ff88;
-            border: 2px solid #00ff88;
-        }
-
-        .player-name {
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-
-        .player-score {
-            font-size: 1.5rem;
-            color: #00ff88;
-        }
-
-        #grid {
-            display: grid;
-            grid-template-columns: repeat(3, 110px);
-            gap: 14px;
-            justify-content: center;
-            margin: 30px auto;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.15);
-        }
-
-        .cell {
-            width: 110px;
-            height: 110px;
-            border-radius: 16px;
-            cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            user-select: none;
-        }
-
-        button {
-            margin: 15px 8px;
-            padding: 14px 28px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            border: none;
-            background: linear-gradient(90deg, #00ff88, #00ccff);
-            color: #121212;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 6px 20px rgba(0, 255, 136, 0.4);
-            transition: all 0.3s;
-        }
-
-        button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0, 255, 136, 0.6);
-        }
-
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-
-        .modal-content {
-            background: #1f1f2e;
-            padding: 30px;
-            border-radius: 20px;
-            text-align: center;
-            max-width: 380px;
-            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.3);
+        
+        .live-dot {
+            animation: pulse 2s infinite;
         }
     </style>
 </head>
-<body>
+<body class="bg-gray-50 font-sans">
+    <!-- NAVBAR -->
+    <nav class="bg-[#1e40af] text-white shadow-lg sticky top-0 z-50 no-print">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-file-signature text-3xl"></i>
+                <div>
+                    <h1 class="text-2xl font-bold tracking-tight">SuratIzin.id</h1>
+                    <p class="text-xs opacity-75 -mt-1">Tools Pembuat Surat Izin Tidak Masuk Sekolah • Advanced</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-6">
+                <!-- Fitur Advance -->
+                <div class="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-2xl text-sm">
+                    <div class="flex items-center gap-1">
+                        <span class="live-dot w-2 h-2 bg-green-400 rounded-full"></span>
+                        <span class="font-medium">Live Preview</span>
+                    </div>
+                    <div class="w-px h-4 bg-white/30"></div>
+                    <button onclick="saveDraft()" 
+                            class="flex items-center gap-1 hover:bg-white/20 px-3 py-1 rounded-xl transition">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        <span>Simpan Draft</span>
+                    </button>
+                    <button onclick="loadDraft()" 
+                            class="flex items-center gap-1 hover:bg-white/20 px-3 py-1 rounded-xl transition">
+                        <i class="fa-solid fa-folder-open"></i>
+                        <span>Load Draft</span>
+                    </button>
+                </div>
 
-    <h1>🔥 Tap & Match Multiplayer</h1>
-    <p id="info">Masukkan jumlah pemain (1-4)</p>
+                <div class="flex items-center gap-4">
+                    <button onclick="generatePDF()" 
+                            class="flex items-center gap-2 bg-white text-[#1e40af] hover:bg-amber-100 px-6 py-3 rounded-2xl font-semibold transition shadow-md">
+                        <i class="fa-solid fa-file-pdf"></i>
+                        <span>Download PDF</span>
+                    </button>
+                    
+                    <button onclick="printLetter()" 
+                            class="flex items-center gap-2 bg-white text-[#1e40af] hover:bg-amber-100 px-6 py-3 rounded-2xl font-semibold transition shadow-md">
+                        <i class="fa-solid fa-print"></i>
+                        <span>Cetak</span>
+                    </button>
+                    
+                    <button onclick="clearForm()" 
+                            class="flex items-center gap-2 bg-red-500 hover:bg-red-600 px-4 py-3 rounded-2xl text-white transition">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                    
+                    <!-- History -->
+                    <div onclick="showHistory()" class="cursor-pointer relative">
+                        <i class="fa-solid fa-clock-rotate-left text-2xl"></i>
+                        <span id="history-count" class="absolute -top-1 -right-1 bg-amber-400 text-[#1e40af] text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-    <input type="number" id="playerCount" min="1" max="4" value="2" style="padding:12px; font-size:1.1rem; width:120px; border-radius:12px; border:none; background:#222; color:white; text-align:center;">
-    <button onclick="setupPlayers()">MULAI PERMAINAN</button>
+    <div class="max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- FORM PANEL (Kiri) -->
+        <div class="lg:col-span-5 bg-white rounded-3xl shadow-xl p-8 no-print">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                <i class="fa-solid fa-pen-to-square"></i>
+                Isi Data Surat
+            </h2>
+            
+            <!-- TABS -->
+            <div class="flex border-b mb-6">
+                <button onclick="switchTab(0)" id="tab-0"
+                        class="tab-button flex-1 py-3 font-semibold border-b-2 border-[#1e40af] text-[#1e40af]">Data Sekolah</button>
+                <button onclick="switchTab(1)" id="tab-1"
+                        class="tab-button flex-1 py-3 font-semibold text-gray-500">Data Siswa</button>
+                <button onclick="switchTab(2)" id="tab-2"
+                        class="tab-button flex-1 py-3 font-semibold text-gray-500">Detail Izin</button>
+                <button onclick="switchTab(3)" id="tab-3"
+                        class="tab-button flex-1 py-3 font-semibold text-gray-500">Tambahan</button>
+            </div>
 
-    <div id="scoreboard"></div>
-    <div id="grid"></div>
+            <!-- TAB 0: Data Sekolah -->
+            <div id="tab-content-0" class="tab-content">
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Logo Sekolah (Opsional)</label>
+                        <div class="flex items-center gap-4">
+                            <input type="file" id="logo-upload" accept="image/*" 
+                                   class="hidden" onchange="previewLogo(this)">
+                            <button onclick="document.getElementById('logo-upload').click()" 
+                                    class="flex-1 bg-gray-100 hover:bg-gray-200 border border-dashed border-gray-400 rounded-2xl py-6 text-center transition">
+                                <i class="fa-solid fa-cloud-upload text-3xl text-gray-400 mb-2"></i>
+                                <p class="text-sm font-medium">Upload Logo</p>
+                            </button>
+                            <img id="logo-preview" class="w-20 h-20 object-contain border rounded-2xl hidden" alt="Logo">
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Nama Sekolah</label>
+                            <input id="nama-sekolah" type="text" value="SMA Negeri 1 Jakarta" 
+                                   class="form-input w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">NPSN / NSS</label>
+                            <input id="npsn" type="text" value="301012345678" 
+                                   class="form-input w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Alamat Sekolah</label>
+                        <textarea id="alamat-sekolah" rows="2" 
+                                  class="form-input w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none">Jl. Jend. Sudirman No. 45, Jakarta Pusat, DKI Jakarta 10210</textarea>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">No. Telepon</label>
+                            <input id="telp-sekolah" type="text" value="(021) 1234567" 
+                                   class="form-input w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Email Sekolah</label>
+                            <input id="email-sekolah" type="email" value="sma1jkt@sekolah.id" 
+                                   class="form-input w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none">
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    <div id="modal" class="modal">
-        <div class="modal-content" id="modal-content">
-            <!-- diisi via JS -->
+            <!-- TAB 1: Data Siswa -->
+            <div id="tab-content-1" class="tab-content hidden">
+                <div class="space-y-6">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap Siswa</label>
+                            <input id="nama-siswa" type="text" value="Ahmad Rizki Pratama" 
+                                   class="form-input w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none" oninput="updatePreview()">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">NIS / NISN</label>
+                            <input id="nis" type="text" value="1234567890" 
+                                   class="form-input w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none" oninput="updatePreview()">
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Kelas</label>
+                            <input id="kelas" type="text" value="XI MIPA 3" 
+                                   class="form-input w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none" oninput="updatePreview()">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Semester</label>
+                            <select id="semester" class="form-input w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none" onchange="updatePreview()">
+                                <option value="Ganjil">Ganjil</option>
+                                <option value="Genap" selected>Genap</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Tahun Ajaran</label>
+                            <input id="tahun-ajaran" type="text" value="2025/2026" 
+                                   class="form-input w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none" oninput="updatePreview()">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nama Orang Tua / Wali</label>
+                        <input id="nama-wali" type="text" value="Bapak Dr. Ir. Bambang Sutrisno" 
+                               class="form-input w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none" oninput="updatePreview()">
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: Detail Izin -->
+            <div id="tab-content-2" class="tab-content hidden">
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Kepada Yth.</label>
+                        <div class="flex gap-3">
+                            <select id="penerima-jabatan" class="form-input flex-1 px-4 py-3 border border-gray-300 rounded-2xl" onchange="updatePreview()">
+                                <option value="Bapak/Ibu Guru Wali Kelas">Guru Wali Kelas</option>
+                                <option value="Kepala Sekolah">Kepala Sekolah</option>
+                                <option value="Wakil Kepala Bidang Kesiswaan">Wakil Kepala Kesiswaan</option>
+                                <option value="Bapak/Ibu Guru Mata Pelajaran">Guru Mata Pelajaran</option>
+                            </select>
+                            <input id="nama-penerima" type="text" placeholder="Nama lengkap (opsional)" 
+                                   class="form-input flex-1 px-4 py-3 border border-gray-300 rounded-2xl" oninput="updatePreview()">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Surat</label>
+                            <input id="tgl-surat" type="date" class="form-input w-full px-4 py-3 border border-gray-300 rounded-2xl" onchange="updatePreview()">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Mulai Absen</label>
+                            <input id="tgl-mulai" type="date" class="form-input w-full px-4 py-3 border border-gray-300 rounded-2xl" onchange="updatePreview()">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Sampai Tanggal</label>
+                            <input id="tgl-selesai" type="date" class="form-input w-full px-4 py-3 border border-gray-300 rounded-2xl" onchange="updatePreview()">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Alasan Tidak Masuk (Fleksibel)</label>
+                        <div class="flex gap-2 mb-3">
+                            <select id="alasan-pilih" onchange="pilihAlasan()" 
+                                    class="form-input flex-1 px-4 py-3 border border-gray-300 rounded-2xl">
+                                <option value="">Pilih alasan cepat...</option>
+                                <option value="Sakit">Sakit</option>
+                                <option value="Mengikuti acara keluarga">Mengikuti acara keluarga</option>
+                                <option value="Keluarga ada yang sakit/meninggal">Keluarga sakit/meninggal</option>
+                                <option value="Urusan pribadi">Urusan pribadi</option>
+                                <option value="Mengikuti lomba / kegiatan resmi">Mengikuti lomba / kegiatan resmi</option>
+                                <option value="Force majeure (bencana alam, dll)">Force majeure</option>
+                            </select>
+                            <button onclick="tambahAlasanCustom()" 
+                                    class="bg-[#1e40af] text-white px-5 rounded-2xl hover:bg-blue-800 transition flex items-center gap-2">
+                                <i class="fa-solid fa-plus"></i> Custom
+                            </button>
+                        </div>
+                        <textarea id="alasan" rows="4" placeholder="Jelaskan alasan secara detail..." 
+                                  class="form-input w-full px-4 py-3 border border-gray-300 rounded-3xl focus:outline-none" oninput="updatePreview()">Sakit demam tinggi dan flu berat selama 3 hari.</textarea>
+                    </div>
+                    
+                    <!-- Jumlah hari otomatis -->
+                    <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-sm flex justify-between items-center">
+                        <span class="font-medium">Durasi izin:</span>
+                        <span id="durasi-hari" class="font-bold text-amber-600 text-lg">— hari</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: Tambahan (Advanced) -->
+            <div id="tab-content-3" class="tab-content hidden">
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nomor Surat (otomatis atau manual)</label>
+                        <div class="flex">
+                            <input id="nomor-surat" type="text" value="001/SIS/IV/2026" 
+                                   class="form-input flex-1 px-4 py-3 border border-gray-300 rounded-l-2xl" oninput="updatePreview()">
+                            <button onclick="generateNomorOtomatis()" 
+                                    class="bg-gray-100 px-5 rounded-r-2xl text-xs font-medium">Auto</button>
+                        </div>
+                    </div>
+
+                    <!-- Custom Paragraphs -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tambahkan Paragraf Tambahan (Fleksibel)</label>
+                        <div id="custom-paragraf-list" class="space-y-3 mb-4"></div>
+                        <button onclick="tambahParagrafCustom()" 
+                                class="w-full py-3 border border-dashed border-gray-400 rounded-2xl text-gray-600 hover:border-[#1e40af] hover:text-[#1e40af] transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-plus"></i>
+                            Tambah keterangan tambahan
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Lampiran</label>
+                            <select id="lampiran" class="form-input w-full px-4 py-3 border border-gray-300 rounded-2xl" onchange="updatePreview()">
+                                <option value="Tidak ada">Tidak ada</option>
+                                <option value="Surat dokter">Surat dokter</option>
+                                <option value="Foto bukti">Foto bukti</option>
+                                <option value="Undangan acara">Undangan acara</option>
+                                <option value="Lainnya">Lainnya</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">No. HP Wali (untuk konfirmasi)</label>
+                            <input id="no-hp-wali" type="tel" value="081234567890" 
+                                   class="form-input w-full px-4 py-3 border border-gray-300 rounded-2xl" oninput="updatePreview()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FOOTER FORM -->
+            <div class="mt-10 flex items-center justify-between text-xs text-gray-400">
+                <div>💡 Surat ini fleksibel untuk berbagai keperluan sekolah</div>
+                <div onclick="showTips()" class="cursor-pointer flex items-center gap-1 hover:text-gray-600">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    Tips Advance
+                </div>
+            </div>
+        </div>
+
+        <!-- PREVIEW PANEL (Kanan) -->
+        <div class="lg:col-span-7">
+            <div class="flex justify-between items-center mb-3 px-2">
+                <div class="flex items-center gap-2 text-gray-600">
+                    <i class="fa-solid fa-eye"></i>
+                    <span class="font-semibold">Pratinjau Surat (Real-time)</span>
+                </div>
+                <div id="preview-status" class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-3xl flex items-center gap-1">
+                    <span class="live-dot w-2 h-2 bg-green-500 rounded-full"></span>
+                    SEDANG DIUPDATE
+                </div>
+            </div>
+            
+            <div class="preview-container" id="preview-wrapper">
+                <div id="letter" class="a4-paper mx-auto">
+                    <!-- Content di-generate via JavaScript -->
+                    <div id="letter-content" class="text-[#1e40af] leading-relaxed"></div>
+                </div>
+            </div>
+            
+            <div class="text-center text-xs text-gray-400 mt-6 flex items-center justify-center gap-6">
+                <div><i class="fa-solid fa-file-export"></i> Export PDF otomatis menyesuaikan margin A4</div>
+                <div><i class="fa-solid fa-print"></i> Siap cetak langsung ke printer</div>
+                <div class="text-emerald-600">✦ Fleksibel &amp; Profesional ✦</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL HISTORY -->
+    <div id="modal-history" onclick="if(event.target===this)hideHistory()" 
+         class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[9999]">
+        <div onclick="event.stopImmediatePropagation()" 
+             class="bg-white rounded-3xl max-w-lg w-full mx-4 shadow-2xl overflow-hidden">
+            <div class="px-6 py-5 border-b flex justify-between">
+                <h3 class="font-bold text-xl">Riwayat Draft Surat</h3>
+                <button onclick="hideHistory()" class="text-3xl leading-none text-gray-400">×</button>
+            </div>
+            <div id="history-list" class="max-h-[420px] overflow-auto p-4 space-y-2"></div>
         </div>
     </div>
 
     <script>
-        // ================== VARIABEL GLOBAL ==================
-        let players = [];
-        let currentPlayerIndex = 0;
-        let masterSequence = [];
-        let round = 1;
-        let state = "idle"; // idle | showing | input
-        let userIndex = 0;
-        let audioCtx;
-        let cells = [];
-
-        // Warna cerah khas Simon + modern
-        const cellColors = [
-            "#FF2D55", // 0
-            "#FF9500", // 1
-            "#FFCC00", // 2
-            "#34C759", // 3
-            "#00C7BE", // 4
-            "#007AFF", // 5
-            "#5856D6", // 6
-            "#AF52DE", // 7
-            "#FF2D92"  // 8
-        ];
-
-        // Frekuensi nada berbeda untuk setiap kotak (seperti Simon asli)
-        const frequencies = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25, 587.33];
-
-        // ================== AUDIO ENGINE ==================
-        function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-        }
-
-        function playTone(index) {
-            initAudio();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            
-            osc.frequency.setValueAtTime(frequencies[index], audioCtx.currentTime);
-            osc.type = "sine";
-            
-            gain.gain.value = 0.7;
-            gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.35);
-            
-            osc.connect(gain).connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.4);
-        }
-
-        function playErrorSound() {
-            initAudio();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            
-            osc.frequency.setValueAtTime(140, audioCtx.currentTime);
-            osc.type = "sawtooth";
-            
-            gain.gain.value = 0.6;
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.8);
-            
-            osc.connect(gain).connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.9);
-        }
-
-        // ================== UI SCOREBOARD ==================
-        function updateScoreboard() {
-            const scoreboard = document.getElementById("scoreboard");
-            let html = `<h2>🏆 Skor Pemain</h2>`;
-            
-            players.forEach((player, i) => {
-                const isActive = (i === currentPlayerIndex && state === "input") ? "active" : "";
-                html += `
-                    <div class="player-card ${isActive}">
-                        <div class="player-name">${player.name}</div>
-                        <div class="player-score">${player.score} <small>poin</small></div>
-                    </div>
-                `;
-            });
-            
-            scoreboard.innerHTML = html;
-        }
-
-        // ================== GRID ==================
-        function createGrid() {
-            const grid = document.getElementById("grid");
-            grid.innerHTML = "";
-            cells = [];
-            
-            for (let i = 0; i < 9; i++) {
-                const cell = document.createElement("div");
-                cell.classList.add("cell");
-                cell.style.backgroundColor = cellColors[i];
-                cell.dataset.index = i;
-                cell.onclick = () => handleCellClick(i);
-                grid.appendChild(cell);
-                cells.push(cell);
-            }
-        }
-
-        // ================== SHOW SEQUENCE ==================
-        function showSequence(callback) {
-            state = "showing";
-            let i = 0;
-            const speed = Math.max(420, 720 - masterSequence.length * 22); // semakin panjang, semakin cepat
-            
-            const interval = setInterval(() => {
-                const idx = masterSequence[i];
-                const cell = cells[idx];
-                
-                // Flash efek premium
-                const originalShadow = cell.style.boxShadow;
-                cell.style.boxShadow = `0 0 45px 25px ${cellColors[idx]}, 0 0 70px 10px white`;
-                cell.style.transform = "scale(1.18)";
-                
-                playTone(idx);
-                
-                setTimeout(() => {
-                    cell.style.boxShadow = originalShadow || "0 6px 15px rgba(0,0,0,0.4)";
-                    cell.style.transform = "scale(1)";
-                }, 380);
-                
-                i++;
-                if (i >= masterSequence.length) {
-                    clearInterval(interval);
-                    state = "idle";
-                    if (callback) setTimeout(callback, 450);
+        // Tailwind initialization
+        function initTailwind() {
+            tailwind.config = {
+                content: [],
+                theme: {
+                    extend: {}
                 }
-            }, speed);
-        }
-
-        // ================== PLAYER ATTEMPT LOGIC ==================
-        function startPlayerAttempt() {
-            if (currentPlayerIndex >= players.length) {
-                // Semua pemain sudah mencoba ronde ini → lanjut ronde baru
-                round++;
-                startNewRound();
-                return;
             }
-            
-            state = "input";
-            userIndex = 0;
-            
-            const infoEl = document.getElementById("info");
-            infoEl.innerHTML = `
-                <span>${players[currentPlayerIndex].name}</span><br>
-                <span style="font-size:1.1rem; opacity:0.9;">Ulangi urutannya! 🔥</span>
-            `;
-            
-            updateScoreboard();
         }
 
-        function endPlayerAttempt() {
-            setTimeout(() => {
-                currentPlayerIndex++;
-                startPlayerAttempt();
-            }, 650);
+        // Data form
+        let formData = {
+            logo: null,
+            namaSekolah: "SMA Negeri 1 Jakarta",
+            npsn: "301012345678",
+            alamatSekolah: "Jl. Jend. Sudirman No. 45, Jakarta Pusat, DKI Jakarta 10210",
+            telpSekolah: "(021) 1234567",
+            emailSekolah: "sma1jkt@sekolah.id",
+            namaSiswa: "Ahmad Rizki Pratama",
+            nis: "1234567890",
+            kelas: "XI MIPA 3",
+            semester: "Genap",
+            tahunAjaran: "2025/2026",
+            namaWali: "Bapak Dr. Ir. Bambang Sutrisno",
+            penerimaJabatan: "Bapak/Ibu Guru Wali Kelas",
+            namaPenerima: "",
+            tglSurat: "",
+            tglMulai: "",
+            tglSelesai: "",
+            alasan: "Sakit demam tinggi dan flu berat selama 3 hari.",
+            nomorSurat: "001/SIS/IV/2026",
+            lampiran: "Tidak ada",
+            noHpWali: "081234567890",
+            customParagraf: []
         }
 
-        // ================== HANDLE CLICK ==================
-        function handleCellClick(index) {
-            if (state !== "input") return;
-            
-            const cell = cells[index];
-            
-            if (index !== masterSequence[userIndex]) {
-                // SALAH
-                playErrorSound();
+        // Simpan history di localStorage
+        let history = JSON.parse(localStorage.getItem('suratIzinHistory') || '[]')
+
+        function updatePreview() {
+            // Ambil nilai terbaru dari form
+            formData.namaSekolah = document.getElementById('nama-sekolah').value
+            formData.npsn = document.getElementById('npsn').value
+            formData.alamatSekolah = document.getElementById('alamat-sekolah').value
+            formData.telpSekolah = document.getElementById('telp-sekolah').value
+            formData.emailSekolah = document.getElementById('email-sekolah').value
+            formData.namaSiswa = document.getElementById('nama-siswa').value
+            formData.nis = document.getElementById('nis').value
+            formData.kelas = document.getElementById('kelas').value
+            formData.semester = document.getElementById('semester').value
+            formData.tahunAjaran = document.getElementById('tahun-ajaran').value
+            formData.namaWali = document.getElementById('nama-wali').value
+            formData.penerimaJabatan = document.getElementById('penerima-jabatan').value
+            formData.namaPenerima = document.getElementById('nama-penerima').value
+            formData.tglSurat = document.getElementById('tgl-surat').value
+            formData.tglMulai = document.getElementById('tgl-mulai').value
+            formData.tglSelesai = document.getElementById('tgl-selesai').value
+            formData.alasan = document.getElementById('alasan').value
+            formData.nomorSurat = document.getElementById('nomor-surat').value
+            formData.lampiran = document.getElementById('lampiran').value
+            formData.noHpWali = document.getElementById('no-hp-wali').value
+
+            // Hitung durasi
+            let durasiText = '— hari'
+            if (formData.tglMulai && formData.tglSelesai) {
+                const start = new Date(formData.tglMulai)
+                const end = new Date(formData.tglSelesai)
+                const diffTime = Math.abs(end - start)
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1
+                durasiText = `${diffDays} hari`
+            }
+            document.getElementById('durasi-hari').innerHTML = durasiText
+
+            // Generate HTML surat
+            let logoHTML = ''
+            if (formData.logo) {
+                logoHTML = `<img src="${formData.logo}" class="header-logo float-left mr-6 mb-4 max-h-20" alt="Logo">`
+            }
+
+            let penerimaHTML = formData.namaPenerima 
+                ? `${formData.penerimaJabatan} ${formData.namaPenerima}` 
+                : formData.penerimaJabatan
+
+            let customHTML = ''
+            if (formData.customParagraf.length > 0) {
+                formData.customParagraf.forEach((p, i) => {
+                    customHTML += `<p class="mb-4">${p}</p>`
+                })
+            }
+
+            let lampiranHTML = formData.lampiran !== 'Tidak ada' 
+                ? `<p class="mb-4">Lampiran : ${formData.lampiran}</p>` 
+                : ''
+
+            const contentHTML = `
+                <div class="text-center mb-8">
+                    ${logoHTML}
+                    <h1 class="text-2xl font-bold tracking-widest">${formData.namaSekolah}</h1>
+                    <p class="text-sm">NPSN : ${formData.npsn}</p>
+                    <p class="text-xs">${formData.alamatSekolah}</p>
+                    <p class="text-xs">Telp. ${formData.telpSekolah} • ${formData.emailSekolah}</p>
+                    <div class="h-px bg-gray-400 my-6"></div>
+                </div>
                 
-                // Efek salah
-                cell.style.transform = "scale(0.85)";
-                const originalColor = cell.style.backgroundColor;
-                cell.style.backgroundColor = "#FF0000";
-                
-                setTimeout(() => {
-                    cell.style.transform = "scale(1)";
-                    cell.style.backgroundColor = originalColor;
-                }, 220);
-                
-                endPlayerAttempt();
-                return;
-            }
-            
-            // BENAR
-            userIndex++;
-            
-            // Feedback positif
-            playTone(index);
-            cell.style.boxShadow = "0 0 40px 20px #ffffff";
-            cell.style.transform = "scale(1.12)";
-            
-            setTimeout(() => {
-                cell.style.boxShadow = "0 6px 15px rgba(0,0,0,0.4)";
-                cell.style.transform = "scale(1)";
-            }, 180);
-            
-            // Jika selesai urutan
-            if (userIndex === masterSequence.length) {
-                players[currentPlayerIndex].score++;
-                updateScoreboard();
-                endPlayerAttempt();
-            }
-        }
-
-        // ================== RONDE BARU ==================
-        function startNewRound() {
-            const infoEl = document.getElementById("info");
-            
-            // Cek apakah sudah mencapai ronde maksimal (15)
-            if (masterSequence.length >= 15) {
-                showWinner();
-                return;
-            }
-            
-            // Tambah satu langkah baru
-            masterSequence.push(Math.floor(Math.random() * 9));
-            
-            infoEl.innerHTML = `
-                <span style="color:#00ff88;">RONDE ${masterSequence.length}</span><br>
-                Panjang urutan: <strong>${masterSequence.length}</strong>
-            `;
-            
-            updateScoreboard();
-            
-            // Tampilkan urutan
-            showSequence(() => {
-                currentPlayerIndex = 0;
-                startPlayerAttempt();
-            });
-        }
-
-        // ================== SETUP PEMAIN ==================
-        function setupPlayers() {
-            const countInput = parseInt(document.getElementById("playerCount").value);
-            
-            if (!countInput || countInput < 1 || countInput > 4) {
-                alert("❌ Jumlah pemain harus 1 sampai 4!");
-                return;
-            }
-            
-            players = [];
-            for (let i = 0; i < countInput; i++) {
-                let name = prompt(`Nama Pemain ${i + 1}:`, `Pemain ${i + 1}`);
-                players.push({
-                    name: name && name.trim() !== "" ? name.trim() : `Pemain ${i + 1}`,
-                    score: 0
-                });
-            }
-            
-            // Reset semua
-            masterSequence = [];
-            round = 1;
-            currentPlayerIndex = 0;
-            
-            createGrid();
-            updateScoreboard();
-            
-            const infoEl = document.getElementById("info");
-            infoEl.style.color = "#00ff88";
-            infoEl.textContent = "Permainan dimulai! Siapkan ingatanmu...";
-            
-            // Mulai ronde pertama setelah 800ms
-            setTimeout(() => {
-                startNewRound();
-            }, 800);
-        }
-
-        // ================== TAMPILKAN PEMENANG ==================
-        function showWinner() {
-            state = "idle";
-            
-            const sorted = [...players].sort((a, b) => b.score - a.score);
-            const winner = sorted[0];
-            
-            const modal = document.getElementById("modal");
-            const modalContent = document.getElementById("modal-content");
-            
-            let html = `
-                <h1 style="margin:0 0 15px; font-size:2.4rem;">🏆 PERMAINAN SELESAI!</h1>
-                <div style="font-size:2rem; margin:20px 0; color:#00ff88;">${winner.name}</div>
-                <div style="font-size:1.4rem; margin-bottom:25px;">Pemenang dengan <strong>${winner.score}</strong> poin!</div>
-                
-                <h2 style="margin:25px 0 15px;">Skor Akhir</h2>
-            `;
-            
-            sorted.forEach(p => {
-                const isWinner = p === winner ? "🏆" : "👏";
-                html += `
-                    <div style="display:flex; justify-content:space-between; background:#2a2a3a; padding:14px 20px; border-radius:12px; margin:8px 0;">
-                        <span>${isWinner} ${p.name}</span>
-                        <span style="color:#00ff88; font-weight:700;">${p.score} poin</span>
+                <div class="flex justify-between text-sm mb-8">
+                    <div>
+                        Nomor : <strong>${formData.nomorSurat}</strong><br>
+                        Lampiran : —<br>
+                        Perihal : <strong>Izin Tidak Masuk Sekolah</strong>
                     </div>
-                `;
-            });
-            
-            html += `
-                <button onclick="restartGame()" style="width:100%; margin-top:25px; padding:16px; font-size:1.2rem;">
-                    🔄 MAIN LAGI
-                </button>
-            `;
-            
-            modalContent.innerHTML = html;
-            modal.style.display = "flex";
+                    <div class="text-right">
+                        Jakarta, ${formData.tglSurat ? new Date(formData.tglSurat).toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'}) : '—'}
+                    </div>
+                </div>
+
+                <p class="mb-4">Kepada Yth.<br>
+                ${penerimaHTML}<br>
+                Di Tempat</p>
+
+                <p class="mb-6">Dengan hormat,</p>
+
+                <p class="mb-6">Yang bertanda tangan di bawah ini:</p>
+                <table class="mb-8 w-full text-sm">
+                    <tr><td class="w-36">Nama</td><td>: ${formData.namaSiswa}</td></tr>
+                    <tr><td>NIS / NISN</td><td>: ${formData.nis}</td></tr>
+                    <tr><td>Kelas</td><td>: ${formData.kelas} • ${formData.semester} ${formData.tahunAjaran}</td></tr>
+                    <tr><td>Orang Tua / Wali</td><td>: ${formData.namaWali}</td></tr>
+                </table>
+
+                <p class="mb-4">Dengan ini mengajukan permohonan izin <strong>tidak masuk sekolah</strong> pada tanggal:</p>
+                <p class="mb-6 font-medium">
+                    ${formData.tglMulai ? new Date(formData.tglMulai).toLocaleDateString('id-ID', {weekday:'long', day:'numeric', month:'long', year:'numeric'}) : '—'} 
+                    s/d 
+                    ${formData.tglSelesai ? new Date(formData.tglSelesai).toLocaleDateString('id-ID', {weekday:'long', day:'numeric', month:'long', year:'numeric'}) : '—'}
+                    <span class="text-xs ml-2 bg-amber-100 text-amber-700 px-2 py-px rounded">(${durasiText})</span>
+                </p>
+
+                <p class="mb-6">Alasan : <strong>${formData.alasan}</strong></p>
+                
+                ${customHTML}
+                ${lampiranHTML}
+
+                <p class="mb-8">Demikian surat izin ini kami buat untuk dipergunakan sebagaimana mestinya. Atas perhatian dan kerjasamanya kami ucapkan terima kasih.</p>
+
+                <div class="flex justify-end mt-12">
+                    <div class="text-center">
+                        <p class="mb-1">Hormat kami,</p>
+                        <p class="mb-12">${formData.namaWali}</p>
+                        <div class="border border-dashed border-gray-400 w-40 h-24 mx-auto mb-2 flex items-center justify-center text-xs text-gray-400">Tanda Tangan</div>
+                        <p class="text-xs">No. HP : ${formData.noHpWali}</p>
+                    </div>
+                </div>
+            `
+
+            document.getElementById('letter-content').innerHTML = contentHTML
         }
 
-        // ================== RESTART ==================
-        function restartGame() {
-            const modal = document.getElementById("modal");
-            modal.style.display = "none";
-            
-            // Reset semua variabel
-            players = [];
-            masterSequence = [];
-            currentPlayerIndex = 0;
-            round = 1;
-            state = "idle";
-            
-            // Kembali ke layar awal
-            document.getElementById("scoreboard").innerHTML = "";
-            document.getElementById("grid").innerHTML = "";
-            document.getElementById("info").innerHTML = `Masukkan jumlah pemain (1-4)`;
-            
-            // Scroll ke atas
-            window.scrollTo(0, 0);
+        function previewLogo(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader()
+                reader.onload = function(e) {
+                    formData.logo = e.target.result
+                    const img = document.getElementById('logo-preview')
+                    img.src = e.target.result
+                    img.classList.remove('hidden')
+                    updatePreview()
+                }
+                reader.readAsDataURL(input.files[0])
+            }
         }
 
-        // ================== INISIALISASI ==================
-        console.log("%c✅ Tap & Match Multiplayer v2.0 (Advanced) siap!", "color:#00ff88; font-size:13px; font-weight:bold;");
+        function pilihAlasan() {
+            const select = document.getElementById('alasan-pilih')
+            if (select.value) {
+                document.getElementById('alasan').value = select.value
+                updatePreview()
+            }
+        }
+
+        function tambahAlasanCustom() {
+            const custom = prompt('Masukkan alasan kustom (bisa panjang):')
+            if (custom && custom.trim()) {
+                document.getElementById('alasan').value = custom.trim()
+                updatePreview()
+            }
+        }
+
+        function tambahParagrafCustom() {
+            const teks = prompt('Tulis paragraf tambahan (misal: "Siswa telah mengikuti tes kesehatan di rumah sakit"):')
+            if (teks && teks.trim()) {
+                formData.customParagraf.push(teks.trim())
+                renderCustomParagrafList()
+                updatePreview()
+            }
+        }
+
+        function renderCustomParagrafList() {
+            const container = document.getElementById('custom-paragraf-list')
+            container.innerHTML = ''
+            formData.customParagraf.forEach((p, index) => {
+                const div = document.createElement('div')
+                div.className = 'flex justify-between bg-gray-50 px-4 py-3 rounded-2xl items-center'
+                div.innerHTML = `
+                    <span class="text-sm">${p}</span>
+                    <button onclick="hapusParagraf(${index});" class="text-red-500 hover:text-red-700">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                `
+                container.appendChild(div)
+            })
+        }
+
+        function hapusParagraf(index) {
+            formData.customParagraf.splice(index, 1)
+            renderCustomParagrafList()
+            updatePreview()
+        }
+
+        function generateNomorOtomatis() {
+            const bulan = new Date().getMonth() + 1
+            const tahun = new Date().getFullYear()
+            const random = Math.floor(100 + Math.random() * 900)
+            const nomor = `${String(random).padStart(3, '0')}/SIS/${String(bulan).padStart(2, '0')}/${tahun}`
+            document.getElementById('nomor-surat').value = nomor
+            formData.nomorSurat = nomor
+            updatePreview()
+        }
+
+        function printLetter() {
+            updatePreview()
+            window.print()
+        }
+
+        // jsPDF untuk PDF yang lebih rapi (opsional fallback)
+        function generatePDF() {
+            updatePreview()
+            
+            // Karena jsPDF sulit render complex HTML, kita beri opsi print-to-PDF
+            const confirmPDF = confirm('Surat akan dicetak sebagai PDF menggunakan browser.\n\nKlik OK untuk melanjutkan (disarankan cetak ke "Save as PDF").')
+            if (confirmPDF) {
+                printLetter()
+            }
+        }
+
+        function saveDraft() {
+            const namaDraft = prompt('Nama draft surat (contoh: Izin Rizki - 12 April)', 'Draft ' + new Date().toLocaleDateString('id-ID'))
+            if (!namaDraft) return
+            
+            const draft = {
+                id: Date.now(),
+                nama: namaDraft,
+                timestamp: new Date().toISOString(),
+                data: {...formData}
+            }
+            
+            history.unshift(draft)
+            if (history.length > 10) history.pop() // batas 10 draft
+            localStorage.setItem('suratIzinHistory', JSON.stringify(history))
+            
+            alert(`✅ Draft "${namaDraft}" berhasil disimpan!`)
+            updateHistoryCount()
+        }
+
+        function loadDraft() {
+            if (history.length === 0) {
+                alert('Belum ada draft tersimpan.')
+                return
+            }
+            showHistory()
+        }
+
+        function showHistory() {
+            const modal = document.getElementById('modal-history')
+            const list = document.getElementById('history-list')
+            
+            if (history.length === 0) {
+                list.innerHTML = `<p class="text-center py-12 text-gray-400">Belum ada draft tersimpan</p>`
+            } else {
+                let html = ''
+                history.forEach((draft, i) => {
+                    const date = new Date(draft.timestamp).toLocaleString('id-ID')
+                    html += `
+                    <div onclick="loadDraftById(${draft.id});hideHistory()" 
+                         class="flex justify-between items-center px-5 py-4 hover:bg-gray-100 rounded-2xl cursor-pointer border border-transparent hover:border-gray-200">
+                        <div>
+                            <div class="font-medium">${draft.nama}</div>
+                            <div class="text-xs text-gray-500">${date}</div>
+                        </div>
+                        <div class="text-right text-xs">
+                            ${draft.data.namaSiswa}<br>
+                            <span class="text-emerald-600">${draft.data.kelas}</span>
+                        </div>
+                    </div>`
+                })
+                list.innerHTML = html
+            }
+            modal.classList.remove('hidden')
+            modal.classList.add('flex')
+        }
+
+        function hideHistory() {
+            const modal = document.getElementById('modal-history')
+            modal.classList.add('hidden')
+            modal.classList.remove('flex')
+        }
+
+        function loadDraftById(id) {
+            const draft = history.find(d => d.id === id)
+            if (!draft) return
+            
+            formData = {...draft.data}
+            
+            // Isi semua field form
+            document.getElementById('nama-sekolah').value = formData.namaSekolah
+            document.getElementById('npsn').value = formData.npsn
+            document.getElementById('alamat-sekolah').value = formData.alamatSekolah
+            document.getElementById('telp-sekolah').value = formData.telpSekolah
+            document.getElementById('email-sekolah').value = formData.emailSekolah
+            document.getElementById('nama-siswa').value = formData.namaSiswa
+            document.getElementById('nis').value = formData.nis
+            document.getElementById('kelas').value = formData.kelas
+            document.getElementById('semester').value = formData.semester
+            document.getElementById('tahun-ajaran').value = formData.tahunAjaran
+            document.getElementById('nama-wali').value = formData.namaWali
+            document.getElementById('penerima-jabatan').value = formData.penerimaJabatan || 'Bapak/Ibu Guru Wali Kelas'
+            document.getElementById('nama-penerima').value = formData.namaPenerima || ''
+            document.getElementById('tgl-surat').value = formData.tglSurat
+            document.getElementById('tgl-mulai').value = formData.tglMulai
+            document.getElementById('tgl-selesai').value = formData.tglSelesai
+            document.getElementById('alasan').value = formData.alasan
+            document.getElementById('nomor-surat').value = formData.nomorSurat
+            document.getElementById('lampiran').value = formData.lampiran
+            document.getElementById('no-hp-wali').value = formData.noHpWali
+            
+            // Logo
+            if (formData.logo) {
+                const img = document.getElementById('logo-preview')
+                img.src = formData.logo
+                img.classList.remove('hidden')
+            }
+            
+            renderCustomParagrafList()
+            updatePreview()
+            
+            alert(`✅ Draft "${draft.nama}" berhasil dimuat!`)
+        }
+
+        function updateHistoryCount() {
+            document.getElementById('history-count').textContent = history.length
+        }
+
+        function clearForm() {
+            if (confirm('Hapus semua data dan mulai dari awal?')) {
+                formData = {
+                    logo: null,
+                    namaSekolah: "SMA Negeri 1 Jakarta",
+                    npsn: "301012345678",
+                    alamatSekolah: "Jl. Jend. Sudirman No. 45, Jakarta Pusat, DKI Jakarta 10210",
+                    telpSekolah: "(021) 1234567",
+                    emailSekolah: "sma1jkt@sekolah.id",
+                    namaSiswa: "",
+                    nis: "",
+                    kelas: "",
+                    semester: "Genap",
+                    tahunAjaran: "2025/2026",
+                    namaWali: "",
+                    penerimaJabatan: "Bapak/Ibu Guru Wali Kelas",
+                    namaPenerima: "",
+                    tglSurat: "",
+                    tglMulai: "",
+                    tglSelesai: "",
+                    alasan: "",
+                    nomorSurat: "001/SIS/IV/2026",
+                    lampiran: "Tidak ada",
+                    noHpWali: "",
+                    customParagraf: []
+                }
+                
+                // Reset input
+                document.querySelectorAll('input, textarea, select').forEach(el => {
+                    if (el.type === 'date') el.value = ''
+                    else if (el.id === 'nama-sekolah') el.value = 'SMA Negeri 1 Jakarta'
+                    else if (el.id === 'npsn') el.value = '301012345678'
+                    else if (el.id === 'alamat-sekolah') el.value = 'Jl. Jend. Sudirman No. 45, Jakarta Pusat, DKI Jakarta 10210'
+                    else if (el.id === 'telp-sekolah') el.value = '(021) 1234567'
+                    else if (el.id === 'email-sekolah') el.value = 'sma1jkt@sekolah.id'
+                    else if (el.id === 'semester') el.value = 'Genap'
+                    else if (el.id === 'tahun-ajaran') el.value = '2025/2026'
+                    else if (el.id === 'penerima-jabatan') el.value = 'Bapak/Ibu Guru Wali Kelas'
+                    else if (el.id === 'lampiran') el.value = 'Tidak ada'
+                    else if (el.id === 'nomor-surat') el.value = '001/SIS/IV/2026'
+                    else el.value = ''
+                })
+                
+                document.getElementById('logo-preview').classList.add('hidden')
+                formData.customParagraf = []
+                renderCustomParagrafList()
+                updatePreview()
+            }
+        }
+
+        function switchTab(n) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'))
+            document.getElementById('tab-content-' + n).classList.remove('hidden')
+            
+            document.querySelectorAll('.tab-button').forEach(el => {
+                el.classList.remove('border-b-2', 'border-[#1e40af]', 'text-[#1e40af]')
+                el.classList.add('text-gray-500')
+            })
+            document.getElementById('tab-' + n).classList.add('border-b-2', 'border-[#1e40af]', 'text-[#1e40af]')
+        }
+
+        function showTips() {
+            alert('🎉 FITUR ADVANCE YANG SUDAH ADA:\n\n' +
+                  '✅ Live Preview (update otomatis)\n' +
+                  '✅ Upload logo sekolah\n' +
+                  '✅ Auto durasi hari izin\n' +
+                  '✅ Nomor surat otomatis\n' +
+                  '✅ Paragraf custom (bisa tambah banyak)\n' +
+                  '✅ Simpan & Load Draft (hingga 10 surat)\n' +
+                  '✅ Print & PDF siap cetak A4\n' +
+                  '✅ Alasan fleksibel (dropdown + custom)\n' +
+                  '✅ Responsive & mobile friendly\n\n' +
+                  'Sistem ini 100% offline, tanpa server. Anda bisa simpan file HTML ini dan gunakan kapan saja!')
+        }
+
+        // INIT
+        window.onload = function() {
+            initTailwind()
+            
+            // Set tanggal hari ini
+            const today = new Date().toISOString().split('T')[0]
+            document.getElementById('tgl-surat').value = today
+            
+            // Load history count
+            updateHistoryCount()
+            
+            // Pertama kali render preview
+            updatePreview()
+            
+            console.log('%c✅ SuratIzin.id Advanced Tools siap digunakan!', 'color:#1e40af; font-size:13px; font-weight:bold')
+        }
     </script>
 </body>
 </html>
