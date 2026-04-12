@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SuratIzin.id • Professional</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap');
@@ -33,12 +34,38 @@
             position: relative;
         }
         
+        /* PERBAIKAN MOBILE RESPONSIVE */
         @media (max-width: 1024px) {
             .a4-paper {
                 width: 100%;
                 max-width: 210mm;
                 margin: 20px auto;
                 box-shadow: 0 10px 25px -5px rgb(15 23 42 / 0.1);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .a4-paper {
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 18mm 15mm !important;
+                font-size: 10.5pt !important;
+                margin: 12px auto;
+                box-shadow: none;
+            }
+            #preview-wrapper {
+                padding: 8px !important;
+            }
+            .form-input {
+                padding: 16px 20px !important;
+                font-size: 15px !important;
+            }
+            .navbar-buttons {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .signature-canvas {
+                height: 180px !important;
             }
         }
         
@@ -68,19 +95,37 @@
             border-color: #1e2937;
         }
         
+        /* PERBAIKAN KURSOR TANDA TANGAN */
         .signature-canvas {
             border: 2px solid #e2e8f0;
             border-radius: 16px;
             background: #f8fafc;
             touch-action: none;
             max-width: 100%;
+            cursor: crosshair !important;
+        }
+        
+        /* Watermark anti-kecurangan */
+        .letter-watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-12deg);
+            font-size: 60px;
+            font-weight: 900;
+            color: rgba(30, 41, 55, 0.07);
+            pointer-events: none;
+            z-index: 0;
+            white-space: nowrap;
+            letter-spacing: 12px;
+            user-select: none;
         }
     </style>
 </head>
 <body class="bg-slate-50 font-sans">
     <!-- NAVBAR - PROFESSIONAL & CLEAN -->
     <nav class="bg-slate-950 text-white sticky top-0 z-50 no-print shadow-md">
-        <div class="max-w-screen-2xl mx-auto px-6 py-5 flex items-center justify-between">
+        <div class="max-w-screen-2xl mx-auto px-4 lg:px-6 py-4 flex items-center justify-between navbar-buttons">
             <div class="flex items-center gap-x-3">
                 <i class="fa-solid fa-file-signature text-3xl"></i>
                 <div>
@@ -89,23 +134,31 @@
                 </div>
             </div>
             
-            <div class="flex items-center gap-x-3">
+            <div class="flex items-center gap-x-2 md:gap-x-3">
                 <button onclick="autoSaveDraft()" 
-                        class="flex items-center gap-x-2 px-5 h-10 bg-white/10 hover:bg-white/20 text-sm font-medium rounded-2xl">
+                        class="flex items-center gap-x-2 px-4 md:px-5 h-10 bg-white/10 hover:bg-white/20 text-sm font-medium rounded-2xl">
                     <i class="fa-solid fa-floppy-disk"></i>
-                    <span class="hidden md:inline">Simpan Otomatis</span>
+                    <span class="hidden md:inline">Simpan Draft</span>
+                </button>
+                
+                <!-- FITUR BARU: SIMPAN SEBAGAI PNG / JPEG -->
+                <button onclick="saveAsImage()" 
+                        class="flex items-center gap-x-2 px-4 md:px-5 h-10 bg-violet-600 hover:bg-violet-700 text-white font-medium rounded-2xl">
+                    <i class="fa-solid fa-image"></i>
+                    <span class="hidden sm:inline">Simpan Gambar</span>
+                    <span class="sm:hidden">PNG/JPEG</span>
                 </button>
                 
                 <button onclick="generatePDF()" 
-                        class="flex items-center gap-x-2 px-6 h-10 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-2xl">
+                        class="flex items-center gap-x-2 px-4 md:px-6 h-10 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-2xl">
                     <i class="fa-solid fa-file-pdf"></i>
-                    <span>PDF</span>
+                    <span class="hidden sm:inline">PDF</span>
                 </button>
                 
                 <button onclick="printLetter()" 
-                        class="flex items-center gap-x-2 px-6 h-10 bg-white text-slate-950 hover:bg-slate-100 font-medium rounded-2xl">
+                        class="flex items-center gap-x-2 px-4 md:px-6 h-10 bg-white text-slate-950 hover:bg-slate-100 font-medium rounded-2xl">
                     <i class="fa-solid fa-print"></i>
-                    <span>Cetak</span>
+                    <span class="hidden sm:inline">Cetak</span>
                 </button>
                 
                 <button onclick="showHistory()" 
@@ -125,11 +178,10 @@
     <div class="max-w-screen-2xl mx-auto px-4 lg:px-8 py-8">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
-            <!-- FORM PANEL - CLEAN & SIMPLE -->
-            <div class="lg:col-span-5 bg-white rounded-3xl shadow-xl p-8 no-print">
+            <!-- FORM PANEL -->
+            <div class="lg:col-span-5 bg-white rounded-3xl shadow-xl p-6 md:p-8 no-print">
                 <h2 class="text-2xl font-semibold text-slate-800 mb-6">Isi Data Surat</h2>
                 
-                <!-- Sections tanpa tab agar tidak membingungkan -->
                 <div class="space-y-12">
                     
                     <!-- SECTION 1: Data Sekolah -->
@@ -296,12 +348,13 @@
                         <i class="fa-solid fa-eye"></i>
                         Pratinjau Surat (Real-time)
                     </h3>
-                    <span class="text-xs bg-emerald-100 text-emerald-700 px-4 py-2 rounded-3xl font-medium">Format A4 • Siap Cetak</span>
+                    <span class="text-xs bg-emerald-100 text-emerald-700 px-4 py-2 rounded-3xl font-medium">Format A4 • Siap Cetak &amp; Simpan</span>
                 </div>
                 
-                <div id="preview-wrapper" class="bg-white p-4 rounded-3xl shadow-inner">
-                    <div id="letter" class="a4-paper mx-auto">
-                        <div id="letter-content" class="text-slate-800"></div>
+                <div id="preview-wrapper" class="bg-white p-4 rounded-3xl shadow-inner overflow-x-auto">
+                    <div id="letter" class="a4-paper mx-auto relative">
+                        <div class="letter-watermark">SURATIZIN.ID • VERIFIKASI</div>
+                        <div id="letter-content" class="text-slate-800 relative z-10"></div>
                     </div>
                 </div>
             </div>
@@ -353,7 +406,7 @@
             tailwind.config = { content: [], theme: { extend: {} } }
         }
 
-        // UPDATE PREVIEW
+        // UPDATE PREVIEW + WATERMARK ANTI-KECURANGAN
         function updatePreview() {
             // Sync data
             formData.namaSekolah = document.getElementById('nama-sekolah').value || formData.namaSekolah
@@ -389,6 +442,9 @@
             const tglFormatted = formData.tglSurat 
                 ? new Date(formData.tglSurat).toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'}) 
                 : '—'
+
+            // VERIFIKASI ID (anti-kecurangan)
+            const verifikasiID = 'SZ-' + Date.now().toString(36).toUpperCase().padStart(8, '0')
 
             const contentHTML = `
                 <div class="text-center mb-10">
@@ -430,7 +486,14 @@
 
                 ${formData.customParagraf.map(p => `<p class="mb-6 text-sm">${p}</p>`).join('')}
 
-                <p class="mb-16">Demikian surat izin ini kami buat untuk dipergunakan sebagaimana mestinya. Terima kasih atas perhatian dan kerjasamanya.</p>
+                <p class="mb-12 text-sm">Demikian surat izin ini kami buat untuk dipergunakan sebagaimana mestinya. Terima kasih atas perhatian dan kerjasamanya.</p>
+
+                <!-- PROTEKSI ANTI-KECURANGAN -->
+                <div class="text-[10px] text-slate-400 mb-8 text-center border border-dashed border-slate-300 rounded-2xl py-3">
+                    ID Verifikasi: <span class="font-mono font-medium">${verifikasiID}</span><br>
+                    Surat ini sah hanya jika disertai tanda tangan asli wali murid.<br>
+                    Penyalahgunaan untuk membolos dapat dikenakan sanksi sekolah.
+                </div>
 
                 <div class="text-center pt-8 border-t border-slate-200">
                     ${signatureHTML}
@@ -441,7 +504,7 @@
             document.getElementById('letter-content').innerHTML = contentHTML
         }
 
-        // SIGNATURE PAD
+        // SIGNATURE PAD (kursor sudah di-fix via CSS)
         function initSignaturePad() {
             signatureCanvas = document.getElementById('signature-canvas')
             signatureCtx = signatureCanvas.getContext('2d')
@@ -450,13 +513,13 @@
             signatureCtx.lineCap = 'round'
             signatureCtx.lineJoin = 'round'
 
-            // Mouse support
+            // Mouse
             signatureCanvas.addEventListener('mousedown', e => { isDrawing = true; startDraw(e) })
             signatureCanvas.addEventListener('mousemove', draw)
             signatureCanvas.addEventListener('mouseup', stopDraw)
             signatureCanvas.addEventListener('mouseleave', stopDraw)
 
-            // Touch support (mobile)
+            // Touch (mobile)
             signatureCanvas.addEventListener('touchstart', e => { e.preventDefault(); isDrawing = true; startDraw(e.touches[0]) })
             signatureCanvas.addEventListener('touchmove', e => { e.preventDefault(); draw(e.touches[0]) })
             signatureCanvas.addEventListener('touchend', stopDraw)
@@ -492,7 +555,7 @@
             updatePreview()
         }
 
-        // HELPER FUNCTIONS
+        // PREVIEW LOGO
         function previewLogo(input) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader()
@@ -564,6 +627,48 @@
             if (ok) printLetter()
         }
 
+        // FITUR BARU: SIMPAN SEBAGAI PNG / JPEG (html2canvas)
+        function saveAsImage() {
+            const letterEl = document.getElementById('letter')
+            
+            // Konfirmasi format
+            const isPNG = confirm('Simpan sebagai:\n\n✅ OK = PNG (kualitas tinggi, transparansi)\n❌ Cancel = JPEG (ukuran lebih kecil)')
+            
+            html2canvas(letterEl, {
+                scale: 3,
+                useCORS: true,
+                backgroundColor: '#ffffff',
+                logging: false,
+                width: letterEl.offsetWidth,
+                height: letterEl.offsetHeight
+            }).then(canvas => {
+                const link = document.createElement('a')
+                const filename = `Surat_Izin_${(formData.namaSiswa || 'Siswa').replace(/[^a-zA-Z0-9]/g, '_')}_${new Date().toISOString().slice(0,10)}.${isPNG ? 'png' : 'jpg'}`
+                
+                if (isPNG) {
+                    link.download = filename
+                    link.href = canvas.toDataURL('image/png')
+                } else {
+                    link.download = filename
+                    link.href = canvas.toDataURL('image/jpeg', 0.92)
+                }
+                
+                document.body.appendChild(link)
+                link.click()
+                document.body.removeChild(link)
+                
+                // Notifikasi sukses
+                const notif = document.createElement('div')
+                notif.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#10b981;color:white;padding:16px 24px;border-radius:9999px;box-shadow:0 10px 15px -3px rgb(16 185 129);z-index:99999;'
+                notif.innerHTML = '✅ Surat berhasil disimpan sebagai gambar!'
+                document.body.appendChild(notif)
+                setTimeout(() => notif.remove(), 2500)
+            }).catch(err => {
+                alert('Gagal menyimpan gambar. Pastikan browser mendukung fitur ini.')
+                console.error(err)
+            })
+        }
+
         function autoSaveDraft() {
             const draft = {
                 id: Date.now(),
@@ -575,7 +680,11 @@
             if (history.length > 10) history.pop()
             localStorage.setItem('suratIzinHistoryV2', JSON.stringify(history))
             updateHistoryCount()
-            alert('✅ Draft tersimpan otomatis')
+            const notif = document.createElement('div')
+            notif.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#10b981;color:white;padding:12px 20px;border-radius:9999px;box-shadow:0 10px 15px -3px rgb(16 185 129);z-index:99999;'
+            notif.textContent = '✅ Draft tersimpan otomatis'
+            document.body.appendChild(notif)
+            setTimeout(() => notif.remove(), 1800)
         }
 
         function showHistory() {
@@ -602,7 +711,6 @@
             if (!draft) return
             formData = {...draft.data}
             
-            // Isi form
             Object.keys(formData).forEach(key => {
                 const el = document.getElementById(key)
                 if (el && key !== 'logo' && key !== 'customParagraf' && key !== 'signatureDataURL') {
@@ -668,12 +776,39 @@
             updatePreview()
         }
 
-        // AUTO SAVE setiap 25 detik
+        // AUTO SAVE
         function startAutoSave() {
             if (autoSaveInterval) clearInterval(autoSaveInterval)
             autoSaveInterval = setInterval(() => {
                 autoSaveDraft()
             }, 25000)
+        }
+
+        // PROTEKSI F1 + ANTI-KECURANGAN (blokir dev tools, inspect, dll)
+        function addAntiCheatProtection() {
+            // Blokir right-click
+            document.addEventListener('contextmenu', e => {
+                e.preventDefault()
+                return false
+            })
+            
+            // Blokir keyboard shortcuts (F1, F12, Ctrl+Shift+I, dll)
+            document.addEventListener('keydown', function(e) {
+                if (
+                    e.key === 'F1' || 
+                    e.key === 'F12' || 
+                    (e.ctrlKey && e.shiftKey && (e.key.toLowerCase() === 'i' || e.key.toLowerCase() === 'j' || e.key.toLowerCase() === 'c')) ||
+                    (e.ctrlKey && e.key.toLowerCase() === 'u') ||
+                    (e.ctrlKey && e.key.toLowerCase() === 's') ||
+                    (e.ctrlKey && e.key.toLowerCase() === 'p')
+                ) {
+                    e.preventDefault()
+                    alert('⚠️ Fitur ini dilindungi untuk mencegah penyalahgunaan.\n\nSurat izin hanya boleh dibuat untuk keperluan sah oleh wali murid.')
+                    return false
+                }
+            })
+            
+            console.log('%c🔒 Proteksi anti-kecurangan aktif (F1, F12, inspect element, dll)', 'color:#10b981;font-weight:700')
         }
 
         // INIT
@@ -688,8 +823,9 @@
             updateHistoryCount()
             updatePreview()
             startAutoSave()
+            addAntiCheatProtection()
             
-            console.log('%c✅ SuratIzin.id Professional siap digunakan – UI clean, responsive penuh, tanpa gimmick', 'color:#1e2937;font-weight:600')
+            console.log('%c✅ SuratIzin.id Professional siap digunakan – Mobile responsive, simpan PNG/JPEG, proteksi F1 & anti-kecurangan aktif', 'color:#1e2937;font-weight:600')
         }
     </script>
 </body>
