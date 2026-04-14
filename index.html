@@ -196,6 +196,81 @@
                         </div>
                     </div>
 
+<!-- ============================================= -->
+<!-- PROTEKSI F1 + ANTI SALIN + ANTI ZOOM          -->
+<!-- Dunnak.com - Surat Izin - Mahesa              -->
+<!-- ============================================= -->
+
+<script>
+// ================== PROTEKSI F1 ==================
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'F1' || e.keyCode === 112) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        return false;
+    }
+}, true);
+
+// ================== ANTI SALIN (Copy-Paste) ==================
+const disableCopyKeys = ['c', 'C', 'x', 'X', 'v', 'V', 'u', 'U', 's', 'S', 'p', 'P'];
+
+document.addEventListener('keydown', function(e) {
+    // Blokir Ctrl/Cmd + C, X, V, U (view source), S (save), P (print)
+    if ((e.ctrlKey || e.metaKey) && disableCopyKeys.includes(e.key)) {
+        e.preventDefault();
+        return false;
+    }
+
+    // Blokir F12, Ctrl+Shift+I (DevTools), Ctrl+Shift+J, Ctrl+Shift+C
+    if (e.key === 'F12' || 
+        (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
+        (e.ctrlKey && e.key === 'u')) {
+        e.preventDefault();
+        return false;
+    }
+}, true);
+
+// Disable Right Click (Context Menu)
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+});
+
+// Disable Drag & Drop (untuk gambar/teks)
+document.addEventListener('dragstart', function(e) {
+    e.preventDefault();
+});
+
+// Disable Copy, Cut, Paste events
+['copy', 'cut', 'paste'].forEach(event => {
+    document.addEventListener(event, function(e) {
+        e.preventDefault();
+        return false;
+    });
+});
+
+// ================== ANTI ZOOM ==================
+// Blokir Ctrl + / Ctrl - (keyboard zoom)
+document.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && (e.key === '+' || e.key === '-' || e.key === '=')) {
+        e.preventDefault();
+        return false;
+    }
+}, true);
+
+// Blokir Ctrl + Mouse Wheel Zoom
+document.addEventListener('wheel', function(e) {
+    if (e.ctrlKey || e.metaKey) {
+        e.preventDefault();
+        return false;
+    }
+}, { passive: false });
+
+// Optional: Tampilkan pesan console
+console.log('%c🛡️ Proteksi aktif: F1 + Anti Salin + Anti Zoom', 
+            'color:#ef4444; font-weight:700; font-size:13px');
+</script>
+
                     <!-- Detail Izin -->
                     <div>
                         <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-4">3. Detail Izin</h3>
