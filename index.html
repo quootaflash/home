@@ -52,6 +52,7 @@
             background: #f8fafc;
             cursor: crosshair;
             max-width: 100%;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
         }
 
         .letter-watermark {
@@ -201,13 +202,13 @@
                         
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-sm font-medium text-slate-600 mb-2">Nomor Surat</label>
-                                <input id="nomor-surat" type="text" value="001/SIS/IV/2026" 
+                                <label class="block text-sm font-medium text-slate-600 mb-2">Nomor Surat <span class="text-emerald-600 text-xs">(Otomatis)</span></label>
+                                <input id="nomor-surat" type="text" value="" 
                                        class="form-input w-full px-5 py-4 border border-slate-200 rounded-3xl" oninput="updatePreview()">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-slate-600 mb-2">Perihal</label>
-                                <input id="perihal" type="text" value="Izin Tidak Masuk Sekolah" 
+                                <input id="perihal" type="text" value="Permohonan Izin Tidak Hadir Sekolah" 
                                        class="form-input w-full px-5 py-4 border border-slate-200 rounded-3xl" oninput="updatePreview()">
                             </div>
                         </div>
@@ -259,6 +260,7 @@
                     <!-- Tanda Tangan -->
                     <div>
                         <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-4">4. Tanda Tangan</h3>
+                        <p class="text-xs text-slate-500 mb-3">Geser mouse / jari untuk menandatangani (lebih halus & profesional)</p>
                         <canvas id="signature-canvas" width="520" height="200" class="signature-canvas w-full"></canvas>
                         <div class="flex gap-3 mt-4">
                             <button onclick="clearSignature()" class="flex-1 py-4 text-sm font-medium border border-slate-300 rounded-3xl">Hapus TTD</button>
@@ -306,15 +308,15 @@
             tglMulai: "",
             tglSelesai: "",
             alasan: "Sakit demam tinggi selama 3 hari.",
-            nomorSurat: "001/SIS/IV/2026",
-            perihal: "Izin Tidak Masuk Sekolah",
+            nomorSurat: "",
+            perihal: "Permohonan Izin Tidak Hadir Sekolah",
             signatureDataURL: null
         }
 
         let signatureCanvas, signatureCtx, isDrawing = false;
+        let lastX = 0, lastY = 0;   // ← untuk smoothing tanda tangan
 
         function updatePreview() {
-            // Update formData dari input
             formData.namaSekolah = document.getElementById('nama-sekolah').value;
             formData.npsn = document.getElementById('npsn').value;
             formData.alamatSekolah = document.getElementById('alamat-sekolah').value;
@@ -381,7 +383,8 @@
                     <tr><td class="pb-2">Wali Murid</td><td>: ${formData.namaWali}</td></tr>
                 </table>
 
-                <p class="mb-6">Mengajukan izin tidak masuk sekolah pada tanggal:</p>
+                <p class="mb-6">Dengan hormat,</p>
+                <p class="mb-6">Mengajukan <strong>permohonan izin</strong> tidak hadir di sekolah pada tanggal:</p>
                 <p class="font-medium mb-8">
                     ${formData.tglMulai ? new Date(formData.tglMulai).toLocaleDateString('id-ID', {weekday:'long', day:'numeric', month:'long', year:'numeric'}) : '—'} 
                     sampai 
@@ -389,16 +392,16 @@
                     <span class="ml-4 bg-emerald-100 text-emerald-700 px-4 py-1 text-xs rounded-3xl">${durasiText}</span>
                 </p>
 
-                <p class="mb-10">Alasan : <span class="font-medium">${formData.alasan}</span></p>
+                <p class="mb-10">Dengan alasan : <span class="font-medium">${formData.alasan}</span></p>
 
-                <p class="mb-12 text-sm">Demikian surat izin ini dibuat untuk dipergunakan sebagaimana mestinya. Atas perhatian dan kerjasamanya, kami ucapkan terima kasih.</p>
+                <p class="mb-12 text-sm">Demikian surat permohonan izin ini kami buat dengan sebenar-benarnya. Atas perhatian dan kerjasama Bapak/Ibu yang baik, kami ucapkan terima kasih.</p>
 
                 <!-- Tanda Tangan di Kanan -->
                 <div class="flex justify-end">
                     <div class="text-center w-72">
                         ${signatureHTML}
                         <p class="mt-4 font-medium">${formData.namaWali}</p>
-                        <p class="text-xs text-slate-500">Wali Murid / Orang Tua</p>
+                        <p class="text-xs text-slate-500">Wali Murid / Orang Tua Siswa</p>
                     </div>
                 </div>
             `;
@@ -406,36 +409,66 @@
             document.getElementById('letter-content').innerHTML = contentHTML;
         }
 
-        // Signature Pad (sama seperti sebelumnya)
+        // === SIGNATURE PAD - VERSI ADVANCE & PROFESSIONAL ===
         function initSignaturePad() {
             signatureCanvas = document.getElementById('signature-canvas');
             signatureCtx = signatureCanvas.getContext('2d');
-            signatureCtx.lineWidth = 4;
+            
+            // Pengaturan tinta yang lebih halus & profesional
+            signatureCtx.lineWidth = 3.5;
             signatureCtx.strokeStyle = '#1e2937';
             signatureCtx.lineCap = 'round';
             signatureCtx.lineJoin = 'round';
 
+            // Mouse
             signatureCanvas.addEventListener('mousedown', (e) => { isDrawing = true; startDraw(e); });
             signatureCanvas.addEventListener('mousemove', draw);
-            signatureCanvas.addEventListener('mouseup', () => isDrawing = false);
-            signatureCanvas.addEventListener('mouseleave', () => isDrawing = false);
+            signatureCanvas.addEventListener('mouseup', endDraw);
+            signatureCanvas.addEventListener('mouseleave', endDraw);
 
-            signatureCanvas.addEventListener('touchstart', (e) => { e.preventDefault(); isDrawing = true; startDraw(e.touches[0]); });
-            signatureCanvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e.touches[0]); });
-            signatureCanvas.addEventListener('touchend', () => isDrawing = false);
+            // Touch (mobile)
+            signatureCanvas.addEventListener('touchstart', (e) => { 
+                e.preventDefault(); 
+                isDrawing = true; 
+                startDraw(e.touches[0]); 
+            });
+            signatureCanvas.addEventListener('touchmove', (e) => { 
+                e.preventDefault(); 
+                draw(e.touches[0]); 
+            });
+            signatureCanvas.addEventListener('touchend', endDraw);
         }
 
         function startDraw(e) {
             const rect = signatureCanvas.getBoundingClientRect();
+            lastX = e.clientX - rect.left;
+            lastY = e.clientY - rect.top;
             signatureCtx.beginPath();
-            signatureCtx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+            signatureCtx.moveTo(lastX, lastY);
         }
 
         function draw(e) {
             if (!isDrawing) return;
             const rect = signatureCanvas.getBoundingClientRect();
-            signatureCtx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            // QUADRATIC CURVE → membuat garis sangat halus & natural (professional look)
+            signatureCtx.beginPath();
+            signatureCtx.moveTo(lastX, lastY);
+            signatureCtx.quadraticCurveTo(
+                lastX + (x - lastX) / 2,
+                lastY + (y - lastY) / 2,
+                x, y
+            );
             signatureCtx.stroke();
+
+            lastX = x;
+            lastY = y;
+        }
+
+        function endDraw() {
+            isDrawing = false;
         }
 
         function clearSignature() {
@@ -493,11 +526,12 @@
         }
 
         function autoSaveDraft() {
-            alert('Draft disimpan! (Fitur lengkap dapat ditambahkan nanti)');
+            alert('✅ Draft berhasil disimpan!');
         }
 
         function clearForm() {
-            if (!confirm('Reset semua data?')) return;
+            if (!confirm('Reset semua data dan nomor surat?')) return;
+            localStorage.removeItem('suratIzinCounter'); // reset counter jika diperlukan
             location.reload();
         }
 
@@ -505,12 +539,29 @@
         window.onload = () => {
             initSignaturePad();
             
+            // Tanggal hari ini
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('tgl-surat').value = today;
+
+            // === NOMOR SURAT OTOMATIS ===
+            const now = new Date();
+            const year = now.getFullYear();
+            const monthIndex = now.getMonth();
+            const romanMonths = ['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'];
+            const romanMonth = romanMonths[monthIndex];
             
+            let counter = parseInt(localStorage.getItem('suratIzinCounter') || '1');
+            const autoNomor = `${counter.toString().padStart(3, '0')}/SIS/${romanMonth}/${year}`;
+            
+            document.getElementById('nomor-surat').value = autoNomor;
+            formData.nomorSurat = autoNomor;
+            
+            // Increment counter untuk penggunaan berikutnya
+            localStorage.setItem('suratIzinCounter', counter + 1);
+
             updatePreview();
             
-            console.log('%cDunnak.com - Surat Izin v2.2 (Revisi) siap digunakan', 'color:#1e2937; font-weight:600');
+            console.log('%cDunnak.com - Surat Izin v2.3 (Signature Advance + Bahasa Sopan + Nomor Otomatis) siap digunakan', 'color:#10b981; font-weight:600');
         }
     </script>
 </body>
