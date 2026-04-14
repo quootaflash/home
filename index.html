@@ -10,9 +10,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
         
-        :root {
-            --primary: #1e2937;
-        }
+        :root { --primary: #1e2937; }
         
         * { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
         
@@ -32,11 +30,7 @@
         }
 
         @media (max-width: 1024px) {
-            .a4-paper {
-                width: 100%;
-                max-width: 210mm;
-                margin: 20px auto;
-            }
+            .a4-paper { width: 100%; max-width: 210mm; margin: 20px auto; }
         }
 
         @media print {
@@ -161,7 +155,7 @@
 
                         <div class="mt-4">
                             <label class="block text-sm font-medium text-slate-600 mb-2">Alamat Sekolah</label>
-                            <textarea id="alamat-sekolah" rows="2" class="form-input w-full px-5 py-4 border border-slate-200 rounded-3xl" oninput="updatePreview()">Jl.Raya Sawangan km 01, Paninggaran</textarea>
+                            <textarea id="alamat-sekolah" rows="2" class="form-input w-full px-5 py-4 border border-slate-200 rounded-3xl" oninput="updatePreview()">Jl. Raya Sawangan km 01, Paninggaran</textarea>
                         </div>
                     </div>
 
@@ -205,7 +199,20 @@
                     <div>
                         <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-4">3. Detail Izin</h3>
                         
-                        <div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-600 mb-2">Nomor Surat</label>
+                                <input id="nomor-surat" type="text" value="001/SIS/IV/2026" 
+                                       class="form-input w-full px-5 py-4 border border-slate-200 rounded-3xl" oninput="updatePreview()">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-600 mb-2">Perihal</label>
+                                <input id="perihal" type="text" value="Izin Tidak Masuk Sekolah" 
+                                       class="form-input w-full px-5 py-4 border border-slate-200 rounded-3xl" oninput="updatePreview()">
+                            </div>
+                        </div>
+
+                        <div class="mt-6">
                             <label class="block text-sm font-medium text-slate-600 mb-2">Kepada Yth.</label>
                             <select id="penerima-jabatan" class="form-input w-full px-5 py-4 border border-slate-200 rounded-3xl" onchange="updatePreview()">
                                 <option value="Bapak/Ibu Guru Wali Kelas">Guru Wali Kelas</option>
@@ -286,25 +293,28 @@
             logo: null,
             namaSekolah: "SMK Nurul Ummah Paninggaran",
             npsn: "69734128",
-            alamatSekolah: "Jl. raya sawangan km 01, Paninggaran",
+            alamatSekolah: "Jl. Raya Sawangan km 01, Paninggaran",
             namaSiswa: "Hafis",
-            nis: "Null",
+            nis: "-",
             kelas: "TJKT 2",
             semester: "Genap",
             tahunAjaran: "2025/2026",
             namaWali: "Dian",
             penerimaJabatan: "Bapak/Ibu Guru Wali Kelas",
-            kotaSurat: "Kalibening",
+            kotaSurat: "Semarang",
             tglSurat: "",
             tglMulai: "",
             tglSelesai: "",
             alasan: "Sakit demam tinggi selama 3 hari.",
+            nomorSurat: "001/SIS/IV/2026",
+            perihal: "Izin Tidak Masuk Sekolah",
             signatureDataURL: null
         }
 
         let signatureCanvas, signatureCtx, isDrawing = false;
 
         function updatePreview() {
+            // Update formData dari input
             formData.namaSekolah = document.getElementById('nama-sekolah').value;
             formData.npsn = document.getElementById('npsn').value;
             formData.alamatSekolah = document.getElementById('alamat-sekolah').value;
@@ -320,6 +330,8 @@
             formData.tglMulai = document.getElementById('tgl-mulai').value;
             formData.tglSelesai = document.getElementById('tgl-selesai').value;
             formData.alasan = document.getElementById('alasan').value;
+            formData.nomorSurat = document.getElementById('nomor-surat').value;
+            formData.perihal = document.getElementById('perihal').value;
 
             // Durasi
             let durasiText = '— hari';
@@ -352,8 +364,8 @@
 
                 <div class="flex justify-between text-sm mb-10">
                     <div>
-                        Nomor Surat : <b>001/SIS/IV/2026</b><br>
-                        Perihal : <b>Izin Tidak Masuk Sekolah</b>
+                        Nomor Surat : <b>${formData.nomorSurat}</b><br>
+                        Perihal : <b>${formData.perihal}</b>
                     </div>
                     <div class="text-right">${formData.kotaSurat}, ${tglFormatted}</div>
                 </div>
@@ -381,17 +393,20 @@
 
                 <p class="mb-12 text-sm">Demikian surat izin ini dibuat untuk dipergunakan sebagaimana mestinya. Atas perhatian dan kerjasamanya, kami ucapkan terima kasih.</p>
 
-                <div class="text-center pt-10 border-t border-slate-200">
-                    ${signatureHTML}
-                    <p class="mt-4 font-medium">${formData.namaWali}</p>
-                    <p class="text-xs text-slate-500">Wali Murid</p>
+                <!-- Tanda Tangan di Kanan -->
+                <div class="flex justify-end">
+                    <div class="text-center w-72">
+                        ${signatureHTML}
+                        <p class="mt-4 font-medium">${formData.namaWali}</p>
+                        <p class="text-xs text-slate-500">Wali Murid / Orang Tua</p>
+                    </div>
                 </div>
             `;
 
             document.getElementById('letter-content').innerHTML = contentHTML;
         }
 
-        // Signature Pad
+        // Signature Pad (sama seperti sebelumnya)
         function initSignaturePad() {
             signatureCanvas = document.getElementById('signature-canvas');
             signatureCtx = signatureCanvas.getContext('2d');
@@ -400,13 +415,11 @@
             signatureCtx.lineCap = 'round';
             signatureCtx.lineJoin = 'round';
 
-            // Mouse events
             signatureCanvas.addEventListener('mousedown', (e) => { isDrawing = true; startDraw(e); });
             signatureCanvas.addEventListener('mousemove', draw);
             signatureCanvas.addEventListener('mouseup', () => isDrawing = false);
             signatureCanvas.addEventListener('mouseleave', () => isDrawing = false);
 
-            // Touch events
             signatureCanvas.addEventListener('touchstart', (e) => { e.preventDefault(); isDrawing = true; startDraw(e.touches[0]); });
             signatureCanvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e.touches[0]); });
             signatureCanvas.addEventListener('touchend', () => isDrawing = false);
@@ -492,13 +505,12 @@
         window.onload = () => {
             initSignaturePad();
             
-            // Set tanggal hari ini
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('tgl-surat').value = today;
             
             updatePreview();
             
-            console.log('%cDunnak.com - Surat Izin v2.1 (Desktop Optimized) siap digunakan', 'color:#1e2937; font-weight:600');
+            console.log('%cDunnak.com - Surat Izin v2.2 (Revisi) siap digunakan', 'color:#1e2937; font-weight:600');
         }
     </script>
 </body>
