@@ -3,40 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dunnak.com - Surat Izin</title>
+    <title>Dunnak.com - Surat Izin Siswa</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         
         :root {
             --primary: #1e2937;
         }
         
-        * { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        * { transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
         
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+
         .a4-paper {
             width: 210mm;
             min-height: 297mm;
             background: white;
-            box-shadow: 0 25px 50px -12px rgb(15 23 42 / 0.15);
-            margin: 30px auto;
+            box-shadow: 0 25px 50px -12px rgb(15 23 42 / 0.25);
+            margin: 40px auto;
             padding: 22mm 20mm;
-            font-family: 'Inter', system-ui, sans-serif;
             font-size: 11.8pt;
-            line-height: 1.8;
+            line-height: 1.85;
             border: 1px solid #e2e8f0;
             position: relative;
             overflow: hidden;
-        }
-
-        @media (max-width: 1024px) {
-            .a4-paper {
-                width: 100%;
-                max-width: 210mm;
-                margin: 20px auto;
-            }
+            print-color-adjust: exact;
         }
 
         @media print {
@@ -53,11 +50,11 @@
         }
 
         .signature-canvas {
-            border: 2px solid #e2e8f0;
+            border: 2px solid #cbd5e1;
             border-radius: 16px;
             background: #f8fafc;
             cursor: crosshair;
-            max-width: 100%;
+            touch-action: none;
         }
 
         .letter-watermark {
@@ -65,13 +62,13 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) rotate(-12deg);
-            font-size: 58px;
+            font-size: 72px;
             font-weight: 900;
-            color: rgba(30, 41, 55, 0.06);
+            color: rgba(30, 41, 55, 0.05);
             pointer-events: none;
             z-index: 0;
             white-space: nowrap;
-            letter-spacing: 14px;
+            letter-spacing: 18px;
             user-select: none;
         }
 
@@ -81,181 +78,202 @@
         .form-input:focus {
             box-shadow: 0 0 0 4px rgba(30, 41, 55, 0.15);
             border-color: #1e2937;
+            outline: none;
         }
     </style>
 </head>
-<body class="bg-slate-50 font-sans">
+<body class="bg-slate-100 min-h-screen">
 
     <!-- NAVBAR -->
-    <nav class="bg-slate-950 text-white sticky top-0 z-50 no-print shadow-md">
-        <div class="max-w-screen-2xl mx-auto px-6 py-4 flex items-center justify-between">
-            <div class="flex items-center gap-x-3">
-                <i class="fa-solid fa-file-signature text-3xl"></i>
+    <nav class="bg-slate-950 text-white sticky top-0 z-50 no-print shadow-lg">
+        <div class="max-w-screen-2xl mx-auto px-8 py-5 flex items-center justify-between">
+            <div class="flex items-center gap-x-4">
+                <i class="fa-solid fa-file-signature text-4xl text-emerald-400"></i>
                 <div>
-                    <h1 class="text-2xl font-semibold tracking-tight">DUNNAK.COM</h1>
-                    <p class="text-xs text-slate-400 -mt-0.5">Tools e-Surat by Mahesa</p>
+                    <h1 class="text-3xl font-bold tracking-tight">DUNNAK.COM</h1>
+                    <p class="text-xs text-slate-400 -mt-1">Generator Surat Izin Siswa</p>
                 </div>
             </div>
             
             <div class="flex items-center gap-x-3">
-                <button onclick="autoSaveDraft()" class="flex items-center gap-x-2 px-5 h-10 bg-white/10 hover:bg-white/20 rounded-2xl text-sm font-medium">
+                <button onclick="autoSaveDraft()" 
+                        class="flex items-center gap-x-2 px-6 py-3 bg-white/10 hover:bg-white/20 rounded-2xl text-sm font-medium">
                     <i class="fa-solid fa-floppy-disk"></i>
                     <span class="hidden md:inline">Simpan Draft</span>
                 </button>
-                <button onclick="saveAsImage()" class="flex items-center gap-x-2 px-5 h-10 bg-violet-600 hover:bg-violet-700 text-white rounded-2xl text-sm font-medium">
+                
+                <button onclick="saveAsImage()" 
+                        class="flex items-center gap-x-2 px-6 py-3 bg-violet-600 hover:bg-violet-700 text-white rounded-2xl text-sm font-medium">
                     <i class="fa-solid fa-image"></i>
                     <span class="hidden sm:inline">Simpan Gambar</span>
                 </button>
-                <button onclick="generatePDF()" class="flex items-center gap-x-2 px-6 h-10 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl text-sm font-medium">
+                
+                <button onclick="generatePDF()" 
+                        class="flex items-center gap-x-2 px-7 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl text-sm font-medium">
                     <i class="fa-solid fa-file-pdf"></i>
-                    <span>PDF</span>
+                    <span>Export PDF</span>
                 </button>
-                <button onclick="printLetter()" class="flex items-center gap-x-2 px-6 h-10 bg-white text-slate-950 hover:bg-slate-100 rounded-2xl text-sm font-medium">
+                
+                <button onclick="printLetter()" 
+                        class="flex items-center gap-x-2 px-7 py-3 bg-white text-slate-950 hover:bg-slate-100 rounded-2xl text-sm font-medium font-semibold">
                     <i class="fa-solid fa-print"></i>
                     <span>Cetak</span>
                 </button>
-                <button onclick="clearForm()" class="flex items-center justify-center w-10 h-10 text-red-400 hover:text-red-500 rounded-2xl">
+                
+                <button onclick="clearForm()" 
+                        class="flex items-center justify-center w-11 h-11 text-red-400 hover:text-red-500 hover:bg-red-50 rounded-2xl">
                     <i class="fa-solid fa-trash text-xl"></i>
                 </button>
             </div>
         </div>
     </nav>
 
-    <div class="max-w-screen-2xl mx-auto px-6 py-8">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <div class="max-w-screen-2xl mx-auto px-8 py-10">
+        <div class="grid grid-cols-1 xl:grid-cols-12 gap-10">
             
-            <!-- FORM -->
-            <div class="lg:col-span-5 bg-white rounded-3xl shadow-xl p-8 no-print">
-                <h2 class="text-2xl font-semibold text-slate-800 mb-8">Isi Data Surat Izin</h2>
+            <!-- FORM SIDEBAR -->
+            <div class="xl:col-span-5 bg-white rounded-3xl shadow-xl p-8 no-print">
+                <h2 class="text-3xl font-semibold text-slate-800 mb-10 flex items-center gap-x-3">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    Isi Data Surat Izin
+                </h2>
                 
-                <div class="space-y-10">
+                <div class="space-y-12">
 
                     <!-- Data Sekolah -->
                     <div>
-                        <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-4">1. Data Sekolah</h3>
-                        <div class="flex gap-4">
+                        <h3 class="uppercase text-xs tracking-widest font-semibold text-slate-500 mb-5">1. Data Sekolah</h3>
+                        
+                        <div class="flex gap-6">
                             <div class="flex-1">
                                 <label class="block text-sm font-medium text-slate-600 mb-2">Logo Sekolah (opsional)</label>
                                 <input type="file" id="logo-upload" accept="image/*" class="hidden" onchange="previewLogo(this)">
                                 <button onclick="document.getElementById('logo-upload').click()" 
-                                        class="w-full h-28 border-2 border-dashed border-slate-300 hover:border-slate-400 rounded-3xl flex flex-col items-center justify-center text-slate-500">
-                                    <i class="fa-solid fa-cloud-upload-alt text-3xl mb-2"></i>
-                                    <span class="text-sm">Upload Logo</span>
+                                        class="w-full h-32 border-2 border-dashed border-slate-300 hover:border-slate-400 rounded-3xl flex flex-col items-center justify-center text-slate-500 hover:text-slate-600">
+                                    <i class="fa-solid fa-cloud-upload-alt text-4xl mb-3"></i>
+                                    <span class="text-sm font-medium">Upload Logo</span>
                                 </button>
                             </div>
-                            <img id="logo-preview" class="h-28 object-contain border border-slate-200 rounded-3xl hidden" alt="Logo">
+                            <img id="logo-preview" class="h-32 object-contain border border-slate-200 rounded-3xl hidden" alt="Logo Sekolah">
                         </div>
 
-                        <div class="mt-6 grid grid-cols-2 gap-4">
+                        <div class="mt-6 grid grid-cols-2 gap-5">
                             <div>
                                 <label class="block text-sm font-medium text-slate-600 mb-2">Nama Sekolah</label>
                                 <input id="nama-sekolah" type="text" value="SMK Nurul Ummah Paninggaran" 
-                                       class="form-input w-full px-5 py-4 border border-slate-200 rounded-3xl" oninput="updatePreview()">
+                                       class="form-input w-full px-6 py-4 border border-slate-200 rounded-3xl text-base" oninput="updatePreview()">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-slate-600 mb-2">NPSN</label>
                                 <input id="npsn" type="text" value="301012345678" 
-                                       class="form-input w-full px-5 py-4 border border-slate-200 rounded-3xl" oninput="updatePreview()">
+                                       class="form-input w-full px-6 py-4 border border-slate-200 rounded-3xl text-base" oninput="updatePreview()">
                             </div>
                         </div>
 
-                        <div class="mt-4">
+                        <div class="mt-5">
                             <label class="block text-sm font-medium text-slate-600 mb-2">Alamat Sekolah</label>
-                            <textarea id="alamat-sekolah" rows="2" class="form-input w-full px-5 py-4 border border-slate-200 rounded-3xl" oninput="updatePreview()">Jl. Jend. Sudirman No. 45, Paninggaran</textarea>
+                            <textarea id="alamat-sekolah" rows="2" class="form-input w-full px-6 py-4 border border-slate-200 rounded-3xl text-base" oninput="updatePreview()">Jl. Jend. Sudirman No. 45, Paninggaran, Kab. Pekalongan</textarea>
                         </div>
                     </div>
 
                     <!-- Data Siswa -->
                     <div>
-                        <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-4">2. Data Siswa</h3>
-                        <div class="grid grid-cols-2 gap-4">
+                        <h3 class="uppercase text-xs tracking-widest font-semibold text-slate-500 mb-5">2. Data Siswa</h3>
+                        <div class="grid grid-cols-2 gap-5">
                             <div>
                                 <label class="block text-sm font-medium text-slate-600 mb-2">Nama Lengkap Siswa</label>
-                                <input id="nama-siswa" type="text" value="Ahmad Rizki Pratama" class="form-input w-full px-5 py-4 border border-slate-200 rounded-3xl" oninput="updatePreview()">
+                                <input id="nama-siswa" type="text" value="Ahmad Rizki Pratama" class="form-input w-full px-6 py-4 border border-slate-200 rounded-3xl text-base" oninput="updatePreview()">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-slate-600 mb-2">NIS/NISN</label>
-                                <input id="nis" type="text" value="1234567890" class="form-input w-full px-5 py-4 border border-slate-200 rounded-3xl" oninput="updatePreview()">
+                                <label class="block text-sm font-medium text-slate-600 mb-2">NIS / NISN</label>
+                                <input id="nis" type="text" value="1234567890" class="form-input w-full px-6 py-4 border border-slate-200 rounded-3xl text-base" oninput="updatePreview()">
                             </div>
                         </div>
-                        <div class="grid grid-cols-3 gap-4 mt-4">
+                        
+                        <div class="grid grid-cols-3 gap-5 mt-5">
                             <div>
                                 <label class="block text-sm font-medium text-slate-600 mb-2">Kelas</label>
-                                <input id="kelas" type="text" value="XI MIPA 3" class="form-input w-full px-5 py-4 border border-slate-200 rounded-3xl" oninput="updatePreview()">
+                                <input id="kelas" type="text" value="XI MIPA 3" class="form-input w-full px-6 py-4 border border-slate-200 rounded-3xl text-base" oninput="updatePreview()">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-slate-600 mb-2">Semester</label>
-                                <select id="semester" class="form-input w-full px-5 py-4 border border-slate-200 rounded-3xl" onchange="updatePreview()">
+                                <select id="semester" class="form-input w-full px-6 py-4 border border-slate-200 rounded-3xl text-base" onchange="updatePreview()">
                                     <option value="Ganjil">Ganjil</option>
                                     <option value="Genap" selected>Genap</option>
                                 </select>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-slate-600 mb-2">Tahun Ajaran</label>
-                                <input id="tahun-ajaran" type="text" value="2025/2026" class="form-input w-full px-5 py-4 border border-slate-200 rounded-3xl" oninput="updatePreview()">
+                                <input id="tahun-ajaran" type="text" value="2025/2026" class="form-input w-full px-6 py-4 border border-slate-200 rounded-3xl text-base" oninput="updatePreview()">
                             </div>
                         </div>
-                        <div class="mt-4">
+
+                        <div class="mt-5">
                             <label class="block text-sm font-medium text-slate-600 mb-2">Nama Orang Tua / Wali</label>
-                            <input id="nama-wali" type="text" value="Bapak Dr. Ir. Bambang Sutrisno" class="form-input w-full px-5 py-4 border border-slate-200 rounded-3xl" oninput="updatePreview()">
+                            <input id="nama-wali" type="text" value="Bapak Dr. Ir. Bambang Sutrisno" class="form-input w-full px-6 py-4 border border-slate-200 rounded-3xl text-base" oninput="updatePreview()">
                         </div>
                     </div>
 
                     <!-- Detail Izin -->
                     <div>
-                        <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-4">3. Detail Izin</h3>
+                        <h3 class="uppercase text-xs tracking-widest font-semibold text-slate-500 mb-5">3. Detail Izin</h3>
                         
                         <div>
                             <label class="block text-sm font-medium text-slate-600 mb-2">Kepada Yth.</label>
-                            <select id="penerima-jabatan" class="form-input w-full px-5 py-4 border border-slate-200 rounded-3xl" onchange="updatePreview()">
+                            <select id="penerima-jabatan" class="form-input w-full px-6 py-4 border border-slate-200 rounded-3xl text-base" onchange="updatePreview()">
                                 <option value="Bapak/Ibu Guru Wali Kelas">Guru Wali Kelas</option>
                                 <option value="Kepala Sekolah">Kepala Sekolah</option>
                                 <option value="Wakil Kepala Bidang Kesiswaan">Wakil Kepala Kesiswaan</option>
                             </select>
                         </div>
 
-                        <div class="grid grid-cols-2 gap-4 mt-6">
+                        <div class="grid grid-cols-2 gap-5 mt-6">
                             <div>
-                                <label class="block text-sm font-medium text-slate-600 mb-2">Tempat / Kota</label>
-                                <input id="kota-surat" type="text" value="Semarang" 
-                                       class="form-input w-full px-5 py-4 border border-slate-200 rounded-3xl" oninput="updatePreview()">
+                                <label class="block text-sm font-medium text-slate-600 mb-2">Kota</label>
+                                <input id="kota-surat" type="text" value="Semarang" class="form-input w-full px-6 py-4 border border-slate-200 rounded-3xl text-base" oninput="updatePreview()">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-slate-600 mb-2">Tanggal Surat</label>
-                                <input id="tgl-surat" type="date" class="form-input w-full px-5 py-4 border border-slate-200 rounded-3xl" onchange="updatePreview()">
+                                <input id="tgl-surat" type="date" class="form-input w-full px-6 py-4 border border-slate-200 rounded-3xl text-base" onchange="updatePreview()">
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-3 gap-4 mt-6">
+                        <div class="grid grid-cols-3 gap-5 mt-6">
                             <div>
                                 <label class="block text-sm font-medium text-slate-600 mb-2">Mulai Absen</label>
-                                <input id="tgl-mulai" type="date" class="form-input w-full px-5 py-4 border border-slate-200 rounded-3xl" onchange="validateDates()">
+                                <input id="tgl-mulai" type="date" class="form-input w-full px-6 py-4 border border-slate-200 rounded-3xl text-base" onchange="validateDates()">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-slate-600 mb-2">Sampai Tanggal</label>
-                                <input id="tgl-selesai" type="date" class="form-input w-full px-5 py-4 border border-slate-200 rounded-3xl" onchange="validateDates()">
+                                <input id="tgl-selesai" type="date" class="form-input w-full px-6 py-4 border border-slate-200 rounded-3xl text-base" onchange="validateDates()">
                             </div>
                             <div class="flex items-end">
-                                <div class="bg-emerald-50 border border-emerald-100 rounded-3xl px-5 py-4 w-full">
-                                    <span class="text-xs text-slate-600">Durasi</span>
-                                    <span id="durasi-hari" class="block text-2xl font-semibold text-emerald-700">— hari</span>
+                                <div class="bg-emerald-50 border border-emerald-200 rounded-3xl px-6 py-4 w-full">
+                                    <span class="text-xs font-medium text-emerald-700">Durasi Izin</span>
+                                    <span id="durasi-hari" class="block text-3xl font-bold text-emerald-800">— hari</span>
                                 </div>
                             </div>
                         </div>
 
                         <div class="mt-6">
                             <label class="block text-sm font-medium text-slate-600 mb-2">Alasan Tidak Masuk</label>
-                            <textarea id="alasan" rows="3" class="form-input w-full px-5 py-4 border border-slate-200 rounded-3xl" oninput="updatePreview()">Sakit demam tinggi selama 3 hari.</textarea>
+                            <textarea id="alasan" rows="4" class="form-input w-full px-6 py-4 border border-slate-200 rounded-3xl text-base" oninput="updatePreview()">Sakit demam tinggi selama beberapa hari.</textarea>
                         </div>
                     </div>
 
                     <!-- Tanda Tangan -->
                     <div>
-                        <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-4">4. Tanda Tangan</h3>
-                        <canvas id="signature-canvas" width="520" height="200" class="signature-canvas w-full"></canvas>
-                        <div class="flex gap-3 mt-4">
-                            <button onclick="clearSignature()" class="flex-1 py-4 text-sm font-medium border border-slate-300 rounded-3xl">Hapus TTD</button>
-                            <button onclick="saveSignature()" class="flex-1 py-4 text-sm font-medium bg-slate-900 text-white rounded-3xl">Simpan TTD</button>
+                        <h3 class="uppercase text-xs tracking-widest font-semibold text-slate-500 mb-5">4. Tanda Tangan Wali Murid</h3>
+                        <canvas id="signature-canvas" width="580" height="220" class="signature-canvas w-full"></canvas>
+                        <div class="flex gap-4 mt-5">
+                            <button onclick="clearSignature()" 
+                                    class="flex-1 py-4 text-sm font-medium border border-slate-300 hover:border-slate-400 rounded-3xl">
+                                Hapus Tanda Tangan
+                            </button>
+                            <button onclick="saveSignature()" 
+                                    class="flex-1 py-4 text-sm font-medium bg-slate-900 hover:bg-black text-white rounded-3xl">
+                                Simpan Tanda Tangan
+                            </button>
                         </div>
                     </div>
 
@@ -263,16 +281,17 @@
             </div>
 
             <!-- PREVIEW -->
-            <div class="lg:col-span-7">
-                <div class="flex justify-between items-center mb-4 px-2">
-                    <h3 class="font-semibold text-slate-700 flex items-center gap-x-2">
-                        <i class="fa-solid fa-eye"></i> Pratinjau Surat
+            <div class="xl:col-span-7">
+                <div class="flex justify-between items-center mb-6 px-2">
+                    <h3 class="font-semibold text-2xl text-slate-700 flex items-center gap-x-3">
+                        <i class="fa-solid fa-eye text-emerald-600"></i> 
+                        Pratinjau Surat Izin
                     </h3>
-                    <span class="text-xs bg-emerald-100 text-emerald-700 px-4 py-2 rounded-3xl">Format A4 • Desktop Optimized</span>
+                    <span class="text-sm bg-emerald-100 text-emerald-700 px-5 py-2 rounded-3xl font-medium">Format A4 • Desktop Optimized</span>
                 </div>
                 
-                <div class="bg-white p-6 rounded-3xl shadow-inner overflow-x-auto">
-                    <div id="letter" class="a4-paper mx-auto relative">
+                <div class="bg-slate-50 p-8 rounded-3xl shadow-inner overflow-x-auto">
+                    <div id="letter" class="a4-paper mx-auto">
                         <div class="letter-watermark">DUNNAK.COM</div>
                         <div id="letter-content" class="relative z-10"></div>
                     </div>
@@ -286,7 +305,7 @@
             logo: null,
             namaSekolah: "SMK Nurul Ummah Paninggaran",
             npsn: "301012345678",
-            alamatSekolah: "Jl. Jend. Sudirman No. 45, Paninggaran",
+            alamatSekolah: "Jl. Jend. Sudirman No. 45, Paninggaran, Kab. Pekalongan",
             namaSiswa: "Ahmad Rizki Pratama",
             nis: "1234567890",
             kelas: "XI MIPA 3",
@@ -298,13 +317,14 @@
             tglSurat: "",
             tglMulai: "",
             tglSelesai: "",
-            alasan: "Sakit demam tinggi selama 3 hari.",
+            alasan: "Sakit demam tinggi selama beberapa hari.",
             signatureDataURL: null
         }
 
         let signatureCanvas, signatureCtx, isDrawing = false;
 
         function updatePreview() {
+            // Update formData dari input
             formData.namaSekolah = document.getElementById('nama-sekolah').value;
             formData.npsn = document.getElementById('npsn').value;
             formData.alamatSekolah = document.getElementById('alamat-sekolah').value;
@@ -321,36 +341,36 @@
             formData.tglSelesai = document.getElementById('tgl-selesai').value;
             formData.alasan = document.getElementById('alasan').value;
 
-            // Durasi
+            // Hitung durasi
             let durasiText = '— hari';
             if (formData.tglMulai && formData.tglSelesai) {
                 const start = new Date(formData.tglMulai);
                 const end = new Date(formData.tglSelesai);
                 const diff = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
-                durasiText = `${diff} hari`;
+                durasiText = diff > 0 ? `${diff} hari` : '— hari';
             }
             document.getElementById('durasi-hari').textContent = durasiText;
 
-            const logoHTML = formData.logo ? `<img src="${formData.logo}" class="float-left mr-8 mb-6 h-20" alt="Logo">` : '';
-            
-            const signatureHTML = formData.signatureDataURL 
-                ? `<img src="${formData.signatureDataURL}" class="h-28 mx-auto block" alt="TTD">` 
-                : `<div class="h-28 border-2 border-dashed border-slate-300 rounded-2xl flex items-center justify-center text-slate-400 text-sm mx-auto w-60">Tanda Tangan Wali Murid</div>`;
+            const logoHTML = formData.logo ? 
+                `<img src="${formData.logo}" class="float-left mr-8 mb-6 h-20 object-contain" alt="Logo">` : '';
 
-            const tglFormatted = formData.tglSurat 
-                ? new Date(formData.tglSurat).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
-                : '—';
+            const signatureHTML = formData.signatureDataURL ? 
+                `<img src="${formData.signatureDataURL}" class="h-32 mx-auto block" alt="Tanda Tangan">` : 
+                `<div class="h-32 border-2 border-dashed border-slate-300 rounded-2xl flex items-center justify-center text-slate-400 text-sm mx-auto w-72">Area Tanda Tangan Wali Murid</div>`;
+
+            const tglFormatted = formData.tglSurat ? 
+                new Date(formData.tglSurat).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '—';
 
             const contentHTML = `
-                <div class="text-center mb-10">
+                <div class="text-center mb-12">
                     ${logoHTML}
-                    <h1 class="text-3xl font-semibold tracking-tight">${formData.namaSekolah}</h1>
-                    <p class="text-xs mt-1">NPSN: ${formData.npsn}</p>
-                    <p class="text-xs">${formData.alamatSekolah}</p>
-                    <div class="border-t border-slate-300 my-10"></div>
+                    <h1 class="text-[28px] font-bold tracking-tight leading-none">${formData.namaSekolah}</h1>
+                    <p class="text-sm mt-1">NPSN: ${formData.npsn}</p>
+                    <p class="text-sm">${formData.alamatSekolah}</p>
+                    <div class="border-t-2 border-slate-400 my-12"></div>
                 </div>
 
-                <div class="flex justify-between text-sm mb-10">
+                <div class="flex justify-between text-base mb-12">
                     <div>
                         Nomor Surat : <b>001/SIS/IV/2026</b><br>
                         Perihal : <b>Izin Tidak Masuk Sekolah</b>
@@ -358,33 +378,33 @@
                     <div class="text-right">${formData.kotaSurat}, ${tglFormatted}</div>
                 </div>
 
-                <p class="mb-6">Kepada Yth.<br><b>${formData.penerimaJabatan}</b><br>Di Tempat</p>
+                <p class="mb-8 text-base">Kepada Yth.<br><b>${formData.penerimaJabatan}</b><br>Di Tempat</p>
 
-                <p class="mt-8 mb-6">Yang bertanda tangan di bawah ini:</p>
+                <p class="mb-6 text-base">Yang bertanda tangan di bawah ini:</p>
                 
-                <table class="w-full text-sm mb-8">
-                    <tr><td class="w-40 pb-2">Nama Siswa</td><td>: ${formData.namaSiswa}</td></tr>
-                    <tr><td class="pb-2">NIS/NISN</td><td>: ${formData.nis}</td></tr>
-                    <tr><td class="pb-2">Kelas</td><td>: ${formData.kelas} • ${formData.semester} ${formData.tahunAjaran}</td></tr>
-                    <tr><td class="pb-2">Wali Murid</td><td>: ${formData.namaWali}</td></tr>
+                <table class="w-full text-base mb-10">
+                    <tr><td class="w-44 pb-3">Nama Siswa</td><td>: ${formData.namaSiswa}</td></tr>
+                    <tr><td class="pb-3">NIS/NISN</td><td>: ${formData.nis}</td></tr>
+                    <tr><td class="pb-3">Kelas</td><td>: ${formData.kelas} • ${formData.semester} ${formData.tahunAjaran}</td></tr>
+                    <tr><td class="pb-3">Wali Murid</td><td>: ${formData.namaWali}</td></tr>
                 </table>
 
-                <p class="mb-6">Mengajukan izin tidak masuk sekolah pada tanggal:</p>
-                <p class="font-medium mb-8">
+                <p class="mb-6 text-base">Mengajukan izin tidak masuk sekolah pada tanggal:</p>
+                <p class="font-medium mb-10 text-base">
                     ${formData.tglMulai ? new Date(formData.tglMulai).toLocaleDateString('id-ID', {weekday:'long', day:'numeric', month:'long', year:'numeric'}) : '—'} 
                     sampai 
                     ${formData.tglSelesai ? new Date(formData.tglSelesai).toLocaleDateString('id-ID', {weekday:'long', day:'numeric', month:'long', year:'numeric'}) : '—'}
-                    <span class="ml-4 bg-emerald-100 text-emerald-700 px-4 py-1 text-xs rounded-3xl">${durasiText}</span>
+                    <span class="ml-6 bg-emerald-100 text-emerald-700 px-5 py-1.5 text-sm rounded-3xl font-semibold">${durasiText}</span>
                 </p>
 
-                <p class="mb-10">Alasan : <span class="font-medium">${formData.alasan}</span></p>
+                <p class="mb-12 text-base">Alasan : <span class="font-medium">${formData.alasan}</span></p>
 
-                <p class="mb-12 text-sm">Demikian surat izin ini dibuat untuk dipergunakan sebagaimana mestinya. Atas perhatian dan kerjasamanya, kami ucapkan terima kasih.</p>
+                <p class="mb-16 text-base">Demikian surat izin ini dibuat untuk dipergunakan sebagaimana mestinya. Atas perhatian dan kerjasamanya, kami ucapkan terima kasih.</p>
 
-                <div class="text-center pt-10 border-t border-slate-200">
+                <div class="text-center pt-12 border-t border-slate-300">
                     ${signatureHTML}
-                    <p class="mt-4 font-medium">${formData.namaWali}</p>
-                    <p class="text-xs text-slate-500">Wali Murid</p>
+                    <p class="mt-6 font-semibold text-lg">${formData.namaWali}</p>
+                    <p class="text-sm text-slate-500">Wali Murid / Orang Tua</p>
                 </div>
             `;
 
@@ -394,35 +414,36 @@
         // Signature Pad
         function initSignaturePad() {
             signatureCanvas = document.getElementById('signature-canvas');
-            signatureCtx = signatureCanvas.getContext('2d');
-            signatureCtx.lineWidth = 4;
+            signatureCtx = signatureCanvas.getContext('2d', { willReadFrequently: true });
+            signatureCtx.lineWidth = 4.5;
             signatureCtx.strokeStyle = '#1e2937';
             signatureCtx.lineCap = 'round';
             signatureCtx.lineJoin = 'round';
 
-            // Mouse events
-            signatureCanvas.addEventListener('mousedown', (e) => { isDrawing = true; startDraw(e); });
+            const startDraw = (e) => {
+                isDrawing = true;
+                const rect = signatureCanvas.getBoundingClientRect();
+                signatureCtx.beginPath();
+                signatureCtx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+            };
+
+            const draw = (e) => {
+                if (!isDrawing) return;
+                const rect = signatureCanvas.getBoundingClientRect();
+                signatureCtx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+                signatureCtx.stroke();
+            };
+
+            // Mouse
+            signatureCanvas.addEventListener('mousedown', startDraw);
             signatureCanvas.addEventListener('mousemove', draw);
             signatureCanvas.addEventListener('mouseup', () => isDrawing = false);
             signatureCanvas.addEventListener('mouseleave', () => isDrawing = false);
 
-            // Touch events
-            signatureCanvas.addEventListener('touchstart', (e) => { e.preventDefault(); isDrawing = true; startDraw(e.touches[0]); });
+            // Touch support
+            signatureCanvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDraw(e.touches[0]); });
             signatureCanvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e.touches[0]); });
             signatureCanvas.addEventListener('touchend', () => isDrawing = false);
-        }
-
-        function startDraw(e) {
-            const rect = signatureCanvas.getBoundingClientRect();
-            signatureCtx.beginPath();
-            signatureCtx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
-        }
-
-        function draw(e) {
-            if (!isDrawing) return;
-            const rect = signatureCanvas.getBoundingClientRect();
-            signatureCtx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
-            signatureCtx.stroke();
         }
 
         function clearSignature() {
@@ -432,7 +453,7 @@
         }
 
         function saveSignature() {
-            formData.signatureDataURL = signatureCanvas.toDataURL('image/png');
+            formData.signatureDataURL = signatureCanvas.toDataURL('image/png', 1.0);
             updatePreview();
         }
 
@@ -441,8 +462,9 @@
                 const reader = new FileReader();
                 reader.onload = e => {
                     formData.logo = e.target.result;
-                    document.getElementById('logo-preview').src = formData.logo;
-                    document.getElementById('logo-preview').classList.remove('hidden');
+                    const preview = document.getElementById('logo-preview');
+                    preview.src = formData.logo;
+                    preview.classList.remove('hidden');
                     updatePreview();
                 };
                 reader.readAsDataURL(input.files[0]);
@@ -452,6 +474,7 @@
         function validateDates() {
             const mulai = document.getElementById('tgl-mulai').value;
             const selesai = document.getElementById('tgl-selesai').value;
+            
             if (mulai && selesai && new Date(selesai) < new Date(mulai)) {
                 alert('Tanggal selesai tidak boleh lebih awal dari tanggal mulai!');
                 document.getElementById('tgl-selesai').value = '';
@@ -465,40 +488,47 @@
         }
 
         function generatePDF() {
-            const ok = confirm('Akan membuka dialog cetak PDF. Pilih "Simpan sebagai PDF".');
-            if (ok) printLetter();
+            if (confirm('Akan membuka dialog cetak. Pilih "Simpan sebagai PDF" di printer.')) {
+                printLetter();
+            }
         }
 
         function saveAsImage() {
             const letter = document.getElementById('letter');
-            html2canvas(letter, { scale: 3, backgroundColor: '#ffffff' }).then(canvas => {
+            html2canvas(letter, { 
+                scale: 3, 
+                backgroundColor: '#ffffff',
+                useCORS: true 
+            }).then(canvas => {
                 const link = document.createElement('a');
                 link.download = `Surat_Izin_${formData.namaSiswa.replace(/[^a-zA-Z0-9]/g, '_')}_${new Date().toISOString().slice(0,10)}.png`;
-                link.href = canvas.toDataURL('image/png');
+                link.href = canvas.toDataURL('image/png', 1.0);
                 link.click();
             });
         }
 
         function autoSaveDraft() {
-            alert('Draft disimpan! (Fitur lengkap dapat ditambahkan nanti)');
+            alert('✅ Draft berhasil disimpan (simulasi)');
+            // Bisa ditambahkan localStorage nanti
         }
 
         function clearForm() {
-            if (!confirm('Reset semua data?')) return;
-            location.reload();
+            if (confirm('Reset semua data surat?')) {
+                location.reload();
+            }
         }
 
-        // Init
+        // Initialize
         window.onload = () => {
             initSignaturePad();
             
-            // Set tanggal hari ini
+            // Set tanggal hari ini otomatis
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('tgl-surat').value = today;
             
             updatePreview();
             
-            console.log('%cDunnak.com - Surat Izin v2.1 (Desktop Optimized) siap digunakan', 'color:#1e2937; font-weight:600');
+            console.log('%cDunnak.com - Surat Izin v2.2 (Desktop Optimized) siap digunakan!', 'color:#10b981; font-weight:700; font-size:13px');
         }
     </script>
 </body>
