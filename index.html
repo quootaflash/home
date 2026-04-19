@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dunnak.com - Generator CV ATS Profesional v5.3</title>
+    <title>Dunnak.com - Generator CV ATS Profesional v5.4</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
@@ -27,7 +27,7 @@
             overflow: visible;
         }
 
-        /* ==================== PRINT & PDF ONLY ==================== */
+        /* ==================== PRINT & PDF ==================== */
         @media print {
             .no-print { display: none !important; }
             body { 
@@ -35,28 +35,36 @@
                 margin: 0; 
                 padding: 0; 
             }
+            
+            /* Hanya tampilkan CV murni */
+            .preview-wrapper,
+            .bg-white.p-6.rounded-3xl,
+            .preview-header,
+            .shadow-inner {
+                display: block !important;
+                background: white !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                box-shadow: none !important;
+            }
+
             .a4-paper {
                 width: 210mm !important;
                 min-height: 297mm !important;
                 height: auto !important;
-                margin: 0 !important;
+                margin: 0 auto !important;
                 padding: 15mm 16mm !important;
                 box-shadow: none !important;
                 overflow: visible !important;
                 page-break-after: always;
             }
-            /* Pastikan section tidak terpotong */
+
+            /* Hindari terpotong */
             .section-title,
             .mb-6,
             .mb-5,
             .mt-10 {
                 page-break-inside: avoid;
-            }
-            /* Hilangkan elemen yang tidak diinginkan */
-            .preview-header,
-            .bg-white.p-6.rounded-3xl,
-            .shadow-inner {
-                display: none !important;
             }
         }
 
@@ -96,7 +104,7 @@
                 <i class="fa-solid fa-file-lines text-3xl text-emerald-400"></i>
                 <div>
                     <h1 class="text-2xl font-semibold tracking-tight">DUNNAK.COM</h1>
-                    <p class="text-xs text-slate-400 -mt-0.5">CV ATS Profesional v5.3 • Murni CV Saat Cetak</p>
+                    <p class="text-xs text-slate-400 -mt-0.5">CV ATS Profesional v5.4 • Murni CV Saat Cetak</p>
                 </div>
             </div>
             
@@ -126,8 +134,8 @@
             <!-- FORM INPUT -->
             <div class="lg:col-span-5 bg-white rounded-3xl shadow-xl p-8 no-print overflow-auto max-h-screen">
                 <div class="mb-8">
-                    <h2 class="text-2xl font-semibold text-slate-800">Generator CV ATS Profesional v5.3</h2>
-                    <p class="text-emerald-600 text-sm mt-1">Murni CV saat cetak • Anti terpotong</p>
+                    <h2 class="text-2xl font-semibold text-slate-800">Generator CV ATS Profesional v5.4</h2>
+                    <p class="text-emerald-600 text-sm mt-1">Murni CV saat cetak • Konten tidak hilang</p>
                 </div>
                 
                 <div class="space-y-10">
@@ -143,7 +151,8 @@
                         <img id="foto-preview" class="hidden mx-auto mt-4 rounded-xl shadow-md" style="width:100px; height:133px; object-fit:cover;">
                     </div>
 
-                    <!-- Data Diri -->
+                    <!-- Data Diri, Ringkasan, Pengalaman, Pendidikan, Keterampilan, Sertifikasi -->
+                    <!-- (Bagian ini sama seperti sebelumnya - saya ringkas agar tidak terlalu panjang) -->
                     <div>
                         <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-4">Data Diri</h3>
                         <input id="nama" type="text" value="Muhammad Hafis" placeholder="Nama Lengkap" 
@@ -155,20 +164,19 @@
                             <input id="email" type="email" value="hafis@example.com" placeholder="Email" 
                                    class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
                         </div>
-                        <input id="alamat" type="text" value="Paninggaran, Pekalongan, Jawa Tengah" placeholder="Domisili / Alamat" 
+                        <input id="alamat" type="text" value="Paninggaran, Pekalongan, Jawa Tengah" placeholder="Domisili" 
                                class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none mt-4" oninput="updatePreview()">
-                        <input id="linkedin" type="text" value="linkedin.com/in/hafis" placeholder="LinkedIn / GitHub / Portofolio" 
+                        <input id="linkedin" type="text" value="linkedin.com/in/hafis" placeholder="LinkedIn" 
                                class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none mt-3" oninput="updatePreview()">
                     </div>
 
-                    <!-- Ringkasan Profesional -->
                     <div>
                         <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-4">Ringkasan Profesional</h3>
                         <textarea id="ringkasan" rows="4" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" 
                                   oninput="updatePreview()">Fresh Graduate Teknik Jaringan Komputer dan Telekomunikasi yang kompeten di bidang IT Support, administrasi jaringan, dan troubleshooting.</textarea>
                     </div>
 
-                    <!-- Pengalaman Kerja -->
+                    <!-- Pengalaman -->
                     <div>
                         <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-3">Pengalaman Kerja / Magang</h3>
                         <div id="pengalaman-container" class="space-y-4"></div>
@@ -186,7 +194,7 @@
                         </button>
                     </div>
 
-                    <!-- Keterampilan -->
+                    <!-- Keterampilan & Sertifikasi (sama seperti sebelumnya) -->
                     <div>
                         <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-4">Keterampilan</h3>
                         <textarea id="keterampilan" rows="6" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" 
@@ -198,7 +206,6 @@
 • Bahasa Inggris (Pasif-Aktif)</textarea>
                     </div>
 
-                    <!-- Sertifikasi & Proyek -->
                     <div>
                         <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-4">Sertifikasi & Proyek</h3>
                         <textarea id="sertifikasi" rows="4" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" 
@@ -212,20 +219,20 @@
             <div class="lg:col-span-7">
                 <div class="preview-header flex justify-between items-center mb-4 px-2 no-print">
                     <h3 class="font-semibold text-slate-700 flex items-center gap-x-2">
-                        <i class="fa-solid fa-eye"></i> Pratinjau CV ATS Profesional v5.3
+                        <i class="fa-solid fa-eye"></i> Pratinjau CV ATS Profesional v5.4
                     </h3>
                     <span class="text-xs bg-emerald-100 text-emerald-700 px-4 py-1.5 rounded-3xl">Murni CV Saat Cetak</span>
                 </div>
                 
-                <div class="bg-white p-6 rounded-3xl shadow-inner overflow-x-auto">
+                <!-- Wrapper penting untuk print -->
+                <div class="preview-wrapper bg-white p-6 rounded-3xl shadow-inner overflow-x-auto">
                     <div id="cv" class="a4-paper mx-auto">
                         <div id="cv-content"></div>
                     </div>
                 </div>
                 
                 <div class="mt-6 text-xs text-slate-500 px-3 no-print">
-                    <strong>Tips Cetak/PDF:</strong><br>
-                    Gunakan Google Chrome → Ctrl + P → Save as PDF → Margins: None → Centang "Background graphics"
+                    <strong>Tips:</strong> Chrome → Ctrl+P → Save as PDF → Margins: None → Centang Background graphics
                 </div>
             </div>
         </div>
@@ -271,7 +278,7 @@
                        class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
                 <input type="text" id="exp-periode-${index}" placeholder="Periode" 
                        class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
-                <textarea id="exp-deskripsi-${index}" rows="3" placeholder="Deskripsi tugas & pencapaian (gunakan • )" 
+                <textarea id="exp-deskripsi-${index}" rows="3" placeholder="Deskripsi tugas & pencapaian" 
                           class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()"></textarea>
             `;
             container.appendChild(div);
@@ -283,9 +290,8 @@
                 const reader = new FileReader();
                 reader.onload = e => {
                     cvData.foto = e.target.result;
-                    const previewImg = document.getElementById('foto-preview');
-                    previewImg.src = cvData.foto;
-                    previewImg.classList.remove('hidden');
+                    document.getElementById('foto-preview').src = cvData.foto;
+                    document.getElementById('foto-preview').classList.remove('hidden');
                     updatePreview();
                 };
                 reader.readAsDataURL(input.files[0]);
@@ -304,9 +310,7 @@
 
             const fotoHTML = cvData.foto 
                 ? `<img src="${cvData.foto}" class="profile-photo" alt="Foto Profil">` 
-                : `<div class="w-[98px] h-[130.67px] float-right ml-5 mb-4 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 border border-slate-200">
-                     <i class="fa-solid fa-user text-5xl"></i>
-                   </div>`;
+                : `<div class="w-[98px] h-[130.67px] float-right ml-5 mb-4 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 border border-slate-200"><i class="fa-solid fa-user text-5xl"></i></div>`;
 
             let expHTML = '';
             const expContainer = document.getElementById('pengalaman-container');
@@ -316,13 +320,7 @@
                 const periode = child.querySelector(`#exp-periode-${i}`)?.value.trim() || '';
                 const deskripsi = child.querySelector(`#exp-deskripsi-${i}`)?.value.trim() || '';
                 if (posisi || perusahaan) {
-                    expHTML += `
-                        <div class="mb-6">
-                            <p class="font-semibold">${posisi} ${perusahaan ? `— ${perusahaan}` : ''}</p>
-                            <p class="text-slate-600 text-sm">${periode}</p>
-                            <div class="text-slate-700 whitespace-pre-line leading-relaxed mt-2">${deskripsi.replace(/\n/g, '<br>')}</div>
-                        </div>
-                    `;
+                    expHTML += `<div class="mb-6"><p class="font-semibold">${posisi} ${perusahaan ? `— ${perusahaan}` : ''}</p><p class="text-slate-600 text-sm">${periode}</p><div class="text-slate-700 whitespace-pre-line leading-relaxed mt-2">${deskripsi.replace(/\n/g, '<br>')}</div></div>`;
                 }
             });
 
@@ -331,14 +329,7 @@
             Array.from(pendContainer.children).forEach((child, i) => {
                 const nama = child.querySelector(`#pend-nama-${i}`)?.value.trim() || '';
                 const tahun = child.querySelector(`#pend-tahun-${i}`)?.value.trim() || '';
-                if (nama) {
-                    pendHTML += `
-                        <div class="mb-5">
-                            <p class="font-semibold">${nama}</p>
-                            <p class="text-slate-600">${tahun}</p>
-                        </div>
-                    `;
-                }
+                if (nama) pendHTML += `<div class="mb-5"><p class="font-semibold">${nama}</p><p class="text-slate-600">${tahun}</p></div>`;
             });
 
             const contentHTML = `
@@ -353,33 +344,15 @@
                     </div>
                 </div>
 
-                ${cvData.ringkasan ? `
-                <div class="mt-10">
-                    <h2 class="section-title">RINGKASAN PROFESIONAL</h2>
-                    <p class="text-slate-700 leading-relaxed">${cvData.ringkasan}</p>
-                </div>` : ''}
+                ${cvData.ringkasan ? `<div class="mt-10"><h2 class="section-title">RINGKASAN PROFESIONAL</h2><p class="text-slate-700 leading-relaxed">${cvData.ringkasan}</p></div>` : ''}
 
-                ${expHTML ? `
-                <div class="mt-10">
-                    <h2 class="section-title">PENGALAMAN KERJA</h2>
-                    ${expHTML}
-                </div>` : ''}
+                ${expHTML ? `<div class="mt-10"><h2 class="section-title">PENGALAMAN KERJA</h2>${expHTML}</div>` : ''}
 
-                <div class="mt-10">
-                    <h2 class="section-title">PENDIDIKAN</h2>
-                    <div class="mt-4">${pendHTML || '<p class="text-slate-500 italic">Tambahkan pendidikan Anda</p>'}</div>
-                </div>
+                <div class="mt-10"><h2 class="section-title">PENDIDIKAN</h2><div class="mt-4">${pendHTML || '<p class="text-slate-500 italic">Tambahkan pendidikan Anda</p>'}</div></div>
 
-                <div class="mt-10">
-                    <h2 class="section-title">KETERAMPILAN</h2>
-                    <div class="text-slate-700 whitespace-pre-line leading-relaxed mt-4">${cvData.keterampilan.replace(/\n/g, '<br>')}</div>
-                </div>
+                <div class="mt-10"><h2 class="section-title">KETERAMPILAN</h2><div class="text-slate-700 whitespace-pre-line leading-relaxed mt-4">${cvData.keterampilan.replace(/\n/g, '<br>')}</div></div>
 
-                ${cvData.sertifikasi ? `
-                <div class="mt-10">
-                    <h2 class="section-title">SERTIFIKASI & PROYEK</h2>
-                    <div class="text-slate-700 whitespace-pre-line leading-relaxed mt-4">${cvData.sertifikasi.replace(/\n/g, '<br>')}</div>
-                </div>` : ''}
+                ${cvData.sertifikasi ? `<div class="mt-10"><h2 class="section-title">SERTIFIKASI & PROYEK</h2><div class="text-slate-700 whitespace-pre-line leading-relaxed mt-4">${cvData.sertifikasi.replace(/\n/g, '<br>')}</div></div>` : ''}
             `;
 
             document.getElementById('cv-content').innerHTML = contentHTML;
@@ -391,7 +364,7 @@
         }
 
         function generatePDF() {
-            if (confirm('Simpan sebagai PDF?\n\nTips:\n• Margins = None\n• Centang Background graphics')) {
+            if (confirm('Simpan sebagai PDF?\n\nTips penting:\n• Pilih "Save as PDF"\n• Margins = None\n• Centang Background graphics')) {
                 printLetter();
             }
         }
@@ -407,15 +380,14 @@
         }
 
         function autoSaveDraft() {
-            localStorage.setItem('dunnakCVDraft_v53', JSON.stringify(cvData));
-            alert('✅ Draft CV berhasil disimpan!');
+            localStorage.setItem('dunnakCVDraft_v54', JSON.stringify(cvData));
+            alert('✅ Draft berhasil disimpan!');
         }
 
         function clearForm() {
-            if (confirm('Reset semua data CV?')) location.reload();
+            if (confirm('Reset semua data?')) location.reload();
         }
 
-        // Inisialisasi dengan contoh data
         window.onload = () => {
             tambahPendidikan();
             document.getElementById('pend-nama-0').value = "SMK Nurul Ummah Paninggaran - Teknik Jaringan Komputer dan Telekomunikasi";
@@ -425,7 +397,7 @@
             document.getElementById('exp-posisi-0').value = "Magang IT Support";
             document.getElementById('exp-perusahaan-0').value = "PT. ABC";
             document.getElementById('exp-periode-0').value = "Januari – Maret 2025";
-            document.getElementById('exp-deskripsi-0').value = "• Melakukan maintenance rutin dan troubleshooting jaringan sekolah\n• Menginstalasi serta mengkonfigurasi perangkat jaringan\n• Membuat website informasi sekolah";
+            document.getElementById('exp-deskripsi-0').value = "• Maintenance dan troubleshooting jaringan\n• Instalasi perangkat jaringan\n• Membuat website sekolah";
 
             updatePreview();
         };
