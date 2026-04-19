@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dunnak.com - Generator CV ATS Profesional v5.1</title>
+    <title>Dunnak.com - Generator CV ATS Profesional v5.2</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
@@ -13,21 +13,26 @@
         
         .a4-paper {
             width: 210mm;
-            height: 297mm;
+            min-height: 297mm;           /* Diubah jadi min-height agar tidak terpotong */
             background: white;
             box-shadow: 0 25px 50px -12px rgb(15 23 42 / 0.15);
             margin: 30px auto;
-            padding: 18mm 17mm;
+            padding: 15mm 16mm;
             font-family: 'Inter', system-ui, sans-serif;
-            font-size: 11.2pt;
-            line-height: 1.75;
+            font-size: 11pt;
+            line-height: 1.72;
             color: #1f2937;
             position: relative;
             box-sizing: border-box;
+            overflow: visible;
         }
 
         @media (max-width: 1024px) {
-            .a4-paper { width: 100%; max-width: 210mm; height: auto; min-height: 297mm; }
+            .a4-paper {
+                width: 100%;
+                max-width: 210mm;
+                height: auto;
+            }
         }
 
         @media print {
@@ -35,11 +40,20 @@
             body { background: white !important; margin: 0; padding: 0; }
             .a4-paper {
                 width: 210mm !important;
-                height: 297mm !important;
+                min-height: 297mm !important;
+                height: auto !important;
                 margin: 0 !important;
-                padding: 18mm 17mm !important;
+                padding: 15mm 16mm !important;
                 box-shadow: none !important;
+                overflow: visible !important;
             }
+            .section-title { page-break-inside: avoid; }
+            .mb-6, .mb-5, .mt-10 { page-break-inside: avoid; }
+        }
+
+        @page {
+            size: A4 portrait;
+            margin: 0;
         }
 
         .section-title {
@@ -59,8 +73,8 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.13);
             border-radius: 8px;
             float: right;
-            margin-left: 20px;
-            margin-bottom: 12px;
+            margin-left: 18px;
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -73,7 +87,7 @@
                 <i class="fa-solid fa-file-lines text-3xl text-emerald-400"></i>
                 <div>
                     <h1 class="text-2xl font-semibold tracking-tight">DUNNAK.COM</h1>
-                    <p class="text-xs text-slate-400 -mt-0.5">CV ATS Profesional v5.1 • Ukuran A4 Presisi</p>
+                    <p class="text-xs text-slate-400 -mt-0.5">CV ATS Profesional v5.2 • Anti Terpotong</p>
                 </div>
             </div>
             
@@ -103,8 +117,8 @@
             <!-- FORM INPUT -->
             <div class="lg:col-span-5 bg-white rounded-3xl shadow-xl p-8 no-print overflow-auto max-h-screen">
                 <div class="mb-8">
-                    <h2 class="text-2xl font-semibold text-slate-800">Generator CV ATS Profesional v5.1</h2>
-                    <p class="text-emerald-600 text-sm mt-1">Ukuran A4 Presisi • Foto Kanan Atas (3:4)</p>
+                    <h2 class="text-2xl font-semibold text-slate-800">Generator CV ATS Profesional v5.2</h2>
+                    <p class="text-emerald-600 text-sm mt-1">Ukuran A4 • Anti Terpotong</p>
                 </div>
                 
                 <div class="space-y-10">
@@ -139,7 +153,7 @@
                                class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none mt-3" oninput="updatePreview()">
                     </div>
 
-                    <!-- Ringkasan -->
+                    <!-- Ringkasan Profesional -->
                     <div>
                         <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-4">Ringkasan Profesional</h3>
                         <textarea id="ringkasan" rows="4" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" 
@@ -176,7 +190,7 @@
 • Bahasa Inggris (Pasif-Aktif)</textarea>
                     </div>
 
-                    <!-- Sertifikasi -->
+                    <!-- Sertifikasi & Proyek -->
                     <div>
                         <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-4">Sertifikasi & Proyek</h3>
                         <textarea id="sertifikasi" rows="4" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" 
@@ -190,15 +204,19 @@
             <div class="lg:col-span-7">
                 <div class="preview-header flex justify-between items-center mb-4 px-2">
                     <h3 class="font-semibold text-slate-700 flex items-center gap-x-2">
-                        <i class="fa-solid fa-eye"></i> Pratinjau CV ATS Profesional (A4)
+                        <i class="fa-solid fa-eye"></i> Pratinjau CV ATS Profesional v5.2
                     </h3>
-                    <span class="text-xs bg-emerald-100 text-emerald-700 px-4 py-1.5 rounded-3xl">Ukuran A4 Presisi</span>
+                    <span class="text-xs bg-emerald-100 text-emerald-700 px-4 py-1.5 rounded-3xl">A4 Anti Terpotong</span>
                 </div>
                 
                 <div class="bg-white p-6 rounded-3xl shadow-inner overflow-x-auto">
                     <div id="cv" class="a4-paper mx-auto">
                         <div id="cv-content"></div>
                     </div>
+                </div>
+                
+                <div class="mt-6 text-xs text-slate-500 px-3">
+                    <strong>Tips Cetak/PDF:</strong> Gunakan Chrome → Ctrl+P → Save as PDF → Margins: None → Centang Background graphics
                 </div>
             </div>
         </div>
@@ -217,7 +235,7 @@
             sertifikasi: ""
         };
 
-        // ==================== FUNGSI YANG DIBUTUHKAN ====================
+        // Fungsi Tambah Pendidikan
         function tambahPendidikan() {
             const container = document.getElementById('pendidikan-container');
             const index = container.children.length;
@@ -233,6 +251,7 @@
             updatePreview();
         }
 
+        // Fungsi Tambah Pengalaman
         function tambahPengalaman() {
             const container = document.getElementById('pengalaman-container');
             const index = container.children.length;
@@ -241,11 +260,11 @@
             div.innerHTML = `
                 <input type="text" id="exp-posisi-${index}" placeholder="Posisi / Jabatan" 
                        class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
-                <input type="text" id="exp-perusahaan-${index}" placeholder="Nama Perusahaan / Instansi" 
+                <input type="text" id="exp-perusahaan-${index}" placeholder="Nama Perusahaan" 
                        class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
-                <input type="text" id="exp-periode-${index}" placeholder="Periode (contoh: Januari - Maret 2025)" 
+                <input type="text" id="exp-periode-${index}" placeholder="Periode" 
                        class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
-                <textarea id="exp-deskripsi-${index}" rows="3" placeholder="Deskripsi tugas & pencapaian (gunakan bullet •)" 
+                <textarea id="exp-deskripsi-${index}" rows="3" placeholder="Deskripsi tugas & pencapaian (gunakan • )" 
                           class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()"></textarea>
             `;
             container.appendChild(div);
@@ -267,7 +286,8 @@
         }
 
         function updatePreview() {
-            cvData.nama = document.getElementById('nama').value || "Nama Anda";
+            // Ambil nilai dari form
+            cvData.nama = document.getElementById('nama').value || "Nama Lengkap";
             cvData.telepon = document.getElementById('telepon').value;
             cvData.email = document.getElementById('email').value;
             cvData.alamat = document.getElementById('alamat').value;
@@ -276,7 +296,14 @@
             cvData.keterampilan = document.getElementById('keterampilan').value;
             cvData.sertifikasi = document.getElementById('sertifikasi').value;
 
-            // Pengalaman
+            // Foto
+            const fotoHTML = cvData.foto 
+                ? `<img src="${cvData.foto}" class="profile-photo" alt="Foto Profil">` 
+                : `<div class="w-[98px] h-[130.67px] float-right ml-5 mb-4 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 border border-slate-200">
+                     <i class="fa-solid fa-user text-5xl"></i>
+                   </div>`;
+
+            // Pengalaman Kerja
             let expHTML = '';
             const expContainer = document.getElementById('pengalaman-container');
             Array.from(expContainer.children).forEach((child, i) => {
@@ -312,39 +339,56 @@
                 }
             });
 
-            const fotoHTML = cvData.foto 
-                ? `<img src="${cvData.foto}" class="profile-photo" alt="Foto Profil">` 
-                : `<div class="w-[98px] h-[130.67px] float-right ml-5 mb-4 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 border border-slate-200">
-                     <i class="fa-solid fa-user text-5xl"></i>
-                   </div>`;
+            // Ringkasan
+            const ringkasanHTML = cvData.ringkasan ? `
+                <div class="mt-10">
+                    <h2 class="section-title">RINGKASAN PROFESIONAL</h2>
+                    <p class="text-slate-700 leading-relaxed">${cvData.ringkasan}</p>
+                </div>` : '';
 
+            // Keterampilan
+            const keterampilanHTML = `
+                <div class="mt-10">
+                    <h2 class="section-title">KETERAMPILAN</h2>
+                    <div class="text-slate-700 whitespace-pre-line leading-relaxed mt-4">${cvData.keterampilan.replace(/\n/g, '<br>')}</div>
+                </div>`;
+
+            // Sertifikasi
+            const sertifikasiHTML = cvData.sertifikasi ? `
+                <div class="mt-10">
+                    <h2 class="section-title">SERTIFIKASI & PROYEK</h2>
+                    <div class="text-slate-700 whitespace-pre-line leading-relaxed mt-4">${cvData.sertifikasi.replace(/\n/g, '<br>')}</div>
+                </div>` : '';
+
+            // Gabungkan semua
             const contentHTML = `
                 <div class="overflow-hidden">
                     ${fotoHTML}
-                    <h1 class="text-[28.5pt] font-bold tracking-tight text-slate-900">${cvData.nama}</h1>
+                    <h1 class="text-[28pt] font-bold tracking-tight text-slate-900">${cvData.nama}</h1>
                     <div class="mt-4 flex flex-wrap gap-x-6 gap-y-1 text-[10.6pt] text-slate-600">
                         <span>${cvData.telepon}</span>
                         <span>${cvData.email}</span>
                         <span>${cvData.alamat}</span>
-                        ${cvData.linkedin ? `<span>${cvData.linkedin}</span>` : ''}
+                        ${cvData.linkedin ? `<span class="break-all">${cvData.linkedin}</span>` : ''}
                     </div>
                 </div>
 
-                ${cvData.ringkasan ? `<div class="mt-10"><h2 class="section-title">RINGKASAN PROFESIONAL</h2><p class="text-slate-700">${cvData.ringkasan}</p></div>` : ''}
+                ${ringkasanHTML}
 
-                ${expHTML ? `<div class="mt-10"><h2 class="section-title">PENGALAMAN KERJA</h2>${expHTML}</div>` : ''}
+                ${expHTML ? `
+                <div class="mt-10">
+                    <h2 class="section-title">PENGALAMAN KERJA</h2>
+                    ${expHTML}
+                </div>` : ''}
 
                 <div class="mt-10">
                     <h2 class="section-title">PENDIDIKAN</h2>
                     <div class="mt-4">${pendHTML || '<p class="text-slate-500 italic">Tambahkan pendidikan Anda</p>'}</div>
                 </div>
 
-                <div class="mt-10">
-                    <h2 class="section-title">KETERAMPILAN</h2>
-                    <div class="text-slate-700 whitespace-pre-line leading-relaxed mt-4">${cvData.keterampilan.replace(/\n/g, '<br>')}</div>
-                </div>
+                ${keterampilanHTML}
 
-                ${cvData.sertifikasi ? `<div class="mt-10"><h2 class="section-title">SERTIFIKASI & PROYEK</h2><div class="text-slate-700 whitespace-pre-line leading-relaxed mt-4">${cvData.sertifikasi.replace(/\n/g, '<br>')}</div></div>` : ''}
+                ${sertifikasiHTML}
             `;
 
             document.getElementById('cv-content').innerHTML = contentHTML;
@@ -356,7 +400,7 @@
         }
 
         function generatePDF() {
-            if (confirm('Simpan sebagai PDF? Pastikan ukuran kertas A4.')) {
+            if (confirm('Simpan sebagai PDF?\n\nTips: Pilih Margins = None dan centang Background graphics')) {
                 printLetter();
             }
         }
@@ -365,24 +409,23 @@
             const cv = document.getElementById('cv');
             html2canvas(cv, { scale: 3, backgroundColor: '#ffffff' }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = `CV_${cvData.nama.replace(/[^a-zA-Z0-9]/g, '_')}.png`;
+                link.download = `CV_ATS_${cvData.nama.replace(/[^a-zA-Z0-9]/g, '_')}.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
             });
         }
 
         function autoSaveDraft() {
-            localStorage.setItem('dunnakCVDraft', JSON.stringify(cvData));
-            alert('✅ Draft berhasil disimpan!');
+            localStorage.setItem('dunnakCVDraft_v52', JSON.stringify(cvData));
+            alert('✅ Draft CV berhasil disimpan!');
         }
 
         function clearForm() {
             if (confirm('Reset semua data CV?')) location.reload();
         }
 
-        // ==================== INISIALISASI ====================
+        // Inisialisasi
         window.onload = () => {
-            // Tambah contoh data
             tambahPendidikan();
             document.getElementById('pend-nama-0').value = "SMK Nurul Ummah Paninggaran - Teknik Jaringan Komputer dan Telekomunikasi";
             document.getElementById('pend-tahun-0').value = "2023 - 2026";
@@ -391,7 +434,7 @@
             document.getElementById('exp-posisi-0').value = "Magang IT Support";
             document.getElementById('exp-perusahaan-0').value = "PT. ABC";
             document.getElementById('exp-periode-0').value = "Januari – Maret 2025";
-            document.getElementById('exp-deskripsi-0').value = "• Maintenance dan troubleshooting jaringan\n• Instalasi perangkat jaringan\n• Membuat website sekolah";
+            document.getElementById('exp-deskripsi-0').value = "• Melakukan maintenance rutin dan troubleshooting jaringan\n• Menginstalasi serta mengkonfigurasi perangkat jaringan\n• Membuat website informasi sekolah";
 
             updatePreview();
         };
