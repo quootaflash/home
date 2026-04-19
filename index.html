@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dunnak.com - Generator CV ATS Profesional v5.4</title>
+    <title>Dunnak.com - Generator CV ATS Profesional v5.5</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
@@ -27,7 +27,7 @@
             overflow: visible;
         }
 
-        /* ==================== PRINT & PDF ==================== */
+        /* ==================== PRINT & PDF - HANYA CV MURNI ==================== */
         @media print {
             .no-print { display: none !important; }
             body { 
@@ -36,11 +36,8 @@
                 padding: 0; 
             }
             
-            /* Hanya tampilkan CV murni */
-            .preview-wrapper,
-            .bg-white.p-6.rounded-3xl,
-            .preview-header,
-            .shadow-inner {
+            /* Pastikan hanya CV yang tercetak */
+            .preview-wrapper {
                 display: block !important;
                 background: white !important;
                 padding: 0 !important;
@@ -59,7 +56,7 @@
                 page-break-after: always;
             }
 
-            /* Hindari terpotong */
+            /* Hindari terpotong di section penting */
             .section-title,
             .mb-6,
             .mb-5,
@@ -104,7 +101,7 @@
                 <i class="fa-solid fa-file-lines text-3xl text-emerald-400"></i>
                 <div>
                     <h1 class="text-2xl font-semibold tracking-tight">DUNNAK.COM</h1>
-                    <p class="text-xs text-slate-400 -mt-0.5">CV ATS Profesional v5.4 • Murni CV Saat Cetak</p>
+                    <p class="text-xs text-slate-400 -mt-0.5">CV ATS Profesional v5.5</p>
                 </div>
             </div>
             
@@ -134,8 +131,8 @@
             <!-- FORM INPUT -->
             <div class="lg:col-span-5 bg-white rounded-3xl shadow-xl p-8 no-print overflow-auto max-h-screen">
                 <div class="mb-8">
-                    <h2 class="text-2xl font-semibold text-slate-800">Generator CV ATS Profesional v5.4</h2>
-                    <p class="text-emerald-600 text-sm mt-1">Murni CV saat cetak • Konten tidak hilang</p>
+                    <h2 class="text-2xl font-semibold text-slate-800">Generator CV ATS Profesional v5.5</h2>
+                    <p class="text-emerald-600 text-sm mt-1">Hasil cetak/PDF hanya CV murni</p>
                 </div>
                 
                 <div class="space-y-10">
@@ -151,8 +148,7 @@
                         <img id="foto-preview" class="hidden mx-auto mt-4 rounded-xl shadow-md" style="width:100px; height:133px; object-fit:cover;">
                     </div>
 
-                    <!-- Data Diri, Ringkasan, Pengalaman, Pendidikan, Keterampilan, Sertifikasi -->
-                    <!-- (Bagian ini sama seperti sebelumnya - saya ringkas agar tidak terlalu panjang) -->
+                    <!-- Data Diri -->
                     <div>
                         <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-4">Data Diri</h3>
                         <input id="nama" type="text" value="Muhammad Hafis" placeholder="Nama Lengkap" 
@@ -164,19 +160,20 @@
                             <input id="email" type="email" value="hafis@example.com" placeholder="Email" 
                                    class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
                         </div>
-                        <input id="alamat" type="text" value="Paninggaran, Pekalongan, Jawa Tengah" placeholder="Domisili" 
+                        <input id="alamat" type="text" value="Paninggaran, Pekalongan, Jawa Tengah" placeholder="Domisili / Alamat" 
                                class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none mt-4" oninput="updatePreview()">
-                        <input id="linkedin" type="text" value="linkedin.com/in/hafis" placeholder="LinkedIn" 
+                        <input id="linkedin" type="text" value="linkedin.com/in/hafis" placeholder="LinkedIn / GitHub" 
                                class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none mt-3" oninput="updatePreview()">
                     </div>
 
+                    <!-- Ringkasan Profesional -->
                     <div>
                         <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-4">Ringkasan Profesional</h3>
                         <textarea id="ringkasan" rows="4" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" 
                                   oninput="updatePreview()">Fresh Graduate Teknik Jaringan Komputer dan Telekomunikasi yang kompeten di bidang IT Support, administrasi jaringan, dan troubleshooting.</textarea>
                     </div>
 
-                    <!-- Pengalaman -->
+                    <!-- Pengalaman Kerja -->
                     <div>
                         <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-3">Pengalaman Kerja / Magang</h3>
                         <div id="pengalaman-container" class="space-y-4"></div>
@@ -194,7 +191,7 @@
                         </button>
                     </div>
 
-                    <!-- Keterampilan & Sertifikasi (sama seperti sebelumnya) -->
+                    <!-- Keterampilan -->
                     <div>
                         <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-4">Keterampilan</h3>
                         <textarea id="keterampilan" rows="6" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" 
@@ -206,6 +203,7 @@
 • Bahasa Inggris (Pasif-Aktif)</textarea>
                     </div>
 
+                    <!-- Sertifikasi & Proyek -->
                     <div>
                         <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-4">Sertifikasi & Proyek</h3>
                         <textarea id="sertifikasi" rows="4" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" 
@@ -217,14 +215,15 @@
 
             <!-- PREVIEW -->
             <div class="lg:col-span-7">
+                <!-- Header Preview - Hanya muncul di layar, disembunyikan saat print -->
                 <div class="preview-header flex justify-between items-center mb-4 px-2 no-print">
                     <h3 class="font-semibold text-slate-700 flex items-center gap-x-2">
-                        <i class="fa-solid fa-eye"></i> Pratinjau CV ATS Profesional v5.4
+                        <i class="fa-solid fa-eye"></i> Pratinjau CV ATS Profesional v5.5
                     </h3>
-                    <span class="text-xs bg-emerald-100 text-emerald-700 px-4 py-1.5 rounded-3xl">Murni CV Saat Cetak</span>
+                    <span class="text-xs bg-emerald-100 text-emerald-700 px-4 py-1.5 rounded-3xl">Hanya CV Murni Saat Cetak</span>
                 </div>
                 
-                <!-- Wrapper penting untuk print -->
+                <!-- Wrapper CV -->
                 <div class="preview-wrapper bg-white p-6 rounded-3xl shadow-inner overflow-x-auto">
                     <div id="cv" class="a4-paper mx-auto">
                         <div id="cv-content"></div>
@@ -232,7 +231,8 @@
                 </div>
                 
                 <div class="mt-6 text-xs text-slate-500 px-3 no-print">
-                    <strong>Tips:</strong> Chrome → Ctrl+P → Save as PDF → Margins: None → Centang Background graphics
+                    <strong>Tips Cetak/PDF:</strong><br>
+                    Gunakan Chrome → Ctrl + P → Save as PDF → Margins: None → Centang Background graphics
                 </div>
             </div>
         </div>
@@ -364,7 +364,7 @@
         }
 
         function generatePDF() {
-            if (confirm('Simpan sebagai PDF?\n\nTips penting:\n• Pilih "Save as PDF"\n• Margins = None\n• Centang Background graphics')) {
+            if (confirm('Simpan sebagai PDF?\n\nTips:\n• Margins = None\n• Centang Background graphics')) {
                 printLetter();
             }
         }
@@ -380,14 +380,15 @@
         }
 
         function autoSaveDraft() {
-            localStorage.setItem('dunnakCVDraft_v54', JSON.stringify(cvData));
-            alert('✅ Draft berhasil disimpan!');
+            localStorage.setItem('dunnakCVDraft_v55', JSON.stringify(cvData));
+            alert('✅ Draft CV berhasil disimpan!');
         }
 
         function clearForm() {
-            if (confirm('Reset semua data?')) location.reload();
+            if (confirm('Reset semua data CV?')) location.reload();
         }
 
+        // Inisialisasi
         window.onload = () => {
             tambahPendidikan();
             document.getElementById('pend-nama-0').value = "SMK Nurul Ummah Paninggaran - Teknik Jaringan Komputer dan Telekomunikasi";
