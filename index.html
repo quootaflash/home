@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dunnak.com - Generator CV ATS Profesional v5.5</title>
+    <title>Dunnak.com - Generator CV ATS Profesional v5.6</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
@@ -27,16 +27,9 @@
             overflow: visible;
         }
 
-        /* ==================== PRINT & PDF - HANYA CV MURNI ==================== */
         @media print {
             .no-print { display: none !important; }
-            body { 
-                background: white !important; 
-                margin: 0; 
-                padding: 0; 
-            }
-            
-            /* Pastikan hanya CV yang tercetak */
+            body { background: white !important; margin: 0; padding: 0; }
             .preview-wrapper {
                 display: block !important;
                 background: white !important;
@@ -44,31 +37,18 @@
                 margin: 0 !important;
                 box-shadow: none !important;
             }
-
             .a4-paper {
                 width: 210mm !important;
                 min-height: 297mm !important;
-                height: auto !important;
                 margin: 0 auto !important;
                 padding: 15mm 16mm !important;
                 box-shadow: none !important;
-                overflow: visible !important;
                 page-break-after: always;
             }
-
-            /* Hindari terpotong di section penting */
-            .section-title,
-            .mb-6,
-            .mb-5,
-            .mt-10 {
-                page-break-inside: avoid;
-            }
+            .section-title { page-break-inside: avoid; }
         }
 
-        @page {
-            size: A4 portrait;
-            margin: 0;
-        }
+        @page { size: A4 portrait; margin: 0; }
 
         .section-title {
             font-size: 13.5pt;
@@ -101,7 +81,7 @@
                 <i class="fa-solid fa-file-lines text-3xl text-emerald-400"></i>
                 <div>
                     <h1 class="text-2xl font-semibold tracking-tight">DUNNAK.COM</h1>
-                    <p class="text-xs text-slate-400 -mt-0.5">CV ATS Profesional v5.5</p>
+                    <p class="text-xs text-slate-400 -mt-0.5">CV ATS Profesional v5.6</p>
                 </div>
             </div>
             
@@ -131,7 +111,7 @@
             <!-- FORM INPUT -->
             <div class="lg:col-span-5 bg-white rounded-3xl shadow-xl p-8 no-print overflow-auto max-h-screen">
                 <div class="mb-8">
-                    <h2 class="text-2xl font-semibold text-slate-800">Generator CV ATS Profesional v5.5</h2>
+                    <h2 class="text-2xl font-semibold text-slate-800">Generator CV ATS Profesional v5.6</h2>
                     <p class="text-emerald-600 text-sm mt-1">Hasil cetak/PDF hanya CV murni</p>
                 </div>
                 
@@ -175,10 +155,19 @@
 
                     <!-- Pengalaman Kerja -->
                     <div>
-                        <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-3">Pengalaman Kerja / Magang</h3>
+                        <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-3">Pengalaman Kerja</h3>
                         <div id="pengalaman-container" class="space-y-4"></div>
                         <button onclick="tambahPengalaman()" class="mt-3 flex items-center gap-2 text-emerald-600 hover:text-emerald-700 text-sm font-medium">
-                            <i class="fa-solid fa-plus"></i> Tambah Pengalaman
+                            <i class="fa-solid fa-plus"></i> Tambah Pengalaman Kerja
+                        </button>
+                    </div>
+
+                    <!-- Pengalaman Magang (Baru) -->
+                    <div>
+                        <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-3">Pengalaman Magang</h3>
+                        <div id="magang-container" class="space-y-4"></div>
+                        <button onclick="tambahMagang()" class="mt-3 flex items-center gap-2 text-emerald-600 hover:text-emerald-700 text-sm font-medium">
+                            <i class="fa-solid fa-plus"></i> Tambah Pengalaman Magang
                         </button>
                     </div>
 
@@ -215,15 +204,13 @@
 
             <!-- PREVIEW -->
             <div class="lg:col-span-7">
-                <!-- Header Preview - Hanya muncul di layar, disembunyikan saat print -->
                 <div class="preview-header flex justify-between items-center mb-4 px-2 no-print">
                     <h3 class="font-semibold text-slate-700 flex items-center gap-x-2">
-                        <i class="fa-solid fa-eye"></i> Pratinjau CV ATS Profesional v5.5
+                        <i class="fa-solid fa-eye"></i> Pratinjau CV ATS Profesional v5.6
                     </h3>
                     <span class="text-xs bg-emerald-100 text-emerald-700 px-4 py-1.5 rounded-3xl">Hanya CV Murni Saat Cetak</span>
                 </div>
                 
-                <!-- Wrapper CV -->
                 <div class="preview-wrapper bg-white p-6 rounded-3xl shadow-inner overflow-x-auto">
                     <div id="cv" class="a4-paper mx-auto">
                         <div id="cv-content"></div>
@@ -251,21 +238,7 @@
             sertifikasi: ""
         };
 
-        function tambahPendidikan() {
-            const container = document.getElementById('pendidikan-container');
-            const index = container.children.length;
-            const div = document.createElement('div');
-            div.className = "border border-slate-100 p-5 rounded-2xl space-y-3";
-            div.innerHTML = `
-                <input type="text" id="pend-nama-${index}" placeholder="Nama Sekolah / Universitas & Jurusan" 
-                       class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
-                <input type="text" id="pend-tahun-${index}" placeholder="Tahun (contoh: 2023 - 2026)" 
-                       class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
-            `;
-            container.appendChild(div);
-            updatePreview();
-        }
-
+        // Fungsi Tambah Pengalaman Kerja
         function tambahPengalaman() {
             const container = document.getElementById('pengalaman-container');
             const index = container.children.length;
@@ -280,6 +253,41 @@
                        class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
                 <textarea id="exp-deskripsi-${index}" rows="3" placeholder="Deskripsi tugas & pencapaian" 
                           class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()"></textarea>
+            `;
+            container.appendChild(div);
+            updatePreview();
+        }
+
+        // Fungsi Tambah Pengalaman Magang (BARU)
+        function tambahMagang() {
+            const container = document.getElementById('magang-container');
+            const index = container.children.length;
+            const div = document.createElement('div');
+            div.className = "border border-slate-100 p-5 rounded-2xl space-y-3";
+            div.innerHTML = `
+                <input type="text" id="mag-posisi-${index}" placeholder="Posisi Magang" 
+                       class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
+                <input type="text" id="mag-perusahaan-${index}" placeholder="Nama Perusahaan / Instansi" 
+                       class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
+                <input type="text" id="mag-periode-${index}" placeholder="Periode Magang" 
+                       class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
+                <textarea id="mag-deskripsi-${index}" rows="3" placeholder="Deskripsi tugas & pencapaian selama magang" 
+                          class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()"></textarea>
+            `;
+            container.appendChild(div);
+            updatePreview();
+        }
+
+        function tambahPendidikan() {
+            const container = document.getElementById('pendidikan-container');
+            const index = container.children.length;
+            const div = document.createElement('div');
+            div.className = "border border-slate-100 p-5 rounded-2xl space-y-3";
+            div.innerHTML = `
+                <input type="text" id="pend-nama-${index}" placeholder="Nama Sekolah / Universitas & Jurusan" 
+                       class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
+                <input type="text" id="pend-tahun-${index}" placeholder="Tahun (contoh: 2023 - 2026)" 
+                       class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
             `;
             container.appendChild(div);
             updatePreview();
@@ -312,6 +320,7 @@
                 ? `<img src="${cvData.foto}" class="profile-photo" alt="Foto Profil">` 
                 : `<div class="w-[98px] h-[130.67px] float-right ml-5 mb-4 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 border border-slate-200"><i class="fa-solid fa-user text-5xl"></i></div>`;
 
+            // Pengalaman Kerja
             let expHTML = '';
             const expContainer = document.getElementById('pengalaman-container');
             Array.from(expContainer.children).forEach((child, i) => {
@@ -324,6 +333,20 @@
                 }
             });
 
+            // Pengalaman Magang (Baru)
+            let magangHTML = '';
+            const magangContainer = document.getElementById('magang-container');
+            Array.from(magangContainer.children).forEach((child, i) => {
+                const posisi = child.querySelector(`#mag-posisi-${i}`)?.value.trim() || '';
+                const perusahaan = child.querySelector(`#mag-perusahaan-${i}`)?.value.trim() || '';
+                const periode = child.querySelector(`#mag-periode-${i}`)?.value.trim() || '';
+                const deskripsi = child.querySelector(`#mag-deskripsi-${i}`)?.value.trim() || '';
+                if (posisi || perusahaan) {
+                    magangHTML += `<div class="mb-6"><p class="font-semibold">${posisi} ${perusahaan ? `— ${perusahaan}` : ''}</p><p class="text-slate-600 text-sm">${periode}</p><div class="text-slate-700 whitespace-pre-line leading-relaxed mt-2">${deskripsi.replace(/\n/g, '<br>')}</div></div>`;
+                }
+            });
+
+            // Pendidikan
             let pendHTML = '';
             const pendContainer = document.getElementById('pendidikan-container');
             Array.from(pendContainer.children).forEach((child, i) => {
@@ -347,6 +370,8 @@
                 ${cvData.ringkasan ? `<div class="mt-10"><h2 class="section-title">RINGKASAN PROFESIONAL</h2><p class="text-slate-700 leading-relaxed">${cvData.ringkasan}</p></div>` : ''}
 
                 ${expHTML ? `<div class="mt-10"><h2 class="section-title">PENGALAMAN KERJA</h2>${expHTML}</div>` : ''}
+
+                ${magangHTML ? `<div class="mt-10"><h2 class="section-title">PENGALAMAN MAGANG</h2>${magangHTML}</div>` : ''}
 
                 <div class="mt-10"><h2 class="section-title">PENDIDIKAN</h2><div class="mt-4">${pendHTML || '<p class="text-slate-500 italic">Tambahkan pendidikan Anda</p>'}</div></div>
 
@@ -380,7 +405,7 @@
         }
 
         function autoSaveDraft() {
-            localStorage.setItem('dunnakCVDraft_v55', JSON.stringify(cvData));
+            localStorage.setItem('dunnakCVDraft_v56', JSON.stringify(cvData));
             alert('✅ Draft CV berhasil disimpan!');
         }
 
@@ -399,6 +424,13 @@
             document.getElementById('exp-perusahaan-0').value = "PT. ABC";
             document.getElementById('exp-periode-0').value = "Januari – Maret 2025";
             document.getElementById('exp-deskripsi-0').value = "• Maintenance dan troubleshooting jaringan\n• Instalasi perangkat jaringan\n• Membuat website sekolah";
+
+            // Contoh Pengalaman Magang (bisa dihapus jika tidak diperlukan)
+            tambahMagang();
+            document.getElementById('mag-posisi-0').value = "Praktik Kerja Lapangan";
+            document.getElementById('mag-perusahaan-0').value = "Dinas Komunikasi dan Informatika Kab. Pekalongan";
+            document.getElementById('mag-periode-0').value = "Februari – April 2025";
+            document.getElementById('mag-deskripsi-0').value = "• Membantu konfigurasi jaringan kantor\n• Melakukan troubleshooting perangkat\n• Membantu instalasi software";
 
             updatePreview();
         };
