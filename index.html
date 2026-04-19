@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dunnak.com - Generator CV ATS Profesional v4.0</title>
+    <title>Dunnak.com - Generator CV ATS Profesional v5.0</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
@@ -16,10 +16,10 @@
             background: white;
             box-shadow: 0 25px 50px -12px rgb(15 23 42 / 0.15);
             margin: 30px auto;
-            padding: 20mm 18mm;
+            padding: 22mm 19mm;
             font-family: 'Inter', system-ui, sans-serif;
-            font-size: 11.3pt;
-            line-height: 1.75;
+            font-size: 11.35pt;
+            line-height: 1.78;
             color: #1f2937;
             position: relative;
         }
@@ -35,7 +35,7 @@
                 width: 210mm !important;
                 height: 297mm !important;
                 margin: 0 !important;
-                padding: 20mm 18mm !important;
+                padding: 22mm 19mm !important;
                 box-shadow: none !important;
                 border: none !important;
             }
@@ -43,20 +43,20 @@
         }
 
         .section-title {
-            font-size: 13.8pt;
+            font-size: 13.9pt;
             font-weight: 700;
             color: #1e2937;
-            margin-bottom: 9px;
-            padding-bottom: 6px;
-            border-bottom: 2.5px solid #1e2937;
+            margin-bottom: 10px;
+            padding-bottom: 7px;
+            border-bottom: 2.8px solid #1e2937;
         }
 
         .profile-photo {
-            width: 105px;
-            height: 140px;
+            width: 100px;
+            height: 133px;           /* Rasio 3:4 yang ideal */
             object-fit: cover;
-            border: 4px solid #f1f5f9;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            border: 4px solid #f8fafc;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.13);
             border-radius: 8px;
         }
     </style>
@@ -70,7 +70,7 @@
                 <i class="fa-solid fa-file-lines text-3xl text-emerald-400"></i>
                 <div>
                     <h1 class="text-2xl font-semibold tracking-tight">DUNNAK.COM</h1>
-                    <p class="text-xs text-slate-400 -mt-0.5">CV ATS Profesional v4.0 • Layanan Komersial</p>
+                    <p class="text-xs text-slate-400 -mt-0.5">CV ATS Profesional v5.0 • Layanan Komersial</p>
                 </div>
             </div>
             
@@ -102,67 +102,65 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
             <!-- FORM INPUT -->
-            <div class="lg:col-span-5 bg-white rounded-3xl shadow-xl p-8 no-print">
+            <div class="lg:col-span-5 bg-white rounded-3xl shadow-xl p-8 no-print overflow-auto max-h-screen">
                 <div class="mb-8">
-                    <h2 class="text-2xl font-semibold text-slate-800">Generator CV ATS Profesional v4.0</h2>
-                    <p class="text-emerald-600 text-sm mt-1">Foto di kanan atas • Single Column • Siap Print & PDF • Optimized ATS HRD Indonesia</p>
+                    <h2 class="text-2xl font-semibold text-slate-800">Generator CV ATS Profesional v5.0</h2>
+                    <p class="text-emerald-600 text-sm mt-1">Input fleksibel • Foto kanan atas (rasio 3:4) • Siap untuk berbagai latar belakang pelamar</p>
                 </div>
                 
                 <div class="space-y-10">
 
                     <!-- Foto -->
                     <div>
-                        <label class="block text-sm font-medium text-slate-600 mb-2">Foto Profil Profesional (4x6 style - di kanan atas)</label>
+                        <label class="block text-sm font-medium text-slate-600 mb-2">Foto Profil (Rasio 3:4 - Kanan Atas)</label>
                         <input type="file" id="foto-upload" accept="image/*" class="hidden" onchange="previewFoto(this)">
                         <button onclick="document.getElementById('foto-upload').click()" 
                                 class="w-full h-36 border-2 border-dashed border-slate-300 hover:border-emerald-400 rounded-3xl flex flex-col items-center justify-center text-slate-500">
                             <i class="fa-solid fa-user-circle text-5xl mb-3"></i>
                             <span class="text-sm font-medium">Upload Foto</span>
                         </button>
-                        <img id="foto-preview" class="hidden mx-auto mt-4 rounded-xl shadow-md" style="width:105px; height:140px; object-fit:cover;">
+                        <img id="foto-preview" class="hidden mx-auto mt-4 rounded-xl shadow-md" style="width:100px; height:133px; object-fit:cover;">
                     </div>
 
                     <!-- Data Diri -->
                     <div>
                         <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-4">Data Diri</h3>
-                        <div class="space-y-4">
-                            <input id="nama" type="text" value="Muhammad Hafis" placeholder="Nama Lengkap" 
+                        <input id="nama" type="text" value="Muhammad Hafis" placeholder="Nama Lengkap" 
+                               class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none mb-4" oninput="updatePreview()">
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <input id="telepon" type="tel" value="0856-1234-5678" placeholder="No. Telepon" 
                                    class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
-                            <div class="grid grid-cols-2 gap-4">
-                                <input id="telepon" type="tel" value="0856-1234-5678" placeholder="No. Telepon" 
-                                       class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
-                                <input id="email" type="email" value="hafis@example.com" placeholder="Email Profesional" 
-                                       class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
-                            </div>
-                            <input id="alamat" type="text" value="Paninggaran, Pekalongan, Jawa Tengah" placeholder="Domisili" 
-                                   class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
-                            <input id="linkedin" type="text" value="linkedin.com/in/hafis" placeholder="LinkedIn / GitHub / Portofolio" 
+                            <input id="email" type="email" value="hafis@example.com" placeholder="Email" 
                                    class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
                         </div>
+                        <input id="alamat" type="text" value="Paninggaran, Pekalongan, Jawa Tengah" placeholder="Domisili / Alamat" 
+                               class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none mt-4" oninput="updatePreview()">
+                        <input id="linkedin" type="text" value="linkedin.com/in/hafis" placeholder="LinkedIn / GitHub / Portofolio" 
+                               class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none mt-3" oninput="updatePreview()">
                     </div>
 
                     <!-- Ringkasan Profesional -->
                     <div>
                         <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-4">Ringkasan Profesional</h3>
                         <textarea id="ringkasan" rows="4" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" 
-                                  oninput="updatePreview()">Fresh Graduate Teknik Jaringan Komputer dan Telekomunikasi yang memiliki kemampuan solid di bidang IT Support, maintenance jaringan, dan troubleshooting. Berpengalaman magang melakukan instalasi serta konfigurasi perangkat jaringan dan pembuatan website sederhana. Siap berkontribusi dengan disiplin dan semangat belajar yang tinggi.</textarea>
+                                  oninput="updatePreview()">Fresh Graduate Teknik Jaringan Komputer dan Telekomunikasi yang kompeten di bidang IT Support, administrasi jaringan, dan troubleshooting. Memiliki pengalaman magang serta proyek nyata dalam konfigurasi jaringan dan pembuatan website. Siap memberikan kontribusi maksimal dengan sikap disiplin dan kemauan belajar yang tinggi.</textarea>
                     </div>
 
-                    <!-- Pengalaman -->
+                    <!-- Pengalaman Kerja (Multi) -->
                     <div>
-                        <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-4">Pengalaman Kerja / Magang</h3>
-                        <textarea id="pengalaman" rows="8" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" 
-                                  oninput="updatePreview()">• Magang IT Support, PT. ABC, Januari – Maret 2025
-  - Melakukan maintenance rutin dan troubleshooting jaringan sekolah
-  - Menginstalasi serta mengkonfigurasi perangkat jaringan
-  - Membuat website informasi sekolah menggunakan HTML, CSS, dan Tailwind CSS</textarea>
+                        <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-3">Pengalaman Kerja / Magang</h3>
+                        <div id="pengalaman-container" class="space-y-4"></div>
+                        <button onclick="tambahPengalaman()" class="mt-3 flex items-center gap-2 text-emerald-600 hover:text-emerald-700 text-sm font-medium">
+                            <i class="fa-solid fa-plus"></i> Tambah Pengalaman Lain
+                        </button>
                     </div>
 
-                    <!-- Pendidikan -->
+                    <!-- Pendidikan (Multi) -->
                     <div>
-                        <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-4">Pendidikan</h3>
-                        <div id="pendidikan-container" class="space-y-6"></div>
-                        <button onclick="tambahPendidikan()" class="mt-4 flex items-center gap-2 text-emerald-600 hover:text-emerald-700 text-sm font-medium">
+                        <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-3">Pendidikan</h3>
+                        <div id="pendidikan-container" class="space-y-4"></div>
+                        <button onclick="tambahPendidikan()" class="mt-3 flex items-center gap-2 text-emerald-600 hover:text-emerald-700 text-sm font-medium">
                             <i class="fa-solid fa-plus"></i> Tambah Pendidikan
                         </button>
                     </div>
@@ -184,7 +182,7 @@
                         <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-4">Sertifikasi & Proyek</h3>
                         <textarea id="sertifikasi" rows="4" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" 
                                   oninput="updatePreview()">• Sertifikat Cisco Networking Academy
-• Proyek Akhir: Sistem Monitoring Jaringan Sekolah berbasis Web</textarea>
+• Proyek: Sistem Monitoring Jaringan Sekolah berbasis Web</textarea>
                     </div>
                 </div>
             </div>
@@ -195,7 +193,7 @@
                     <h3 class="font-semibold text-slate-700 flex items-center gap-x-2">
                         <i class="fa-solid fa-eye"></i> Pratinjau CV ATS Profesional
                     </h3>
-                    <span class="text-xs bg-emerald-100 text-emerald-700 px-4 py-1.5 rounded-3xl">Foto Kanan Atas • A4 • ATS Optimized</span>
+                    <span class="text-xs bg-emerald-100 text-emerald-700 px-4 py-1.5 rounded-3xl">Foto Kanan Atas • Input Fleksibel</span>
                 </div>
                 
                 <div class="bg-white p-6 rounded-3xl shadow-inner overflow-x-auto">
@@ -204,11 +202,8 @@
                     </div>
                 </div>
                 
-                <div class="mt-6 text-xs text-slate-500 px-3 leading-relaxed">
-                    <strong>Petunjuk Layanan Komersial:</strong><br>
-                    • Gunakan <strong>PDF ATS</strong> atau <strong>Cetak</strong> untuk hasil final (foto muncul di kanan atas).<br>
-                    • Sesuaikan ringkasan dan bullet points dengan kata kunci lowongan agar semakin mudah lolos ATS HRD.<br>
-                    • Format ini telah dioptimalkan sesuai regulasi perusahaan Indonesia.
+                <div class="mt-6 text-xs text-slate-500 px-3">
+                    <strong>Catatan Komersial:</strong> Gunakan PDF ATS atau Cetak untuk hasil final. Foto menggunakan rasio 3:4 agar tampak proporsional dan tidak terpotong di PDF.
                 </div>
             </div>
         </div>
@@ -222,12 +217,14 @@
             email: "hafis@example.com",
             alamat: "Paninggaran, Pekalongan, Jawa Tengah",
             linkedin: "linkedin.com/in/hafis",
-            ringkasan: "Fresh Graduate Teknik Jaringan Komputer dan Telekomunikasi yang memiliki kemampuan solid di bidang IT Support, maintenance jaringan, dan troubleshooting.",
-            pengalaman: "• Magang IT Support, PT. ABC, Januari – Maret 2025\n  - Melakukan maintenance rutin dan troubleshooting jaringan sekolah\n  - Menginstalasi serta mengkonfigurasi perangkat jaringan\n  - Membuat website informasi sekolah menggunakan HTML, CSS, dan Tailwind CSS",
+            ringkasan: "Fresh Graduate Teknik Jaringan Komputer dan Telekomunikasi yang kompeten di bidang IT Support, administrasi jaringan, dan troubleshooting.",
+            pengalaman: [],
+            pendidikan: [],
             keterampilan: "• Microsoft Office (Word, Excel, PowerPoint)\n• Administrasi dan Konfigurasi Jaringan Komputer\n• HTML, CSS, Tailwind CSS, JavaScript Dasar\n• Troubleshooting Hardware & Software\n• Instalasi Perangkat Jaringan\n• Bahasa Inggris (Pasif-Aktif)",
-            sertifikasi: "• Sertifikat Cisco Networking Academy\n• Proyek Akhir: Sistem Monitoring Jaringan Sekolah berbasis Web"
+            sertifikasi: "• Sertifikat Cisco Networking Academy\n• Proyek: Sistem Monitoring Jaringan Sekolah berbasis Web"
         }
 
+        // Tambah Pendidikan
         function tambahPendidikan() {
             const container = document.getElementById('pendidikan-container');
             const index = container.children.length;
@@ -236,8 +233,28 @@
             div.innerHTML = `
                 <input type="text" id="pend-nama-${index}" placeholder="Nama Sekolah / Universitas & Jurusan" 
                        class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
-                <input type="text" id="pend-tahun-${index}" placeholder="Tahun (contoh: 2023 - 2026)" 
+                <input type="text" id="pend-tahun-${index}" placeholder="Tahun (contoh: 2023 - 2026 atau 2020 - Sekarang)" 
                        class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
+            `;
+            container.appendChild(div);
+            updatePreview();
+        }
+
+        // Tambah Pengalaman Kerja
+        function tambahPengalaman() {
+            const container = document.getElementById('pengalaman-container');
+            const index = container.children.length;
+            const div = document.createElement('div');
+            div.className = "border border-slate-100 p-5 rounded-2xl space-y-3";
+            div.innerHTML = `
+                <input type="text" id="exp-posisi-${index}" placeholder="Posisi / Jabatan (contoh: Magang IT Support)" 
+                       class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
+                <input type="text" id="exp-perusahaan-${index}" placeholder="Nama Perusahaan / Instansi" 
+                       class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
+                <input type="text" id="exp-periode-${index}" placeholder="Periode (contoh: Januari - Maret 2025)" 
+                       class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
+                <textarea id="exp-deskripsi-${index}" rows="3" placeholder="Deskripsi tugas & pencapaian (gunakan bullet • )" 
+                          class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()"></textarea>
             `;
             container.appendChild(div);
             updatePreview();
@@ -250,19 +267,41 @@
             cvData.alamat = document.getElementById('alamat').value;
             cvData.linkedin = document.getElementById('linkedin').value;
             cvData.ringkasan = document.getElementById('ringkasan').value;
-            cvData.pengalaman = document.getElementById('pengalaman').value;
             cvData.keterampilan = document.getElementById('keterampilan').value;
             cvData.sertifikasi = document.getElementById('sertifikasi').value;
 
+            // Pengalaman
+            let expHTML = '';
+            const expContainer = document.getElementById('pengalaman-container');
+            Array.from(expContainer.children).forEach((child, i) => {
+                const posisi = child.querySelector(`#exp-posisi-${i}`) ? child.querySelector(`#exp-posisi-${i}`).value.trim() : '';
+                const perusahaan = child.querySelector(`#exp-perusahaan-${i}`) ? child.querySelector(`#exp-perusahaan-${i}`).value.trim() : '';
+                const periode = child.querySelector(`#exp-periode-${i}`) ? child.querySelector(`#exp-periode-${i}`).value.trim() : '';
+                const deskripsi = child.querySelector(`#exp-deskripsi-${i}`) ? child.querySelector(`#exp-deskripsi-${i}`).value.trim() : '';
+                
+                if (posisi || perusahaan) {
+                    expHTML += `
+                        <div class="mb-6">
+                            <p class="font-semibold">${posisi} ${perusahaan ? `— ${perusahaan}` : ''}</p>
+                            <p class="text-slate-600 text-sm">${periode}</p>
+                            <div class="text-slate-700 whitespace-pre-line leading-relaxed mt-2">
+                                ${deskripsi.replace(/\n/g, '<br>')}
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+
+            // Pendidikan
             let pendHTML = '';
             const pendContainer = document.getElementById('pendidikan-container');
             Array.from(pendContainer.children).forEach((child, i) => {
                 const nama = child.querySelector(`#pend-nama-${i}`) ? child.querySelector(`#pend-nama-${i}`).value.trim() : '';
                 const tahun = child.querySelector(`#pend-tahun-${i}`) ? child.querySelector(`#pend-tahun-${i}`).value.trim() : '';
-                if (nama || tahun) {
+                if (nama) {
                     pendHTML += `
                         <div class="mb-5">
-                            <p class="font-semibold text-slate-800">${nama}</p>
+                            <p class="font-semibold">${nama}</p>
                             <p class="text-slate-600">${tahun}</p>
                         </div>
                     `;
@@ -270,42 +309,43 @@
             });
 
             const fotoHTML = cvData.foto 
-                ? `<img src="${cvData.foto}" class="profile-photo float-right ml-6 mb-4" alt="Foto Profil">` 
-                : `<div class="w-[105px] h-[140px] float-right ml-6 mb-4 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 border border-slate-200">
-                     <i class="fa-solid fa-user text-6xl"></i>
+                ? `<img src="${cvData.foto}" class="profile-photo float-right ml-8 mb-6" alt="Foto Profil">` 
+                : `<div class="w-[100px] h-[133px] float-right ml-8 mb-6 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 border border-slate-200">
+                     <i class="fa-solid fa-user text-5xl"></i>
                    </div>`;
 
             const contentHTML = `
                 <div class="overflow-hidden">
                     ${fotoHTML}
-                    <h1 class="text-[28pt] font-bold tracking-tight text-slate-900">${cvData.nama}</h1>
-                    <div class="mt-3 flex flex-wrap gap-x-6 text-sm text-slate-600">
+                    <h1 class="text-[29pt] font-bold tracking-tight text-slate-900">${cvData.nama}</h1>
+                    
+                    <!-- Kontak yang lebih rapi -->
+                    <div class="mt-4 flex flex-wrap gap-x-6 gap-y-1 text-[10.8pt] text-slate-600">
                         <span>${cvData.telepon}</span>
                         <span>${cvData.email}</span>
+                        <span>${cvData.alamat}</span>
+                        ${cvData.linkedin ? `<span class="break-all">${cvData.linkedin}</span>` : ''}
                     </div>
-                    <p class="text-slate-600 mt-1">${cvData.alamat}</p>
-                    ${cvData.linkedin ? `<p class="text-slate-600 mt-1">${cvData.linkedin}</p>` : ''}
                 </div>
 
                 ${cvData.ringkasan ? `
-                <div class="mt-10">
+                <div class="mt-11">
                     <h2 class="section-title">RINGKASAN PROFESIONAL</h2>
                     <p class="text-slate-700 leading-relaxed">${cvData.ringkasan}</p>
                 </div>` : ''}
 
-                <div class="mt-10">
+                ${expHTML ? `
+                <div class="mt-11">
                     <h2 class="section-title">PENGALAMAN KERJA</h2>
-                    <div class="text-slate-700 whitespace-pre-line leading-relaxed mt-4">
-                        ${cvData.pengalaman.replace(/\n/g, '<br>')}
-                    </div>
-                </div>
+                    ${expHTML}
+                </div>` : ''}
 
-                <div class="mt-10">
+                <div class="mt-11">
                     <h2 class="section-title">PENDIDIKAN</h2>
-                    <div class="mt-4">${pendHTML || '<p class="text-slate-500 italic">Tambahkan data pendidikan</p>'}</div>
+                    <div class="mt-4">${pendHTML || '<p class="text-slate-500 italic">Tambahkan pendidikan</p>'}</div>
                 </div>
 
-                <div class="mt-10">
+                <div class="mt-11">
                     <h2 class="section-title">KETERAMPILAN</h2>
                     <div class="text-slate-700 whitespace-pre-line leading-relaxed mt-4">
                         ${cvData.keterampilan.replace(/\n/g, '<br>')}
@@ -313,7 +353,7 @@
                 </div>
 
                 ${cvData.sertifikasi ? `
-                <div class="mt-10">
+                <div class="mt-11">
                     <h2 class="section-title">SERTIFIKASI & PROYEK</h2>
                     <div class="text-slate-700 whitespace-pre-line leading-relaxed mt-4">
                         ${cvData.sertifikasi.replace(/\n/g, '<br>')}
@@ -344,7 +384,7 @@
         }
 
         function generatePDF() {
-            const ok = confirm('CV akan dicetak sebagai PDF dengan foto di kanan atas. Pilih "Simpan sebagai PDF" di dialog cetak.');
+            const ok = confirm('CV akan dicetak sebagai PDF dengan foto rasio 3:4 di kanan atas.\nPilih "Simpan sebagai PDF".');
             if (ok) printLetter();
         }
 
@@ -359,27 +399,30 @@
         }
 
         function autoSaveDraft() {
-            localStorage.setItem('dunnakCVDraft_v4', JSON.stringify(cvData));
-            alert('✅ Draft CV berhasil disimpan di browser!');
+            localStorage.setItem('dunnakCVDraft_v5', JSON.stringify(cvData));
+            alert('✅ Draft CV berhasil disimpan!');
         }
 
         function clearForm() {
             if (confirm('Reset semua data CV?')) location.reload();
         }
 
-        // Initialize
+        // Initialize dengan contoh data
         window.onload = () => {
-            const container = document.getElementById('pendidikan-container');
-            container.innerHTML = `
-                <div class="border border-slate-100 p-5 rounded-2xl space-y-3">
-                    <input type="text" id="pend-nama-0" value="SMK Nurul Ummah Paninggaran - Teknik Jaringan Komputer dan Telekomunikasi" 
-                           class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
-                    <input type="text" id="pend-tahun-0" value="2023 - 2026" 
-                           class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-emerald-500 outline-none" oninput="updatePreview()">
-                </div>
-            `;
+            // Pendidikan default
+            tambahPendidikan();
+            document.getElementById('pend-nama-0').value = "SMK Nurul Ummah Paninggaran - Teknik Jaringan Komputer dan Telekomunikasi";
+            document.getElementById('pend-tahun-0').value = "2023 - 2026";
+
+            // Pengalaman default
+            tambahPengalaman();
+            document.getElementById('exp-posisi-0').value = "Magang IT Support";
+            document.getElementById('exp-perusahaan-0').value = "PT. ABC";
+            document.getElementById('exp-periode-0').value = "Januari – Maret 2025";
+            document.getElementById('exp-deskripsi-0').value = "• Melakukan maintenance rutin dan troubleshooting jaringan sekolah\n• Menginstalasi serta mengkonfigurasi perangkat jaringan\n• Membuat website informasi sekolah menggunakan HTML, CSS, dan Tailwind CSS";
+
             updatePreview();
-            console.log('%cDunnak.com CV ATS Profesional v4.0 - Foto di kanan atas • Siap komersial', 'color:#10b981; font-weight:700');
+            console.log('%cDunnak.com CV ATS Profesional v5.0 - Input Fleksibel & Foto Optimal', 'color:#10b981; font-weight:700');
         }
     </script>
 </body>
