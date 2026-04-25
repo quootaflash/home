@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Writehub System (S1 Edition)</title>
+    <title>Writehub System (S1 Edition + Smart Parser)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <!-- Mammoth.js untuk parsing DOCX -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     
     <style>
@@ -20,6 +22,7 @@
             --muted: #64748b;
             --border: #e2e8f0;
             --danger: #ef4444;
+            --info: #3b82f6;
         }
         .dark-mode {
             --surface: #0f172a;
@@ -243,10 +246,10 @@
 <nav class="bg-slate-950 text-white sticky top-0 z-50 no-print">
     <div class="max-w-[1560px] mx-auto px-4 md:px-6 py-3 flex items-center justify-between gap-2">
         <div class="flex items-center gap-2.5 min-w-0">
-            <div class="w-9 h-9 rounded-lg bg-teal-500/15 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-file-lines text-teal-400 text-sm"></i></div>
+            <div class="w-9 h-9 rounded-lg bg-indigo-500/15 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-wand-magic-sparkles text-indigo-400 text-sm"></i></div>
             <div class="min-w-0">
-                <h1 class="text-[15px] font-bold tracking-tight truncate">Writehub v12.4 (Final)</h1>
-                <p class="text-[8px] text-slate-500 -mt-0.5 tracking-widest uppercase">Applicant Tracking System • S1 Optimized</p>
+                <h1 class="text-[15px] font-bold tracking-tight truncate">Writehub v12.5 (Smart Parser)</h1>
+                <p class="text-[8px] text-slate-500 -mt-0.5 tracking-widest uppercase">Auto-Fill DOCX • S1 Optimized</p>
             </div>
         </div>
         <div class="flex items-center gap-1.5 flex-shrink-0">
@@ -270,13 +273,32 @@
             <div class="bg-[var(--card)] rounded-2xl shadow-lg border border-[var(--border)] overflow-hidden flex flex-col" style="max-height:calc(100vh - 100px);">
                 <div class="px-5 pt-4 pb-3 border-b border-[var(--border)] flex-shrink-0">
                     <div class="flex items-center justify-between">
-                        <div><h2 class="text-[16px] font-bold text-[var(--text)]">Isi Curriculum Vitae</h2><p class="text-[10px] text-[var(--muted)] mt-0.5">Format bersih, optimal untuk Sarjana (S1/D3).</p></div>
+                        <div><h2 class="text-[16px] font-bold text-[var(--text)]">Isi Curriculum Vitae</h2><p class="text-[10px] text-[var(--muted)] mt-0.5">Upload DOCX untuk Auto-Fill cepat.</p></div>
                         <div class="flex items-center gap-1"><span class="kb">Ctrl+S</span></div>
                     </div>
                 </div>
                 <div class="fsc px-5 pb-5 overflow-y-auto flex-1">
 
-                    <div class="mt-3 mb-4">
+                    <!-- NEW SMART UPLOAD SECTION -->
+                    <div class="mt-3 mb-4 p-4 bg-indigo-50 border border-indigo-100 rounded-xl dark:bg-indigo-900/20 dark:border-indigo-800 relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-20 transition">
+                            <i class="fa-solid fa-file-word text-6xl text-indigo-600"></i>
+                        </div>
+                        <label class="fl text-indigo-800 dark:text-indigo-300 font-bold"><i class="fa-solid fa-wand-magic-sparkles mr-1 text-indigo-600"></i>Auto Fill dari DOCX</label>
+                        <input type="file" id="f_upload_docx" accept=".docx" class="hidden">
+                        <button onclick="document.getElementById('f_upload_docx').click()" class="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium text-[11px] transition flex items-center justify-center gap-2 shadow-sm shadow-indigo-200">
+                            <i class="fa-solid fa-cloud-arrow-up"></i> Pilih File DOCX
+                        </button>
+                        <div id="upload-status" class="hidden mt-2 flex items-center gap-2 text-[9.5px] text-indigo-700 dark:text-indigo-300">
+                            <i class="fa-solid fa-circle-notch fa-spin"></i> <span>Sedang membaca dokumen...</span>
+                        </div>
+                        <p class="text-[8.5px] text-indigo-600/80 dark:text-indigo-400 mt-2 leading-tight">
+                            <i class="fa-solid fa-lightbulb mr-0.5"></i>Sistem otomatis mendeteksi: Nama, Email, No HP, LinkedIn, Pengalaman, Pendidikan & Skill. Pastikan format teks di DOCX jelas.
+                        </p>
+                    </div>
+                    <!-- END SMART UPLOAD -->
+
+                    <div class="mb-4">
                         <label class="fl"><i class="fa-solid fa-bolt mr-1 text-amber-500"></i>Template Cepat</label>
                         <div class="grid grid-cols-4 gap-1.5" id="tplRow">
                             <div class="tp-c on" data-tpl="fresh"><div class="text-[9.5px] font-bold text-[var(--text)]">Lulusan Baru</div><div class="text-[7.5px] text-[var(--muted)]">S1/D3</div></div>
@@ -287,18 +309,18 @@
                     </div>
 
                     <div class="mb-1">
-                        <div class="sh-hd op" data-sec><span class="text-[12px] font-bold text-[var(--text)]"><i class="fa-solid fa-user mr-1.5 text-teal-600 text-[10px]"></i>Data Diri</span><i class="fa-solid fa-chevron-down cv2"></i></div>
+                        <div class="sh-hd op" data-sec><span class="text-[12px] font-bold text-[var(--text)]"><i class="fa-solid fa-user mr-1.5 text-indigo-600 text-[10px]"></i>Data Diri</span><i class="fa-solid fa-chevron-down cv2"></i></div>
                         <div class="sh-bd op"><div class="pt-3 space-y-2.5">
-                            <div><label class="fl" for="f_nama">Nama Lengkap <span class="req">*</span></label><input id="f_nama" class="fi cv-input" placeholder="Sesuai Ijazah" value="Sarah Pratiwi"><div class="fe" id="e_nama">Wajib diisi</div></div>
-                            <div><label class="fl" for="f_title">Judul Profesional <span class="req">*</span></label><input id="f_title" class="fi cv-input" placeholder="Contoh: Staff Akuntansi" value="Fresh Graduate Akuntansi"><div class="fe" id="e_title">Wajib diisi</div></div>
+                            <div><label class="fl" for="f_nama">Nama Lengkap <span class="req">*</span></label><input id="f_nama" class="fi cv-input" placeholder="Sesuai Ijazah" value=""><div class="fe" id="e_nama">Wajib diisi</div></div>
+                            <div><label class="fl" for="f_title">Judul Profesional <span class="req">*</span></label><input id="f_title" class="fi cv-input" placeholder="Contoh: Staff Akuntansi" value=""><div class="fe" id="e_title">Wajib diisi</div></div>
                             <div class="grid grid-cols-2 gap-2">
-                                <div><label class="fl" for="f_email">Email <span class="req">*</span></label><input id="f_email" class="fi cv-input" type="email" placeholder="nama@gmail.com" value="sarah@gmail.com"><div class="fe" id="e_email">Format tidak valid</div></div>
-                                <div><label class="fl" for="f_phone">No. HP <span class="req">*</span></label><input id="f_phone" class="fi cv-input" placeholder="08xx-xxxx-xxxx" value="0812-3456-7890"></div>
+                                <div><label class="fl" for="f_email">Email <span class="req">*</span></label><input id="f_email" class="fi cv-input" type="email" placeholder="nama@gmail.com" value=""><div class="fe" id="e_email">Format tidak valid</div></div>
+                                <div><label class="fl" for="f_phone">No. HP <span class="req">*</span></label><input id="f_phone" class="fi cv-input" placeholder="08xx-xxxx-xxxx" value=""></div>
                             </div>
-                            <div><label class="fl" for="f_loc">Lokasi</label><input id="f_loc" class="fi cv-input" placeholder="Kota, Provinsi" value="Jakarta Selatan, DKI Jakarta"></div>
+                            <div><label class="fl" for="f_loc">Lokasi</label><input id="f_loc" class="fi cv-input" placeholder="Kota, Provinsi" value=""></div>
                             <div>
                                 <label class="fl" for="f_linkedin">LinkedIn URL <span class="req">*</span></label>
-                                <input id="f_linkedin" class="fi cv-input" placeholder="https://linkedin.com/in/namaprofil" value="https://linkedin.com/in/sarahpratiwi">
+                                <input id="f_linkedin" class="fi cv-input" placeholder="https://linkedin.com/in/namaprofil" value="">
                                 <div class="fe" id="e_linkedin">Format: https://linkedin.com/in/namaprofil</div>
                                 <div class="linkedin-hint"><i class="fa-solid fa-circle-info" style="font-size:8px;margin-right:3px"></i>Gunakan URL lengkap dengan https://.</div>
                             </div>
@@ -309,7 +331,7 @@
                     <div class="mb-1">
                         <div class="sh-hd op" data-sec><span class="text-[12px] font-bold text-[var(--text)]"><i class="fa-solid fa-align-left mr-1.5 text-teal-600 text-[10px]"></i>Profil Profesional</span><i class="fa-solid fa-chevron-down cv2"></i></div>
                         <div class="sh-bd op"><div class="pt-3 space-y-2.5">
-                            <div><label class="fl" for="f_summary">Ringkasan Profil <span class="req">*</span></label><textarea id="f_summary" class="fi cv-input" rows="3" placeholder="3-4 kalimat yang menjelaskan diri Anda.">Lulusan Sarjana Ekonomi Jurusan Akuntansi dengan IPK Kumulatif 3.85. Memiliki pemahaman kuat dalam analisis keuangan, audit, dan perpajakan. Aktif dalam organisasi kemahasiswaan sebagai Bendahara Umum. Siap berkontribusi dan berkembang di bidang keuangan perusahaan.</textarea><div class="fe" id="e_summary">Wajib diisi</div></div>
+                            <div><label class="fl" for="f_summary">Ringkasan Profil <span class="req">*</span></label><textarea id="f_summary" class="fi cv-input" rows="3" placeholder="3-4 kalimat yang menjelaskan diri Anda."></textarea><div class="fe" id="e_summary">Wajib diisi</div></div>
                         </div></div>
                     </div>
 
@@ -317,7 +339,7 @@
                         <div class="sh-hd op" data-sec><span class="text-[12px] font-bold text-[var(--text)]"><i class="fa-solid fa-briefcase mr-1.5 text-teal-600 text-[10px]"></i>Pengalaman Kerja</span><i class="fa-solid fa-chevron-down cv2"></i></div>
                         <div class="sh-bd op"><div class="pt-3 space-y-2.5">
                             <p class="text-[9.5px] text-[var(--muted)] leading-relaxed">Baris 1: Jabatan. Baris 2: Perusahaan, Kota. Baris 3: Periode. Baris 4+: Poin pekerjaan.</p>
-                            <div><label class="fl" for="f_exp">Pengalaman 1</label><textarea id="f_exp" class="fi cv-input" rows="4" placeholder="Jabatan&#10;Perusahaan, Kota&#10;Jan 2025 – Mar 2025&#10;Melakukan audit ...">Magang Audit Staff&#10;KAP Amir, Abidin & Partners, Jakarta&#10;Jun 2024 – Ags 2024&#10;Membantu proses audit laporan keuangan klien ritel dan jasa&#10;Melakukan analisis terhadap saldo akun dan bukti transaksi&#10;Membuat draft laporan audit manajemen</textarea></div>
+                            <div><label class="fl" for="f_exp">Pengalaman 1</label><textarea id="f_exp" class="fi cv-input" rows="4" placeholder="Jabatan&#10;Perusahaan, Kota&#10;Jan 2025 – Mar 2025&#10;Melakukan audit ..."></textarea></div>
                             <div><label class="fl" for="f_exp2">Pengalaman 2 (opsional)</label><textarea id="f_exp2" class="fi cv-input" rows="3" placeholder="Format sama"></textarea></div>
                             <div><label class="fl" for="f_exp3">Pengalaman 3 (opsional)</label><textarea id="f_exp3" class="fi cv-input" rows="3" placeholder="Format sama"></textarea></div>
                         </div></div>
@@ -334,27 +356,27 @@
                             <!-- Input Pendidikan 1 dengan IPK & Skripsi -->
                             <div class="bg-white border border-slate-200 p-3 rounded-lg space-y-3 shadow-sm">
                                 <label class="fl text-teal-700" for="f_edu1_school">Pendidikan 1 (S1/D3) <span class="req">*</span></label>
-                                <input id="f_edu1_school" class="fi cv-input" placeholder="Nama Universitas, Kota" value="Universitas Indonesia, Depok">
+                                <input id="f_edu1_school" class="fi cv-input" placeholder="Nama Universitas, Kota" value="">
                                 
                                 <div class="grid grid-cols-2 gap-2">
                                     <div>
                                         <label class="fl text-[8.5px] text-slate-500 uppercase">Jurusan</label>
-                                        <input id="f_edu1_major" class="fi cv-input" placeholder="Contoh: Akuntansi" value="S1 Akuntansi">
+                                        <input id="f_edu1_major" class="fi cv-input" placeholder="Contoh: Akuntansi" value="">
                                     </div>
                                     <div>
                                         <label class="fl text-[8.5px] text-slate-500 uppercase">Tahun Lulus</label>
-                                        <input id="f_edu1_year" class="fi cv-input" placeholder="2020 – 2024" value="2020 – 2024">
+                                        <input id="f_edu1_year" class="fi cv-input" placeholder="2020 – 2024" value="">
                                     </div>
                                 </div>
 
                                 <div class="grid grid-cols-3 gap-2">
                                     <div>
                                         <label class="fl text-[8.5px] text-slate-500 uppercase">IPK (GPA)</label>
-                                        <input id="f_edu1_gpa" class="fi cv-input" placeholder="0.00" value="3.85">
+                                        <input id="f_edu1_gpa" class="fi cv-input" placeholder="0.00" value="">
                                     </div>
                                     <div class="col-span-2">
                                         <label class="fl text-[8.5px] text-slate-500 uppercase">Skripsi / Tugas Akhir</label>
-                                        <input id="f_edu1_thesis" class="fi cv-input" placeholder="Judul Skripsi (Opsional)" value="Analisis Pengaruh Implementasi ISAK 35...">
+                                        <input id="f_edu1_thesis" class="fi cv-input" placeholder="Judul Skripsi (Opsional)" value="">
                                     </div>
                                 </div>
                             </div>
@@ -363,10 +385,10 @@
                             <div>
                                 <label class="fl" for="f_edu2_school">Pendidikan 2 (SMA/SMK)</label>
                                 <div class="grid grid-cols-2 gap-2 mb-2">
-                                    <input id="f_edu2_school" class="fi cv-input" placeholder="Nama Sekolah, Kota" value="SMA Negeri 1 Jakarta">
-                                    <input id="f_edu2_year" class="fi cv-input" placeholder="2017 – 2020" value="2017 – 2020">
+                                    <input id="f_edu2_school" class="fi cv-input" placeholder="Nama Sekolah, Kota" value="">
+                                    <input id="f_edu2_year" class="fi cv-input" placeholder="2017 – 2020" value="">
                                 </div>
-                                <input id="f_edu2_major" class="fi cv-input" placeholder="Jurusan (IPA/IPS/Bahasa)" value="IPA">
+                                <input id="f_edu2_major" class="fi cv-input" placeholder="Jurusan (IPA/IPS/Bahasa)" value="">
                             </div>
                             <div class="fe" id="e_edu1">Wajib diisi (Minimal pendidikan terakhir)</div>
                         </div></div>
@@ -376,21 +398,21 @@
                         <div class="sh-hd op" data-sec><span class="text-[12px] font-bold text-[var(--text)]"><i class="fa-solid fa-screwdriver-wrench mr-1.5 text-teal-600 text-[10px]"></i>Keahlian</span><i class="fa-solid fa-chevron-down cv2"></i></div>
                         <div class="sh-bd op"><div class="pt-3 space-y-2.5">
                             <p class="text-[9.5px] text-[var(--muted)] leading-relaxed">Format: <strong>Nama Keahlian</strong> — Deskripsi. Satu per baris.</p>
-                            <div><label class="fl" for="f_skills">Daftar Keahlian <span class="req">*</span></label><textarea id="f_skills" class="fi cv-input" rows="5" placeholder="Jaringan Komputer — TCP/IP, LAN/WAN">Akuntansi Keuangan — Laporan keuangan, audit, analisis rasio&#10;Perpajakan — PPh 21, PPN, SPT Tahunan&#10;Microsoft Excel — VLOOKUP, Pivot Table (Advanced)&#10;Audit — ISA (International Standards on Auditing), Pengujian Substantif&#10;Analisis Data — Interpretasi data keuangan untuk pengambilan keputusan</textarea><div class="fe" id="e_skills">Wajib diisi</div></div>
+                            <div><label class="fl" for="f_skills">Daftar Keahlian <span class="req">*</span></label><textarea id="f_skills" class="fi cv-input" rows="5" placeholder="Jaringan Komputer — TCP/IP, LAN/WAN"></textarea><div class="fe" id="e_skills">Wajib diisi</div></div>
                         </div></div>
                     </div>
 
                     <div class="mb-1">
                         <div class="sh-hd op" data-sec><span class="text-[12px] font-bold text-[var(--text)]"><i class="fa-solid fa-certificate mr-1.5 text-teal-600 text-[10px]"></i>Sertifikasi</span><i class="fa-solid fa-chevron-down cv2"></i></div>
                         <div class="sh-bd op"><div class="pt-3 space-y-2.5">
-                            <div><label class="fl" for="f_certs">Daftar Sertifikasi</label><textarea id="f_certs" class="fi cv-input" rows="3" placeholder="Nama Sertifikasi — Penerbit (Tahun)">Chartered Accountant Indonesia — Institut Akuntan Publik Indonesia (2024)</textarea></div>
+                            <div><label class="fl" for="f_certs">Daftar Sertifikasi</label><textarea id="f_certs" class="fi cv-input" rows="3" placeholder="Nama Sertifikasi — Penerbit (Tahun)"></textarea></div>
                         </div></div>
                     </div>
 
                     <div class="mb-1">
                         <div class="sh-hd op" data-sec><span class="text-[12px] font-bold text-[var(--text)]"><i class="fa-solid fa-language mr-1.5 text-teal-600 text-[10px]"></i>Bahasa</span><i class="fa-solid fa-chevron-down cv2"></i></div>
                         <div class="sh-bd op"><div class="pt-3 space-y-2.5">
-                            <div><label class="fl" for="f_langs">Daftar Bahasa</label><textarea id="f_langs" class="fi cv-input" rows="2" placeholder="Bahasa Indonesia — Native">Bahasa Indonesia — Native&#10;Bahasa Inggris — Professional Working Proficiency</textarea></div>
+                            <div><label class="fl" for="f_langs">Daftar Bahasa</label><textarea id="f_langs" class="fi cv-input" rows="2" placeholder="Bahasa Indonesia — Native"></textarea></div>
                         </div></div>
                     </div>
 
@@ -414,7 +436,7 @@
                                 <div class="grid grid-cols-3 gap-1.5" id="qualRow">
                                     <div class="tp-c" data-qual="low" style="padding:7px 4px"><div class="text-[9.5px] font-bold text-[var(--text)]">Standar</div><span class="q-badge low">72 DPI</span></div>
                                     <div class="tp-c on" data-qual="mid" style="padding:7px 4px"><div class="text-[9.5px] font-bold text-[var(--text)]">Tinggi</div><span class="q-badge mid">150 DPI</span></div>
-                                    <div `data-qual="hi"` style="padding:7px 4px"><div class="text-[9.5px] font-bold text-[var(--text)]">Maksimal</div><span class="q-badge hi">300 DPI</span></div>
+                                    <div data-qual="hi" style="padding:7px 4px"><div class="text-[9.5px] font-bold text-[var(--text)]">Maksimal</div><span class="q-badge hi">300 DPI</span></div>
                                 </div>
                             </div>
                             <div class="space-y-2 pt-1">
@@ -426,8 +448,8 @@
                     <div class="mt-4 mb-2 p-3 bg-amber-50 border border-amber-200/80 rounded-xl tip-a">
                         <p class="text-[10px] text-amber-800 leading-relaxed"><i class="fa-solid fa-circle-info mr-1"></i><strong>Tips ATS:</strong> Gunakan kata kunci dari deskripsi pekerjaan. Hindari tabel, kolom, gambar, dan ikon.</p>
                     </div>
-                    <div class="mb-2 p-3 bg-teal-50 border border-teal-200/80 rounded-xl tip-t">
-                        <p class="text-[10px] text-teal-800 leading-relaxed"><i class="fa-regular fa-keyboard mr-1"></i><strong>Pintasan:</strong> <span class="kb">Ctrl+S</span> Simpan <span class="kb">Ctrl+M</span> Muat <span class="kb">Ctrl+P</span> PDF <span class="kb">D</span> Gelap</p>
+                    <div class="mb-2 p-3 bg-indigo-50 border border-indigo-200/80 rounded-xl dark:bg-indigo-900/20 dark:border-indigo-800">
+                        <p class="text-[10px] text-indigo-800 dark:text-indigo-300 leading-relaxed"><i class="fa-solid fa-robot mr-1"></i><strong>Smart Parser:</strong> Upload file DOCX lama Anda, sistem akan menarik data secara otomatis.</p>
                     </div>
                 </div>
                 <div class="stat-bar flex-shrink-0">
@@ -466,9 +488,183 @@
 
 <script>
 function v(id) { var e = document.getElementById(id); return e ? e.value.trim() : ''; }
+function setVal(id, val) { var e = document.getElementById(id); if (e) e.value = val; }
 function kap(s) { return s ? s.replace(/\b\w/g, function (c) { return c.toUpperCase(); }) : ''; }
 
 var curFont = 'cv-inter', curQuality = 'mid', autoSaveOn = true, autoSaveTimer = null, _printing = false, lvTimer = null, checkTimer = null;
+
+// --- SMART DOCX PARSER LOGIC ---
+
+document.getElementById('f_upload_docx').addEventListener('change', function(event) {
+    var file = event.target.files[0];
+    if (!file) return;
+
+    var statusEl = document.getElementById('upload-status');
+    statusEl.classList.remove('hidden');
+
+    var reader = new FileReader();
+    reader.onload = function(loadEvent) {
+        var arrayBuffer = loadEvent.target.result;
+        
+        mammoth.convertToHtml({arrayBuffer: arrayBuffer})
+            .then(displayResult)
+            .catch(handleError);
+    };
+    reader.readAsArrayBuffer(file);
+});
+
+function displayResult(result) {
+    var rawHtml = result.value;
+    var doc = new DOMParser().parseFromString(rawHtml, 'text/html');
+    var text = doc.body.textContent || "";
+    
+    // Reset fields for clean fill (optional, here we prefer filling empty ones or appending lists)
+    parseSmartData(text);
+    
+    var statusEl = document.getElementById('upload-status');
+    statusEl.classList.add('hidden');
+    toast('Data berhasil diisi dari DOCX!', 'ok');
+    lv(); // Refresh preview
+}
+
+function handleError(err) {
+    console.error(err);
+    var statusEl = document.getElementById('upload-status');
+    statusEl.classList.add('hidden');
+    toast('Gagal membaca file DOCX', 'bd');
+}
+
+function parseSmartData(text) {
+    var lines = text.split(/\n+/).map(l => l.trim()).filter(l => l.length > 0);
+    
+    // Regex Patterns
+    var emailRegex = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/;
+    var phoneRegex = /(\+62|62|0)8[1-9][0-9]{6,10}/;
+    var linkedinRegex = /(https?:\/\/)?(www\.)?linkedin\.com\/in\/[a-zA-Z0-9-]+/;
+    var urlRegex = /(https?:\/\/[^\s]+)/;
+    var yearRegex = /(20\d{2}\s*[-–]\s*20\d{2}|20\d{2}\s*[-–]\s*Sekarang|20\d{2}\s*[-–]\s*Present)/;
+    var ipkRegex = /(IPK|GPA)\s*[:.]?\s*([0-3]\.\d{2}|4\.00)/i;
+    var gpaRegex = /([0-3]\.\d{2}|4\.00)/; // Catching loose numbers as GPA
+    
+    // State tracking
+    var currentSection = 'header'; // header, exp, edu, skill, summary
+    var extractedData = {
+        name: '',
+        title: '',
+        email: '',
+        phone: '',
+        linkedin: '',
+        location: '',
+        summary: '',
+        exp: [],
+        edu: [],
+        skills: []
+    };
+
+    lines.forEach(function(line, index) {
+        var lowerLine = line.toLowerCase();
+
+        // Detect Section Headers
+        if (lowerLine.match(/pengalaman\s+kerja|riwayat\s+pekerjaan|work\s+experience|experience/)) {
+            currentSection = 'exp';
+            return;
+        }
+        if (lowerLine.match(/pendidikan|education|riwayat\s+pendidikan/)) {
+            currentSection = 'edu';
+            return;
+        }
+        if (lowerLine.match(/keahlian|skill|kemampuan/)) {
+            currentSection = 'skill';
+            return;
+        }
+        if (lowerLine.match(/ringkasan|profil|summary|tentang\s+saya|about/)) {
+            currentSection = 'summary';
+            return;
+        }
+
+        // Extract based on section
+        if (currentSection === 'header') {
+            if (!extractedData.name && line.length < 50 && !line.match(/@|linkedin|http/)) {
+                extractedData.name = line;
+            }
+            if (line.match(emailRegex)) extractedData.email = line.match(emailRegex)[0];
+            if (line.match(phoneRegex)) extractedData.phone = line.match(phoneRegex)[0];
+            if (line.match(linkedinRegex)) extractedData.linkedin = line.match(linkedinRegex)[0];
+            if (line.match(/jakarta|bandung|surabaya|medan|bekasi|tangerang/i) && !extractedData.location) {
+                extractedData.location = line;
+            }
+        } 
+        else if (currentSection === 'summary') {
+            extractedData.summary += (extractedData.summary ? ' ' : '') + line;
+        }
+        else if (currentSection === 'exp') {
+            extractedData.exp.push(line);
+        }
+        else if (currentSection === 'edu') {
+            extractedData.edu.push(line);
+        }
+        else if (currentSection === 'skill') {
+            extractedData.skills.push(line);
+        }
+    });
+
+    // --- Apply Data to Inputs ---
+    
+    // Simple Fields (only fill if empty to avoid overwrite, or force overwrite if blank)
+    if (v('f_nama') === '') setVal('f_nama', kap(extractedData.name));
+    if (v('f_email') === '') setVal('f_email', extractedData.email);
+    if (v('f_phone') === '') setVal('f_phone', extractedData.phone);
+    if (v('f_linkedin') === '') setVal('f_linkedin', extractedData.linkedin);
+    if (v('f_loc') === '') setVal('f_loc', extractedData.location);
+    if (v('f_summary') === '') setVal('f_summary', extractedData.summary);
+
+    // Complex Fields (Append or Replace based on logic. Here we replace if empty)
+    
+    // Skills - Try to reformat if simple list, else dump
+    if (v('f_skills') === '' && extractedData.skills.length > 0) {
+        // Detect if skills are "SkillName - Desc" or just "SkillName"
+        var skillText = extractedData.skills.join('\n');
+        setVal('f_skills', skillText);
+    }
+
+    // Education - Dump raw text into textareas is risky, but better than nothing.
+    // We'll try to map to Edu 1 (S1) and Edu 2 (SMA) by heuristics (Universitas keyword)
+    if (v('f_edu1_school') === '' && extractedData.edu.length > 0) {
+        var eduText = extractedData.edu.join('\n');
+        
+        // Heuristic: First block is usually the highest education (S1)
+        // Find line containing "Universitas" or "Institut"
+        var s1Line = extractedData.edu.find(l => l.match(/universitas|institut|institute|sekolah tinggi/i));
+        
+        if (s1Line) {
+            setVal('f_edu1_school', s1Line);
+            // Remove s1Line from eduText to find SMA next
+            eduText = eduText.replace(s1Line, '');
+            
+            // Try to find GPA in the vicinity or remaining text
+            var potentialGPA = eduText.match(gpaRegex);
+            if (potentialGPA) setVal('f_edu1_gpa', potentialGPA[0]);
+        } else {
+            // If no clear S1 keyword, put first line in S1 slot
+             var firstLine = extractedData.edu[0];
+             if (firstLine) setVal('f_edu1_school', firstLine);
+        }
+        
+        // SMA / Secondary Edu
+        var smaLine = extractedData.edu.find(l => l.match(/sma|smk|man|sma\s|high\s*school/i));
+        if (smaLine) setVal('f_edu2_school', smaLine);
+    }
+
+    // Experience - Dump to first textarea
+    if (v('f_exp') === '' && extractedData.exp.length > 0) {
+        var expText = extractedData.exp.join('\n');
+        // Basic cleanup: remove excessive newlines inside the block
+        expText = expText.replace(/\n\s*\n/g, '\n');
+        setVal('f_exp', expText);
+    }
+}
+
+// --- END SMART PARSER ---
 
 var TPL = {
     fresh: { f_summary: 'Lulusan Sarjana Ekonomi dengan IPK Kumulatif 3.85. Memiliki pemahaman kuat dalam analisis keuangan, audit, dan perpajakan. Aktif dalam organisasi kemahasiswaan sebagai Bendahara Umum. Siap berkontribusi dan berkembang di bidang keuangan perusahaan.', f_exp: 'Magang Audit Staff\nKAP Amir, Abidin & Partners, Jakarta\nJun 2024 – Ags 2024\nMembantu proses audit laporan keuangan klien ritel dan jasa\nMelakukan analisis terhadap saldo akun dan bukti transaksi', f_skills: 'Akuntansi Keuangan — Laporan keuangan, audit, analisis rasio\nPerpajakan — PPh 21, PPN, SPT Tahunan\nMicrosoft Excel — VLOOKUP, Pivot Table (Advanced)\nAudit — ISA, Pengujian Substantif', f_certs: '', f_langs: 'Bahasa Indonesia — Native\nBahasa Inggris — Professional Working Proficiency' },
@@ -528,7 +724,7 @@ function parseExp(n) {
 }
 
 /* ==============================================
-   RENDER CV (UPDATED FOR S1 EDUCATION)
+   RENDER CV
    ============================================== */
 function lv() { try { renderCV(); if (checkTimer) clearTimeout(checkTimer); checkTimer = setTimeout(checkPageOverflow, 80); } catch (e) { var sc = document.getElementById('sC'); if (sc) sc.innerHTML = '<div style="padding:40px;color:#dc2626;font-size:13px;"><strong>Error:</strong> ' + e.message + '</div>'; console.error(e); } }
 
@@ -648,7 +844,7 @@ function expImg() { try { if (!validate()) { toast('Lengkapi kolom wajib', 'wr')
 function copyText() { try { var s = document.getElementById('sC'); if (!s) return; var t = s.innerText || s.textContent; if (!t.trim()) { toast('Tidak ada teks', 'wr'); return; } if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(t).then(function () { toast('Teks disalin', 'ok'); }).catch(function () { fCopy(t); }); } else fCopy(t); } catch (e) { } }
 function fCopy(t) { try { var ta = document.createElement('textarea'); ta.value = t; ta.style.cssText = 'position:fixed;left:-9999px;'; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); if (ta.parentNode) document.body.removeChild(ta); toast('Teks disalin', 'ok'); } catch (e) { } }
 
-var SK = 'cvats_draft_v12_final_edu';
+var SK = 'cvats_draft_v13_smart';
 var FIDS = ['f_nama', 'f_title', 'f_email', 'f_phone', 'f_loc', 'f_linkedin', 'f_portfolio', 'f_summary', 'f_exp', 'f_exp2', 'f_exp3', 'f_edu1_school', 'f_edu1_major', 'f_edu1_year', 'f_edu1_gpa', 'f_edu1_thesis', 'f_edu2_school', 'f_edu2_year', 'f_edu2_major', 'f_skills', 'f_certs', 'f_langs', 'f_fs', 'f_lh'];
 
 function saveDraft() { try { var d = {}; for (var i = 0; i < FIDS.length; i++) { var e = document.getElementById(FIDS[i]); if (e) d[FIDS[i]] = e.value; } d._t = new Date().toISOString(); d._font = curFont; d._dark = document.body.classList.contains('dark-mode'); localStorage.setItem(SK, JSON.stringify(d)); toast('Draft disimpan', 'ok'); } catch (e) { toast('Gagal menyimpan', 'bd'); } }
